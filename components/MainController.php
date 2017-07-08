@@ -6,7 +6,7 @@ use Yii;
 use yii\web\Controller;
 use app\models\LoginForm;
 
-class SiteController extends Controller
+class MainController extends Controller
 {
 
    public function init()

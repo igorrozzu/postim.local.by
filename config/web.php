@@ -55,7 +55,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-
+                '<action:id><id:\d+>'=>'user/index'
             ],
         ],
 

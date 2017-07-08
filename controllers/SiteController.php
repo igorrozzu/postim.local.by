@@ -4,8 +4,9 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\Controller;
+use app\components\MainController;
 
-class SiteController extends Controller
+class SiteController extends MainController
 {
 
 
