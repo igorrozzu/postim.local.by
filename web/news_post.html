@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Главная страница</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" media="(min-width: 1320px)" href="css/min-1260px.css">
+  <link rel="stylesheet" media="(max-width:1319px)" href="css/min-1190px.css">
+  <link rel="stylesheet" media="(max-width:949px)" href="css/min-950px.css">
+  <link rel="stylesheet" media="(max-width:770px)" href="css/min-710px.css">
+  <link rel="stylesheet" media="(max-width:540px)" href="css/min-540px.css">
+  <link rel="stylesheet" media="(max-width:480px)" href="css/max-480px.css">
+  <!-- адоптация для мобильный устройств-->
+  <script>
+	  if (window.devicePixelRatio !== 1) { // Костыль для определения иных устройств, с коэффициентом отличным от 1
+		  var dpt = window.devicePixelRatio;
+		  var widthM = window.screen.width * dpt;
+		  var widthH = window.screen.height * dpt;
+		  document.write('<meta name="viewport" content="width=' + widthM+ ', height=' + widthH + '">');
+	  }
+  </script>
+  <!-- адоптация для мобильный устройств-->
+</head>
+<body>
+<!--левое меню-->
+<div class="main-menu">
+  <div class="header-menu">
+    <div class="header-menu-title">Меню</div>
+    <div class="left-arrow close-main-menu"></div>
+  </div>
+  <div class="menu-content">
+    <ul class="menu-category">
+      <li class="menu-category-list">
+        <div class="category-list-title">
+          <a>Отдых</a>
+          <span class="open-list-btn"></span>
+        </div>
+        <ul class="menu-category-items">
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+        </ul>
+      </li>
+      <li class="menu-category-list">
+        <div class="category-list-title">
+          <a>Где поесть</a>
+          <span class="open-list-btn"></span>
+        </div>
+        <ul class="menu-category-items">
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+        </ul>
+      </li>
+      <li class="menu-category-list">
+        <div class="category-list-title">
+          <a>Где остановиться</a>
+          <span class="open-list-btn"></span>
+        </div>
+        <ul class="menu-category-items">
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+        </ul>
+      </li>
+      <li class="menu-category-list menu-category-open">
+        <div class="category-list-title">
+          <a>Развлечения</a>
+          <span class="close-list-btn"></span>
+        </div>
+        <ul class="menu-category-items" style="height: 445px">
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+          <li class="menu-category-item"><a>Базы отдыха</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+          <li class="menu-category-item"><a>Гостиницы</a></li>
+          <li class="menu-category-item"><a>Агроусадьбы</a></li>
+          <li class="menu-category-item"><a>Хостелы</a></li>
+        </ul>
+      </li>
+      <li class="menu-category-list ">
+        <div class="category-list-title">
+          <a>Интерсные места</a>
+          <span class="open-list-btn"></span>
+        </div>
+        <ul class="menu-category-items">
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+          <li class="menu-category-item"><a>Базы отдыха</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+          <li class="menu-category-item"><a>Гостиницы</a></li>
+          <li class="menu-category-item"><a>Агроусадьбы</a></li>
+          <li class="menu-category-item"><a>Хостелы</a></li>
+        </ul>
+      </li>
+      <li class="menu-category-list">
+        <div class="news-list-title">
+          <a>Новости</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<!--левое меню end-->
+<!--верхнее меню-->
+<div class="container-header">
+  <div class="header">
+    <div class="menu-btn"></div>
+    <div class="logo"></div>
+    <div class="select-city">Марьина Горка</div>
+    <div class="btn_br">Добавить место</div>
+    <div class="sign_in_btn">Войти</div>
+    <div class="btn_add_place"></div>
+    <div class="search_block">
+      <input class="search" type="text" placeholder="Поиск">
+      <span class="btn-search"></span>
+    </div>
+  </div>
+</div>
+<!--верхнее меню end-->
+<div class="margin-top60"></div>
+<div class="block-content">
+  <div class="container-post">
+    <div class="bread-crumb">
+      <a href="#">Главная</a>
+      <span class="separator"></span>
+      <a href="#">Где поесть</a>
+      <span class="separator"></span>
+      <a href="#">Рестораны</a>
+      <span class="separator"></span>
+      <a class="pre" href="#">Ресторан «Хижина Гранд»</a>
+      <span class="separator"></span>
+      <p>Отзывы</p>
+    </div>
+    <h1 class="h1-v">Хижина Гранд - отзывы</h1>
+    <div class="block-between page-news">
+      <div class="block-info-reviewsAndfavorites">
+        <div class="add-favorite"></div>
+        <div class="total-comments">38</div>
+      </div>
+      <div class="date-time-text">31 января в 12:12</div>
+    </div>
+    <div class="container-content-post">
+      <div class="block-photo-post">
+        <img src="img/photo-post-news.jpg">
+        <div class="photo-desc">Фото: Life.ru</div>
+      </div>
+      <div class="post-text">С сегодняшнего дня в рейтинге компании будет учитываться только последняя по времени оценка, если автор писал
+        несколько отзывов об этой компании. Почему? Рассказываем в блоге.</div>
+      <h2 class="post-h2">Как было раньше</h2>
+      <div class="post-text">Обратился  — написал!» — примерно так мог бы звучать девиз опытных фламперов</div>
+      <div class="post-text">Именно поэтому на страницах многих филиалов можно увидеть не по одному, а по несколько отзывов одного и того же
+        автора. Например, о кафе, о кинотеатре или о магазине неподалёку от дома — каждый раз, как происходит что-то,
+        заслуживающее внимания (в кинозале поставили кондиционер, в кафе начали делать потрясающие десерты, в магазине на
+        кассах стали медленнее обслуживать), у флампера появляется повод написать об этой компании новый отзыв.</div>
+      <div class="post-text">До сегодняшнего дня мы учитывали в рейтинге компании каждую оценку, которую вы когда-либо ей ставили, не обращая
+        внимания на то, сколько раз вы писали о ней и как давно происходили эти события.</div>
+      <h2 class="post-h2">Как теперь</h2>
+      <div class="block-photo-post">
+        <img src="img/photo-post-news600px.jpg">
+        <div class="photo-desc">Фото: Life.ru</div>
+      </div>
+      <div class="post-text">Обратился  — написал!» — примерно так мог бы звучать девиз опытных фламперов</div>
+      <div class="post-text">Именно поэтому на страницах многих филиалов можно увидеть не по одному, а по несколько отзывов одного и того же
+        автора. Например, о кафе, о кинотеатре или о магазине неподалёку от дома — каждый раз, как происходит что-то,
+        заслуживающее внимания (в кинозале поставили кондиционер, в кафе начали делать потрясающие десерты, в магазине на
+        кассах стали медленнее обслуживать), у флампера появляется повод написать об этой компании новый отзыв.</div>
+    </div>
+  </div>
+  <div class="block-content-between">
+    <div class="block-social-share">
+      <div class="social-btn-share"><p>Поделиться</p> <span>24</span></div>
+      <div class="social-btn-share"><span>3</span></div>
+      <div class="social-btn-share"><p>Твитнуть</p></div>
+      <div class="social-btn-share"><p>Поделиться</p><span>153</span></div>
+    </div>
+    <div class="block-count-views">
+      <div class="elem-count-views">10 324</div>
+    </div>
+  </div>
+  <h2 class="h2-c">Комментарии <span class="total">15</span></h2>
+  <div class="block-сomments-post">
+    <div class="container-write-comments">
+      <div class="main-write-comment">
+        <img class="profile-icon60x60" src="img/default-profile-icon.png">
+        <textarea placeholder="Что скажете по этому поводу?" class="textarea-main-comment"></textarea>
+      </div>
+      <div class="large-wide-button"><p>Написать комментарий</p></div>
+    </div>
+    <div class="container-comments">
+      <div class="container-comment">
+        <div class="profile-commentator">
+          <img class="profile-icon40x40" src="img/default-profile-icon.png">
+        </div>
+        <div class="comment-content">
+          <div class="comment-content-header">
+            <div class="content-between">
+              <p class="user-name">Иванов Иванович</p>
+              <div class="user-level">12 <span>&nbsp;уровень</span></div>
+            </div>
+            <span class="comment-time">21 февраля 2017 в 10:43</span>
+          </div>
+          <div class="comment-text">Василий Утконосов, все очень вкусно, согласен!</div>
+          <div class="btns-comment">
+            <div class="btn-comment btn-like">2</div>
+            <div class="btn-comment btn-comm">Ответить</div>
+            <div class="btn-comment">Пожаловаться</div>
+          </div>
+        </div>
+      </div>
+      <div class="container-comment">
+        <div class="profile-commentator">
+          <img class="profile-icon40x40" src="img/default-profile-icon.png">
+        </div>
+        <div class="comment-content">
+          <div class="comment-content-header">
+            <div class="content-between">
+              <p class="user-name">Иванов Иванович</p>
+              <div class="user-level">12 <span>&nbsp;уровень</span></div>
+            </div>
+            <span class="comment-time">21 февраля 2017 в 10:43</span>
+          </div>
+          <div class="comment-text">Василий Утконосов, все очень вкусно, согласен!</div>
+          <div class="btns-comment">
+            <div class="btn-comment btn-like">2</div>
+            <div class="btn-comment btn-comm">Ответить</div>
+            <div class="btn-comment">Пожаловаться</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h2 class="h2-c">Последнии новости</h2>
+  <div class="block-news-container">
+    <div class="block-news">
+      <div class="card-block ">
+        <div class="card-photo" style="background-image: url('testP.png')">
+          <div class="glass">
+            <div class="bookmarks-btn">12</div>
+          </div>
+        </div>
+        <div class="card-block-info">
+          <p class="info-head">Новости Минска</p>
+          <p class="card-info">Открылся новый Собор на Малой Грузинской
+            в Минске. Для всех желающих 21.02.2017
+            вход бесплатный</p>
+        </div>
+        <div class="block-btn">
+          <div class="comments">
+            <span class="icon"><img src="img/comments-icon.png"></span>
+            <span class="count-t">4</span>
+          </div>
+          <div class="views">
+            <span class="icon"><img src="img/views-icon.png"></span>
+            <span class="count-t">1474</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-block ">
+        <div class="card-photo" style="background-image: url('testP.png')">
+          <div class="glass">
+            <div class="bookmarks-btn">12</div>
+          </div>
+        </div>
+        <div class="card-block-info">
+          <p class="info-head">Новости Минска</p>
+          <p class="card-info">Открылся новый Собор на Малой Грузинской
+            в Минске. Для всех желающих 21.02.2017
+            вход бесплатный</p>
+        </div>
+        <div class="block-btn">
+          <div class="comments">
+            <span class="icon"><img src="img/comments-icon.png"></span>
+            <span class="count-t">4</span>
+          </div>
+          <div class="views">
+            <span class="icon"><img src="img/views-icon.png"></span>
+            <span class="count-t">1474</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-block ">
+        <div class="card-photo" style="background-image: url('testP.png')">
+          <div class="glass">
+            <div class="bookmarks-btn">12</div>
+          </div>
+        </div>
+        <div class="card-block-info">
+          <p class="info-head">Новости Минска</p>
+          <p class="card-info">Открылся новый Собор на Малой Грузинской
+            в Минске. Для всех желающих 21.02.2017
+            вход бесплатный</p>
+        </div>
+        <div class="block-btn">
+          <div class="comments">
+            <span class="icon"><img src="img/comments-icon.png"></span>
+            <span class="count-t">4</span>
+          </div>
+          <div class="views">
+            <span class="icon"><img src="img/views-icon.png"></span>
+            <span class="count-t">1474</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-block ">
+        <div class="card-photo" style="background-image: url('testP.png')">
+          <div class="glass">
+            <div class="bookmarks-btn">12</div>
+          </div>
+        </div>
+        <div class="card-block-info">
+          <p class="info-head">Новости Минска</p>
+          <p class="card-info">Открылся новый Собор на Малой Грузинской
+            в Минске. Для всех желающих 21.02.2017
+            вход бесплатный</p>
+        </div>
+        <div class="block-btn">
+          <div class="comments">
+            <span class="icon"><img src="img/comments-icon.png"></span>
+            <span class="count-t">4</span>
+          </div>
+          <div class="views">
+            <span class="icon"><img src="img/views-icon.png"></span>
+            <span class="count-t">1474</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-block ">
+        <div class="card-photo" style="background-image: url('testP.png')">
+          <div class="glass">
+            <div class="bookmarks-btn">12</div>
+          </div>
+        </div>
+        <div class="card-block-info">
+          <p class="info-head">Новости Минска</p>
+          <p class="card-info">Открылся новый Собор на Малой Грузинской
+            в Минске. Для всех желающих 21.02.2017
+            вход бесплатный</p>
+        </div>
+        <div class="block-btn">
+          <div class="comments">
+            <span class="icon"><img src="img/comments-icon.png"></span>
+            <span class="count-t">4</span>
+          </div>
+          <div class="views">
+            <span class="icon"><img src="img/views-icon.png"></span>
+            <span class="count-t">1474</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-block ">
+        <div class="card-photo" style="background-image: url('testP.png')">
+          <div class="glass">
+            <div class="bookmarks-btn">12</div>
+          </div>
+        </div>
+        <div class="card-block-info">
+          <p class="info-head">Новости Минска</p>
+          <p class="card-info">Открылся новый Собор на Малой Грузинской
+            в Минске. Для всех желающих 21.02.2017
+            вход бесплатный</p>
+        </div>
+        <div class="block-btn">
+          <div class="comments">
+            <span class="icon"><img src="img/comments-icon.png"></span>
+            <span class="count-t">4</span>
+          </div>
+          <div class="views">
+            <span class="icon"><img src="img/views-icon.png"></span>
+            <span class="count-t">1474</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clear-fix"></div>
+    <div class="btn-show-more">Показать больше новостей</div>
+  </div>
+</div>
+
+<div style="margin-bottom:30px;"></div>
+<div class="block-widgets">
+  <div class="widget"></div>
+  <div class="widget"></div>
+  <div class="widget"></div>
+  <div class="widget"></div>
+</div>
+<div class="block-footer">
+  <div class="block-footer-content">
+    <div class="block-footer-btn">
+      <ul class="menu-inline">
+        <li><a>О сайте</a></li>
+        <li><a>Правила</a></li>
+        <li><a>Соглашение</a></li>
+        <li><a>Реклама</a></li>
+        <li><a>Обратная связь</a></li>
+      </ul>
+      <div class="block-social-icons">
+        <div class="block-social">
+          <a class="social-btn-vk"></a>
+          <a class="social-btn-fb"></a>
+          <a class="social-btn-tw"></a>
+        </div>
+        <div class="block-social">
+          <a class="social-btn-ok"></a>
+          <a class="social-btn-inst"></a>
+          <a class="social-btn-viber"></a>
+        </div>
+      </div>
+    </div>
+    <div class="text-footer">
+      ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы&nbsp;–&nbsp;9:00&nbsp;до&nbsp;18:00. Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span class="email-address">info@postim.by.</span> ©&nbsp;2016–2017&nbsp;Postim.by
+    </div>
+  </div>
+</div>
+
+<script src="js/libs/jquery.js"></script>
+<!--скрипт для меню-->
+<script>
+	var mainMenu={isOpen:false}
+	$(document).ready(function () {
+		$(document).on('click','.menu-btn,.close-main-menu',function () {
+			if(!mainMenu.isOpen){
+				mainMenu.isOpen=true;
+				$('.main-menu').animate({left:'0px',top:'0px'},200);
+			}else {
+				mainMenu.isOpen=false;
+				$('.main-menu').animate({left:'-300px',top:'0px'},200);
+			}
+		})
+
+		$(document).click(function (e) {
+			if ($(e.target).closest(".main-menu,.menu-btn").length) return;
+			mainMenu.isOpen=false;
+			$('.main-menu').animate({left:'-300px',top:'0px'},200);
+			e.stopPropagation();
+		})
+	})
+</script>
+<!--скрипт для меню end-->
+
+<!--скрипт для высоты главного изобржанения-->
+<script>
+  $(document).ready(function () {
+	  $(window).resize(function () {
+		  var startWidth=900,
+			  startHgt=440,
+			  proportion=startWidth/startHgt;
+
+		  var container = $('.container-discount-photos');
+		  var width=$(container).width();
+		  $('.container-discount-photos').css({height:width/proportion+'px'});
+	  })
+      $(window).resize();
+  })
+
+
+</script>
+<!--скрипт для высоты главного изобржанения end-->
+</body>
+</html>

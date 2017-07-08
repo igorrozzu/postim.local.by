@@ -1,0 +1,42 @@
+@media (max-width: 660px) {
+    .authorized .search_block{
+        display: flex;
+        float: right;
+        margin-top: 10px;
+        background-color: transparent;
+        padding: 0;
+        width: auto;
+    }
+
+    .authorized .search{
+        display: none;
+    }
+
+    .authorized .btn-search:after{
+        content: url("../img/magnifier-icon18x18.png");
+    }
+    .authorized .btn-search:hover:after{
+        content: url("../img/magnifier-icon18x18-hover.png");
+    }
+    .authorized .btn-search{
+        height: auto;
+        display: flex;
+        align-items: center;
+    }
+}
+@media (max-height: 480px) {
+    .container-popup-window{
+        top:0;
+    }
+}
+
+@media (min-width: 940px) and (max-width: 1040px){
+    .container-info-btn{
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
+    }
+    .block-promo-btns{
+        margin-top: 20px;
+    }
+}

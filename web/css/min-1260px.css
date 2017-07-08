@@ -1,0 +1,32 @@
+.block-content,
+.block-cities,
+.block-widgets,
+.block-footer-content,
+.menu-info-cards,
+.header{
+    width: 1260px;
+    margin: 0 auto;
+}
+.a-auto-complete,
+.block-auto-complete-header{
+    width: 1260px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.btn_br{
+    display: flex;
+    float: right;
+    width: 300px;
+    background-color: #cf4d43;
+    font-family: PT_Sans bold;
+    color: #ffffff;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 25px;
+    cursor: pointer;
+}
+.btn_br:hover{
+    background-color: #bc3737;
+}
+

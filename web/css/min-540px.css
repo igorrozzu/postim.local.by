@@ -1,0 +1,299 @@
+.search_block{
+    display: flex;
+    float: right;
+    margin-top: 10px;
+    background-color: transparent;
+    padding: 0;
+    width: auto;
+}
+.search{
+    display: none;
+}
+.open-search .search_block{
+    display: flex;
+    padding-left:20px;
+    float: right;
+    margin-top: 10px;
+    background-color: white;
+    height: 40px;
+    border-radius: 40px;
+}
+.open-search .search{
+    display: inherit;
+    width: calc(100% - 74px);
+}
+.h1-c,
+.h1-v{
+    font-size: 28px;
+}
+.h2-c,
+.h2-v,
+.post-h2{
+    font-size: 26px;
+}
+
+.autocomplete-result-search ul li{
+    width: 100%;
+}
+.logo:after{
+    content: url("../img/logo-thinner.png");
+}
+.header-popup-authentication .logo:after{
+    content: url("../img/logo.png");
+}
+.btn-search:after{
+    content: url("../img/magnifier-icon18x18.png");
+}
+.btn-search:hover:after{
+    content: url("../img/magnifier-icon18x18-hover.png");
+}
+.btn-search{
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.open-search .btn-search{
+    float: right;
+    padding: 5px 3px 3px 3px;
+    cursor: pointer;
+}
+.open-search .btn-search:after{
+    content: url("../img/search-icon.png");
+}
+.open-search .btn-search:hover:after{
+    content: url("../img/search-icon-activ.png");
+}
+
+.btn_add_place{
+    margin-left: 15px;
+}
+.profile-icon-menu,
+.btn-notice{
+    margin-left: 20px;
+}
+.btn_add_place:after{
+    content: url("../img/add-place-icon26x26.png");
+}
+.btn_add_place:hover:after{
+    content: url("../img/add-place-icon26x26-hover.png");
+}
+.count-notice{
+    width: 20px;
+    height: 20px;
+}
+.profile-icon-menu img{
+    width: 35px;
+    height: 35px;
+    border-radius: 15px;
+}
+.btn-notice:after{
+    width:23px;
+    height: 27px;
+    background-image: url('../img/icon-btn-notice-22p.png');
+    background-position: 0 0;
+}
+.btn-notice:hover:after{
+    background-image: url('../img/icon-btn-notice-22p.png');
+    background-position: 23px 0;
+}
+.btn-notice.active:after{
+    height: 27px;
+    background-image: url("../img/icon-btn-notice-active22p.png");
+    background-position: 0 0;
+}
+.btn-notice.active:hover:after{
+    background-image: url("../img/icon-btn-notice-active22p.png");
+    background-position: 23px 0;
+}
+.block-social{
+    width: 100%;
+}
+.block-social:nth-child(1){
+    margin-bottom: 10px;
+}
+.sign_in_btn{
+    margin-left: 15px;
+    font-family: PT_Sans;
+}
+.bread-crumb a{
+    display: none;
+}
+.bread-crumb p{
+    display: none;
+}
+.bread-crumb span{
+    display: none;
+}
+.bread-crumb a.pre{
+    display: block;
+}
+.icon-filter span{
+    display: none;
+}
+.social-btn-share p{
+    display: none;
+}
+.review-photo{
+    width: 270px;
+    height: 190px;
+}
+.profile-user-reviews{
+    display: none;
+}
+.btn2-menu{
+    height: 30px;
+}
+.block-write-reviews{
+    position: fixed;
+    top: calc(100% - 90px);
+    left: 0px;
+    width: 100%;
+}
+.fx-bottom{
+    position: fixed;
+    top: calc(100% - 60px);
+    left: 0px;
+    width: 100%;
+    margin-top: 0px;
+}
+.block-sort-reviews{
+    flex-wrap: wrap;
+    height: 60px;
+    align-items:flex-start;
+    padding-bottom: 5px;
+    padding-top: 20px;
+}
+.btn-sort-reviews{
+    height: 30px;
+}
+.btn-sort-reviews:last-child{
+    width: 200px;
+    margin-left: 0px;
+}
+.btn-sort-reviews:hover{
+    box-shadow: 0 0px 0 0 #a7c9ff;
+}
+.container-profile{
+    flex-direction: column;
+}
+.container-profile-info{
+    margin-top: 30px;
+}
+.pre-photo,
+.next-photo{
+    width: 32.5px
+}
+.pre-photo:after{
+    width: 12.5px;
+    height: 23px;
+    background: url("../img/icon-pre-25px.png") 0px 0;
+    content: '';
+}
+.next-photo:after{
+    width: 12.5px;
+    height: 23px;
+    background: url("../img/icon-next-25px.png") 12.5px 0;
+    content: '';
+}
+.pre-photo:hover:after{
+    background: url("../img/icon-pre-25px.png") 12.5px 0;
+}
+.next-photo:hover:after{
+    background: url("../img/icon-next-25px.png") 0px 0;
+}
+.next-popup-photo{margin-left: -32.5px;}
+.pre-popup-photo{margin-right: -32.5px;}
+/*меню уведомлений*/
+.notif-menu{
+    right: -348px;
+    width: 348px;
+}
+.user-info{display: none;}
+.hidden-date{display: block;}
+/*меню уведомлений end*/
+.container-blackout-popup-window{
+    background-color: rgba(52,56,67,0.9);
+}
+.container-popup-window{
+    width: 100%;
+    height: auto;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.block-social-authentication{
+    flex-wrap: wrap;
+}
+.block-social-authentication a{
+    width: 300px;
+}
+.block-social-authentication .social-btn-vk,
+.block-social-authentication .social-btn-fb,
+.block-social-authentication .social-btn-tw,
+.block-social-authentication .social-btn-ok
+{
+    width: calc(100% - 20px);
+    margin-bottom: 20px;
+    justify-content: flex-start;
+    padding-left: 20px;
+}
+.block-social-authentication .social-btn-vk:before,
+.block-social-authentication .social-btn-fb:before,
+.block-social-authentication .social-btn-tw:before,
+.block-social-authentication .social-btn-ok:before,
+.block-social-authentication .social-btn-google:before{
+    margin-right: 20px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+}
+.block-social-authentication .social-btn-vk:after{
+    content: 'ВКонтакте';
+    color: #ffffff;
+    font-size: 16px;
+    font-family: PT_Sans bold;
+}
+.block-social-authentication .social-btn-fb:after{
+    content: 'Facebook';
+    color: #ffffff;
+    font-size: 16px;
+    font-family: PT_Sans bold;
+}
+.block-social-authentication .social-btn-ok:after{
+    content: 'Одноклассники';
+    color: #ffffff;
+    font-size: 16px;
+    font-family: PT_Sans bold;
+}
+.block-social-authentication .social-btn-tw:after{
+    content: 'Twitter';
+    color: #ffffff;
+    font-size: 16px;
+    font-family: PT_Sans bold;
+}
+.block-social-authentication .social-btn-google:after{
+    content: 'Google';
+    color: #ffffff;
+    font-size: 16px;
+    font-family: PT_Sans bold;
+}
+.block-social-authentication .social-btn-google{
+    justify-content: flex-start;
+    width: calc(100% - 20px);
+    padding-left: 20px;
+}
+.day-name-min{
+    display: flex;
+}
+.day-name{
+    display: none;
+}
+.item-photo-from-gallery{
+    width: 280px;
+    margin-right: 0px;
+}

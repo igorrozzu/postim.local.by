@@ -1,0 +1,114 @@
+.header,
+.header-selected-city{
+    width: calc(100% - 20px);
+    margin: 0 10px;
+}
+.block-content{
+    width: calc(100% - 20px);
+    margin: 0 10px;
+}
+
+.a-auto-complete,
+.block-auto-complete-header{
+    width: calc(100% - 10px);
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.catalog-title-name{
+    font-size: 19px;
+}
+.catalog-list-item{
+    font-size: 16px;
+}
+.block-cities{
+    width: calc(100% - 20px);
+    margin: 0 10px;
+}
+.menu-info-cards{
+    width: calc(100% - 20px);
+    margin: 0 10px;
+}
+
+.center-mx{
+    text-align: center;
+}
+.block-social-icons{
+    width: auto;
+}
+.container-comments-header{
+    margin-left: 0px;
+}
+.profile-commentator{
+    margin-left: 0px;
+}
+.comment-content{
+    border-top: 0px;
+
+}
+.comment-content-header{
+    margin-top: 1px;
+}
+.container-comment{
+    border-top: 1px solid #a7c9ff;
+}
+.btn-comment{
+    margin-left: 40px;
+}
+.main-write-comment{
+    flex-direction: column;
+}
+.textarea-main-comment{
+    width: 100%;
+}
+.btns-comment{
+    margin-left: -60px;
+}
+.comment-text{
+    margin-left: -60px;
+}
+.user-level span{
+    display: none;
+}
+
+.block-sort{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.btn-sort{
+    margin-right: 0px;
+}
+.btn-filter{
+    margin-right: 0px;
+}
+.btn2-menu:nth-child(2n){
+    margin-right: 0px;
+}
+.container-discount-info{
+    padding-bottom: 20px;
+}
+.container-discount-info .blue-btn-40{
+    left: 0px;
+    width: 100%;
+    position: fixed;
+    z-index: 10;
+    top: calc(100% - 60px);
+}
+.selected-city{
+    font-size: 22px;
+}
+.open-search .search{
+    display: inherit;
+    width: calc(100% - 82px);
+}
+.container-info-btn{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.block-promo-btns{
+    margin-top: 20px;
+}
+.card-text-notice{
+    font-size: 14px;
+}

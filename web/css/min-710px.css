@@ -1,0 +1,155 @@
+.btn-search{
+    padding: 3px 0px 3px 0px;
+}
+.search{
+    width: calc(100% - 45px);
+}
+.search_block{
+    padding-right: 2px;
+}
+.authorized .search_block{
+    width: calc(100% - 355px);
+}
+.h1-c{
+    font-size: 30px;
+}
+.catalog-title-name{
+    font-size: 26px;
+}
+.card-block,
+.photo,
+.card-block-discount{
+    width: 100%;
+}
+.open-search .menu-btn,
+.open-search .logo,
+.open-search .sign_in_btn,
+.open-search .btn_add_place,
+.open-search .btn_br,
+.open-search .select-city{
+    display: none;
+}
+.open-search .search_block{
+    width: calc(100% - 20px);
+}
+.open-search .search{
+    display: inherit;
+    width: calc(100% - 77px);
+}
+.autocomplete-result-search ul li{
+    width: 50%;
+}
+.menu-inline li{
+    margin-right: 30px;
+}
+.btns-filter .btn-filter:nth-child(3){
+    display: none;
+}
+.page-search{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 0px;
+    width: 100%;
+}
+.page-search .btn-filter{
+    margin: 0px;
+    text-align: center;
+}
+.page-search .btn-filter:nth-child(3){
+    display: flex;
+}
+.btn2-menu{
+    height: 28px;
+}
+.menu-btns-card{
+    padding: 15px 0;
+}
+.btn2-menu:hover {
+    box-shadow: 0px 0px 0px 0px  #a7c9ff;
+}
+
+.n2{
+    display: none;
+}
+.n1{
+    margin-right: 0px;
+}
+.btn-add-photo{
+    width: 120px;
+}
+.block-review-content{
+    flex-direction: column;
+}
+.review-text{
+    margin-top: 15px;
+    width: 100%;
+}
+.rating-r{
+    margin-left: 0px;
+}
+.review-photo{
+    margin-left: 20px;
+}
+.review-footer-btn:first-child{
+    margin-left: 20px;
+}
+.block-btn-circle-share{
+    display: none;
+}
+.container-photo{
+    width: 100%;
+    margin-right: 0px;
+}
+.container-photo:nth-child(3n){
+    margin-right: 0px;
+}
+.container-photo:nth-child(2n){
+    margin-right: 0px;
+}
+.card-block-discount{
+    margin-right: 0px;
+}
+.progress-level-bar{
+    width: 100%
+}
+.card-block{
+    margin-right: 0px;
+}
+
+.photo-popup-content{
+    width: calc(100% - 20px);
+}
+.photo-left-arrow div,
+.photo-right-arrow div,
+.photo-right-arrow div:hover,
+.photo-left-arrow div:hover{
+    background: none;
+    cursor: auto;
+}
+.pre-popup-photo, .next-popup-photo{
+    display: flex;
+    z-index: 5;
+}
+.pre-popup-photo{margin-right: -75px;}
+.next-popup-photo{margin-left: -75px;}
+.photo-left-arrow, .photo-right-arrow{width: 10px;}
+.photo-header, .photo-source{
+    margin-left: 0;
+}
+.photo-header{
+    width: calc(100% -  48px);
+}
+.close-photo-popup{right: 10px;}
+.official-sign{
+    background: url("../img/sign-check.png") rgba(0, 0, 0, 0) no-repeat ;
+    width: 20px;
+    color: rgba(0, 0, 0, 0);
+}
+
+.card-promo{
+    flex-direction: column;
+}
+.block-promo-info{
+    margin-top: 20px;
+    margin-left: 0px;
+}

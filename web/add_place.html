@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Главная страница</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link type="text/css" href="css/jquery.mCustomScrollbar.css" rel="stylesheet" media="all">
+  <link rel="stylesheet" media="(min-width: 1320px)" href="css/min-1260px.css">
+  <link rel="stylesheet" media="(max-width:1319px)" href="css/min-1190px.css">
+  <link rel="stylesheet" media="(max-width:949px)" href="css/min-950px.css">
+  <link rel="stylesheet" media="(max-width:770px)" href="css/min-710px.css">
+  <link rel="stylesheet" media="(max-width:540px)" href="css/min-540px.css">
+  <link rel="stylesheet" media="(max-width:480px)" href="css/max-480px.css">
+  <link rel="stylesheet"  href="css/main-media.css">
+  <!--яндекс карта-->
+  <script src="https://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"> </script>
+  <script type="text/javascript">
+      var map;
+      ymaps.ready(function(){
+          map = new ymaps.Map("map_block", {
+              center: [53.52, 28.20],
+              zoom: 10
+          });
+      });
+  </script>
+  <!--яндекс карта-->
+  <!-- адоптация для мобильный устройств-->
+  <script>
+	  if (window.devicePixelRatio !== 1) { // Костыль для определения иных устройств, с коэффициентом отличным от 1
+		  var dpt = window.devicePixelRatio;
+		  var widthM = window.screen.width * dpt;
+		  var widthH = window.screen.height * dpt;
+		  document.write('<meta name="viewport" content="width=' + widthM+ ', height=' + widthH + '">');
+	  }
+  </script>
+  <!-- адоптация для мобильный устройств-->
+</head>
+<body>
+<!--левое меню-->
+<div class="main-menu">
+  <div class="header-menu">
+    <div class="header-menu-title">Меню</div>
+    <div class="left-arrow close-main-menu"></div>
+  </div>
+  <div class="menu-content">
+    <ul class="menu-category">
+      <li class="menu-category-list">
+        <div class="category-list-title">
+          <a>Отдых</a>
+          <span class="open-list-btn"></span>
+        </div>
+        <ul class="menu-category-items">
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+        </ul>
+      </li>
+      <li class="menu-category-list">
+        <div class="category-list-title">
+          <a>Где поесть</a>
+          <span class="open-list-btn"></span>
+        </div>
+        <ul class="menu-category-items">
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+        </ul>
+      </li>
+      <li class="menu-category-list">
+        <div class="category-list-title">
+          <a>Где остановиться</a>
+          <span class="open-list-btn"></span>
+        </div>
+        <ul class="menu-category-items">
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+        </ul>
+      </li>
+      <li class="menu-category-list menu-category-open">
+        <div class="category-list-title">
+          <a>Развлечения</a>
+          <span class="close-list-btn"></span>
+        </div>
+        <ul class="menu-category-items" style="height: 445px">
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+          <li class="menu-category-item"><a>Базы отдыха</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+          <li class="menu-category-item"><a>Гостиницы</a></li>
+          <li class="menu-category-item"><a>Агроусадьбы</a></li>
+          <li class="menu-category-item"><a>Хостелы</a></li>
+        </ul>
+      </li>
+      <li class="menu-category-list ">
+        <div class="category-list-title">
+          <a>Интерсные места</a>
+          <span class="open-list-btn"></span>
+        </div>
+        <ul class="menu-category-items">
+          <li class="menu-category-item"><a>Все места</a></li>
+          <li class="menu-category-item"><a>Отели</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+          <li class="menu-category-item"><a>Базы отдыха</a></li>
+          <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
+          <li class="menu-category-item"><a>Гостиницы</a></li>
+          <li class="menu-category-item"><a>Агроусадьбы</a></li>
+          <li class="menu-category-item"><a>Хостелы</a></li>
+        </ul>
+      </li>
+      <li class="menu-category-list">
+        <div class="news-list-title">
+          <a>Новости</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<!--левое меню end-->
+<!--верхнее меню-->
+<div class="container-header">
+  <div class="header authorized">
+    <div class="menu-btn"></div>
+    <div class="logo"></div>
+    <div class="select-city">Марьина Горка</div>
+    <div class="btn_br">Добавить место</div>
+    <div class="profile-icon-menu"><img src="img/default-profile-icon.png"></div>
+    <div class="btn-notice active"><span class="count-notice">12</span></div>
+    <div class="btn_add_place"></div>
+    <div class="search_block">
+      <input class="search" type="text" placeholder="Поиск">
+      <span class="btn-search"></span>
+    </div>
+  </div>
+</div>
+<!--верхнее меню end-->
+<!--уведомления-->
+<div class="notif-menu">
+  <div class="notif-header-menu">
+    <div class="right-arrow"></div>
+    <div class="header-menu-title">Уведомления</div>
+  </div>
+  <div class="notif-content">
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Вы достигли 2-ого уровня
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Вы получили 15 опыта
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Получен <b>комментарий на ваш отзыв</b>
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <img src="img/default-profile-icon.png" class="user-icon">
+      <div class="user-info">
+        <p class="notif-username">Василий Утконосов</p>
+        <div class="notif-date-time">21 февраля в 10:45</div>
+      </div>
+      <div class="notif-text">Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>
+        <div class="notif-date-time hidden-date">21 февраля в 10:45</div>
+      </div>
+    </div>
+    <div class="bottom-btn" style="position: relative;">
+      <span>Показать больше уведомлений</span>
+    </div>
+  </div>
+</div>
+<!--уведомления end-->
+<div class="margin-top60"></div>
+<div class="block-content">
+  <div class="container-add-place">
+    <div class="block-field-setting">
+      <label class="label-field-setting">Название места</label>
+      <input class="input-field-setting" placeholder="Пример: Парк Горькова" value="">
+    </div>
+    <div class="block-field-setting">
+      <label class="label-field-setting">Категория</label>
+      <div class="selected-field">
+        <div id="select-category-value" data-value="" class="select-value"><span class="placeholder-select">Выберите Катигорию</span></div>
+        <div data-open-id="select-category" class="open-select-field"></div>
+      </div>
+      <div id="select-category" class="container-scroll container-scroll-active">
+        <div class="container-option-select option-active">
+          <div data-value="Дворы" class="option-select-field">Дворы</div>
+          <div data-value="Замки" class="option-select-field">Замки</div>
+          <div data-value="Мосты" class="option-select-field">Мосты</div>
+          <div data-value="Набережные" class="option-select-field">Набережные</div>
+          <div data-value="Парки" class="option-select-field">Парки</div>
+          <div data-value="Пещеры" class="option-select-field">Пещеры</div>
+          <div data-value="Необычные дома" class="option-select-field">Необычные дома</div>
+          <div data-value="Реки" class="option-select-field">Реки</div>
+          <div data-value="Озеры" class="option-select-field">Озеры</div>
+          <div data-value="Театры" class="option-select-field">Театры</div>
+          <div data-value="Кино" class="option-select-field">Кино</div>
+          <div data-value="Памятники" class="option-select-field">Памятники</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-add-place">
+    <div class="block-field-setting" style="border-bottom: 0px">
+      <label class="label-field-setting">Адрес</label>
+      <div class="selected-field">
+        <div id="select-city-value" data-value="" class="select-value"><span class="placeholder-select">Выберите город или область</span></div>
+        <div data-open-id="select-city" class="open-select-field"></div>
+      </div>
+      <div id="select-city" class="container-scroll container-scroll-active">
+        <div class="container-option-select option-active">
+          <div data-value="Минск" class="option-select-field">Минск</div>
+          <div data-value="Брест" class="option-select-field">Брест</div>
+          <div data-value="Витебск" class="option-select-field">Витебск</div>
+          <div data-value="Гродно" class="option-select-field">Гродно</div>
+          <div data-value="Гомель" class="option-select-field">Гомель</div>
+          <div data-value="Березено" class="option-select-field">Березено</div>
+          <div data-value="Борисов" class="option-select-field">Борисов</div>
+          <div data-value="Волковыск" class="option-select-field">Волковыск</div>
+          <div data-value="Жодино" class="option-select-field">Жодино</div>
+          <div data-value="Крупки" class="option-select-field">Крупки</div>
+          <div data-value="Могилев" class="option-select-field">Могилев</div>
+          <div data-value="Барановичи" class="option-select-field">Барановичи</div>
+        </div>
+      </div>
+    </div>
+    <div class="block-field-setting" style="border-bottom: 0px">
+      <div class="container-search-address">
+        <div class="block-search-address">
+          <input placeholder="Введите адрес">
+        </div>
+        <div class="btn-search-address">Поиск</div>
+      </div>
+
+    </div>
+    <div class="block-field-setting" style="border-bottom: 0px">
+      <label class="label-field-setting">Комментарий к адресу</label>
+      <input class="input-field-setting" placeholder="Расстояние до метро, этаж и т.д." value="">
+    </div>
+    <div id="map_block" class="block-map"></div>
+  </div>
+  <div class="container-add-place">
+    <div class="block-field-setting">
+      <label class="label-field-setting">Добавить контакт</label>
+      <div class="selected-field">
+        <div id="select-contact-value" class="select-value"><span class="placeholder-select">Выберите контакт</span></div>
+        <div data-open-id="select-contact" class="open-select-field"></div>
+      </div>
+      <div id="select-contact" class="container-scroll auto-height">
+        <div class="container-option-select add-field-contact">
+          <div data-value="Телефон" class="option-select-field">Телефон</div>
+          <div data-value="Веб-сайт" class="option-select-field">Веб-сайт</div>
+          <div data-value="Вконтакте" class="option-select-field">Вконтакте</div>
+          <div data-value="Одноклассники" class="option-select-field">Одноклассники</div>
+          <div data-value="Twitter" class="option-select-field">Twitter</div>
+          <div data-value="Facebook" class="option-select-field">Facebook</div>
+          <div data-value="Instagram" class="option-select-field">Instagram</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-add-place">
+    <div class="block-field-setting">
+      <label class="label-field-setting">Режим работы</label>
+      <div class="selected-field btns-field">
+        <div class="container-btns-field">
+          <div class="btn-all-along btn-time_work">Круглосуточно</div>
+          <div class="btn-all-along btn-time_work">Закрыто</div>
+        </div>
+        <div data-open-id="select-worktime" class="open-select-field"></div>
+      </div>
+      <div id="select-worktime" style="margin-top: 0px" class="container-scroll auto-height">
+        <div class="container-row-time-work">
+          <div class="day-name">Понедельник</div>
+          <div class="day-name-min">Пн.</div>
+          <div class="container-time">
+            <span>с</span>
+            <div class="time-period"><input type="time" pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+            <span>до</span>
+            <div class="time-period"><input type="time" pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+          </div>
+        </div>
+        <div class="container-row-time-work">
+          <div class="day-name">Вторник</div>
+          <div class="day-name-min">Вт.</div>
+          <div class="container-time">
+            <span>с</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+            <span>до</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+          </div>
+        </div>
+        <div class="container-row-time-work">
+          <div class="day-name">Среда</div>
+          <div class="day-name-min">Ср.</div>
+          <div class="container-time">
+            <span>с</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+            <span>до</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+          </div>
+        </div>
+        <div class="container-row-time-work">
+          <div class="day-name">Четверг</div>
+          <div class="day-name-min">Чт.</div>
+          <div class="container-time">
+            <span>с</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+            <span>до</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+          </div>
+        </div>
+        <div class="container-row-time-work">
+          <div class="day-name">Пятница</div>
+          <div class="day-name-min">Пт.</div>
+          <div class="container-time">
+            <span>с</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+            <span>до</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+          </div>
+        </div>
+        <div class="container-row-time-work">
+          <div class="day-name">Суббота</div>
+          <div class="day-name-min">Сб.</div>
+          <div class="container-time">
+            <span>с</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+            <span>до</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+          </div>
+        </div>
+        <div class="container-row-time-work">
+          <div class="day-name">Воскресенье</div>
+          <div class="day-name-min">Вск.</div>
+          <div class="container-time">
+            <span>с</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+            <span>до</span>
+            <div class="time-period"><input  pattern="^([0-1]?[0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9])?$" placeholder="00:00"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-add-place">
+    <div class="block-field-setting">
+      <label class="label-field-setting">Средний чек (руб)</label>
+      <input class="input-field-setting" placeholder="Ввидите сумму" value="">
+    </div>
+    <div class="block-field-setting">
+      <label class="label-field-setting">Кухня</label>
+      <div class="selected-field">
+        <div id="select-kitchen-value" data-value="" class="select-value"><span class="placeholder-select">Выберите кухню</span></div>
+        <div data-open-id="select-kitchen" class="open-select-field"></div>
+      </div>
+      <div id="select-kitchen" class="container-scroll auto-height">
+        <div class="container-option-select option-active">
+          <div data-value="Итальянская" class="option-select-field">Итальянская</div>
+          <div data-value="Китайская" class="option-select-field">Китайская</div>
+          <div data-value="Японская" class="option-select-field">Японская</div>
+          <div data-value="Немецкая" class="option-select-field">Немецкая</div>
+          <div data-value="Французская" class="option-select-field">Французская</div>
+          <div data-value="Русская" class="option-select-field">Русская</div>
+          <div data-value="Белорусская" class="option-select-field">Белорусская</div>
+          <div data-value="Украинская" class="option-select-field">Украинская</div>
+          <div data-value="Кавказская" class="option-select-field">Кавказская</div>
+          <div data-value="Турецкая" class="option-select-field">Турецкая</div>
+        </div>
+      </div>
+    </div>
+    <div class="block-field-setting">
+      <label class="label-field-setting">Особенности</label>
+      <div class="selected-field btns-field">
+        <div class="container-btns-field">
+          <div class="btn-all-along btn-time_work">Еда с собой</div>
+          <div class="btn-all-along btn-time_work">Доставка еды</div>
+          <div class="btn-all-along btn-time_work">Wi-Fi</div>
+        </div>
+        <div class="open-select-field"></div>
+      </div>
+    </div>
+  </div>
+  <div class="container-add-place">
+    <div class="container-description">
+      <div class="description-header">Описание места</div>
+      <div class="block-write-description">
+        <textarea placeholder="Введите текст"></textarea>
+      </div>
+      <div class="btns-write-description">
+        <div class="btn-write-description btn-source-min"></div>
+        <div class="btn-write-description btn-h-min"></div>
+        <div class="btn-write-description btn-play-min"></div>
+      </div>
+    </div>
+  </div>
+  <div class="container-add-place">
+    <div class="container-gallery">
+      <div class="gallery-header">Галерея</div>
+      <div class="block-gallery">
+        <div class="item-photo-from-gallery" style="background-image: url('testP.png')">
+          <div class="container-blackout">
+            <div class="header-btns">
+              <span class="btn-item-photo btn-close-photo-gallery"></span>
+            </div>
+            <div class="footer-btns">
+              <span class="btn-item-photo btn-confirm-photo-gallery"></span>
+              <span class="btn-item-photo btn-edit-photo-gallery"></span>
+            </div>
+          </div>
+        </div>
+        <div class="item-photo-from-gallery" style="background-image: url('testP.png')">
+          <div class="container-blackout">
+            <div class="header-btns">
+              <span class="btn-item-photo btn-close-photo-gallery"></span>
+            </div>
+            <div class="footer-btns">
+              <span class="btn-item-photo btn-confirm-photo-gallery"></span>
+              <span class="btn-item-photo btn-edit-photo-gallery"></span>
+            </div>
+          </div>
+        </div>
+        <div class="item-photo-from-gallery" style="background-image: url('testP.png')">
+          <div class="container-blackout">
+            <div class="header-btns">
+              <span class="btn-item-photo btn-close-photo-gallery"></span>
+            </div>
+            <div class="footer-btns">
+              <span class="btn-item-photo btn-confirm-photo-gallery"></span>
+              <span class="btn-item-photo btn-edit-photo-gallery"></span>
+            </div>
+          </div>
+        </div>
+        <div class="item-photo-from-gallery" style="background-image: url('testP.png')">
+          <div class="container-blackout">
+            <div class="header-btns">
+              <span class="btn-item-photo btn-close-photo-gallery"></span>
+            </div>
+            <div class="footer-btns">
+              <span class="btn-item-photo btn-confirm-photo-gallery"></span>
+              <span class="btn-item-photo btn-edit-photo-gallery"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-add-photos-gallery">Добавить фотографии</div>
+    </div>
+  </div>
+  <div class="container-add-place">
+    <div class="block-field-setting">
+      <label class="label-field-setting">Заголовок для поисковиков</label>
+      <input class="input-field-setting" placeholder="Введите текст" value="">
+    </div>
+    <div class="block-field-setting">
+      <label class="label-field-setting">Описание для поисковиков</label>
+      <input class="input-field-setting" placeholder="Введите текст" value="">
+    </div>
+    <div class="block-field-setting">
+      <label class="label-field-setting">Ключевые слова</label>
+      <input class="input-field-setting" placeholder="Введите текст" value="">
+    </div>
+    <div class="btn-setting-save">
+      <div class="large-wide-button"><p>Опубликовать</p></div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-bottom:30px;"></div>
+<div class="block-widgets">
+  <div class="widget"></div>
+  <div class="widget"></div>
+  <div class="widget"></div>
+  <div class="widget"></div>
+</div>
+<div class="block-footer">
+  <div class="block-footer-content">
+    <div class="block-footer-btn">
+      <ul class="menu-inline">
+        <li><a>О сайте</a></li>
+        <li><a>Правила</a></li>
+        <li><a>Соглашение</a></li>
+        <li><a>Реклама</a></li>
+        <li><a>Обратная связь</a></li>
+      </ul>
+      <div class="block-social-icons">
+        <div class="block-social">
+          <a class="social-btn-vk"></a>
+          <a class="social-btn-fb"></a>
+          <a class="social-btn-tw"></a>
+        </div>
+        <div class="block-social">
+          <a class="social-btn-ok"></a>
+          <a class="social-btn-inst"></a>
+          <a class="social-btn-viber"></a>
+        </div>
+      </div>
+    </div>
+    <div class="text-footer">
+      ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы&nbsp;–&nbsp;9:00&nbsp;до&nbsp;18:00. Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span class="email-address">info@postim.by.</span> ©&nbsp;2016–2017&nbsp;Postim.by
+    </div>
+  </div>
+</div>
+
+<div class="right-menu-profile">
+  <div class="container-header-right-menu">
+    <div class="btn-close"></div>
+  </div>
+  <div class="container-body-right-menu">
+    <a class="user_icon"><span><img src="img/default-profile-icon.png"></span>Мой профиль</a>
+    <a><span><img src="img/icon-big-purse.png"></span>Пополнить счет</a>
+    <a><span><img src="img/icon-promotional.png"></span>Мои промокоды</a>
+    <a><span><img src="img/icon-certificates.png"></span>Мои сертификаты</a>
+    <a><span><img src="img/add-favorit-icon.png"></span>Избранное</a>
+    <a><span><img src="img/news-icon.png"></span>Все отзовы</a>
+    <a><span><img src="img/icon-filter.png"></span>Настройки</a>
+    <a><span></span>Выход</a>
+  </div>
+</div>
+
+
+<script src="js/libs/jquery.js"></script>
+<!--скрипт для меню-->
+<script>
+	var mainMenu={isOpen:false}
+	$(document).ready(function () {
+		$(document).on('click','.menu-btn,.close-main-menu',function () {
+			if(!mainMenu.isOpen){
+				mainMenu.isOpen=true;
+				$('.main-menu').animate({left:'0px',top:'0px'},200);
+			}else {
+				mainMenu.isOpen=false;
+				$('.main-menu').animate({left:'-300px',top:'0px'},200);
+			}
+		})
+
+		$(document).click(function (e) {
+			if ($(e.target).closest(".main-menu,.menu-btn").length) return;
+			mainMenu.isOpen=false;
+			$('.main-menu').animate({left:'-300px',top:'0px'},200);
+			e.stopPropagation();
+		})
+	})
+</script>
+<!--скрипт для меню end-->
+
+<!--скрипт для правого меню-->
+<script>
+    var rightMenu={isOpen:false};
+    $(document).ready(function () {
+        $(document).on('click','.profile-icon-menu,.right-menu-profile .btn-close',function () {
+            console.log(rightMenu.isOpen);
+            if(!rightMenu.isOpen){
+                rightMenu.isOpen=true;
+                $('.right-menu-profile').animate({right:'0px',top:'0px'},200);
+            }else {
+                rightMenu.isOpen=false;
+                $('.right-menu-profile').animate({right:'-300px',top:'0px'},200);
+            }
+        })
+
+        $(document).click(function (e) {
+            if ($(e.target).closest(".profile-icon-menu,.right-menu-profile .btn-close").length) return;
+            rightMenu.isOpen=false;
+            $('.right-menu-profile').animate({right:'-300px',top:'0px'},200);
+            e.stopPropagation();
+        })
+    })
+</script>
+<!--скрипт для правого меню end-->
+<!--скрипт для уведомлений-->
+<script>
+    var notifMenu={
+        isOpen:false, width: '-484px', openTime: 200
+    };
+    $(document).ready(function () {
+        $(document).on('click','.btn-notice,.right-arrow',function () {
+            if(!notifMenu.isOpen){
+                notifMenu.isOpen=true;
+                $('.notif-menu').animate({right:'0px', top:'0px'}, notifMenu.openTime);
+            }else {
+                notifMenu.isOpen=false;
+                $('.notif-menu').animate({right:notifMenu.width, top:'0px'}, notifMenu.openTime);
+            }
+        });
+        $(document).click(function (e) {
+            if ($(e.target).closest(".notif-menu,.btn-notice").length) return;
+            notifMenu.isOpen=false;
+            $('.notif-menu').animate({right:notifMenu.width, top:'0px'}, notifMenu.openTime);
+            e.stopPropagation();
+        });
+
+    })
+</script>
+<!--скрипт для уведомлений end-->
+<!--скрипт для работы селект блока-->
+<script type="text/javascript" src="js/libs/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.container-scroll-active').mCustomScrollbar({scrollInertia: 200});
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $(document).on('click','.select-value',function () {
+            $(this).next().click();
+        });
+        $(document).on('click', '.open-select-field', function () {
+            var id_block = $(this).data('open-id');
+            $(this).removeClass('open-select-field').addClass('close-select-field');
+            $('#' + id_block).addClass('open-select');
+        });
+
+        $(document).on('click', '.close-select-field', function () {
+            var id_block = $(this).data('open-id');
+            $(this).removeClass('close-select-field').addClass('open-select-field');
+            $('#' + id_block).removeClass('open-select');
+        });
+
+        $(document).on('click','.option-active .option-select-field',function () {
+            var prntId = $(this).parents('.container-scroll').attr('id');
+
+            var selectValue = $(this).data('value');
+            var selectLabel = $(this).html();
+
+            var preSelectValue = $('#' + prntId + '-value').data('value');
+            var preSelectLabel = $('#' + prntId + '-value').html();
+
+            $('#' + prntId + '-value').data('value', selectValue);
+            $('#' + prntId + '-value').html(selectLabel);
+
+            $(this).data('value', preSelectValue);
+            $(this).html(preSelectLabel);
+            if(preSelectValue==''){
+                $(this).remove()
+            }
+            $('#' + prntId + '-value').click();
+
+        })
+    });
+
+    $(document).on('click','.add-field-contact .option-select-field',function () {
+        var caseField=$(this).data('value');
+        var blockInputContact=$('<div class="block-input-contact"><span class="container-img"><img src="img/icon-phone-min.png"></span></div>'),
+            inputContact=$('<input placeholder="Введите номер телефона">'),
+            btnClose=$('<div class="close-input-contact"></div>');
+        var ElemAfterInsert=$('#'+$(this).parents('.container-scroll').attr('id')+'-value').parents('.selected-field');
+
+        function batchInsert() {
+            $(blockInputContact).append(inputContact);
+            $(blockInputContact).append(btnClose);
+            $(ElemAfterInsert).before(blockInputContact);
+        }
+        switch (caseField){
+            case 'Телефон':{
+                $(blockInputContact).find('img').attr('src','img/icon-phone-min.png');
+                $(inputContact).attr('placeholder','Номер телефона');
+                batchInsert();
+            }break;
+            case 'Веб-сайт':{
+                $(blockInputContact).find('img').attr('src','img/icon-link-min.png');
+                $(inputContact).attr('placeholder','Ссылка на сайт');
+                batchInsert();
+            }break;
+            case 'Вконтакте':{
+                $(blockInputContact).find('img').attr('src','img/icon-vk-min.png');
+                $(inputContact).attr('placeholder','Ссылка на страницу');
+                batchInsert();
+            }break;
+            case 'Одноклассники':{
+                $(blockInputContact).find('img').attr('src','img/icon-ok-min.png');
+                $(inputContact).attr('placeholder','Ссылка на страницу');
+                batchInsert();
+            }break;
+            case 'Twitter':{
+                $(blockInputContact).find('img').attr('src','img/icon-tw-min.png');
+                $(inputContact).attr('placeholder','Ссылка на страницу');
+                batchInsert();
+            }break;
+            case 'Facebook':{
+                $(blockInputContact).find('img').attr('src','img/icon-fb-min.png');
+                $(inputContact).attr('placeholder','Ссылка на страницу');
+                batchInsert();
+            }break;
+            case 'Instagram':{
+                $(blockInputContact).find('img').attr('src','img/icon-instagram-min.png');
+                $(inputContact).attr('placeholder','Ссылка на страницу');
+                batchInsert();
+            }break;
+
+        }
+        $('#'+$(this).parents('.container-scroll').attr('id')+'-value').click();
+    })
+    $(document).on('click','.close-input-contact',function () {
+        $(this).parents('.block-input-contact').remove();
+    })
+
+    $(document).on('click','.btns-field .open-select-field',function () {
+        $(this).parents('.selected-field').find('.container-btns-field').addClass('open-block-btns');
+    })
+
+    $(document).on('click','.btns-field  .close-select-field',function () {
+        $(this).parents('.selected-field').find('.container-btns-field').removeClass('open-block-btns');
+    })
+</script>
+<!--скрипт для работы селект блока end-->
+
+<!-- скрипты для кроссбраузерного скрола меню -->
+<script type="text/javascript" src="js/libs/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.notif-content').mCustomScrollbar({scrollInertia: 300});
+    });
+</script>
+<!-- скрипты для кроссбраузерного скрола меню end -->
+</body>
+</html>

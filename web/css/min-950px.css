@@ -1,0 +1,86 @@
+.search_block{
+    width: calc(100% - 295px);
+}
+.authorized .search_block{
+    width: calc(100% - 355px);
+}
+
+.select-city{
+    display: none;
+}
+.nav-bar1,
+.block-description-card,
+.block-content-between,
+.block-info-card,
+.block-write-reviews,
+.block-reviews,
+.review-show-more,
+.block-add-review,
+.block-photos-users,
+.block-photos-owner,
+.block-issues,
+.block-сomments-post,
+.block-news-container,
+.container-cards-promo,
+.container-promo-statistic{
+    width: 100%
+}
+.block-info-for-owner{
+    width: calc(100% - 30px);
+}
+.block-description-card,
+.container-post,
+.container-settings,
+.container-add-place{
+    width: calc(100% - 40px);
+}
+.right-block{
+    display: none;
+}
+.autocomplete-result-search ul li{
+    width: 33.3333333%;
+}
+.catalog-title{
+    height: 60px;
+}
+.catalog-title-name{
+    margin-left: 22px;
+}
+.catalog-list{
+    margin-left:0px;
+    padding-left: 22px;
+}
+.menu-info-cards{
+    justify-content: space-between;
+}
+.block-content-between .text{
+    width: 100%;
+    margin-top: 20px;
+}
+
+.left-block-f{
+    flex-direction: column;
+}
+.block-btns-textarea-review{
+    justify-content: flex-start;
+    flex-direction: column;
+}
+.btn-rule{
+    margin-left: 0px;
+    margin-top: 20px;
+}
+.container-discount-photos{
+    width: calc(100% - 40px);
+    margin-right: 0px;
+}
+.container-discount{
+    flex-direction: column;
+}
+.container-discount-info{
+    margin-top: 30px;
+    width: calc(100% - 40px);
+    padding-bottom: 20px;
+}
+.container-bottom-btn{
+    margin-top: 20px;
+}

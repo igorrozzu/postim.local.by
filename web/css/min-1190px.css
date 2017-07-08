@@ -1,0 +1,133 @@
+.header,
+.header-selected-city{
+    width: calc(100% - 60px);
+    margin: 0 30px;
+}
+.open-search .search_block{
+    width: calc(100% - 144px);
+}
+.a-auto-complete,
+.block-auto-complete-header{
+    width: calc(100% - 60px);
+    margin-left: auto;
+    margin-right: auto;
+}
+.block-footer-content{
+    width: calc(100% - 60px);
+    margin: 0 30px;
+}
+.btn_add_place{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    float: right;
+    margin-left: 25px;
+    cursor: pointer;
+
+}
+.btn_add_place:after{
+    content: url("../img/add-place-icon.png");
+}
+.btn_add_place:hover:after{
+    content: url("../img/add-place-icon-hover.png");
+}
+.search_block{
+    width: calc(100% - 570px);
+}
+.block-content{
+    width: calc(100% - 60px);
+    margin: 0 30px;
+}
+.nav-bar1,
+.block-content-between,
+.block-info-card,
+.block-write-reviews,
+.block-reviews,
+.review-show-more,
+.block-add-review,
+.block-photos-users,
+.block-photos-owner,
+.block-issues,
+.block-сomments-post,
+.block-news-container,
+.container-cards-promo,
+.container-promo-statistic{
+    width: calc(100% - 315px);
+}
+.block-info-for-owner{
+    width: calc(100% - 345px);
+}
+.block-description-card,
+.container-settings,
+.container-add-place{
+    width: calc(100% - 355px);
+}
+.card-block,
+.card-block-discount{
+    width: calc((100% - 20px)/2 );
+}
+.photo{
+    width: calc((100% - 5px)/2 );
+}
+.block-widgets{
+    display: none;
+}
+.card-block:nth-child(even),
+.photo:nth-child(even){
+    margin-right: 0px;
+}
+.block-cities{
+    width: calc(100% - 60px);
+    margin: 0 30px;
+}
+.autocomplete-result-search ul li{
+    width: 25%;
+}
+.social-btn-vk:after{
+    content: url("../img/vk-icon.png");
+}
+.social-btn-fb:after{
+    content: url("../img/fb-icon.png");
+}
+.social-btn-tw:after{
+    content: url("../img/tw-icon.png");
+}
+.social-btn-ok:after{
+    content: url("../img/ok-icon.png");
+}
+.social-btn-inst:after{
+    content: url("../img/inst-icon.png");
+}
+.social-btn-viber:after{
+    content: url("../img/viber-icon.png");
+}
+.menu-info-cards{
+    width: calc(100% - 60px);
+    margin: 0 30px;
+}
+.n4,
+.n3{
+    display: none;
+}
+.card-block-discount:nth-child(2n){
+    margin-right: 0px;
+}
+.container-photo{
+    width: calc((100% - 20px)/2 );
+}
+.container-photo:nth-child(3n){
+    margin-right: 20px;
+}
+.container-photo:nth-child(2n){
+    margin-right: 0px;
+}
+.container-discount-photos{
+    width: calc(100% - 355px);
+}
+.block-news-container .card-block:nth-child(3n){
+    margin-right: 20px;
+}
+.block-news-container .card-block:nth-child(2n){
+    margin-right: 0px;
+}
