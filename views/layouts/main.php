@@ -6,6 +6,7 @@
 use yii\helpers\Html;
 use app\assets\AppAsset;
 use app\assets\CustomScrollbarAsset;
+use app\components\mainMenu\MainMenuWidget;
 
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
@@ -47,91 +48,9 @@ CustomScrollbarAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-<!--левое меню-->
-<div class="main-menu">
-    <div class="header-menu">
-        <div class="header-menu-title">Меню</div>
-        <div class="left-arrow close-main-menu"></div>
-    </div>
-    <div class="menu-content">
-        <ul class="menu-category">
-            <li class="menu-category-list">
-                <div class="category-list-title">
-                    <a>Отдых</a>
-                    <span class="open-list-btn"></span>
-                </div>
-                <ul class="menu-category-items">
-                    <li class="menu-category-item"><a>Все места</a></li>
-                    <li class="menu-category-item"><a>Отели</a></li>
-                    <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
-                </ul>
-            </li>
-            <li class="menu-category-list">
-                <div class="category-list-title">
-                    <a>Где поесть</a>
-                    <span class="open-list-btn"></span>
-                </div>
-                <ul class="menu-category-items">
-                    <li class="menu-category-item"><a>Все места</a></li>
-                    <li class="menu-category-item"><a>Отели</a></li>
-                    <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
-                </ul>
-            </li>
-            <li class="menu-category-list">
-                <div class="category-list-title">
-                    <a>Где остановиться</a>
-                    <span class="open-list-btn"></span>
-                </div>
-                <ul class="menu-category-items">
-                    <li class="menu-category-item"><a>Все места</a></li>
-                    <li class="menu-category-item"><a>Отели</a></li>
-                    <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
-                </ul>
-            </li>
-            <li class="menu-category-list">
-                <div class="category-list-title">
-                    <a>Развлечения</a>
-                    <span class="open-list-btn"></span>
-                </div>
-                <ul class="menu-category-items">
-                    <li class="menu-category-item"><a>Все места</a></li>
-                    <li class="menu-category-item"><a>Отели</a></li>
-                    <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
-                    <li class="menu-category-item"><a>Все места</a></li>
-                    <li class="menu-category-item"><a>Отели</a></li>
-                    <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
-                    <li class="menu-category-item"><a>Базы отдыха</a></li>
-                    <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
-                    <li class="menu-category-item"><a>Гостиницы</a></li>
-                    <li class="menu-category-item"><a>Агроусадьбы</a></li>
-                    <li class="menu-category-item"><a>Хостелы</a></li>
-                </ul>
-            </li>
-            <li class="menu-category-list ">
-                <div class="category-list-title">
-                    <a>Интерсные места</a>
-                    <span class="open-list-btn"></span>
-                </div>
-                <ul class="menu-category-items">
-                    <li class="menu-category-item"><a>Все места</a></li>
-                    <li class="menu-category-item"><a>Отели</a></li>
-                    <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
-                    <li class="menu-category-item"><a>Базы отдыха</a></li>
-                    <li class="menu-category-item"><a>Коттеджи и усадьбы</a></li>
-                    <li class="menu-category-item"><a>Гостиницы</a></li>
-                    <li class="menu-category-item"><a>Агроусадьбы</a></li>
-                    <li class="menu-category-item"><a>Хостелы</a></li>
-                </ul>
-            </li>
-            <li class="menu-category-list">
-                <div class="news-list-title">
-                    <a>Новости</a>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>
-<!--левое меню end-->
+
+<?=MainMenuWidget::widget(); ?>
+
 <!--верхнее меню-->
 <div class="container-header">
     <div class="header">

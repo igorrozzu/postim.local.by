@@ -4,6 +4,9 @@
 var Main = (function (window, document, undefined,$) {
 
     return function () {
+
+        var __mainMenu={isOpen:false};
+
         var that = {
 
             initEvents:function () {
@@ -12,28 +15,28 @@ var Main = (function (window, document, undefined,$) {
                     $('.menu-content').mCustomScrollbar({scrollInertia: 50});
                 });
 
-                that.mainMenuInit();
-
-
             },
 
             mainMenuInit:function () {
-                var mainMenu={isOpen:false}
+
                 $(document).ready(function () {
+
+                    var $mainMenu=$('.main-menu');
+
                     $(document).on('click','.menu-btn,.close-main-menu',function () {
-                        if(!mainMenu.isOpen){
-                            mainMenu.isOpen=true;
-                            $('.main-menu').animate({left:'0px',top:'0px'},200);
+                        if(!__mainMenu.isOpen){
+                            __mainMenu.isOpen=true;
+                            $mainMenu.animate({left:'0px',top:'0px'},200);
                         }else {
-                            mainMenu.isOpen=false;
-                            $('.main-menu').animate({left:'-300px',top:'0px'},200);
+                            __mainMenu.isOpen=false;
+                            $mainMenu.animate({left:'-300px',top:'0px'},200);
                         }
                     });
 
                     $(document).click(function (e) {
                         if ($(e.target).closest(".main-menu,.menu-btn").length) return;
-                        mainMenu.isOpen=false;
-                        $('.main-menu').animate({left:'-300px',top:'0px'},200);
+                        __mainMenu.isOpen=false;
+                        $mainMenu.animate({left:'-300px',top:'0px'},200);
                         e.stopPropagation();
                     });
 
@@ -51,10 +54,10 @@ var Main = (function (window, document, undefined,$) {
                     });
 
                     function closeOpenCategoryItem(){
-                        var item = $('.menu-category').find('.menu-category-open');
-                        $(item).removeClass('menu-category-open');
-                        $(item).find('.menu-category-items').css('height', '0');
-                        $(item).find('.close-list-btn').attr('class', 'open-list-btn');
+                        var $item = $('.menu-category').find('.menu-category-open');
+                        $item.removeClass('menu-category-open');
+                        $item.find('.menu-category-items').css('height', '0');
+                        $item.find('.close-list-btn').attr('class', 'open-list-btn');
                     }
                 })
             }
@@ -67,3 +70,4 @@ var Main = (function (window, document, undefined,$) {
 
 var main = Main();
 main.initEvents();
+main.mainMenuInit();

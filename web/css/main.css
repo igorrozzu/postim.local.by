@@ -156,7 +156,11 @@ body{
     color: #788399;
     cursor: pointer;
 }
-.menu-category-item:hover{
+.menu-category-item a{
+    color: #788399;
+}
+.menu-category-item a:hover,
+.menu-category-item{
     color: #4b98df;
 }
 .hr-c{
