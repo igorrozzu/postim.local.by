@@ -1,3 +1,6 @@
+<div class="margin-top60"></div>
+<div id="map_block" class="block-map"></div>
+
 <div class="block-content">
     <h1 class="h1-c center-mx">Сервис поиска и добовления интересных мест,
         карта достопримечательностей Беларуси</h1>

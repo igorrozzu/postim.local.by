@@ -149,8 +149,6 @@ CustomScrollbarAsset::register($this);
 </div>
 <!--верхнее меню end-->
 
-<div class="margin-top60"></div>
-<div id="map_block" class="block-map"></div>
 <?=$content;?>
 <div class="block-widgets">
     <div class="widget"></div>
