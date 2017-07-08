@@ -52,6 +52,10 @@ $config = [
         'db' => require(__DIR__ . '/db.php'),
 
         'urlManager' => [
+            'normalizer' => [
+                'class' => 'yii\web\UrlNormalizer',
+                'normalizeTrailingSlash'=>true
+            ],
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
