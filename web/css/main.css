@@ -2835,13 +2835,13 @@ body{
     position: absolute;
     left: calc(50% - 240px);
 }
-.form-sign-up{
-    top: calc(50% - 245px);
+.form-register{
+    top: calc(50% - 290px);
 }
-.form-sign-in{
+.form-login{
     top:calc(50% - 210px);
 }
-.form-recovery{
+.form-password-recovery{
     top:calc(50% - 180px);
 }
 .form-complaint{

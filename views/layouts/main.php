@@ -3,6 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use app\assets\LoginFormsAsset;
 use yii\helpers\Html;
 use app\assets\AppAsset;
 use app\assets\CustomScrollbarAsset;
@@ -10,6 +11,7 @@ use app\components\mainMenu\MainMenuWidget;
 
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
+LoginFormsAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -103,13 +105,6 @@ CustomScrollbarAsset::register($this);
         </div>
     </div>
 </div>
-
-<!--скрипт для меню-->
-<script>
-
-</script>
-<!--скрипт для меню end-->
-
 <?php $this->endBody() ?>
 </body>
 </html>

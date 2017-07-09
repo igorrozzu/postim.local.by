@@ -30,13 +30,14 @@ $config = [
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'webmail.active.by',
-                'username' => '  ',
-                'password' => '  ',
-                'port' => '25',
-                'encryption' => 'tls',
+                'host' => 'smtp.yandex.ru',
+                'username' => 'info@postim.by',
+                'password' => 'mc2447382@',
+                'port' => '465',
+                'encryption' => 'ssl',
             ],
         ],
         'log' => [
@@ -62,6 +63,7 @@ $config = [
                 '<action:id><id:\d+>'=>'user/index'
             ],
         ],
+
 
     ],
     'params' => $params,

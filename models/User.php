@@ -2,38 +2,71 @@
 
 namespace app\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+use Yii;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
+
+/**
+ * This is the model class for table "tbl_users".
+ *
+ * @property integer $id
+ * @property string $name
+ * @property integer $role
+ * @property integer $city_id
+ * @property string $login
+ * @property string $email
+ * @property string $password
+ * @property string $auth_token
+ * @property string $password_reset_token
+ * @property integer $confirmed
+ */
+class User extends ActiveRecord implements IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'tbl_users';
+    }
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['name', 'city_id'], 'required'],
+            [['name', 'email', 'password'], 'string'],
+            [['role', 'city_id', 'confirmed'], 'integer'],
+            [['auth_token', 'password_reset_token'], 'string', 'max' => 100],
+        ];
+    }
 
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Name',
+            'role' => 'Role',
+            'city_id' => 'City ID',
+            'email' => 'Email',
+            'password' => 'Password',
+            'auth_token' => 'Auth Token',
+            'password_reset_token' => 'Password Reset Token',
+            'confirmed' => 'Confirmed',
+        ];
+    }
 
     /**
      * @inheritdoc
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return static::findOne(['id' => $id]);
     }
 
     /**
@@ -41,30 +74,30 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return static::findOne(['auth_token' => $token]);
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
+    public static function findByPasswordResetToken($token)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
+        return static::findOne(['password_reset_token' => $token]);
+    }
+
+
+    /**
+     * Finds out if password reset token is valid
+     *
+     * @param string $token password reset token
+     * @return boolean
+     */
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) {
+            return false;
         }
 
-        return null;
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        return $timestamp + $expire >= time();
     }
 
     /**
@@ -72,7 +105,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function getId()
     {
-        return $this->id;
+        return $this->getPrimaryKey();
     }
 
     /**
@@ -80,7 +113,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return $this->auth_token;
     }
 
     /**
@@ -88,17 +121,55 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->getAuthKey() === $authKey;
     }
 
     /**
      * Validates password
      *
      * @param string $password password to validate
-     * @return bool if password provided is valid for current user
+     * @return boolean if password provided is valid for current user
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
+
+    /**
+     * Generates password hash from password and sets it to the model
+     *
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = Yii::$app->security->generatePasswordHash($password);
+    }
+
+
+
+    public function generatePasswordResetToken($length = 32)
+    {
+        $this->password_reset_token = Yii::$app->security->generateRandomString($length);
+    }
+
+    public function setAuthToken($length = 32)
+    {
+        $this->auth_token = Yii::$app->security->generateRandomString($length);
+    }
+
+    public function confirmAccount()
+    {
+        $this->confirmed = 1;
+        $this->auth_token = null;
+        return $this->save();
+    }
+
+    public function resetPassword($password)
+    {
+        $this->setPassword($password);
+        $this->password_reset_token = null;
+        return $this->save();
+    }
+
+
 }

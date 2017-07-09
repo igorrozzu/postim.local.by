@@ -9,9 +9,10 @@ use yii\web\Controller;
 class UserController extends MainController
 {
 
-    public function actionIndex()
+    public function actionIndex($id)
     {
-        return $this->render('index');
+        echo $id;
+        //return $this->render('index');
     }
 
     public function actionSettings(){
