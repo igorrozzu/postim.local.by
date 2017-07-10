@@ -51,7 +51,12 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-
+        'assetManager' => [
+            'appendTimestamp' => true,
+            'bundles' => [
+                'yii\web\JqueryAsset' => false,
+            ],
+        ],
         'urlManager' => [
             'normalizer' => [
                 'class' => 'yii\web\UrlNormalizer',

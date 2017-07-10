@@ -29,7 +29,8 @@ class AppAsset extends AssetBundle
         ['css/max-480px.css','media'=>'(max-width:480px)'],
     ];
     public $js = [
-        'js/main.js'
+        'js/main.js',
+        'js/menu.js'
     ];
     public $depends = [
         'yii\web\JqueryAsset',

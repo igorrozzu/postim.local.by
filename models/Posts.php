@@ -14,6 +14,8 @@ use Yii;
  * @property string $cover
  * @property integer $rating
  * @property string $data
+ * @property string $address
+ * @property integer $count_favorites
  */
 class Posts extends \yii\db\ActiveRecord
 {
@@ -32,8 +34,8 @@ class Posts extends \yii\db\ActiveRecord
     {
         return [
             [['url_name', 'city_id', 'under_category_id', 'cover', 'rating', 'data'], 'required'],
-            [['url_name', 'cover', 'data'], 'string'],
-            [['city_id', 'under_category_id', 'rating'], 'integer'],
+            [['url_name', 'cover', 'data', 'address'], 'string'],
+            [['city_id', 'under_category_id', 'rating', 'count_favorites'], 'integer'],
         ];
     }
 
@@ -50,6 +52,18 @@ class Posts extends \yii\db\ActiveRecord
             'cover' => 'Cover',
             'rating' => 'Rating',
             'data' => 'Data',
+            'address' => 'Address',
+            'count_favorites' => 'Count Favorites',
         ];
     }
+
+    public function getUnderCategoryes(){
+        $this->hasMany(PostsUnderCategory::className(),['post_id'=>'id']);
+    }
+
+    public function getCity(){
+        $this->hasOne(City::className(),['id'=>'city_id']);
+    }
+
+
 }

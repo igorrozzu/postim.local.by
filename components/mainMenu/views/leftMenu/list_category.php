@@ -3,7 +3,7 @@
     <li class="menu-category-list">
         <div class="category-list-title">
             <?php
-            echo $category['name']
+            echo '<a>'.$category['name'].'</a>';
             ?>
             <span class="open-list-btn"></span>
         </div>

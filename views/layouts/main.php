@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use app\assets\AppAsset;
 use app\assets\CustomScrollbarAsset;
 use app\components\mainMenu\MainMenuWidget;
+use app\components\socialWidgets\SocialWidget;
 
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
@@ -15,7 +16,7 @@ LoginFormsAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
+<html lang="<?= Yii::$app->language ?>" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,29 +25,11 @@ LoginFormsAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title></title>
     <?php $this->head() ?>
+    <script src="/js/libs/jquery.js"></script>
     <!--яндекс карта-->
     <script src="https://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"> </script>
-    <script type="text/javascript">
-        var map;
-        ymaps.ready(function(){
-            map = new ymaps.Map("map_block", {
-                center: [53.52, 28.20],
-                zoom: 10
-            });
-        });
-    </script>
     <!--яндекс карта-->
 
-    <!-- адоптация для мобильный устройств-->
-    <script>
-        if (window.devicePixelRatio !== 1) { // Костыль для определения иных устройств, с коэффициентом отличным от 1
-            var dpt = window.devicePixelRatio;
-            var widthM = window.screen.width * dpt;
-            var widthH = window.screen.height * dpt;
-            document.write('<meta name="viewport" content="width=' + widthM+ ', height=' + widthH + '">');
-        }
-    </script>
-    <!-- адоптация для мобильный устройств-->
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -71,12 +54,7 @@ LoginFormsAsset::register($this);
 <!--верхнее меню end-->
 
 <?=$content;?>
-<div class="block-widgets">
-    <div class="widget"></div>
-    <div class="widget"></div>
-    <div class="widget"></div>
-    <div class="widget"></div>
-</div>
+<?=SocialWidget::widget();?>
 <div class="block-footer">
     <div class="block-footer-content">
         <div class="block-footer-btn">
@@ -105,6 +83,7 @@ LoginFormsAsset::register($this);
         </div>
     </div>
 </div>
+<div class="container-blackout-popup-window" style="display: none"></div>
 <?php $this->endBody() ?>
 </body>
 </html>

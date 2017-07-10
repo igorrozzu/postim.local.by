@@ -5,61 +5,26 @@ var Main = (function (window, document, undefined,$) {
 
     return function () {
 
-        var __mainMenu={isOpen:false};
 
         var that = {
 
-            initEvents:function () {
+            init:function () {
 
-                $(document).ready(function () {
-                    $('.menu-content').mCustomScrollbar({scrollInertia: 50});
+                if (window.devicePixelRatio !== 1) { // Костыль для определения иных устройств, с коэффициентом отличным от 1
+                    var dpt = window.devicePixelRatio;
+                    var widthM = window.screen.width * dpt;
+                    var widthH = window.screen.height * dpt;
+                    document.write('<meta name="viewport" content="width=' + widthM+ ', height=' + widthH + '">');
+                }
+
+                var map;
+                ymaps.ready(function(){
+                    map = new ymaps.Map("map_block", {
+                        center: [53.52, 28.20],
+                        zoom: 10
+                    });
                 });
 
-            },
-
-            mainMenuInit:function () {
-
-                $(document).ready(function () {
-
-                    var $mainMenu=$('.main-menu');
-
-                    $(document).on('click','.menu-btn,.close-main-menu',function () {
-                        if(!__mainMenu.isOpen){
-                            __mainMenu.isOpen=true;
-                            $mainMenu.animate({left:'0px',top:'0px'},200);
-                        }else {
-                            __mainMenu.isOpen=false;
-                            $mainMenu.animate({left:'-300px',top:'0px'},200);
-                        }
-                    });
-
-                    $(document).click(function (e) {
-                        if ($(e.target).closest(".main-menu,.menu-btn").length) return;
-                        __mainMenu.isOpen=false;
-                        $mainMenu.animate({left:'-300px',top:'0px'},200);
-                        e.stopPropagation();
-                    });
-
-                    $(document).on('click','.category-list-title',function () {
-                        if($(this).find('span').hasClass('open-list-btn')){
-                            closeOpenCategoryItem();
-                            $(this).find('span').attr('class', 'close-list-btn');
-                            $(this).parent().addClass('menu-category-open');
-                            $(this).next(".menu-category-items").css('height', 'auto');
-                        } else {
-                            $(this).find('span').attr('class', 'open-list-btn');
-                            $(this).parent().removeClass('menu-category-open');
-                            $(this).next(".menu-category-items").css('height', '0');
-                        }
-                    });
-
-                    function closeOpenCategoryItem(){
-                        var $item = $('.menu-category').find('.menu-category-open');
-                        $item.removeClass('menu-category-open');
-                        $item.find('.menu-category-items').css('height', '0');
-                        $item.find('.close-list-btn').attr('class', 'open-list-btn');
-                    }
-                })
             }
         }
 
@@ -69,5 +34,4 @@ var Main = (function (window, document, undefined,$) {
 }(window,document,undefined,jQuery));
 
 var main = Main();
-main.initEvents();
-main.mainMenuInit();
+main.init();

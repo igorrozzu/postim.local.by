@@ -10,15 +10,24 @@ namespace app\components\mainMenu;
 
 use app\models\Category;
 use yii\base\Widget;
+use ReflectionClass;
 
 
 class MainMenuWidget extends Widget
 {
     public $dataprovider=[];
+    public $typeMenu = null;
+
+    public static $leftMenu='leftMenu';
+    public static $catalogMenu='catalogMenu';
 
     public function init()
     {
         parent::init();
+
+        if($this->typeMenu === null){
+            $this->typeMenu = self::$leftMenu;
+        }
 
         if(!$this->dataprovider=\Yii::$app->cache->get('list_category_place')){
 
@@ -34,5 +43,11 @@ class MainMenuWidget extends Widget
     public function run()
     {
         echo $this->render('index',['dataprovider'=>$this->dataprovider]);
+    }
+    public function getViewPath()
+    {
+        $class = new ReflectionClass($this);
+
+        return dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'views'.'/'.$this->typeMenu;
     }
 }

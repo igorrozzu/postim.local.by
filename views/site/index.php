@@ -1,152 +1,17 @@
+<?php
+use \app\components\mainMenu\MainMenuWidget;
+use \app\components\cardsPlaceWidget\CardsPlaceWidget;
+?>
 <div class="margin-top60"></div>
 <div id="map_block" class="block-map"></div>
 
 <div class="block-content">
     <h1 class="h1-c center-mx">Сервис поиска и добовления интересных мест,
         карта достопримечательностей Беларуси</h1>
-    <div class="content2b">
-        <div class="nav-bar1">
-            <ul class="catalog">
-                <li class="catalog-category bg-blue">
-                    <div class="catalog-title">
-                        <div class="catalog-title-name">Интересные места</div>
-                        <div class="catalog-title-btn btn-down"></div>
-                    </div>
-                    <ul class="catalog-list"></ul>
-                </li>
-                <li class="catalog-category bg-green">
-                    <div class="catalog-title">
-                        <div class="catalog-title-name open-catalog">Отдых</div>
-                        <div class="catalog-title-btn btn-top"></div>
-                    </div>
-                    <ul class="catalog-list" style="height: 190px">
-                        <li class="catalog-list-item">Бары</li>
-                        <li class="catalog-list-item">Клубы</li>
-                        <li class="catalog-list-item">Сауны</li>
-                        <li class="catalog-list-item">Бани</li>
-                        <li class="catalog-list-item">Парки</li>
-                    </ul>
-                </li>
-                <li class="catalog-category bg-purple">
-                    <div class="catalog-title">
-                        <div class="catalog-title-name">Развлечения</div>
-                        <div class="catalog-title-btn btn-down"></div>
-                    </div>
-                    <ul class="catalog-list"></ul>
-                </li>
-                <li class="catalog-category bg-yellow">
-                    <div class="catalog-title">
-                        <div class="catalog-title-name">Где поесть</div>
-                        <div class="catalog-title-btn btn-down"></div>
-                    </div>
-                    <ul class="catalog-list"></ul>
-                </li>
-                <li class="catalog-category bg-red">
-                    <div class="catalog-title">
-                        <div class="catalog-title-name">Где остановиться</div>
-                        <div class="catalog-title-btn btn-down"></div>
-                    </div>
-                    <ul class="catalog-list"></ul>
-                </li>
-            </ul>
-        </div>
-        <div class="right-block"></div>
-    </div>
-    <div class="clear-fix"></div>
+    <?=MainMenuWidget::widget(['typeMenu'=>MainMenuWidget::$catalogMenu])?>
     <h2 class="h2-c">В центре внимания</h2>
     <div class="block-spotlight">
-        <div class="card-block ">
-            <div class="card-photo" style="background-image: url('testP.png')">
-                <div class="glass">
-                    <div class="reviews-btn-icn">
-                        <div class="rating bg-r4">4</div>
-                        <div class="total-reviews">17 отзывов</div>
-                    </div>
-                    <div class="bookmarks-btn">12</div>
-                </div>
-            </div>
-            <div class="card-block-info">
-                <p class="info-head">Саборы, церкви, костелы</p>
-                <p class="card-info">Собор на Малой Грузинской</p>
-            </div>
-            <div class="time-work">
-                <p class="open">Открыто</p>
-            </div>
-            <hr class="hr-c">
-            <div class="info-address">
-                <div class="address-icon"></div>
-                <div class="address-text">ст. метро Партизанская<br> ул. Белгородского полка, 56а</div>
-            </div>
-        </div>
-        <div class="card-block ">
-            <div class="card-photo" style="background-image: url('testP.png')">
-                <div class="glass">
-                    <div class="reviews-btn-icn">
-                        <div class="rating bg-r4">4</div>
-                        <div class="total-reviews">17 отзывов</div>
-                    </div>
-                    <div class="bookmarks-btn">12</div>
-                </div>
-            </div>
-            <div class="card-block-info">
-                <p class="info-head">Саборы, церкви, костелы</p>
-                <p class="card-info">Собор на Малой Грузинской</p>
-            </div>
-            <div class="time-work">
-                <p class="open">Открыто</p>
-            </div>
-            <hr class="hr-c">
-            <div class="info-address">
-                <div class="address-icon"></div>
-                <div class="address-text">ст. метро Партизанская<br> ул. Белгородского полка, 56а</div>
-            </div>
-        </div>
-        <div class="card-block">
-            <div class="card-photo" style="background-image: url('testP.png')">
-                <div class="glass">
-                    <div class="reviews-btn-icn">
-                        <div class="rating bg-r4">4</div>
-                        <div class="total-reviews">17 отзывов</div>
-                    </div>
-                    <div class="bookmarks-btn">12</div>
-                </div>
-            </div>
-            <div class="card-block-info">
-                <p class="info-head">Саборы, церкви, костелы</p>
-                <p class="card-info">Собор на Малой Грузинской</p>
-            </div>
-            <div class="time-work">
-                <p class="open">Открыто</p>
-            </div>
-            <hr class="hr-c">
-            <div class="info-address">
-                <div class="address-icon"></div>
-                <div class="address-text">ст. метро Партизанская<br> ул. Белгородского полка, 56а</div>
-            </div>
-        </div>
-        <div class="card-block">
-            <div class="card-photo" style="background-image: url('testP.png')">
-                <div class="glass">
-                    <div class="reviews-btn-icn">
-                        <div class="rating bg-r4">4</div>
-                        <div class="total-reviews">17 отзывов</div>
-                    </div>
-                    <div class="bookmarks-btn">12</div>
-                </div>
-            </div>
-            <div class="card-block-info">
-                <p class="info-head">Саборы, церкви, костелы</p>
-                <p class="card-info">Собор на Малой Грузинской</p>
-            </div>
-            <div class="time-work">
-                <p class="open">Открыто</p>
-            </div>
-            <hr class="hr-c">
-            <div class="info-address">
-                <div class="address-icon"></div>
-                <div class="address-text">ст. метро Партизанская<br> ул. Белгородского полка, 56а</div>
-            </div>
-        </div>
+        <?=CardsPlaceWidget::widget()?>
     </div>
     <div class="clear-fix"></div>
     <h2 class="h2-c">Последние новости</h2>

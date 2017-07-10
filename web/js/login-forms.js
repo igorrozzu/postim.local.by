@@ -2,59 +2,72 @@
 var loginForms = (function (window, document, undefined, $) {
 
     return function () {
-        var isOpenForm = {
-            login: false,
-            register: false,
-            passwordRecovery: false
+        var forms = {
+                login: {
+                    isOpen:false,
+                    storage:null
+                },
+                register: {
+                    isOpen:false,
+                    storage:null
+                },
+                passwordRecovery: {
+                    isOpen:false,
+                    storage:null
+                }
         };
+
+        var __$containerForms = $('.container-blackout-popup-window');
 
         var scope = {
             init: function () {
-                $(document).on('click','.sign-up-btn,.sign-in-btn,.sign_in_btn,.close-sign-in',function () {
-                    if(!isOpenForm.login){
-                        isOpenForm.login=true;
-                        if($('.form-login').length === 0) {
-                            scope.getForm('login');
-                        }
-                        $('.form-login').parents('.container-blackout-popup-window').show();
-                    }else {
-                        isOpenForm.login=false;
-                        $('.form-login').parents('.container-blackout-popup-window').hide();
+                $(document).on('click','.sign-in-btn,.sign_in_btn',function () {
+                    if(!forms.login.isOpen){
+                        scope.resetForm();
+                        forms.login.isOpen=true;
+                        forms.login.storage = forms.login.storage || scope.getForm('login');
+                        __$containerForms.html(forms.login.storage).show();
+
                     }
                 });
 
-                $(document).on('click','.sign-in-btn,.sign-up-btn,.close-sign-up',function () {
-                    if(!isOpenForm.register){
-                        isOpenForm.register=true;
-                        if($('.form-register').length === 0) {
-                            scope.getForm('register');
-                        }
-                        $('.form-register').parents('.container-blackout-popup-window').show();
-                    }else {
-                        isOpenForm.register=false;
-                        $('.form-register').parents('.container-blackout-popup-window').hide();
+                $(document).on('click','.sign-up-btn',function () {
+                    if(!forms.register.isOpen){
+                        scope.resetForm();
+                        forms.register.isOpen=true;
+                        forms.register.storage = forms.register.storage || scope.getForm('register');
+                        __$containerForms.html(forms.register.storage).show();
+
                     }
                 });
 
-                $(document).on('click','.recovery-btn,.sign-in-btn,.sign-up-btn,.close-recovery-btn',function () {
-                    if(!isOpenForm.passwordRecovery){
-                        isOpenForm.passwordRecovery=true;
-                        if($('.form-password-recovery').length === 0 && $(this).hasClass('recovery-btn')) {
-                            scope.getForm('password-recovery');
-                        }
-                        $('.form-password-recovery').parents('.container-blackout-popup-window').show();
-                    }else {
-                        isOpenForm.passwordRecovery=false;
-                        $('.form-password-recovery').parents('.container-blackout-popup-window').hide();
+                $(document).on('click','.recovery-btn',function () {
+                    if(!forms.passwordRecovery.isOpen){
+                        scope.resetForm();
+                        forms.passwordRecovery.isOpen=true;
+                        forms.passwordRecovery.storage = forms.passwordRecovery.storage || scope.getForm('password-recovery');
+                        __$containerForms.html(forms.passwordRecovery.storage).show();
                     }
                 });
-                this.initHandlers();
+
+                $(document).on('click','.close-sign-in,.close-sign-up,.close-recovery-btn',function () {
+                   scope.closeForm();
+                });
+
                 this.initSendFormHandlers();
             },
             getForm: function (formType) {
-                $.get('/site/' + formType, {}, function (response) {
-                    $('body').append(response);
+                var rez=null;
+                $.ajax({
+                    url: '/site/' + formType,
+                    type: "GET",
+                    async:false,
+                    success: function (response) {
+                        rez=response;
+                    }
                 });
+                return rez;
+
             },
             sendForm: function (path, data) {
               $.post('/site/' + path, data, function (response) {
@@ -62,41 +75,19 @@ var loginForms = (function (window, document, undefined, $) {
                       location.href = response.redirect;
                       return true;
                   }
-                  $('.form-' + path).parents('.container-blackout-popup-window').replaceWith(response);
+                  __$containerForms.replaceWith(response);
               })
             },
-            initHandlers: function () {
-                $(document).click(function (e) {
-                    if(isOpenForm.login){
-                        if ($(e.target).closest(".form-login,.sign-in-btn,.sign_in_btn").length) return;
-                        isOpenForm.login=false;
-                        $('.form-login').parents('.container-blackout-popup-window').hide();
-                        e.stopPropagation();
-                    }
-                });
-                $(document).click(function (e) {
-                    if(isOpenForm.register){
-                        if ($(e.target).closest(".form-register,.sign-up-btn").length) return;
-                        isOpenForm.register=false;
-                        $('.form-register').parents('.container-blackout-popup-window').hide();
-                        e.stopPropagation();
-                    }
-                });
-                $(document).click(function (e) {
-                    if(isOpenForm.passwordRecovery){
-                        if ($(e.target).closest(".recovery-btn,.form-password-recovery").length){
-                            $('.form-login').parents('.container-blackout-popup-window').hide();
-                            $('.form-register').parents('.container-blackout-popup-window').hide();
-                            isOpenForm.login=false;
-                            isOpenForm.register=false;
-                            return;
-                        }
-                        isOpenForm.passwordRecovery=false;
-                        $('.form-password-recovery').parents('.container-blackout-popup-window').hide();
-                        e.stopPropagation();
-                    }
-                });
+            closeForm:function () {
+                scope.resetForm();
+                __$containerForms.hide();
             },
+            resetForm:function () {
+                forms.login.isOpen=false;
+                forms.register.isOpen=false;
+                forms.passwordRecovery.isOpen=false;
+            },
+
             initSendFormHandlers: function () {
                 $(document).on('click', '#btn-login',function () {
                     var form = $('#login-form').serialize();
