@@ -100,9 +100,6 @@ var loginForms = (function (window, document, undefined, $) {
                 $(document).on('click', '#btn-password-recovery',function () {
                     var form = $('#password-recovery-form').serialize();
                     scope.sendForm('password-recovery', form);
-                    setTimeout(function () {
-                        $('.form-password-recovery').parents('.container-blackout-popup-window').show()
-                    }, 200)
                 });
             }
 
