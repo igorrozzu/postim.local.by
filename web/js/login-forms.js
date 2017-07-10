@@ -75,7 +75,7 @@ var loginForms = (function (window, document, undefined, $) {
                       location.href = response.redirect;
                       return true;
                   }
-                  __$containerForms.replaceWith(response);
+                  __$containerForms.html(response);
               })
             },
             closeForm:function () {
