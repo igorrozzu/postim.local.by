@@ -1,4 +1,5 @@
 <?php
+use yii\authclient\widgets\AuthChoice;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 ?>
@@ -10,12 +11,14 @@ use yii\widgets\ActiveForm;
     </div>
     <div class="body-popup-authentication">
         <div class="text-label">Используйте социальные сети для входа:</div>
+        <?php $authAuthChoice = AuthChoice::begin([
+            'baseAuthUrl' => ['social-auth/auth']
+        ]); ?>
         <div class="block-social-authentication">
-            <a class="social-btn-vk"></a>
-            <a class="social-btn-fb"></a>
-            <a class="social-btn-tw"></a>
-            <a class="social-btn-ok"></a>
-            <a class="social-btn-google"></a>
+            <?php foreach ($authAuthChoice->getClients() as $client): ?>
+                <a href="<?= $authAuthChoice->createClientUrl($client) ?>"
+                   class="social-btn-<?=$client->getName()?>"></a>
+            <?php endforeach; ?>
         </div>
         <div class="text-label">Или зарегистрируйте акаунт на сайте:</div>
         <?php $form = ActiveForm::begin(['id' => 'register-form', 'enableClientScript' => false]) ?>

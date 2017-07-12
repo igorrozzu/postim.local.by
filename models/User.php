@@ -144,7 +144,12 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password = Yii::$app->security->generatePasswordHash($password);
     }
-
+    public function generatePassword($length = 10)
+    {
+        $password = Yii::$app->security->generateRandomString($length);
+        $this->password = Yii::$app->security->generatePasswordHash($password);
+        return $password;
+    }
 
 
     public function generatePasswordResetToken($length = 32)
@@ -169,6 +174,17 @@ class User extends ActiveRecord implements IdentityInterface
         $this->setPassword($password);
         $this->password_reset_token = null;
         return $this->save();
+    }
+
+    public function getPhoto()
+    {
+        return Yii::getAlias('@webroot/user_photo/' . $this->id .
+            '/' . Yii::$app->params['user.photoName'] . '?' . time());
+    }
+
+    public function isConfirmed()
+    {
+        return (bool)$this->confirmed;
     }
 
 

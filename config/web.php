@@ -69,6 +69,7 @@ $config = [
             ],
         ],
 
+        'authClientCollection' => require ('authClientCollection.php'),
 
     ],
     'params' => $params,
