@@ -13,7 +13,17 @@ class VkAuthAttributes extends SocialAuthAttributes
 {
     public function getName(): string
     {
-        return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
+        return $this->attributes['first_name'] ?? '';
+    }
+
+    public function getSurname(): string
+    {
+        return $this->attributes['last_name'] ?? '';
+    }
+
+    public function getScreenName(): string
+    {
+        return $this->attributes['screen_name'] ?? '';
     }
 
     public function getEmail()

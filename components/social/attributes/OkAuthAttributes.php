@@ -11,14 +11,19 @@ namespace app\components\social\attributes;
 
 class OkAuthAttributes extends SocialAuthAttributes
 {
-    public function getName()
+    public function getName(): string
     {
-        return $this->attributes['name'] ?? $this->attributes['first_name'] ?? null;
+        return $this->attributes['first_name'] ?? $this->attributes['name'] ?? '';
+    }
+
+    public function getSurname(): string
+    {
+        return $this->attributes['last_name'] ?? '';
     }
 
     public function getEmail()
     {
-        return /*$this->attributes['email'] ??*/ null;
+        return $this->attributes['email'] ?? null;
     }
 
     public function getUserPhoto()
@@ -26,6 +31,4 @@ class OkAuthAttributes extends SocialAuthAttributes
         return $this->attributes['pic_3'] ?? $this->attributes['pic_2'] ??
                $this->attributes['pic_1'] ?? null;
     }
-
-
 }

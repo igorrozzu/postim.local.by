@@ -47,7 +47,9 @@ $user = Yii::$app->user->identity;
         <div class="logo"></div>
         <div class="select-city">Марьина Горка</div>
         <div class="btn_br">Добавить место</div>
-        <div class="profile-icon-menu"><img src="<?=$user->getPhoto()?>"></div>
+        <div class="profile-icon-menu">
+            <img class="round-img" src="<?=$user->getPhoto()?>">
+        </div>
         <div class="btn-notice active"><span class="count-notice">12</span></div>
         <div class="btn_add_place"></div>
         <div class="search_block">

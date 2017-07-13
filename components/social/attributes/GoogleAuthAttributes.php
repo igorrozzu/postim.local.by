@@ -11,9 +11,14 @@ namespace app\components\social\attributes;
 
 class GoogleAuthAttributes extends SocialAuthAttributes
 {
-    public function getName()
+    public function getName(): string
     {
-        return $this->attributes['displayName'] ?? $this->attributes['name']['givenName'] ?? null;
+        return $this->attributes['name']['givenName'] ?? $this->attributes['displayName'] ?? '';
+    }
+
+    public function getSurname(): string
+    {
+        return $this->attributes['name']['familyName'] ?? '';
     }
 
     public function getEmail()
@@ -29,6 +34,4 @@ class GoogleAuthAttributes extends SocialAuthAttributes
         }
         return null;
     }
-
-
 }

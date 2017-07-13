@@ -32,6 +32,7 @@ class SocialRegister extends Model
     {
         $user = new User([
             'name' => $useFieldsFromForm ? $this->name : $attrClient->getName(),
+            'surname' => $attrClient->getSurname(),
             'email' => $useFieldsFromForm ? $this->email : $attrClient->getEmail(),
             'confirmed' => 1,
             'city_id' => -1,
@@ -44,6 +45,7 @@ class SocialRegister extends Model
                 'user_id' => $user->id,
                 'source' => $attrClient->getSocialName(),
                 'source_id' => $attrClient->getSocialId(),
+                'screen_name' => $attrClient->getScreenName(),
             ]);
             if ($auth->save()) {
                 $transaction->commit();

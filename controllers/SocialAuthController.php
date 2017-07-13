@@ -12,6 +12,7 @@ use app\models\SocialRegister;
 use app\models\User;
 use Yii;
 use yii\base\Exception;
+use yii\helpers\Url;
 
 class SocialAuthController extends MainController
 {
@@ -38,10 +39,10 @@ class SocialAuthController extends MainController
             ])->one();
 
             if (Yii::$app->user->isGuest) {
-                if ($auth) { // авторизация
+                if ($auth) {
                     $user = $auth->user;
                     Yii::$app->user->login($user, Yii::$app->params['user.loginDuration']);
-                } else { // регистрация
+                } else {
                     $email = $attrClient->getEmail();
                     if($email === null) {
                         $saveAttrKey = $attrClient->getSocialName() . $attrClient->getSocialId();
@@ -56,6 +57,7 @@ class SocialAuthController extends MainController
                                     'user_id' => Yii::$app->user->id,
                                     'source' => $attrClient->getSocialName(),
                                     'source_id' => $attrClient->getSocialId(),
+                                    'screen_name' => $attrClient->getScreenName(),
                                 ]);
                                 $auth->save();
                             } else {
@@ -81,14 +83,18 @@ class SocialAuthController extends MainController
                         'user_id' => Yii::$app->user->id,
                         'source' => $attrClient->getSocialName(),
                         'source_id' => $attrClient->getSocialId(),
+                        'screen_name' => $attrClient->getScreenName(),
                     ]);
                     $auth->save();
+                } else {
+                    //TODO some account already has this binding
                 }
+                return $this->redirect(['user/settings']);
             }
-            return $this->goHome();
         } catch (Exception $e){
             return $this->goHome();
         }
+        return $this->goHome();
     }
 
     public function actionSetRequiredFields(string $key)

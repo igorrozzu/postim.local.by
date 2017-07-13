@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\MainController;
 use Yii;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class UserController extends MainController
 {
@@ -14,7 +15,20 @@ class UserController extends MainController
         return $this->render('index');
     }
 
-    public function actionSettings(){
-        return $this->render('settings-form');
+    public function actionSettings()
+    {
+        if(Yii::$app->user->isGuest) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
+        if(Yii::$app->request->isPost) {
+
+            return $this->render('settings-form');
+        }
+
+        $socialBindings = Yii::$app->user->identity->socialBindings;
+        return $this->render('settings-form', [
+            'socialBindings' => $socialBindings
+        ]);
     }
 }

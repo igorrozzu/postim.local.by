@@ -3174,19 +3174,19 @@ body{
 .icon-social:last-child{
     margin-bottom: 20px;
 }
-.icon-vk-30:before{
+.icon-vkontakte-30:before{
     content: url("../img/vk-icon30x30.png");
     margin-right: 15px;
 }
-.icon-fb-30:before{
+.icon-facebook-30:before{
     content: url("../img/fb-icon30x30.png");
     margin-right: 15px;
 }
-.icon-ok-30:before{
+.icon-odnoklassniki-30:before{
     content: url("../img/ok-icon30x30.png");
     margin-right: 15px;
 }
-.icon-tw-30:before{
+.icon-twitter-30:before{
     content: url("../img/tw-icon30x30.png");
     margin-right: 15px;
 }
@@ -4110,6 +4110,11 @@ body{
 .help-block{
     color: #b62c2c;
     margin-top: 5px;
+}
+.round-img{
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
 }
 
 

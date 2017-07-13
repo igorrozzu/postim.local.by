@@ -11,9 +11,19 @@ namespace app\components\social\attributes;
 
 class TwitterAuthAttributes extends SocialAuthAttributes
 {
-    public function getName()
+    public function getName(): string
     {
-        return $this->attributes['name'] ?? null;
+        return $this->attributes['name'] ?? '';
+    }
+
+    public function getSurname(): string
+    {
+        return '';
+    }
+
+    public function getScreenName(): string
+    {
+        return $this->attributes['screen_name'] ?? '';
     }
 
     public function getEmail()

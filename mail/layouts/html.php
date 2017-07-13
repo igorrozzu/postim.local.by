@@ -4,7 +4,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-$hostName = $_SERVER['HTTP_ORIGIN'];
+$hostName = Yii::$app->request->getHostInfo();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

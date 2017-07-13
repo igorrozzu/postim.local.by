@@ -11,9 +11,14 @@ namespace app\components\social\attributes;
 
 class FacebookAuthAttributes extends SocialAuthAttributes
 {
-    public function getName()
+    public function getName(): string
     {
-        return $this->attributes['name'] ?? null;
+        return $this->attributes['first_name'] ?? $this->attributes['name'] ?? '';
+    }
+
+    public function getSurname(): string
+    {
+        return $this->attributes['last_name'] ?? '';
     }
 
     public function getEmail()

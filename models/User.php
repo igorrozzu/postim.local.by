@@ -182,7 +182,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         if($this->userPhotoPath === null) {
             $userPhotoDir = '/user_photo/' . $this->id;
-            if (is_dir($userPhotoDir)) {
+            if (is_dir(Yii::getAlias('@webroot' . $userPhotoDir))) {
                 $this->userPhotoPath = $userPhotoDir . '/' . Yii::$app->params['user.photoName'];
             } else {
                 $this->userPhotoPath = '/img/default-profile-icon.png';
@@ -197,5 +197,12 @@ class User extends ActiveRecord implements IdentityInterface
         return (bool)$this->confirmed;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSocialBindings()
+    {
+        return $this->hasMany(SocialAuth::className(), ['user_id' => 'id']);
+    }
 
 }

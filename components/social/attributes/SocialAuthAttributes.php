@@ -13,7 +13,8 @@ abstract class SocialAuthAttributes
         $this->attributes = $attributes;
     }
 
-    public abstract function getName();
+    public abstract function getName(): string;
+    public abstract function getSurname(): string;
     public abstract function getEmail();
     public abstract function getUserPhoto();
 
@@ -22,20 +23,18 @@ abstract class SocialAuthAttributes
         return (string)$this->attributes['id'];
     }
 
-    /**
-     * @return mixed
-     */
     public function getSocialName(): string
     {
         return $this->socialName;
     }
 
-    /**
-     * @return mixed
-     */
+    public function getScreenName(): string
+    {
+        return '';
+    }
+
     public function getAttributes(): array
     {
         return $this->attributes;
     }
-
 }
