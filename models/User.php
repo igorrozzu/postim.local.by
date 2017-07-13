@@ -25,6 +25,8 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
+    private $userPhotoPath = null;
+
     public static function tableName()
     {
         return 'tbl_users';
@@ -178,8 +180,16 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getPhoto()
     {
-        return Yii::getAlias('@webroot/user_photo/' . $this->id .
-            '/' . Yii::$app->params['user.photoName'] . '?' . time());
+        if($this->userPhotoPath === null) {
+            $userPhotoDir = '/user_photo/' . $this->id;
+            if (is_dir($userPhotoDir)) {
+                $this->userPhotoPath = $userPhotoDir . '/' . Yii::$app->params['user.photoName'];
+            } else {
+                $this->userPhotoPath = '/img/default-profile-icon.png';
+            }
+        }
+
+        return $this->userPhotoPath;
     }
 
     public function isConfirmed()

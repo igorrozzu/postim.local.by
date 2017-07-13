@@ -11,13 +11,10 @@ class UserController extends MainController
 
     public function actionIndex($id)
     {
-        echo $id;
-        //return $this->render('index');
-    }
-
-    public function actionSettings(){
         return $this->render('index');
     }
 
-
+    public function actionSettings(){
+        return $this->render('settings-form');
+    }
 }

@@ -8,12 +8,10 @@ use app\models\LoginForm;
 
 class MainController extends Controller
 {
-
    public function init()
    {
        if(!yii::$app->user->isGuest){
-           $this->layout='mainAut';
+           $this->layout = 'mainAuth';
        }
-
    }
 }

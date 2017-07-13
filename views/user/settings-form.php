@@ -1,0 +1,73 @@
+<?php
+$user = Yii::$app->user->identity;
+?>
+
+<div class="margin-top60"></div>
+<div class="block-content">
+    <div class="container-settings">
+        <div class="user-icon-profile"><img src="<?=$user->getPhoto()?>"></div>
+        <div class="btn-add-icon">Загрузить фото</div>
+        <div class="block-field-setting">
+            <label class="label-field-setting">Имя</label>
+            <input class="input-field-setting" placeholder="Введите имя" value="Игорь Борисов">
+        </div>
+        <div class="block-field-setting">
+            <label class="label-field-setting">Город</label>
+            <div class="selected-field">
+                <div id="select-city-value" data-value="" class="select-value"><span class="placeholder-select">Выберите город</span></div>
+                <div data-open-id="select-city" class="open-select-field"></div>
+            </div>
+            <div id="select-city" class="container-scroll container-scroll-active">
+                <div class="container-option-select option-active">
+                    <div data-value="Минск" class="option-select-field">Минск</div>
+                    <div data-value="Брест" class="option-select-field">Брест</div>
+                    <div data-value="Витебск" class="option-select-field">Витебск</div>
+                    <div data-value="Гродно" class="option-select-field">Гродно</div>
+                    <div data-value="Гомель" class="option-select-field">Гомель</div>
+                    <div data-value="Березено" class="option-select-field">Березено</div>
+                    <div data-value="Борисов" class="option-select-field">Борисов</div>
+                    <div data-value="Волковыск" class="option-select-field">Волковыск</div>
+                    <div data-value="Жодино" class="option-select-field">Жодино</div>
+                    <div data-value="Крупки" class="option-select-field">Крупки</div>
+                    <div data-value="Могилев" class="option-select-field">Могилев</div>
+                    <div data-value="Барановичи" class="option-select-field">Барановичи</div>
+                </div>
+            </div>
+        </div>
+        <div class="block-field-setting">
+            <label class="label-field-setting">Пол</label>
+            <div class="selected-field">
+                <div id="select-sex-value" data-value="" class="select-value"><span class="placeholder-select">Выберите пол</span></div>
+                <div data-open-id="select-sex" class="open-select-field"></div>
+            </div>
+            <div id="select-sex" class="container-scroll auto-height">
+                <div class="container-option-select option-active">
+                    <div data-value="1" class="option-select-field">Мужской</div>
+                    <div data-value="2" class="option-select-field">Женский</div>
+                </div>
+            </div>
+        </div>
+        <div class="block-field-setting">
+            <label class="label-field-setting">Подключить аккаунты</label>
+            <div class="icon-social icon-vk-30"><a class="to-plug">Подключить</a></div>
+            <div class="icon-social icon-fb-30"><a class="to-plug">Подключить</a></div>
+            <div class="icon-social icon-ok-30"><a class="to-plug">Подключить</a></div>
+            <div class="icon-social icon-tw-30"><a class="to-plug">Подключить</a></div>
+            <div class="icon-social icon-google-30">Игорь Борисов</div>
+        </div>
+        <div class="block-field-setting">
+            <label class="label-field-setting">Почта и пароль</label>
+            <input class="input-field-setting" placeholder="Электронная почта" value="">
+            <input class="input-field-setting" placeholder="Пароль" value="">
+            <input class="input-field-setting" placeholder="Повторите пароль" value="">
+        </div>
+        <div class="block-field-setting inline">
+            <input type="checkbox" class="style-checkbox-chbox" id="subscription-checkbox">
+            <label for="subscription-checkbox" class="style-checkbox-label subscription-email">Получать оповещения на эл. почту</label>
+        </div>
+        <div class="btn-setting-save">
+            <div class="large-wide-button"><p>Сохранить</p></div>
+        </div>
+    </div>
+</div>
+<div style="margin-bottom:30px;"></div>
