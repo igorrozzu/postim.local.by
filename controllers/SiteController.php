@@ -4,8 +4,12 @@ namespace app\controllers;
 
 use app\components\MailSender;
 use app\models\LoginModel;
+use app\models\News;
+use app\models\Posts;
 use app\models\User;
 use Yii;
+use yii\base\Exception;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -18,8 +22,35 @@ class SiteController extends MainController
 
     public function actionIndex()
     {
+        $city_name = Yii::$app->request->get('city_name',false);
 
-        return $this->render('index');
+        //если есть город то прибавляем еще один релэйшен и условия выборки (перенести эту логику в поисковую модель!!!)
+        $spotlightQuery = Posts::find()
+            ->With('categories')
+            ->orderBy([
+                'rating'=>SORT_DESC,
+                'count_reviews'=>SORT_DESC
+            ])
+            ->limit(4);
+
+        if($city_name){
+            $spotlightQuery->joinWith('city.region')
+                ->where(['tbl_city.name'=>$city_name])
+                ->orWhere(['tbl_region.name'=>$city_name]);
+        }
+        $spotlight = $spotlightQuery->all();
+
+        $news = News::find()
+            ->with('city.newsCity','city.region.newsRegion','totalView')
+            ->limit(4)
+            ->all();
+
+
+        $params=[
+            'spotlight'=>$spotlight,
+            'news'=>$news
+        ];
+        return $this->render('index',$params);
     }
 
     public function actionLogin()
@@ -129,6 +160,20 @@ class SiteController extends MainController
         }
         $user->confirmAccount();
         return $this->goHome();
+    }
+
+    public function actionSetCity(){
+
+        try{
+            $dataCity = Yii::$app->request->get('dataCity',['{"name": "Беларусь","url_name": "\'\'"}']);
+            $dataCity = Json::decode($dataCity);
+
+            Yii::$app->city->setCity($dataCity);
+            $this->redirect(Yii::$app->request->hostInfo.'/'.Yii::$app->city->Selected_city['url_name']);
+        }catch (\yii\base\InvalidParamException $exception){
+            $this->goHome();
+        }
+
     }
 
 }

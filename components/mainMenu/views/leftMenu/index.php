@@ -3,6 +3,7 @@
 <div class="main-menu">
     <div class="header-menu">
         <div class="header-menu-title">Меню</div>
+        <div class="header-menu-title btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
         <div class="left-arrow close-main-menu"></div>
     </div>
     <div class="menu-content">

@@ -30,7 +30,8 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/main.js',
-        'js/menu.js'
+        'js/menu.js',
+        'js/list-city.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

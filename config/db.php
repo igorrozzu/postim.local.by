@@ -6,4 +6,7 @@ return [
     'username' => 'postim_user',
     'password' => 'mc2447382@',
     'charset' => 'utf8',
+    'enableSchemaCache'=>true,
+    'schemaCacheDuration' => 300,
+    'schemaCache' => 'cache',
 ];
