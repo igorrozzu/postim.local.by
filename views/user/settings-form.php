@@ -3,6 +3,7 @@ use app\models\SocialAuth;
 use yii\authclient\widgets\AuthChoice;
 use yii\helpers\ArrayHelper;
 use yii\web\View;
+use yii\widgets\ActiveForm;
 
 $this->registerJsFile('/js/user-settings.js', ['position' => View::POS_END]);
 $user = Yii::$app->user->identity;
@@ -15,6 +16,7 @@ $user = Yii::$app->user->identity;
         <div class="user-icon-profile"><img src="<?=$user->getPhoto()?>"></div>
         <label class="btn-add-icon" for="user-photo">Загрузить фото</label>
         <input type="file" name="user-photo" id="user-photo" style="display: none;">
+        <div id="user-photo-uploading-error" class="help-block"></div>
         <div class="block-field-setting">
             <label class="label-field-setting">Имя</label>
             <input class="input-field-setting" placeholder="Введите имя" value="">
@@ -28,6 +30,7 @@ $user = Yii::$app->user->identity;
             <div class="selected-field">
                 <div id="select-city-value" data-value="" class="select-value"><span class="placeholder-select">Выберите город</span></div>
                 <div data-open-id="select-city" class="open-select-field"></div>
+                <input type="hidden" name="select-city">
             </div>
             <div id="select-city" class="container-scroll container-scroll-active">
                 <div class="container-option-select option-active">
@@ -51,6 +54,7 @@ $user = Yii::$app->user->identity;
             <div class="selected-field">
                 <div id="select-sex-value" data-value="" class="select-value"><span class="placeholder-select">Выберите пол</span></div>
                 <div data-open-id="select-sex" class="open-select-field"></div>
+                <input type="hidden" name="select-sex">
             </div>
             <div id="select-sex" class="container-scroll auto-height">
                 <div class="container-option-select option-active">
@@ -98,30 +102,60 @@ $user = Yii::$app->user->identity;
             <label class="label-field-setting">Повторите пароль</label>
             <input class="input-field-setting" placeholder="Еще раз новый пароль" value="">
         </div>
-
-        <!--<div class="block-field-setting">
-            <label class="label-field-setting">Почта и пароль</label>
-            <input class="input-field-setting" placeholder="Электронная почта" value="">
-            <input class="input-field-setting" placeholder="Пароль" value="">
-            <input class="input-field-setting" placeholder="Повторите пароль" value="">
-        </div>
-        <div class="block-field-setting inline">
-            <input type="checkbox" class="style-checkbox-chbox" id="subscription-checkbox">
-            <label for="subscription-checkbox" class="style-checkbox-label subscription-email">Получать оповещения на эл. почту</label>
-        </div>-->
     </div>
     <h1 class="h1-c center-mx" style="margin-top: 35px;">Уведомления по эл.почте</h1>
-    <div class="container-settings">
+    <div class="container-settings" style="padding: 0px 20px;">
         <div class="block-field-setting">
-            <label class="label-field-setting">Пол</label>
+            <label class="label-field-setting">Ответы к моим отзывам</label>
             <div class="selected-field">
-                <div id="select-sex-value" data-value="" class="select-value"><span class="placeholder-select">Выберите пол</span></div>
-                <div data-open-id="select-sex" class="open-select-field"></div>
+                <div id="answers-to-reviews-value" data-value="1" class="select-value">Да</div>
+                <div data-open-id="answers-to-reviews" class="open-select-field"></div>
+                <input type="hidden" name="answers-to-reviews">
             </div>
-            <div id="select-sex" class="container-scroll auto-height">
+            <div id="answers-to-reviews" class="container-scroll auto-height">
                 <div class="container-option-select option-active">
-                    <div data-value="1" class="option-select-field">Мужской</div>
-                    <div data-value="2" class="option-select-field">Женский</div>
+                    <div data-value="2" class="option-select-field">Нет</div>
+                </div>
+            </div>
+        </div>
+        <div class="block-field-setting">
+            <label class="label-field-setting">Ответы к моим комментариям</label>
+            <div class="selected-field">
+                <div id="answers-to-comments-value" data-value="1" class="select-value">Да</div>
+                <div data-open-id="answers-to-comments" class="open-select-field"></div>
+                <input type="hidden" name="answers-to-comments">
+            </div>
+            <div id="answers-to-comments" class="container-scroll auto-height">
+                <div class="container-option-select option-active">
+                    <div data-value="2" class="option-select-field">Нет</div>
+                </div>
+            </div>
+        </div>
+        <div class="block-field-setting">
+            <label class="label-field-setting">Отзывы и комментарии к моим местам</label>
+            <div class="selected-field">
+                <div id="reviews-and-comments-to-places-value" data-value="1" class="select-value">Да</div>
+                <div data-open-id="reviews-and-comments-to-places" class="open-select-field"></div>
+                <input type="hidden" name="reviews-and-comments-to-places">
+            </div>
+            <div id="reviews-and-comments-to-places" class="container-scroll auto-height">
+                <div class="container-option-select option-active">
+                    <div data-value="2" class="option-select-field">Нет</div>
+                </div>
+            </div>
+        </div>
+        <div class="block-field-setting">
+            <div class="block-field-setting">
+                <label class="label-field-setting">Интересные подборки мест и скидок</label>
+                <div class="selected-field">
+                    <div id="places-and-discounts-value" data-value="1" class="select-value">Да</div>
+                    <div data-open-id="places-and-discounts" class="open-select-field"></div>
+                    <input type="hidden" name="places-and-discounts">
+                </div>
+                <div id="places-and-discounts" class="container-scroll auto-height">
+                    <div class="container-option-select option-active">
+                        <div data-value="2" class="option-select-field">Нет</div>
+                    </div>
                 </div>
             </div>
         </div>

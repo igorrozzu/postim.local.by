@@ -61,7 +61,7 @@ class SocialAuth extends ActiveRecord
     }
 
 
-    public static function findBySource(array $bindings, $source)
+    public static function findBySource(array &$bindings, $source)
     {
         foreach ($bindings as &$binding) {
             if($binding->source === $source) {
