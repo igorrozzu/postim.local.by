@@ -17,13 +17,13 @@ var Main = (function (window, document, undefined,$) {
                     document.write('<meta name="viewport" content="width=' + widthM+ ', height=' + widthH + '">');
                 }
 
-                var map;
+                /*var map;
                 ymaps.ready(function(){
                     map = new ymaps.Map("map_block", {
                         center: [53.52, 28.20],
                         zoom: 10
                     });
-                });
+                });*/
 
             }
         }

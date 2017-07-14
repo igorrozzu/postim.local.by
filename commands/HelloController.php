@@ -7,6 +7,10 @@
 
 namespace app\commands;
 
+use app\models\Category;
+use app\models\City;
+use app\models\Region;
+use app\models\UnderCategory;
 use yii\console\Controller;
 
 /**
@@ -23,31 +27,69 @@ class HelloController extends Controller
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
      */
-    public function actionIndex($search)
+    public function actionInsertCity()
     {
-        $arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50];
-        echo "найденое число на  ".$this->binarySearch($search,$arr). " позиции\n\r";
+        $row = 1;
+        if (($handle = fopen(\Yii::getAlias('@app/web/tmp/goroda.csv'), "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+                $num = count($data);
+                $row++;
+                $region = new Region();
+                $region->name=$data[0];
+                $region->url_name=$data[1];
+                if($region->validate() && $region->save()){
+                    echo 'Регион '.$region->name." был сохранен\n\r";
+                    for ($c=2; $c < $num; $c+=2) {
+                        $city = new City();
+                        $city->name =$data[$c];
+                        $city->url_name =$data[$c+1];
+                        $city->link('region',$region);
+                        if($city->validate() && $city->save()){
+                             echo 'города '.$city->url_name." был сохранен\n\r";
+                        }else{
+                            echo 'города '.$city->url_name."не был сохранен\n\r";
+                        }
+                    }
+                }else{
+                    echo 'Регион '.$region->name." не был сохранен\n\r";
+                }
 
-    }
-
-    private function binarySearch($search_value,$arr){
-        $position_left = 0;
-        $position_right = count($arr) - 1;
-        $count=0;
-        while ($position_left <= $position_right){
-            $count++;
-            $mid = round(($position_left+$position_right) / 2);
-            if($arr[$mid] == $search_value){
-                echo $count . " итерации занял поиск \r\n";
-                return $mid;
             }
-            if($arr[$mid] > $search_value){
-                $position_right = $mid -1;
-            }else{
-                $position_left = $mid +1;
-            }
+            fclose($handle);
         }
-        return null;
 
     }
+
+    public function actionInsertCategory(){
+        $row = 1;
+        if (($handle = fopen(\Yii::getAlias('@app/web/tmp/cat.csv'), "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 10000, ";")) !== FALSE) {
+                $num = count($data);
+                $row++;
+                $category = new Category();
+                $category->name=$data[0];
+                $category->url_name=$data[1];
+                if($category->validate() && $category->save()){
+                    echo 'Категория '.$category->name." была сохранена\n\r";
+                    for ($c=2; $c < $num; $c+=2) {
+                        $under_cat = new UnderCategory();
+                        $under_cat->name =$data[$c];
+                        $under_cat->url_name =$data[$c+1];
+                        $under_cat->link('category',$category);
+                        if($under_cat->validate() && $under_cat->save()){
+                            echo 'под категория '.$under_cat->url_name." был сохранен\n\r";
+                        }else{
+                            echo 'под категория '.$under_cat->url_name."не был сохранен\n\r";
+                        }
+                    }
+                }else{
+                    echo 'Регион '.$category->name." не был сохранен\n\r";
+                }
+
+            }
+            fclose($handle);
+        }
+    }
+
+
 }

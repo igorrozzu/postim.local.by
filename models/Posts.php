@@ -10,15 +10,19 @@ use Yii;
  * @property integer $id
  * @property string $url_name
  * @property integer $city_id
- * @property integer $under_category_id
  * @property string $cover
  * @property integer $rating
  * @property string $data
  * @property string $address
  * @property integer $count_favorites
+ * @property integer $count_reviews
  */
 class Posts extends \yii\db\ActiveRecord
 {
+
+    public $is_like=false;
+    public $is_open=true;
+
     /**
      * @inheritdoc
      */
@@ -35,7 +39,7 @@ class Posts extends \yii\db\ActiveRecord
         return [
             [['url_name', 'city_id', 'under_category_id', 'cover', 'rating', 'data'], 'required'],
             [['url_name', 'cover', 'data', 'address'], 'string'],
-            [['city_id', 'under_category_id', 'rating', 'count_favorites'], 'integer'],
+            [['city_id', 'rating', 'count_favorites', 'count_reviews'], 'integer'],
         ];
     }
 
@@ -54,16 +58,26 @@ class Posts extends \yii\db\ActiveRecord
             'data' => 'Data',
             'address' => 'Address',
             'count_favorites' => 'Count Favorites',
+            'count_reviews' => 'Count Reviews',
         ];
     }
 
-    public function getUnderCategoryes(){
-        $this->hasMany(PostsUnderCategory::className(),['post_id'=>'id']);
+    public function getCategories(){
+       return $this->hasOne(UnderCategory::className(),['id'=>'under_category_id']);
     }
 
     public function getCity(){
-        $this->hasOne(City::className(),['id'=>'city_id']);
+      return  $this->hasOne(City::className(),['id'=>'city_id']);
     }
+
+
+
+
+
+
+
+
+
 
 
 }

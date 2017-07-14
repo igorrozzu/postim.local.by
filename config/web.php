@@ -65,8 +65,16 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<action:id><id:\d+>'=>'user/index',
+                [
+                    'class' => 'app\components\customUrlManager\CityUrlRule',
+                ],
+                '<name_category:^[a-z-]+$>'=>'category/index',
                 'id<id:\d+>' => 'user/index'
             ],
+        ],
+        'city'=>[
+            'class' => 'app\components\City',
         ],
 
         'authClientCollection' => require ('authClientCollection.php'),

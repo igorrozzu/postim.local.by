@@ -9,6 +9,7 @@ use app\assets\AppAsset;
 use app\assets\CustomScrollbarAsset;
 use app\components\mainMenu\MainMenuWidget;
 use app\components\socialWidgets\SocialWidget;
+use \app\components\ListCityWidget\ListCityWidget;
 
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
@@ -27,7 +28,7 @@ LoginFormsAsset::register($this);
     <?php $this->head() ?>
     <script src="/js/libs/jquery.js"></script>
     <!--яндекс карта-->
-    <script src="https://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"> </script>
+    <!--<script src="https://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"> </script>-->
     <!--яндекс карта-->
 
 </head>
@@ -41,7 +42,7 @@ LoginFormsAsset::register($this);
     <div class="header">
         <div class="menu-btn"></div>
         <div class="logo"></div>
-        <div class="select-city">Марьина Горка</div>
+        <div class="select-city btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
         <div class="btn_br">Добавить место</div>
         <div class="sign_in_btn">Войти</div>
         <div class="btn_add_place"></div>
@@ -84,6 +85,13 @@ LoginFormsAsset::register($this);
     </div>
 </div>
 <div class="container-blackout-popup-window" style="display: none"></div>
+<?=ListCityWidget::widget(['settings'=>
+    [
+    'id'=>'menu_list_city',
+    'is_menu'=>true
+    ]
+
+]);?>
 <?php $this->endBody() ?>
 </body>
 </html>

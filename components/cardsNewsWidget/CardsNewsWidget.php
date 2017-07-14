@@ -6,12 +6,12 @@
  * Time: 20.30
  */
 
-namespace app\components\cardsPlaceWidget;
+namespace app\components\cardsNewsWidget;
 
 use yii\base\Widget;
 
 
-class CardsPlaceWidget extends Widget
+class CardsNewsWidget extends Widget
 {
     public $dataprovider;
 
