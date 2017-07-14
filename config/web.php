@@ -65,12 +65,11 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<action:id><id:\d+>'=>'user/index',
+                'id<id:\d+>' => 'user/index',
                 [
                     'class' => 'app\components\customUrlManager\CityUrlRule',
                 ],
                 '<name_category:^[a-z-]+$>'=>'category/index',
-                'id<id:\d+>' => 'user/index'
             ],
         ],
         'city'=>[
