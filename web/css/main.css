@@ -882,16 +882,20 @@ body{
     font-size: 12px;
    color: #a7c9ff;
 }
-.social-btn-vkontakte:after{
+.social-btn-vkontakte:after,
+.social-btn-vk:after{
     content: url("../img/vk-icon30x30.png");
 }
-.social-btn-facebook:after{
+.social-btn-facebook:after,
+.social-btn-fb{
     content: url("../img/fb-icon30x30.png");
 }
-.social-btn-twitter:after{
+.social-btn-twitter:after,
+.social-btn-tw:after{
     content: url("../img/tw-icon30x30.png");
 }
-.social-btn-odnoklassniki:after{
+.social-btn-odnoklassniki:after,
+.social-btn-ok:after{
     content: url("../img/ok-icon30x30.png");
 }
 .social-btn-inst:after{
