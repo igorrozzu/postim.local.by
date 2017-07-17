@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\components\ImageHelper;
 use app\components\MailSender;
+use app\components\social\attributes\SocialAuthAttr;
 use app\components\social\attributes\SocialAuthAttributes;
 use Yii;
 use yii\base\Model;
@@ -21,23 +22,22 @@ class SocialRegister extends Model
     {
         return [
             [['name','email'], 'filter', 'filter' => 'trim'],
+            [['name','email'], 'required', 'message'=> 'Поле обязательно для заполнения'],
+            ['email', 'email', 'message' => 'Некорректный email-адрес'],
             ['email', 'unique', 'targetClass' => '\app\models\User',
                 'message' => 'Пользователь с таким адресом уже существует'],
-            ['email', 'email', 'message' => 'Некорректный email-адрес'],
-            [['name','email'], 'required', 'message'=> 'Поле обязательно для заполнения']
         ];
     }
 
-    public function createUser(SocialAuthAttributes $attrClient, bool $useFieldsFromForm = false)
+    public function createUser(SocialAuthAttr $attrClient)
     {
         $user = new User([
-            'name' => $useFieldsFromForm ? $this->name : $attrClient->getName(),
+            'name' => $attrClient->getName(),
             'surname' => $attrClient->getSurname(),
-            'email' => $useFieldsFromForm ? $this->email : $attrClient->getEmail(),
-            'confirmed' => 1,
+            'email' => $attrClient->getEmail(),
             'city_id' => -1,
         ]);
-        $password = $user->generatePassword(Yii::$app->params['user.socialAuthGeneratePasswordLength']);
+        $user->generatePassword(Yii::$app->params['user.socialAuthGeneratePasswordLength']);
 
         $transaction = $user->getDb()->beginTransaction();
         if ($user->save()) {
@@ -48,12 +48,48 @@ class SocialRegister extends Model
                 'screen_name' => $attrClient->getScreenName(),
             ]);
             if ($auth->save()) {
-                $transaction->commit();
-                ImageHelper::saveUserPhoto($attrClient->getUserPhoto(), $user);
-                MailSender::sendSuccessRegisterThroughSocial($user, $password);
+                $userInfo = new UserInfo(['user_id' => $user->id]);
+                if($userInfo->save()){
+                    $transaction->commit();
+                    ImageHelper::saveUserPhoto($attrClient->getUserPhoto(), $user);
+                }
             }
         }
         return $user;
     }
+
+    public function createTempSocialUser(SocialAuthAttr $attrClient)
+    {
+        $tempUser = new TempSocialUser([
+            'source' => $attrClient->getSocialName(),
+            'source_id' => $attrClient->getSocialId(),
+            'screen_name' => $attrClient->getScreenName(),
+            'name' => $attrClient->getName(),
+            'surname' => $attrClient->getSurname(),
+            'email' =>  $attrClient->getEmail(),
+            'url_photo' => $attrClient->getUserPhoto(),
+        ]);
+        return $tempUser->save() ? $tempUser : null;
+    }
+    public function createSocialBinding(SocialAuthAttr $attrClient, $userId)
+    {
+        $auth = new SocialAuth([
+            'user_id' => $userId,
+            'source' => $attrClient->getSocialName(),
+            'source_id' => $attrClient->getSocialId(),
+            'screen_name' => $attrClient->getScreenName(),
+        ]);
+        return $auth->save() ? $auth : null;
+    }
+
+
+    public function setRequiredFields(TempSocialUser $tempUser)
+    {
+        $tempUser->name = $this->name;
+        $tempUser->email = $this->email;
+        $tempUser->is_mail_sent = 1;
+        return $tempUser->save() ? $tempUser : null;
+    }
+
 
 }

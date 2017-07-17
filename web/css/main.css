@@ -887,7 +887,7 @@ body{
     content: url("../img/vk-icon30x30.png");
 }
 .social-btn-facebook:after,
-.social-btn-fb{
+.social-btn-fb:after{
     content: url("../img/fb-icon30x30.png");
 }
 .social-btn-twitter:after,

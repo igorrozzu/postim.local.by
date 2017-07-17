@@ -103,18 +103,35 @@ class LoginModel extends Model
         return false;
     }
 
-    public function registerUser()
+    public function createUser(TempUser $tempUser)
     {
-        if(!$this->validate()) {
-            return null;
+        $user = new User([
+            'name' => $tempUser->name,
+            'email' => $tempUser->email,
+            'password' => $tempUser->password,
+            'city_id' => -1,
+        ]);
+        $transaction = $user->getDb()->beginTransaction();
+        if($user->save()) {
+            $userInfo = new UserInfo(['user_id' => $user->id]);
+            if($userInfo->save()) {
+                $transaction->commit();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
-        $user = new User();
-        $user->name = $this->name;
-        $user->email = $this->email;
-        $user->city_id = -1;
-        $user->setPassword($this->password);
-        $user->setAuthToken();
+        return $user;
+    }
 
+    public function createTempUser()
+    {
+        $user = new TempUser([
+            'name' => $this->name,
+            'email' => $this->email
+        ]);
+        $user->setPassword($this->password);
         return $user->save() ? $user : null;
     }
 

@@ -13,35 +13,35 @@ use Yii;
 
 class MailSender
 {
-    public static function sendConfirmMessage()
+    private $user;
+    /**
+     * MailSender constructor.
+     */
+    public function __construct($user)
     {
-        $user = Yii::$app->user->identity;
-        return Yii::$app->mailer->compose(['html' => 'authToken'],
-            ['user' => $user])
+        $this->user = $user;
+    }
+
+    public function sendConfirmMessage(string $view)
+    {
+        return Yii::$app->mailer->compose(['html' => $view], [
+            'user' => $this->user
+        ])
             ->setFrom(Yii::$app->params['mail.supportEmail'])
-            ->setTo($user->email)
+            ->setTo($this->user->email)
             ->setSubject(Yii::$app->params['mail.ConfirmMessageSubject'])
             ->send();
     }
 
-    public static function sendPasswordResetMessage(User $user)
+    public function sendPasswordResetMessage()
     {
-        return Yii::$app->mailer->compose(['html' => 'passwordResetToken'],
-            ['user' => $user])
+        return Yii::$app->mailer->compose(['html' => 'passwordResetToken'], [
+            'user' => $this->user
+        ])
             ->setFrom(Yii::$app->params['mail.supportEmail'])
-            ->setTo($user->email)
+            ->setTo($this->user->email)
             ->setSubject(Yii::$app->params['mail.PasswordResetMessageSubject'])
             ->send();
     }
 
-    public static function sendSuccessRegisterThroughSocial(User $user, string $sendingPassword)
-    {
-        return Yii::$app->mailer->compose(['html' => 'successRegisterThroughSocial'], [
-            'user' => $user,
-            'password' => $sendingPassword
-        ])->setFrom(Yii::$app->params['mail.supportEmail'])
-            ->setTo($user->email)
-            ->setSubject(Yii::$app->params['mail.SuccessRegisterSubject'])
-            ->send();
-    }
 }

@@ -12,7 +12,8 @@ use yii\widgets\ActiveForm;
     <div class="body-popup-authentication">
         <div class="text-label">Используйте социальные сети для входа:</div>
         <?php $authAuthChoice = AuthChoice::begin([
-            'baseAuthUrl' => ['social-auth/auth']
+            'baseAuthUrl' => ['social-auth/auth'],
+            'autoRender' => false,
         ]); ?>
         <div class="block-social-authentication">
             <?php foreach ($authAuthChoice->getClients() as $client): ?>
@@ -20,7 +21,7 @@ use yii\widgets\ActiveForm;
                    class="social-btn-<?=$client->getName()?>"></a>
             <?php endforeach; ?>
         </div>
-
+        <?php AuthChoice::end() ?>
         <div class="text-label">Или войдите как пользователь сайта:</div>
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientScript' => false]) ?>
         <div class="field-input">

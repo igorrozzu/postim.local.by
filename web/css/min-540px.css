@@ -231,46 +231,48 @@
 }
 .block-social-authentication a{
     width: 300px;
+    text-decoration: none;
 }
-.block-social-authentication .social-btn-vk,
-.block-social-authentication .social-btn-fb,
-.block-social-authentication .social-btn-tw,
-.block-social-authentication .social-btn-ok
+.block-social-authentication .social-btn-vkontakte,
+.block-social-authentication .social-btn-facebook,
+.block-social-authentication .social-btn-twitter,
+.block-social-authentication .social-btn-odnoklassniki,
+.block-social-authentication .social-btn-google
 {
     width: calc(100% - 20px);
     margin-bottom: 20px;
     justify-content: flex-start;
     padding-left: 20px;
 }
-.block-social-authentication .social-btn-vk:before,
-.block-social-authentication .social-btn-fb:before,
-.block-social-authentication .social-btn-tw:before,
-.block-social-authentication .social-btn-ok:before,
+.block-social-authentication .social-btn-vkontakte:before,
+.block-social-authentication .social-btn-facebook:before,
+.block-social-authentication .social-btn-twitter:before,
+.block-social-authentication .social-btn-odnoklassniki:before,
 .block-social-authentication .social-btn-google:before{
     margin-right: 20px;
     width: 30px;
     display: flex;
     justify-content: center;
 }
-.block-social-authentication .social-btn-vk:after{
+.block-social-authentication .social-btn-vkontakte:after{
     content: 'ВКонтакте';
     color: #ffffff;
     font-size: 16px;
     font-family: PT_Sans bold;
 }
-.block-social-authentication .social-btn-fb:after{
+.block-social-authentication .social-btn-facebook:after{
     content: 'Facebook';
     color: #ffffff;
     font-size: 16px;
     font-family: PT_Sans bold;
 }
-.block-social-authentication .social-btn-ok:after{
+.block-social-authentication .social-btn-odnoklassniki:after{
     content: 'Одноклассники';
     color: #ffffff;
     font-size: 16px;
     font-family: PT_Sans bold;
 }
-.block-social-authentication .social-btn-tw:after{
+.block-social-authentication .social-btn-twitter:after{
     content: 'Twitter';
     color: #ffffff;
     font-size: 16px;
@@ -281,11 +283,6 @@
     color: #ffffff;
     font-size: 16px;
     font-family: PT_Sans bold;
-}
-.block-social-authentication .social-btn-google{
-    justify-content: flex-start;
-    width: calc(100% - 20px);
-    padding-left: 20px;
 }
 .day-name-min{
     display: flex;

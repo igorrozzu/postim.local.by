@@ -50,7 +50,7 @@ var loginForms = (function (window, document, undefined, $) {
                     }
                 });
 
-                $(document).on('click','.close-sign-in,.close-sign-up,.close-recovery-btn',function () {
+                $(document).on('click','.close-sign-in,.close-sign-up,.close-recovery-btn,.close-notif-message',function () {
                    scope.closeForm();
                 });
 
@@ -101,7 +101,7 @@ var loginForms = (function (window, document, undefined, $) {
                     var form = $('#password-recovery-form').serialize();
                     scope.sendForm('password-recovery', form);
                 });
-            }
+            },
 
         };
 

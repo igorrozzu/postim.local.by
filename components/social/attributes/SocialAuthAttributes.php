@@ -2,7 +2,7 @@
 
 namespace app\components\social\attributes;
 
-abstract class SocialAuthAttributes
+abstract class SocialAuthAttributes implements SocialAuthAttr
 {
     protected $socialName;
     protected $attributes;
@@ -12,11 +12,6 @@ abstract class SocialAuthAttributes
         $this->socialName = $socialName;
         $this->attributes = $attributes;
     }
-
-    public abstract function getName(): string;
-    public abstract function getSurname(): string;
-    public abstract function getEmail();
-    public abstract function getUserPhoto();
 
     public function getSocialId(): string
     {

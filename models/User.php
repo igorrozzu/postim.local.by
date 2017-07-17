@@ -16,12 +16,11 @@ use yii\web\IdentityInterface;
  * @property string $login
  * @property string $email
  * @property string $password
- * @property string $auth_token
  * @property string $password_reset_token
- * @property integer $confirmed
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    const CITY_NOT_DEFINED = -1;
     /**
      * @inheritdoc
      */
@@ -40,8 +39,8 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['name', 'city_id'], 'required'],
             [['name', 'email', 'password'], 'string'],
-            [['role', 'city_id', 'confirmed'], 'integer'],
-            [['auth_token', 'password_reset_token'], 'string', 'max' => 100],
+            [['role', 'city_id'], 'integer'],
+            [['password_reset_token'], 'string', 'max' => 100],
         ];
     }
 
@@ -57,9 +56,7 @@ class User extends ActiveRecord implements IdentityInterface
             'city_id' => 'City ID',
             'email' => 'Email',
             'password' => 'Password',
-            'auth_token' => 'Auth Token',
             'password_reset_token' => 'Password Reset Token',
-            'confirmed' => 'Confirmed',
         ];
     }
 
@@ -76,7 +73,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['auth_token' => $token]);
+        return static::findIdentity($token);
     }
 
     public static function findByPasswordResetToken($token)
@@ -115,15 +112,15 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->auth_token;
+        return $this->getId();
     }
 
     /**
      * @inheritdoc
      */
-    public function validateAuthKey($authKey)
+    public function validateAuthKey($id)
     {
-        return $this->getAuthKey() === $authKey;
+        return $this->getAuthKey() === $id;
     }
 
     /**
@@ -156,20 +153,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function generatePasswordResetToken($length = 32)
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString($length);
+        $this->password_reset_token = Yii::$app->security->generateRandomString($length) . $this->getId();
     }
 
-    public function setAuthToken($length = 32)
-    {
-        $this->auth_token = Yii::$app->security->generateRandomString($length);
-    }
-
-    public function confirmAccount()
-    {
-        $this->confirmed = 1;
-        $this->auth_token = null;
-        return $this->save();
-    }
 
     public function resetPassword($password)
     {
@@ -192,11 +178,6 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->userPhotoPath;
     }
 
-    public function isConfirmed()
-    {
-        return (bool)$this->confirmed;
-    }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -205,4 +186,27 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(SocialAuth::className(), ['user_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserInfo()
+    {
+        return $this->hasOne(UserInfo::className(), ['user_id' => 'id']);
+    }
+
+    public function isCityDefined()
+    {
+        return $this->city_id > 0 && $this->city_id !== self::CITY_NOT_DEFINED;
+    }
+
+    public function isConfirmed()
+    {
+        return (bool)$this->confirmed;
+    }
+
+    public function confirmEmail()
+    {
+        $this->confirmed = 1;
+        return $this->save();
+    }
 }

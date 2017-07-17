@@ -2,6 +2,7 @@
 
 namespace app\models\uploads;
 
+use app\components\ImageHelper;
 use Yii;
 use yii\base\Model;
 use yii\helpers\FileHelper;
@@ -36,10 +37,7 @@ class UploadUserPhoto extends Model
             }
             $pathToPhoto = $dir . Yii::$app->params['user.photoName'];
             if($this->imageFile->saveAs($pathToPhoto)) {
-                $info = getimagesize($pathToPhoto);
-                $minSide = ($info[0] <= $info[1])? $info[0] : $info[1];
-                Image::crop($pathToPhoto, $minSide, $minSide)
-                    ->save($pathToPhoto, ['quality' => 80]);
+                ImageHelper::createSquarePicture($pathToPhoto);
             }
             return true;
         } else {

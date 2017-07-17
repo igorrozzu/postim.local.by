@@ -32,11 +32,11 @@ var userSettings = (function (window, document, undefined, $) {
 
                         $('#' + prntId + '-value').data('value', selectValue);
                         $('#' + prntId + '-value').html(selectLabel);
-                        $('[name=' + prntId + ']').val(selectValue);
+                        $('#' + prntId + '-hidden').val(selectValue);
 
                         $(this).data('value', preSelectValue);
                         $(this).html(preSelectLabel);
-                        if(preSelectValue==''){
+                        if(preSelectValue === ''){
                             $(this).remove()
                         }
                         $('#' + prntId + '-value').click();

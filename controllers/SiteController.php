@@ -6,6 +6,7 @@ use app\components\MailSender;
 use app\models\LoginModel;
 use app\models\News;
 use app\models\Posts;
+use app\models\TempUser;
 use app\models\User;
 use Yii;
 use yii\base\Exception;
@@ -45,12 +46,17 @@ class SiteController extends MainController
             ->limit(4)
             ->all();
 
+        $viewName = Yii::$app->session->getFlash('render-form-view');
+        if(isset($viewName)) {
+            $this->view->params['form-message'] = $this->renderPartial($viewName);
+        }
 
-        $params=[
-            'spotlight'=>$spotlight,
-            'news'=>$news
+        $params = [
+            'spotlight' => $spotlight,
+            'news' => $news,
         ];
-        return $this->render('index',$params);
+
+        return $this->render('index', $params);
     }
 
     public function actionLogin()
@@ -94,21 +100,18 @@ class SiteController extends MainController
         $model = new LoginModel();
         $model->scenario = LoginModel::SCENARIO_REGISTER;
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->registerUser()) {
-                if (Yii::$app->getUser()->login($user, Yii::$app->params['user.loginDuration'])) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($user = $model->createTempUser()) {
 
-                    MailSender::sendConfirmMessage();
-                    return $this->asJson([
-                        'success' => true,
-                        'redirect' => Yii::$app->getHomeUrl()
-                    ]);
-                }
+                $mail = new MailSender($user);
+                $mail->sendConfirmMessage('authToken');
+                return $this->renderAjax('confirm-email');
             }
         }
         return $this->renderAjax('register', [
             'model' => $model,
         ]);
+
 
     }
 
@@ -123,7 +126,8 @@ class SiteController extends MainController
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->getUserForResetPassword()) {
 
-                MailSender::sendPasswordResetMessage($user);
+                $mail = new MailSender($user);
+                $mail->sendPasswordResetMessage();
                 return $this->asJson([
                     'success' => true,
                     'redirect' => Yii::$app->getHomeUrl()
@@ -153,12 +157,17 @@ class SiteController extends MainController
         ]);
     }
 
-    public function actionConfirmAccount(string $token){
-
-        if(empty($token) || !($user = User::findIdentityByAccessToken($token))){
+    public function actionConfirmAccount(string $token)
+    {
+        $id = Yii::$app->security->decryptByKey($token, Yii::$app->params['security.encryptionKey']);
+        if($id === false || !($tempUser = TempUser::findOne((int)$id))){
             throw new BadRequestHttpException('Неверный токен подтверждения');
         }
-        $user->confirmAccount();
+        $model = new LoginModel();
+        if($model->createUser($tempUser)){
+            $tempUser->delete();
+            Yii::$app->session->setFlash('render-form-view', 'success-confirmation');
+        }
         return $this->goHome();
     }
 

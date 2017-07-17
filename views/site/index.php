@@ -4,6 +4,7 @@ use \app\components\cardsPlaceWidget\CardsPlaceWidget;
 use \app\components\cardsNewsWidget\CardsNewsWidget;
 use \app\components\ListCityWidget\ListCityWidget;
 ?>
+
 <div class="margin-top60"></div>
 <div id="map_block" class="block-map"></div>
 

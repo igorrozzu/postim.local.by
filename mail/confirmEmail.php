@@ -2,15 +2,14 @@
 use yii\helpers\Html;
 
 $confirmLink = Yii::$app->urlManager->createAbsoluteUrl([
-    'site/confirm-account',
+    'user/confirm-account',
     'token' => Yii::$app->security->encryptByKey($user->id, Yii::$app->params['security.encryptionKey'])
 ]);
 ?>
 
 <div style="padding: 32px 20px;">
     <p style="margin-bottom: 3px;">Здравствуйте, <?= Html::encode($user->name) ?>.</p>
-    <p style="margin-bottom: 25px;">Спасибо за регистрацию на сайте Postim.by!</p>
-    <p style="margin-bottom: 20px;">Нажмите на кнопку, чтобы подтвердить ваш email и завершить регистрацию:</p>
+    <p style="margin-bottom: 20px;">Нажмите на кнопку, чтобы подтвердить ваш email:</p>
     <a href="<?= $confirmLink ?>" style="text-decoration: none;"><div style="background-color: #cf4d43;
     box-shadow: 0 2px 0 #a82828;
     border-radius: 3px;

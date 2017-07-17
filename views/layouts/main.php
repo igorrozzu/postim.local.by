@@ -84,7 +84,13 @@ LoginFormsAsset::register($this);
         </div>
     </div>
 </div>
-<div class="container-blackout-popup-window" style="display: none"></div>
+
+<div class="container-blackout-popup-window"
+    <?php if (!isset($this->params['form-message'])):?>
+        style="display: none"
+    <?php endif;?>>
+    <?=$this->params['form-message'] ?? ''?>
+</div>
 <?=ListCityWidget::widget(['settings'=>
     [
     'id'=>'menu_list_city',
