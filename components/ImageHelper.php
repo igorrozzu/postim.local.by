@@ -47,7 +47,13 @@ class ImageHelper
         try{
             $info = getimagesize($from);
             $minSide = ($info[0] <= $info[1])? $info[0] : $info[1];
-            Image::crop($from, $minSide, $minSide)
+            $offset  = $info[0] - $info[1]; //width - height
+            if($offset >= 0) {
+                $start = [(int)$offset/2, 0];
+            } else {
+                $start = [0, (int)abs($offset/2)];
+            }
+            Image::crop($from, $minSide, $minSide, $start)
                 ->save($to, ['quality' => $quality]);
             return true;
 
