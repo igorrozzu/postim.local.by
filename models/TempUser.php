@@ -9,7 +9,6 @@ use Yii;
  *
  * @property integer $id
  * @property string $name
- * @property string $surname
  * @property string $email
  * @property string $password
  */
@@ -30,7 +29,7 @@ class TempUser extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'email', 'password'], 'required'],
-            [['name', 'surname', 'email', 'password'], 'string', 'max' => 100],
+            [['name', 'email', 'password'], 'string', 'max' => 100],
         ];
     }
 
@@ -42,7 +41,6 @@ class TempUser extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'surname' => 'Surname',
             'email' => 'Email',
             'password' => 'Password',
         ];

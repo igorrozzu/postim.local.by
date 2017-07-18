@@ -7,7 +7,7 @@ use yii\helpers\Html;
 $hostName = Yii::$app->request->getHostInfo();
 ?>
 <?php $this->beginPage() ?>
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html lang="<?= Yii::$app->language ?>" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
@@ -19,70 +19,75 @@ $hostName = Yii::$app->request->getHostInfo();
     <?php $this->head() ?>
 
 </head>
-<body>
+<body style="margin: 0; padding: 0; max-width: 600px; width: 100%;">
 <?php $this->beginBody() ?>
+<table border="0" cellpadding="0" cellspacing="0" style="margin:0; padding:0; width: 100%;
+        font-family: Tahoma, Verdana, Helvetica, sans-serif; color: #444444; font-size: 15px;" >
+    <tr>
+        <td style="background-color: #3c5994; height: 60px;">
+            <img style="display:block; margin-left: 20px; color: #FFFFFF;" alt="Postim.by" border="0"
+                 src="<?= $hostName ?>/img/logo.png">
+        </td>
+    </tr>
 
-<!--верхнее меню-->
-<div style="width: 100%; background-color: #3c5994; height: 60px;">
-    <div>
-        <div style="margin-left: 20px; float: left;padding: 19px 0 20px 0;">
-            <img src="<?= $hostName ?>/img/logo.png">
-        </div>
-    </div>
-</div>
-<!--верхнее меню end-->
+    <?=$content;?>
 
-<?=$content;?>
-<div style="padding: 0px 20px 32px 20px;">
-    <p style="margin-bottom: 3px;">Ecли вы получили это письмо по ошибке, просто проигнорируйте его</p>
-    <p>С наилучшими пожеланиями, Postim.by</p>
-</div>
-<div style="width: 100%;
-    background-color: #3c5994;
-    padding-bottom: 25px;
-    padding-top: 25px;">
-    <div style="padding: 0px 20px;">
-        <p style="color:white;font-family: PT_Sans bold;margin-bottom: 20px;">Присоединяйтесь к нам!</p>
-        <div style="display: flex;flex-wrap: wrap;">
-            <div style="display: flex;flex-wrap: wrap;margin-right: 60px;">
-                <div style="display: flex;cursor: pointer;flex-wrap: wrap;align-items: center;">
-                    <div>
-                        <a href="#"><img src="<?= $hostName ?>/img/vk-icon.png" style="margin-right: 5px;
+    <tr>
+        <td style="padding: 0px 20px 32px 20px;">
+            <p style="margin-bottom: 1px;">Ecли вы получили это письмо по ошибке, просто проигнорируйте его.</p>
+            <p style="margin: 0px;">С наилучшими пожеланиями, Postim.by</p>
+        </td>
+    </tr>
+    <tr style="display: block; background-color: #F2F4FD; padding: 20px; border-bottom: 2px solid #CDCED0">
+        <td style="padding-right: 50px;">
+            <p style="margin-bottom: 20px;">Присоединяйтесь к нам!</p>
+
+            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none;">
+                <img src="<?= $hostName ?>/img/vk-icon.png" alt="Vk" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
-    height: 26px;" ></a>
-                        <a href="#"><img src="<?= $hostName ?>/img/fb-icon.png" style="margin-right: 5px;
+    height: 26px;" >
+            </a>
+            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
+                <img src="<?= $hostName ?>/img/fb-icon.png" alt="Facebook" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
-    height: 26px;" ></a>
-                        <a href="#"><img src="<?= $hostName ?>/img/tw-icon.png" style="margin-right: 5px;
+    height: 26px;" >
+            </a>
+            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
+                <img src="<?= $hostName ?>/img/tw-icon.png" alt="Twitter" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
-    height: 26px;" ></a>
-                        <a href="#"><img src="<?= $hostName ?>/img/ok-icon.png" style="margin-right: 5px;
+    height: 26px;" >
+            </a>
+            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
+                <img src="<?= $hostName ?>/img/ok-icon.png" alt="Ok" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
-    height: 26px;" ></a>
-                        <a href="#"><img src="<?= $hostName ?>/img/inst-icon.png" style="margin-right: 5px;
+    height: 26px;" >
+            </a>
+            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
+                <img src="<?= $hostName ?>/img/inst-icon.png" alt="Instagram" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
-    height: 26px;" ></a>
-                        <a href="#"><img src="<?= $hostName ?>/img/viber-icon.png" style="margin-right: 5px;
+    height: 26px;" >
+            </a>
+            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
+                <img src="<?= $hostName ?>/img/viber-icon.png" alt="Viber" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
-    height: 26px;" ></a>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <p style="color:white;
-    font-family: PT_Sans bold;">Есть вопросы? Мы с радостью ответим на них.</p>
-                <p style="color:white;
-    font-family: PT_Sans bold;">Воспользуйтесь функционалом</p>
-            </div>
-        </div>
-    </div>
-</div>
+    height: 26px;" >
+            </a>
+        </td>
+        <td style="font-size: 11px; padding-top: 40px;">
+            <span style="-webkit-text-size-adjust:none">Есть вопрос? Мы с радостью на него ответим.</span><br>
+            <span style="-webkit-text-size-adjust:none">
+                    Воспользуйтесь функционалом &laquo;<a href="#" target="_blank" style="color: #3C5994;">Обратной связи</a>&raquo;
+                </span>
+        </td>
+
+    </tr>
+</table>
 <?php $this->endBody() ?>
 </body>
 </html>

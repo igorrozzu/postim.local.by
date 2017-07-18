@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
             <div class="logo"></div>
         </div>
         <div class="body-popup-authentication">
-            <div class="text-label">Укажите обязательные поля для регистрации</div>
+            <div class="text-label">Подтвердите ваши данные (имя, email)</div>
             <?php $form = ActiveForm::begin([
                 'id' => 'required-fields-form',
                 'enableClientScript' => false
@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
                 </div>
 
                 <div class="field-btn">
-                    <input class="btn-red" type="submit" value="Регистрация" style="border: none;">
+                    <input class="btn-red" type="submit" value="Подтвердить" style="border: none;">
                 </div>
             <?php ActiveForm::end() ?>
         </div>
