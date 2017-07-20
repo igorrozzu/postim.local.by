@@ -10,19 +10,15 @@ $this->registerJsFile('/js/user-settings.js', ['position' => View::POS_END]);
 $user = Yii::$app->user->identity;
 $userInfo = $user->userInfo;
 ?>
-<style>
-    .help-block{
-        margin: 0px 0px 10px 0px;
-    }
-</style>
+
 <div class="margin-top60"></div>
 <div class="block-content">
     <h1 class="h1-c center-mx" style="margin-top: 35px;">Персональные данные</h1>
     <div class="container-settings">
+
         <div class="user-icon-profile"><img src="<?=$user->getPhoto()?>"></div>
         <label class="btn-add-icon" for="user-photo">Загрузить фото</label>
-        <input type="file" name="user-photo" id="user-photo" style="display: none;">
-        <div id="user-photo-uploading-error" class="help-block"></div>
+        <input type="file" name="user-photo" id="user-photo" style="display: none;" accept="image/*,image/jpeg,image/gif,image/png">
 
         <?php $form = ActiveForm::begin(['id' => 'user-settings-form', 'enableClientScript' => false]) ?>
         <div class="block-field-setting">
@@ -43,11 +39,11 @@ $userInfo = $user->userInfo;
             <label class="label-field-setting">Город</label>
             <div class="selected-field">
                 <div id="select-city-value" class="select-value" data-value
-                    <?php if($user->isCityDefined() || $model->isCityDefined()):?>
-                    ="<?=$model->cityId ?? $user->city_id?>"
+                <?php if($user->isCityDefined() || $model->isCityDefined()):?>
+                ="<?=$model->cityId ?? $user->city_id?>"
                     <?php endif; ?>>
                     <?php if($userCityName === null):?>
-                    <span class="placeholder-select">Выберите город</span>
+                        <span class="placeholder-select">Выберите город</span>
                     <?php else:?>
                         <?=$userCityName?>
                     <?php endif;?>
@@ -57,7 +53,7 @@ $userInfo = $user->userInfo;
             <div id="select-city" class="container-scroll container-scroll-active">
                 <div class="container-option-select option-active">
                     <?php foreach ($cities as &$city): ?>
-                    <div data-value="<?=$city['id']?>" class="option-select-field"><?=$city['name']?></div>
+                        <div data-value="<?=$city['id']?>" class="option-select-field"><?=$city['name']?></div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -69,11 +65,11 @@ $userInfo = $user->userInfo;
             <label class="label-field-setting">Пол</label>
             <div class="selected-field">
                 <div id="select-sex-value" class="select-value" data-value
-                    <?php if($userInfo->isGenderDefined() || $model->isGenderDefined()):?>
-                        ="<?=$model->gender ?? $userInfo->gender?>"
+                <?php if($userInfo->isGenderDefined() || $model->isGenderDefined()):?>
+                ="<?=$model->gender ?? $userInfo->gender?>"
                     <?php endif; ?>>
                     <?php if($userInfo->isGenderNotSelected() && $model->isGenderNotSelected()):?>
-                    <span class="placeholder-select">Выберите пол</span>
+                        <span class="placeholder-select">Выберите пол</span>
                     <?php else:?>
                         <?=UserInfo::getUserGender($model->gender ?? $userInfo->gender);?>
                     <?php endif;?>
@@ -83,12 +79,12 @@ $userInfo = $user->userInfo;
             <div id="select-sex" class="container-scroll auto-height">
                 <div class="container-option-select option-active">
                     <?php if($userInfo->isGenderNotSelected() && $model->isGenderNotSelected()):?>
-                    <div data-value="1" class="option-select-field">Мужской</div>
-                    <div data-value="2" class="option-select-field">Женский</div>
+                        <div data-value="1" class="option-select-field">Мужской</div>
+                        <div data-value="2" class="option-select-field">Женский</div>
                     <?php elseif($userInfo->isUserMan() || $model->isUserMan()):?>
-                    <div data-value="2" class="option-select-field">Женский</div>
+                        <div data-value="2" class="option-select-field">Женский</div>
                     <?php else:?>
-                    <div data-value="1" class="option-select-field">Мужской</div>
+                        <div data-value="1" class="option-select-field">Мужской</div>
                     <?php endif;?>
                 </div>
             </div>
@@ -105,14 +101,14 @@ $userInfo = $user->userInfo;
             <?php foreach ($authAuthChoice->getClients() as $client): ?>
                 <?php $activeBinding = SocialAuth::findBySource($socialBindings, $client->getName())?>
                 <div class="icon-social icon-<?=$client->getName()?>-30">
-                <?php if($activeBinding): ?>
-                    <a class="to-plug" target="_blank" href="<?=$activeBinding->createSocialUrl()?>">
-                        <?=($activeBinding->screen_name !== '') ?
-                            $activeBinding->screen_name : $activeBinding->source_id?>
-                    </a>
-                <?php else: ?>
-                    <a class="to-plug" href="<?= $authAuthChoice->createClientUrl($client) ?>">Подключить</a>
-                <?php endif;?>
+                    <?php if($activeBinding): ?>
+                        <a class="to-plug" target="_blank" href="<?=$activeBinding->createSocialUrl()?>">
+                            <?=($activeBinding->screen_name !== '') ?
+                                $activeBinding->screen_name : $activeBinding->source_id?>
+                        </a>
+                    <?php else: ?>
+                        <a class="to-plug" href="<?= $authAuthChoice->createClientUrl($client) ?>">Подключить</a>
+                    <?php endif;?>
                 </div>
             <?php endforeach; ?>
             <?php AuthChoice::end() ?>
@@ -126,12 +122,11 @@ $userInfo = $user->userInfo;
     <div class="container-settings" style="padding: 0px 20px;">
         <div class="block-field-setting">
             <label class="label-field-setting">Электронная почта</label>
-            <?= $form->field($model, 'email')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите email (Выслать письмо активации)',
-                    'value' => $model->email ?? $user->email])
-                ->label(false) ?>
+            <div class="input-field-setting">
+                <span class="сhange-email-btn"><?=$user->email?></span>
+            </div>
         </div>
+        <?php if(!$user->hasSocialCreation() || $user->hasChangingPassword()):?>
         <div class="block-field-setting">
             <label class="label-field-setting">Старый пароль</label>
             <?= $form->field($model, 'oldPassword')
@@ -139,6 +134,7 @@ $userInfo = $user->userInfo;
                     'placeholder' => 'Введите пароль', 'value' => $model->oldPassword])
                 ->label(false) ?>
         </div>
+        <?php endif;?>
         <div class="block-field-setting">
             <label class="label-field-setting">Новый пароль</label>
             <?= $form->field($model, 'newPassword')
@@ -219,7 +215,7 @@ $userInfo = $user->userInfo;
             <div id="reviews-and-comments-to-places" class="container-scroll auto-height">
                 <div class="container-option-select option-active">
                     <?php if((bool)($model->reviewsAndCommentsToPlaces ??
-                            $userInfo->reviews_and_comments_to_places_sub)):?>
+                        $userInfo->reviews_and_comments_to_places_sub)):?>
                         <div data-value="0" class="option-select-field">Нет</div>
                     <?php else:?>
                         <div data-value="1" class="option-select-field">Да</div>
@@ -264,3 +260,18 @@ $userInfo = $user->userInfo;
     </div>
 </div>
 <div style="margin-bottom:30px;"></div>
+
+<?php
+if(isset($toastMessage)) {
+    $js = <<<JS
+    $(document).ready(function () {
+        $().toastmessage('showToast', {
+            text     : '$toastMessage[message]',
+            stayTime:         5000,
+            type     : '$toastMessage[type]'
+        });
+    });
+JS;
+    echo "<script>$js</script>";
+}
+?>

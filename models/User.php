@@ -38,8 +38,9 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['name', 'city_id'], 'required'],
-            [['name', 'email', 'password'], 'string'],
-            [['role', 'city_id'], 'integer'],
+            [['name', 'surname'], 'string', 'max' => 25],
+            [['email', 'password'], 'string'],
+            [['role', 'city_id', 'has_social_creation', 'has_changing_password'], 'integer'],
             [['password_reset_token'], 'string', 'max' => 100],
         ];
     }
@@ -160,6 +161,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function resetPassword($password)
     {
         $this->setPassword($password);
+        $this->has_changing_password = 1;
         $this->password_reset_token = null;
         return $this->save();
     }
@@ -199,14 +201,19 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->city_id > 0 && $this->city_id !== self::CITY_NOT_DEFINED;
     }
 
-    public function isConfirmed()
+    public function hasSocialCreation()
     {
-        return (bool)$this->confirmed;
+        return (bool)$this->has_social_creation;
     }
 
-    public function confirmEmail()
+    public function hasChangingPassword()
     {
-        $this->confirmed = 1;
+        return (bool)$this->has_changing_password;
+    }
+
+    public function changeEmail(string $email)
+    {
+        $this->email = $email;
         return $this->save();
     }
 }

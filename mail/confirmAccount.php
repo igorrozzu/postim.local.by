@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 
 $confirmLink = Yii::$app->urlManager->createAbsoluteUrl([
-    'social-auth/confirm-account',
+    'site/confirm-account',
     'token' => Yii::$app->security->encryptByKey($user->id, Yii::$app->params['security.encryptionKey'])
 ]);
 ?>

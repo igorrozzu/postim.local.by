@@ -25,7 +25,7 @@ class SocialRegister extends Model
             [['name','email'], 'required', 'message'=> 'Поле обязательно для заполнения'],
             ['email', 'email', 'message' => 'Некорректный email-адрес'],
             ['email', 'unique', 'targetClass' => '\app\models\User',
-                'message' => 'Пользователь с таким адресом уже существует'],
+                'message' => 'Пользователь с таким email-адресом уже существует'],
         ];
     }
 
@@ -36,6 +36,7 @@ class SocialRegister extends Model
             'surname' => $attrClient->getSurname(),
             'email' => $attrClient->getEmail(),
             'city_id' => -1,
+            'has_social_creation' => 1,
         ]);
         $user->generatePassword(Yii::$app->params['user.socialAuthGeneratePasswordLength']);
 

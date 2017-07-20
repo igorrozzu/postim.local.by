@@ -71,7 +71,10 @@ class SocialAuthController extends MainController
                 if (!$auth) { // добавляем внешний сервис аутентификации
                     $model->createSocialBinding($attrClient, Yii::$app->user->getId());
                 } else {
-                    //TODO show message: some account already has this binding
+                    Yii::$app->session->setFlash('toastMessage', $toastMessage = [
+                        'type' => 'error',
+                        'message'=> 'Этот аккаунт уже привязан к другому профилю на Postim.',
+                    ]);
                 }
                 return $this->redirect(['user/settings']);
             }
@@ -91,8 +94,12 @@ class SocialAuthController extends MainController
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->setRequiredFields($tempUser);
 
-            $mail = new MailSender($tempUser);
-            $mail->sendConfirmMessage('socialConfirmEmail');
+            Yii::$app->mailer->compose(['html' => 'socialConfirmAccount'], ['user' => $tempUser])
+                ->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])
+                ->setTo($tempUser->email)
+                ->setSubject('Подтверждение аккаунта на Postim.by')
+                ->send();
+
             Yii::$app->session->setFlash('render-form-view', 'confirm-email');
             return $this->goHome();
         }

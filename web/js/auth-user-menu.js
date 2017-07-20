@@ -56,6 +56,19 @@ var authUserMenu = (function (window, document, undefined,$) {
                 $(document).ready(function () {
                     $('.notif-content,.container-body-right-menu').mCustomScrollbar({scrollInertia: 300});
                 });
+            },
+
+            closeNotificationFormHandler: function () {
+                $(document).on('click', '.close-notif-message', function () {
+                    $('.container-blackout-popup-window').hide();
+                });
+            },
+
+            init: function () {
+                that.customScrollbarInit();
+                that.userProfileMenuInit();
+                that.notificationMenuInit();
+                that.closeNotificationFormHandler();
             }
         };
         return that;
@@ -64,6 +77,4 @@ var authUserMenu = (function (window, document, undefined,$) {
 }(window,document,undefined,jQuery));
 
 var authMenu = authUserMenu();
-authMenu.customScrollbarInit();
-authMenu.userProfileMenuInit();
-authMenu.notificationMenuInit();
+authMenu.init();

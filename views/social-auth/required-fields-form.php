@@ -8,6 +8,7 @@ use yii\widgets\ActiveForm;
     <div class="container-popup-window form-password-recovery">
         <div class="header-popup-authentication">
             <div class="logo"></div>
+            <div class="close-big-icon close-notif-message"></div>
         </div>
         <div class="body-popup-authentication">
             <div class="text-label">Подтвердите ваши данные (имя, email)</div>

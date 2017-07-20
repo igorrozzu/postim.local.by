@@ -8,7 +8,7 @@
         <div class="text-label">Для начала советуем заполнить профиль и загрузить аватар.</div>
         <div class="text-label" style="margin-top: 3px;">Пожалуйста, войдите в свой аккаунт.</div>
 
-        <div class="field-btn">
+        <div class="field-btn" style="margin-top: 20px;">
             <div class="btn-red sign-in-btn">Вход</div>
         </div>
 

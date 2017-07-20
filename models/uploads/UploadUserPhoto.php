@@ -20,10 +20,9 @@ class UploadUserPhoto extends Model
     public function rules()
     {
         return [
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif',
-                'message' => 'Допустимы типы jpeg, png и gif'],
-            [['imageFile'], 'file', 'maxSize' => 10485760,
-                'message' => 'Размер фото не более 10485760 байт'],
+            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif'],
+            [['imageFile'], 'file', 'maxSize' => 5242880],
+            ['imageFile', 'image', 'minWidth' => 300, 'minHeight' => 300,]
         ];
     }
 

@@ -3044,7 +3044,7 @@ body{
 .field-btn{
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 .field-line-btns{
     display: flex;
@@ -4125,16 +4125,37 @@ body{
 .container-item-menu a.close-right-menu-list:hover{
     color: #6b778f;
 }
+/*Переопределение стилей формы yii2*/
 .help-block{
-    color: #b62c2c;
-    margin-top: 5px;
+    color: #ff4c5b;
+    font-size: 14px;
 }
+.form-group .help-block{
+    margin: 5px 0 0 0;
+}
+.form-group .form-control{
+    margin: 0;
+}
+.block-field-setting .help-block{
+    margin: 0px 0px 10px 0px;
+}
+/*end Переопределение стилей формы yii2*/
+form .field-input{
+    margin-top: 15px;
+}
+form .field-input:first-child{
+    margin-top: 20px;
+}
+
 .round-img{
     border-radius: 50%;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
 }
 
+.сhange-email-btn{
+    cursor: pointer;
+}
 
 
 

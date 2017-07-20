@@ -48,8 +48,8 @@ class UserSettings extends Model
     public function rules()
     {
         return [
-            [['name', 'email'], 'required', 'message'=> 'Поле обязательно для заполнения'],
-            ['email', 'email', 'message' => 'Некорректный email-адрес.'],
+            [['name'], 'required', 'message'=> 'Поле обязательно для заполнения'],
+            [['name', 'surname'], 'string', 'max' => 25, 'tooLong'=> 'Не более {max} символов'],
             [['cityId', 'gender', 'answersToReviews', 'answersToComments', 'reviewsAndCommentsToPlaces',
                 'placesAndDiscounts'], 'integer'],
             [['oldPassword', 'newPassword','newPasswordRepeat'], 'required', 'message'=> 'Поле обязательно для заполнения',
@@ -57,45 +57,51 @@ class UserSettings extends Model
             ['oldPassword', 'validateOldPassword', 'on' => self::SCENARIO_PASSWORD_RESET],
             ['newPasswordRepeat', 'compare', 'compareAttribute' => 'newPassword', 'message' => 'Пароли не совпадают',
                 'on' => self::SCENARIO_PASSWORD_RESET],
+            [['email'], 'required', 'message'=> 'Поле обязательно для заполнения', 'on' => self::SCENARIO_EMAIL_RESET],
+            ['email', 'email', 'message' => 'Некорректный email-адрес.', 'on' => self::SCENARIO_EMAIL_RESET],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'on' => self::SCENARIO_EMAIL_RESET,
-                'message' => 'Пользователь с таким адресом уже существует'],
-
+                'message' => 'Пользователь с таким email-адресом уже существует'],
         ];
 
     }
 
     public function validateOldPassword($attribute, $params)
     {
-        if (!$this->hasErrors()) {
-            if (!$this->user->validatePassword($this->oldPassword)) {
-                $this->addError($attribute, 'Пользователя с таким паролем не существует');
-            }
+        if (!$this->user->validatePassword($this->oldPassword)) {
+            $this->addError($attribute, 'Неверный пароль');
         }
     }
 
     public function changePassword(): bool
     {
+        $this->oldPassword = $this->oldPassword ?? '';
+        $attributeNames = ['newPassword', 'newPasswordRepeat'];
+        if(!$this->user->hasSocialCreation() || $this->user->hasChangingPassword()) {
+            $attributeNames[] = 'oldPassword';
+        }
+
         if($this->oldPassword !== '' || $this->newPassword !== '' || $this->newPasswordRepeat !== '') {
             $this->scenario = self::SCENARIO_PASSWORD_RESET;
-            if($this->validate()) {
+            if($this->validate($attributeNames, false)) {
                 $this->user->setPassword($this->newPassword);
+                $this->user->has_changing_password = 1;
+
                 return true;
+            } else {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
-    public function changeEmail(): bool
+    public function createTempEmailData()
     {
-        if($this->user->email !== $this->email) {
-            $this->scenario = self::SCENARIO_EMAIL_RESET;
-            if(!$this->hasErrors() && $this->validate()) {
-                $this->user->email = $this->email;
-                $this->user->confirmed = 0;
-                return true;
-            }
-        }
-        return false;
+        $tempData = new TempEmail([
+            'user_id' => Yii::$app->user->id,
+            'hash' => Yii::$app->security->generateRandomString(50),
+            'email' => $this->email,
+        ]);
+        return $tempData->save() ? $tempData : null;
     }
     public function saveSettings(): bool
     {
@@ -121,6 +127,13 @@ class UserSettings extends Model
         }
 
         return false;
+    }
+
+    public function resetPasswordFields()
+    {
+        $this->oldPassword = '';
+        $this->newPassword = '';
+        $this->newPasswordRepeat = '';
     }
 
     public function isCityDefined()

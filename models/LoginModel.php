@@ -54,10 +54,10 @@ class LoginModel extends Model
             ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message' => 'Пароли не совпадают',
                 'on' => [self::SCENARIO_REGISTER, self::SCENARIO_PASSWORD_RESET_FORM]],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'on' => self::SCENARIO_REGISTER,
-                'message' => 'Пользователь с таким адресом уже существует'],
+                'message' => 'Пользователь с таким email-адресом уже существует'],
             ['password', 'validatePassword', 'on' => self::SCENARIO_LOGIN],
             ['email', 'exist', 'targetClass' => '\app\models\User', 'on' => self::SCENARIO_PASSWORD_RECOVERY,
-                'message' => 'Пользователя с таким адресом не существует'],
+                'message' => 'Пользователя с таким email-адресом не существует'],
         ];
 
     }

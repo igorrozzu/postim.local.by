@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\MailSender;
 use app\components\MainController;
 use app\models\City;
+use app\models\TempEmail;
 use app\models\uploads\UploadUserPhoto;
 use app\models\User;
 use app\models\UserSettings;
@@ -31,15 +32,22 @@ class UserController extends MainController
         $user = Yii::$app->user->identity;
         $model = new UserSettings();
         $model->setUser($user);
-        if($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->changePassword();
-            if($model->changeEmail()) {
-                $mail = new MailSender($model->getUser());
-                $mail->sendConfirmMessage('confirmEmail');
-            }
-            if(!$model->hasErrors()) {
+        $toastMessage = null;
+
+        if($model->load(Yii::$app->request->post())) {
+            $validation = $model->validate();
+            if($model->changePassword() && $validation) {
                 $model->saveSettings();
-                return $this->redirect(['user/settings']);
+                $model->resetPasswordFields();
+                $toastMessage = [
+                    'type' => 'success',
+                    'message' => 'Изменения сохранены',
+                ];
+            } else {
+                $toastMessage = [
+                    'type' => 'error',
+                    'message' => 'При сохранении настроек произошли ошибки',
+                ];
             }
         }
 
@@ -61,6 +69,31 @@ class UserController extends MainController
             'socialBindings' => $socialBindings,
             'cities' => $cities,
             'userCityName' => $userCityName,
+            'toastMessage' => $toastMessage ?? Yii::$app->session->getFlash('toastMessage'),
+        ]);
+    }
+
+    public function actionChangeEmail()
+    {
+        if (\Yii::$app->user->isGuest) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+        $model = new UserSettings();
+        $model->scenario = UserSettings::SCENARIO_EMAIL_RESET;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if($tempData = $model->createTempEmailData()) {
+                Yii::$app->mailer->compose(['html' => 'confirmEmail'], ['data' => $tempData])
+                    ->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])
+                    ->setTo($tempData->email)
+                    ->setSubject('Подтверждение email-адреса на Postim.by')
+                    ->send();
+                return $this->renderAjax('confirm-email');
+            }
+        }
+
+        return $this->renderAjax('change-email-form', [
+            'model' => $model,
         ]);
     }
 
@@ -77,26 +110,40 @@ class UserController extends MainController
                 return $this->asJson([
                     'success' => true,
                     'pathToPhoto' => Yii::$app->user->identity->getPhoto() . '?' . time(),
+                    'message' => 'Изменения сохранены',
                 ]);
             } else {
                 return $this->asJson([
                     'success' => false,
-                    'errors' => $model->getErrors(),
+                    'message' => 'Изображение должно быть не меньше, чем 300 x 300 ' .
+                        'пикселей в формате JPG, GIF или PNG. Макс. размер файла: 5 МБ.'
                 ]);
             }
         }
     }
 
-    public function actionConfirmAccount(string $token)
+    public function actionConfirmAccount(string $id, string $token)
     {
-        $id = Yii::$app->security->decryptByKey($token, Yii::$app->params['security.encryptionKey']);
-        if($id === false || !($user = User::findOne((int)$id)) || $user->isConfirmed()){
-            throw new BadRequestHttpException('Неверный токен подтверждения');
-        }
-        if($user->confirmEmail()) {
-            //TODO congrats message
-        }
+        $tempData = TempEmail::findOne(['user_id' => $id, 'hash' => $token]);
 
+        if(Yii::$app->user->isGuest) {
+            if(isset($tempData)) {
+                $tempData->delete();
+            }
+        } else {
+            if(isset($tempData)) {
+                $user = Yii::$app->user->identity;
+                if($user->changeEmail($tempData->email)) {
+                    $tempData->delete();
+                    Yii::$app->session->setFlash('toastMessage', $toastMessage = [
+                        'type' => 'success',
+                        'message'=> 'Изменения сохранены',
+                    ]);
+                }
+                return $this->redirect(['user/settings']);
+            }
+        }
+        Yii::$app->session->setFlash('render-form-view', 'failed-confirm-email');
         return $this->goHome();
     }
 }

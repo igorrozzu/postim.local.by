@@ -27,11 +27,15 @@ class AppAsset extends AssetBundle
         ['css/min-710px.css','media'=>'(max-width:770px)'],
         ['css/min-540px.css','media'=>'(max-width:540px)'],
         ['css/max-480px.css','media'=>'(max-width:480px)'],
+        'css/libs/jquery.toastmessage.css',
+        ['css/libs/jquery.toastmessage-949px.css','media'=>'(max-width: 949px)'],
     ];
     public $js = [
         'js/main.js',
         'js/menu.js',
         'js/list-city.js',
+        'js/libs/jquery.toastmessage.js',
+
     ];
     public $depends = [
         'yii\web\JqueryAsset',

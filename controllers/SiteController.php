@@ -20,7 +20,6 @@ use yii\web\NotFoundHttpException;
 class SiteController extends MainController
 {
 
-
     public function actionIndex()
     {
         $city_name = Yii::$app->request->get('city_name',false);
@@ -103,8 +102,11 @@ class SiteController extends MainController
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($user = $model->createTempUser()) {
 
-                $mail = new MailSender($user);
-                $mail->sendConfirmMessage('authToken');
+                Yii::$app->mailer->compose(['html' => 'confirmAccount'], ['user' => $user])
+                    ->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])
+                    ->setTo($user->email)
+                    ->setSubject('Подтверждение аккаунта на Postim.by')
+                    ->send();
                 return $this->renderAjax('confirm-email');
             }
         }
@@ -125,13 +127,13 @@ class SiteController extends MainController
         $model->scenario = LoginModel::SCENARIO_PASSWORD_RECOVERY;
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->getUserForResetPassword()) {
+                Yii::$app->mailer->compose(['html' => 'passwordReset'], ['user' => $user])
+                    ->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])
+                    ->setTo($user->email)
+                    ->setSubject('Смена пароля на Postim.by')
+                    ->send();
 
-                $mail = new MailSender($user);
-                $mail->sendPasswordResetMessage();
-                return $this->asJson([
-                    'success' => true,
-                    'redirect' => Yii::$app->getHomeUrl()
-                ]);
+                return $this->renderAjax('confirm-password-recovery');
             }
         }
 
@@ -142,9 +144,14 @@ class SiteController extends MainController
 
     public function actionResetPassword(string $token)
     {
-        if(empty($token) || !($user = User::findByPasswordResetToken($token))){
-            throw new BadRequestHttpException('Неверный токен для восстановления пароля');
+        if (!\Yii::$app->user->isGuest) {
+            throw new NotFoundHttpException('Cтраница не найдена');
         }
+        if(empty($token) || !($user = User::findByPasswordResetToken($token))){
+            Yii::$app->session->setFlash('render-form-view', 'failed-password-recovery');
+            return $this->goHome();
+        }
+
         $model = new LoginModel();
         $model->scenario = LoginModel::SCENARIO_PASSWORD_RESET_FORM;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {

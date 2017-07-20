@@ -269,8 +269,13 @@ $user = Yii::$app->user->identity;
         </div>
     </div>
 </div>
-<div class="container-blackout-popup-window" style="display: none"></div>
 
+<div class="container-blackout-popup-window"
+    <?php if (!isset($this->params['form-message'])):?>
+        style="display: none"
+    <?php endif;?>>
+    <?=$this->params['form-message'] ?? ''?>
+</div>
 <?php $this->endBody() ?>
 </body>
 </html>
