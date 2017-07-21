@@ -29,4 +29,8 @@
 .btn_br:hover{
     background-color: #bc3737;
 }
-
+/*Cтили toastMessage*/
+.toast-position-top-right {
+    right: calc((100% - 1260px)/2);
+}
+/*end Cтили toastMessage*/

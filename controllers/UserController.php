@@ -46,7 +46,7 @@ class UserController extends MainController
             } else {
                 $toastMessage = [
                     'type' => 'error',
-                    'message' => 'При сохранении настроек произошли ошибки',
+                    'message' => 'Произошла ошибка при сохранении настроек',
                 ];
             }
         }

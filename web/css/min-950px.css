@@ -90,3 +90,17 @@
 .container-bottom-btn{
     margin-top: 20px;
 }
+
+/*Cтили toastMessage*/
+.toast-container {
+    width: 100%;
+}
+.toast-item p {
+    margin: 0 15px;
+}
+.toast-position-top-right {
+    position: fixed;
+    top: 60px;
+    left: 0;
+}
+/*end Cтили toastMessage*/

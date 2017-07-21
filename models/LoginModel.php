@@ -41,6 +41,7 @@ class LoginModel extends Model
     {
         return [
             [['name','email'], 'filter', 'filter' => 'trim'],
+            ['name', 'string', 'max' => 25, 'tooLong'=> 'Не более {max} символов', 'on' => self::SCENARIO_REGISTER],
             ['email', 'required', 'message'=> 'Поле обязательно для заполнения',
                 'on' => [self::SCENARIO_LOGIN, self::SCENARIO_REGISTER, self::SCENARIO_PASSWORD_RECOVERY]],
             ['email', 'email', 'message' => 'Некорректный email-адрес.',

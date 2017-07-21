@@ -4170,8 +4170,145 @@ form .field-input:first-child{
 }
 
 
+/*Cтили toastMessage*/
+.toast-container {
+    width: 300px;
+    height: auto;
+    z-index: 9999;
+}
 
 
+* html .toast-container {
+    position: absolute;
+}
+
+.toast-item {
+    background: #ffffff;
+    padding: 15px 45px 15px 15px;
+
+    font-size: 14px;
+    display: block;
+    position: relative;
+    margin: 0 0 12px 0;
+    border-bottom: 2px solid #DADBDD;
+}
+
+.toast-item p {
+    color: #444444;
+}
+
+.toast-item-close {
+    cursor: pointer;
+    width: 30px;
+    height: 100%;
+    display: flex;
+    position: absolute;
+    top:0px;
+    right:0px;
+}
+.toast-item-close:after {
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    margin: auto auto;
+    content: url('../img/close-icon-20px.png');
+}
+.toast-item-image {
+    width:32px;
+    height: 32px;
+    position: absolute;
+    top: 50%;
+    margin-top: -16px;
+    left: 10px;
+}
+
+.toast-item-image-notice {
+}
+
+.toast-item-image-success {
+}
+
+.toast-item-image-warning {
+}
+
+.toast-item-image-error {
+}
+
+
+/**
+ * toast types
+ *
+ * pattern: toast-type-[value]
+ * where 'value' is the real value of the plugin option 'type'
+ *
+ */
+.toast-type-notice {
+    color: white;
+}
+
+.toast-type-success .toast-item-close {
+    background: #63CA30 no-repeat;
+}
+
+.toast-type-warning {
+    color: white;
+    border-color: #FCBD57;
+}
+
+.toast-type-error .toast-item-close {
+    background: #FE4C5A no-repeat;
+}
+
+/**
+ * positions
+ *
+ * pattern: toast-position-[value]
+ * where 'value' is the real value of the plugin option 'position'
+ *
+ */
+.toast-position-top-left {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+}
+
+.toast-position-top-center {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    margin-left: -140px;
+}
+
+.toast-position-top-right {
+    position: fixed;
+    top: 95px;
+    right: 20px;
+}
+
+.toast-position-middle-left {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    margin-top: -40px;
+}
+
+.toast-position-middle-center {
+    position: fixed;
+    left: 50%;
+    margin-left: -140px;
+    margin-top: -40px;
+    top: 50%;
+}
+
+.toast-position-middle-right {
+    position: fixed;
+    right: 20px;
+    margin-left: -140px;
+    margin-top: -40px;
+    top: 50%;
+}
+
+/*end Cтили toastMessage*/
 
 
 

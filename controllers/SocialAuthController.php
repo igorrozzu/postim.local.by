@@ -73,7 +73,7 @@ class SocialAuthController extends MainController
                 } else {
                     Yii::$app->session->setFlash('toastMessage', $toastMessage = [
                         'type' => 'error',
-                        'message'=> 'Этот аккаунт уже привязан к другому профилю на Postim.',
+                        'message'=> 'Этот аккаунт уже привязан к другому профилю на Постим',
                     ]);
                 }
                 return $this->redirect(['user/settings']);
@@ -94,7 +94,7 @@ class SocialAuthController extends MainController
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->setRequiredFields($tempUser);
 
-            Yii::$app->mailer->compose(['html' => 'socialConfirmAccount'], ['user' => $tempUser])
+            Yii::$app->mailer->compose(['html' => 'socialConfirmEmail'], ['user' => $tempUser])
                 ->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])
                 ->setTo($tempUser->email)
                 ->setSubject('Подтверждение аккаунта на Postim.by')
@@ -103,10 +103,13 @@ class SocialAuthController extends MainController
             Yii::$app->session->setFlash('render-form-view', 'confirm-email');
             return $this->goHome();
         }
-        return $this->render('required-fields-form', [
+
+        $params = $this->getParamsForMainPage();
+        $this->view->params['form-message'] = $this->renderPartial('required-fields-form', [
             'model' => $model,
             'name' => $model->name ?? $tempUser->name,
         ]);
+        return $this->render('//site/index', $params);
     }
 
     public function actionConfirmAccount(string $token)

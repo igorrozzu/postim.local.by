@@ -23,6 +23,7 @@ class SocialRegister extends Model
         return [
             [['name','email'], 'filter', 'filter' => 'trim'],
             [['name','email'], 'required', 'message'=> 'Поле обязательно для заполнения'],
+            ['name', 'string', 'max' => 25, 'tooLong'=> 'Не более {max} символов'],
             ['email', 'email', 'message' => 'Некорректный email-адрес'],
             ['email', 'unique', 'targetClass' => '\app\models\User',
                 'message' => 'Пользователь с таким email-адресом уже существует'],

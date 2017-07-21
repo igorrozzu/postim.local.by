@@ -22,43 +22,12 @@ class SiteController extends MainController
 
     public function actionIndex()
     {
-        $city_name = Yii::$app->request->get('city',['name'=>false])['name'];
-
-        if(!$city_name){
-            Yii::$app->city->setDefault();
-        }
-
-        //если есть город то прибавляем еще один релэйшен и условия выборки (перенести эту логику в поисковую модель!!!)
-        $spotlightQuery = Posts::find()
-            ->With('categories')
-            ->orderBy([
-                'rating'=>SORT_DESC,
-                'count_reviews'=>SORT_DESC
-            ])
-            ->limit(4);
-
-        if($city_name){
-            $spotlightQuery->joinWith('city.region')
-                ->where(['tbl_city.name'=>$city_name])
-                ->orWhere(['tbl_region.name'=>$city_name]);
-        }
-        $spotlight = $spotlightQuery->all();
-
-        $news = News::find()
-            ->with('city.newsCity','city.region.newsRegion','totalView')
-            ->limit(4)
-            ->all();
-
         $viewName = Yii::$app->session->getFlash('render-form-view');
         if(isset($viewName)) {
             $this->view->params['form-message'] = $this->renderPartial($viewName);
         }
 
-        $params = [
-            'spotlight' => $spotlight,
-            'news' => $news,
-        ];
-
+        $params = $this->getParamsForMainPage();
         return $this->render('index', $params);
     }
 
@@ -148,24 +117,33 @@ class SiteController extends MainController
 
     public function actionResetPassword(string $token)
     {
+        $user = User::findByPasswordResetToken($token);
         if (!\Yii::$app->user->isGuest) {
-            throw new NotFoundHttpException('Cтраница не найдена');
-        }
-        if(empty($token) || !($user = User::findByPasswordResetToken($token))){
-            Yii::$app->session->setFlash('render-form-view', 'failed-password-recovery');
+            if(isset($user)) {
+                $user->resetPasswordToken();
+            }
+            Yii::$app->session->setFlash('render-form-view', 'failed-auth-password-recovery');
             return $this->goHome();
-        }
-
-        $model = new LoginModel();
-        $model->scenario = LoginModel::SCENARIO_PASSWORD_RESET_FORM;
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if($user->resetPassword($model->password)) {
+        } else {
+            if(!isset($user)) {
+                Yii::$app->session->setFlash('render-form-view', 'failed-password-recovery');
                 return $this->goHome();
             }
+            $model = new LoginModel();
+            $model->scenario = LoginModel::SCENARIO_PASSWORD_RESET_FORM;
+            if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+                if ($user->resetPassword($model->password)) {
+                    Yii::$app->session->setFlash('render-form-view', 'success-password-recovery');
+                    return $this->goHome();
+                }
+            }
+
+            $params = $this->getParamsForMainPage();
+            $this->view->params['form-message'] = $this->renderPartial('password-reset-form', [
+                'model' => $model
+            ]);
+            return $this->render('index', $params);
         }
-        return $this->render('password-reset-form', [
-            'model' => $model
-        ]);
     }
 
     public function actionConfirmAccount(string $token)

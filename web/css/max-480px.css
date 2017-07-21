@@ -29,9 +29,7 @@
     margin: 0 10px;
 }
 
-.center-mx{
-    text-align: center;
-}
+
 .block-social-icons{
     width: auto;
 }
@@ -112,3 +110,10 @@
 .card-text-notice{
     font-size: 14px;
 }
+
+/*Cтили toastMessage*/
+
+.toast-item p {
+    margin: 0 -5px;
+}
+/*end Cтили toastMessage*/
