@@ -116,7 +116,8 @@ class SocialAuthController extends MainController
     {
         $id = Yii::$app->security->decryptByKey($token, Yii::$app->params['security.encryptionKey']);
         if($id === false || !($tempUser = TempSocialUser::findOne((int)$id))){
-            throw new BadRequestHttpException('Неверный токен подтверждения');
+            Yii::$app->session->setFlash('render-form-view', 'failed-confirm-account');
+            return $this->goHome();
         }
         $model = new SocialRegister();
         if($model->createUser($tempUser)){
