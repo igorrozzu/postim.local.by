@@ -101,4 +101,10 @@ class TempSocialUser extends \yii\db\ActiveRecord implements SocialAuthAttr
     {
         return (bool)$this->is_mail_sent;
     }
+
+    public function trimNames(int $length)
+    {
+        $this->name = mb_substr($this->name, 0, $length);
+        $this->surname = mb_substr($this->surname, 0, $length);
+    }
 }
