@@ -15,7 +15,7 @@ use \app\components\ListCityWidget\ListCityWidget;
     <?php if(count($spotlight)):?>
     <h2 class="h2-c">В центре внимания</h2>
     <div class="cards-block">
-        <?=CardsPlaceWidget::widget(['dataprovider'=>$spotlight])?>
+        <?=CardsPlaceWidget::widget(['dataprovider'=>$spotlight,'settings'=>['show-more-btn'=>false]])?>
     </div>
     <div class="clear-fix"></div>
     <?php endif;?>

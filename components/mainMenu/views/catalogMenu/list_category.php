@@ -1,5 +1,5 @@
 <?php if (isset($category['name']) && isset($category['underCategory']) && count($category['underCategory']) != 0): ?>
-<li class="catalog-category  bg-green" data-open=false>
+<li class="catalog-category  <?=$color;?>" data-open=false>
     <div class="catalog-title">
         <div class="catalog-title-name "><?=$category['name']?></div>
         <div class="catalog-title-btn btn-down"></div>

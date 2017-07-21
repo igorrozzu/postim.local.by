@@ -160,6 +160,10 @@ body{
     color: #788399;
     text-decoration: none;
 }
+.menu-category-item.selected,
+.menu-category-item.selected a{
+    color: #4b98df;
+}
 .menu-category-item a:hover,
 .menu-category-item{
     color: #4b98df;
@@ -567,8 +571,16 @@ body{
 .n4{
     margin-right: 0px;
 }
-.card-block:last-child{
-    margin-right: 0px;
+.replace-block{
+    display: flex;
+    width: 100%;
+}
+.mg-btm-30{
+    margin-bottom: 30px;
+}
+.replace-block:before{
+    content: '';
+    clear: both;
 }
 .card-photo{
     height: 200px;

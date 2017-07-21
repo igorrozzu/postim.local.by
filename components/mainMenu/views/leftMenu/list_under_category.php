@@ -6,7 +6,7 @@ if($url_city)$url_city='/'.$url_city;
 ?>
 <li class="menu-category-item"><a href="<?= $url_city."/".$category["url_name"];?>">Все</a></li>
 <?php foreach ($category->underCategory as $item){
- echo  '<li class="menu-category-item"><a href="'.$url_city."/".$item["url_name"].'">'.$item["name"].'</a></li>';
+ echo  '<li class="menu-category-item" data-under_category_name="'.$item["name"].'"><a href="'.$url_city."/".$item["url_name"].'">'.$item["name"].'</a></li>';
 }
 ?>
 

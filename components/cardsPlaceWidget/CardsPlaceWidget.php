@@ -14,6 +14,7 @@ use yii\base\Widget;
 class CardsPlaceWidget extends Widget
 {
     public $dataprovider;
+    public $settings;
 
     public function run()
     {

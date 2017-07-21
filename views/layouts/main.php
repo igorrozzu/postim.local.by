@@ -35,7 +35,12 @@ LoginFormsAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<?=MainMenuWidget::widget(); ?>
+<?=MainMenuWidget::widget(
+        [
+            'select_category'=>$this->context->category ?? false,
+            'select_under_category'=>$this->context->under_category ?? false
+        ]
+); ?>
 
 <!--верхнее меню-->
 <div class="container-header">

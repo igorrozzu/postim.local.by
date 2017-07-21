@@ -70,7 +70,7 @@ class City extends  yii\base\Model {
         return $this->selected_city;
     }
 
-    private function setDefault(){
+    public function setDefault(){
         $this->name='Буларусь';
         $this->url_name='';
         $this->selected_city=['name'=>'Беларусь','url_name'=>''];

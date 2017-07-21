@@ -32,3 +32,11 @@
         </div>
     </div>
 <?php endforeach;?>
+
+<?php if($this->context->settings['show-more-btn']):?>
+    <div class="replace-block mg-btm-30">
+        <div class="btn-show-more">Показать больше мест</div>
+    </div>
+<?php endif;?>
+
+

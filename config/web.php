@@ -67,9 +67,8 @@ $config = [
             'rules' => [
                 'id<id:\d+>' => 'user/index',
                 [
-                    'class' => 'app\components\customUrlManager\CityUrlRule',
-                ],
-                '<name_category:^[a-z-]+$>'=>'category/index',
+                    'class' => 'app\components\customUrlManager\CityAndCategoryUrlRule',
+                ]
             ],
         ],
         'city'=>[

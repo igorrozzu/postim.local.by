@@ -1,7 +1,7 @@
 <?php if (isset($category['name']) && isset($category['underCategory']) && count($category['underCategory']) != 0): ?>
 
     <li class="menu-category-list">
-        <div class="category-list-title">
+        <div class="category-list-title" data-category_name="<?=$category['name']?>">
             <?php
             echo '<a>'.$category['name'].'</a>';
             ?>

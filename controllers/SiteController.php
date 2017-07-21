@@ -22,7 +22,11 @@ class SiteController extends MainController
 
     public function actionIndex()
     {
-        $city_name = Yii::$app->request->get('city_name',false);
+        $city_name = Yii::$app->request->get('city',['name'=>false])['name'];
+
+        if(!$city_name){
+            Yii::$app->city->setDefault();
+        }
 
         //если есть город то прибавляем еще один релэйшен и условия выборки (перенести эту логику в поисковую модель!!!)
         $spotlightQuery = Posts::find()

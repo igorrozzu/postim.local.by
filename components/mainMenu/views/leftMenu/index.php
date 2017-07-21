@@ -1,4 +1,6 @@
-
+<?php
+use yii\web\View;
+?>
 <!--левое меню-->
 <div class="main-menu">
     <div class="header-menu">
@@ -22,3 +24,15 @@
     </div>
 </div>
 <!--левое меню end-->
+<?php
+if ($settings['select_category']) {
+    $select_category = $settings["select_category"]['name'];
+    $select_under_category = $settings["select_under_category"]['name'] ?? 'NuN';
+    $this->registerJs(<<<JS
+            menu.openCategoryInLeftMenu('$select_category',
+                                            '$select_under_category')
+JS
+        , View::POS_READY);
+}
+
+?>
