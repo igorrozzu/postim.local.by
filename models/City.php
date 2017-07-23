@@ -56,6 +56,14 @@ class City extends \yii\db\ActiveRecord
         return $this->hasOne(NewsCity::className(),['city_id'=>'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['city_id' =>'id']);
+    }
+
     public static function removeCityById(array &$cities, int $id)
     {
         foreach ($cities as $key => &$city) {

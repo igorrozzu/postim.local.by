@@ -3,19 +3,27 @@
     <div class="block-content">
         <div class="container-profile">
             <div class="profile-user-avatar">
-                <img src="img/default-profile-icon.png">
+                <img src="<?=$user->getPhoto();?>">
             </div>
             <div class="container-profile-info">
-                <div class="name-user">Вася Пупкин</div>
+                <div class="name-user">
+                    <?=$user->name . ' ' . $user->surname;?>
+                </div>
                 <div class="info-achievement">
-                    <div class="user-level-profile">3 уровень</div>
-                    <div class="user-profile-points">3,60 руб</div>
+                    <div class="user-level-profile"><?=$user->userInfo->level;?> уровень</div>
+                    <div class="user-profile-points"><?=$user->userInfo->virtual_money;?> руб</div>
                 </div>
                 <div class="container-progress-level">
                     <div class="progress-level-bar"><div class="progress-complete"></div></div>
                 </div>
                 <div class="progress-level-text">36 опыта, до следующего уровня нужно ещё 4</div>
-                <div class="info-city">Минск</div>
+                <div class="info-city">
+                    <?php if (isset($user->city)):?>
+                        <?=$user->city->name?>
+                    <?php else: ?>
+                        Не установлен
+                    <?php endif;?>
+                </div>
                 <div class="block-social-info">
                     <a class="vk-icon"></a>
                     <a class="ok-icon"></a>
@@ -44,9 +52,9 @@
     <div class="block-content">
         <div class="menu-btns-card">
             <div class="btn2-menu">Отзывы</div>
-            <div class="btn2-menu">Комментарии 4812</div>
-            <div class="btn2-menu">Места 2</div>
-            <div class="btn2-menu">На модерации 0</div>
+            <div class="btn2-menu">Комментарии <?=$user->userInfo->total_comments;?></div>
+            <div class="btn2-menu">Места <?=$user->userInfo->count_places_added;?></div>
+            <div class="btn2-menu">На модерации <?=$user->userInfo->count_place_moderation;?></div>
         </div>
     </div>
 </div>

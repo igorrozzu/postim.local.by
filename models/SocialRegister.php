@@ -72,6 +72,7 @@ class SocialRegister extends Model
             'surname' => $attrClient->getSurname(),
             'email' =>  $attrClient->getEmail(),
             'url_photo' => $attrClient->getUserPhoto(),
+            'hash' => Yii::$app->security->generateRandomString(50),
         ]);
         $tempUser->trimNames(self::MAX_NAME_LENGTH);
         return $tempUser->save() ? $tempUser : null;

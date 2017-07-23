@@ -47,7 +47,7 @@ class SocialAuthController extends MainController
                     $user = $auth->user;
                     Yii::$app->user->login($user, Yii::$app->params['user.loginDuration']);
                 } else {
-                    $email = $attrClient->getEmail();
+                    $email = /*$attrClient->getEmail()*/null;
                     if($email === null) {
                         if($tempUser = $model->createTempSocialUser($attrClient)) {
                             $key = Yii::$app->security->encryptByKey($tempUser->id, Yii::$app->params['security.encryptionKey']);
@@ -112,10 +112,10 @@ class SocialAuthController extends MainController
         return $this->render('//site/index', $params);
     }
 
-    public function actionConfirmAccount(string $token)
+    public function actionConfirmAccount(string $token, string $hash)
     {
         $id = Yii::$app->security->decryptByKey($token, Yii::$app->params['security.encryptionKey']);
-        if($id === false || !($tempUser = TempSocialUser::findOne((int)$id))){
+        if($id === false || !($tempUser = TempSocialUser::findOne(['id' => $id, 'hash' => $hash]))){
             Yii::$app->session->setFlash('render-form-view', 'failed-confirm-account');
             return $this->goHome();
         }

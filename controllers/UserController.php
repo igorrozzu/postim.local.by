@@ -21,7 +21,14 @@ class UserController extends MainController
 
     public function actionIndex($id)
     {
-        return $this->render('index');
+        $user = User::find()
+            ->with(['userInfo', 'city'])
+            ->where(['tbl_users.id' => $id])
+            ->one();
+
+        return $this->render('index', [
+            'user' => $user
+        ]);
     }
 
     public function actionSettings()

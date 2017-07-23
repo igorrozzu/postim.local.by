@@ -146,10 +146,10 @@ class SiteController extends MainController
         }
     }
 
-    public function actionConfirmAccount(string $token)
+    public function actionConfirmAccount(string $token, string $hash)
     {
         $id = Yii::$app->security->decryptByKey($token, Yii::$app->params['security.encryptionKey']);
-        if($id === false || !($tempUser = TempUser::findOne((int)$id))){
+        if($id === false || !($tempUser = TempUser::findOne(['id' => $id, 'hash' => $hash]))){
             Yii::$app->session->setFlash('render-form-view', 'failed-confirm-account');
             return $this->goHome();
         }

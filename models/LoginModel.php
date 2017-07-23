@@ -130,7 +130,8 @@ class LoginModel extends Model
     {
         $user = new TempUser([
             'name' => $this->name,
-            'email' => $this->email
+            'email' => $this->email,
+            'hash' => Yii::$app->security->generateRandomString(50),
         ]);
         $user->setPassword($this->password);
         return $user->save() ? $user : null;
