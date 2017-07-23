@@ -5,12 +5,22 @@ use yii\authclient\widgets\AuthChoice;
 use yii\helpers\ArrayHelper;
 use yii\web\View;
 use yii\widgets\ActiveForm;
+use \yii\widgets\Pjax;
 
 $this->registerJsFile('/js/user-settings.js', ['position' => View::POS_END]);
 $user = Yii::$app->user->identity;
 $userInfo = $user->userInfo;
 ?>
-
+<?php
+Pjax::begin([
+    'timeout' => 60000,
+    'enablePushState' => true,
+    'id' => 'pjax-container-settings',
+    'linkSelector' => '#pjax-container-settings a',
+    'enableReplaceState'=>true,
+    'formSelector' => '#user-settings-form',
+]);
+?>
 <div class="margin-top60"></div>
 <div class="block-content">
     <?php $form = ActiveForm::begin(['id' => 'user-settings-form', 'enableClientScript' => false]) ?>
@@ -275,4 +285,6 @@ if(isset($toastMessage)) {
 JS;
     echo "<script>$js</script>";
 }
+Pjax::end();
 ?>
+

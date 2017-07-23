@@ -57,7 +57,7 @@ var userSettings = (function (window, document, undefined, $) {
             },
 
             uploadUserPhotoHandler: function () {
-                $(document).on('change', '#user-photo', function (e) {
+                $(document).off('change','#user-photo').on('change','#user-photo', function (e) {
                     var file = e.target.files[0];
                     if(that.validateUploadUserPhoto(file)) {
                         var form = new FormData();
@@ -108,7 +108,7 @@ var userSettings = (function (window, document, undefined, $) {
                 });
             },
             changeEmailHandler: function () {
-                $(document).on('click', '.сhange-email-btn', function () {
+                $(document).on('click','.сhange-email-btn', function () {
                     forms.email.storage = forms.email.storage || that.getChangeEmailForm();
                     __$containerForms.html(forms.email.storage).show();
                 });
@@ -118,6 +118,11 @@ var userSettings = (function (window, document, undefined, $) {
                     $.post('/user/change-email', form, function (response) {
                         __$containerForms.html(response);
                     })
+                });
+            },
+            initPjaxEvents:function () {
+                $(document).on('pjax:end', function(data, status, xhr, options) {
+                    that.customScrollbarInit();
                 });
             },
             getChangeEmailForm: function () {
@@ -137,6 +142,7 @@ var userSettings = (function (window, document, undefined, $) {
             initHandlers: function () {
                 that.uploadUserPhotoHandler();
                 that.changeEmailHandler();
+                that.initPjaxEvents();
             },
 
 

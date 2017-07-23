@@ -197,7 +197,7 @@ $user = Yii::$app->user->identity;
 </div>
 <!--уведомления end-->
 <!--профиль юзера-->
-<div class="right-menu-profile">
+<div class="right-menu-profile main-pjax">
     <div class="container-header-right-menu">
         <div class="btn-close"></div>
     </div>
@@ -245,8 +245,9 @@ Pjax::begin([
     'timeout' => 1000,
     'enablePushState' => true,
     'id' => 'main-view-container',
-    'linkSelector' => '#main-view-container a, .menu-category .menu-category-list a, .right-menu-profile a',
-    'formSelector' => '#user-settings-form',
+    'linkSelector' => '.main-pjax a',
+    'formSelector' => false,
+    'scrollTo'=>1
 ]);
 echo $content;
 Pjax::end();

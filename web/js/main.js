@@ -17,14 +17,18 @@ var Main = (function (window, document, undefined,$) {
                     document.write('<meta name="viewport" content="width=' + widthM+ ', height=' + widthH + '">');
                 }
 
-                /*var map;
-                ymaps.ready(function(){
-                    map = new ymaps.Map("map_block", {
-                        center: [53.52, 28.20],
-                        zoom: 10
-                    });
-                });*/
+                $(document).on('pjax:end', function(data, status, xhr, options) {
+                    var target = $(data.target);
 
+                    if (target.attr('id') == 'main-view-container') {
+                        that.offPjaxEvents();
+                    }
+
+                });
+            },
+            offPjaxEvents:function () {
+                $(document).off('click','#feed-category .block-sort a');
+                $(document).pjax("#feed-category a", "#feed-category", {"push":true,"replace":false,"timeout":60000,"scrollTo":false});
             }
         }
 

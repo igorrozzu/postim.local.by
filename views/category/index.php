@@ -24,6 +24,7 @@ Pjax::begin([
     'enablePushState' => true,
     'id' => 'feed-category',
     'linkSelector' => '#feed-category .block-sort a',
+    'enableReplaceState'=>true,
     'formSelector' => false,
 ])
 ?>

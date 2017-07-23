@@ -1,4 +1,4 @@
-<div class="content2b">
+<div class="content2b main-pjax">
     <div class="nav-bar1">
         <ul class="catalog">
             <?php

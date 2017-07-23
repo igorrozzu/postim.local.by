@@ -60,7 +60,7 @@ Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => true,
     'id' => 'main-view-container',
-    'linkSelector' => '#main-view-container a, .menu-category .menu-category-list a',
+    'linkSelector' => '.main-pjax a',
     'formSelector' => false,
 ]);
 echo $content;

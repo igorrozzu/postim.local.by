@@ -2,7 +2,7 @@
 use yii\web\View;
 ?>
 <!--левое меню-->
-<div class="main-menu">
+<div class="main-menu main-pjax">
     <div class="header-menu">
         <div class="header-menu-title">Меню</div>
         <div class="header-menu-title btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
