@@ -221,4 +221,10 @@ class User extends ActiveRecord implements IdentityInterface
         $this->email = $email;
         return $this->save();
     }
+
+    public function trimNames(int $length)
+    {
+        $this->name = mb_substr($this->name, 0, $length);
+        $this->surname = mb_substr($this->surname, 0, $length);
+    }
 }

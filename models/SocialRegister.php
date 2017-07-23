@@ -15,6 +15,7 @@ class SocialRegister extends Model
     public $name;
     public $email;
 
+    const MAX_NAME_LENGTH = 25;
     /**
      * @return array the validation rules.
      */
@@ -23,7 +24,7 @@ class SocialRegister extends Model
         return [
             [['name','email'], 'filter', 'filter' => 'trim'],
             [['name','email'], 'required', 'message'=> 'Поле обязательно для заполнения'],
-            ['name', 'string', 'max' => 25, 'tooLong'=> 'Не более {max} символов'],
+            ['name', 'string', 'max' => self::MAX_NAME_LENGTH, 'tooLong'=> 'Не более {max} символов'],
             ['email', 'email', 'message' => 'Некорректный email-адрес'],
             ['email', 'unique', 'targetClass' => '\app\models\User',
                 'message' => 'Пользователь с таким email-адресом уже существует'],
@@ -39,6 +40,7 @@ class SocialRegister extends Model
             'city_id' => -1,
             'has_social_creation' => 1,
         ]);
+        $user->trimNames(self::MAX_NAME_LENGTH);
         $user->generatePassword(Yii::$app->params['user.socialAuthGeneratePasswordLength']);
 
         $transaction = $user->getDb()->beginTransaction();
@@ -71,6 +73,7 @@ class SocialRegister extends Model
             'email' =>  $attrClient->getEmail(),
             'url_photo' => $attrClient->getUserPhoto(),
         ]);
+        $tempUser->trimNames(self::MAX_NAME_LENGTH);
         return $tempUser->save() ? $tempUser : null;
     }
     public function createSocialBinding(SocialAuthAttr $attrClient, $userId)
