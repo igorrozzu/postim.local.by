@@ -32,6 +32,13 @@ var Menu = (function (window, document, undefined,$) {
                             $(this).data('open', false);
                         }
                     })
+
+                    $(document).on('click','.catalog-list-item',function () {
+                        var under_category = $(this).data('under_category_name')||'NuN';
+                        var category = $(this).parents('.catalog-category').data('category_name');
+                        that.openCategoryInLeftMenu(category,under_category);
+
+                    })
                 });
 
                 function closeOpenCategoryCatalogItem() {
@@ -87,6 +94,12 @@ var Menu = (function (window, document, undefined,$) {
                         $item.find('.menu-category-items').css('height', '0');
                         $item.find('.close-list-btn').attr('class', 'open-list-btn');
                     }
+
+                    $(document).on('click','.menu-category-items .menu-category-item',function () {
+                        $(this).parents('.main-menu').find('.selected').removeClass('selected');
+                        $(this).addClass('selected');
+
+                    })
                 })
 
             },

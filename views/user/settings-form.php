@@ -13,6 +13,7 @@ $userInfo = $user->userInfo;
 
 <div class="margin-top60"></div>
 <div class="block-content">
+    <?php $form = ActiveForm::begin(['id' => 'user-settings-form', 'enableClientScript' => false]) ?>
     <h1 class="h1-c center-mx" style="margin-top: 35px;">Персональные данные</h1>
     <div class="container-settings">
 
@@ -20,7 +21,7 @@ $userInfo = $user->userInfo;
         <label class="btn-add-icon" for="user-photo">Загрузить фото</label>
         <input type="file" name="user-photo" id="user-photo" style="display: none;" accept="image/*,image/jpeg,image/gif,image/png">
 
-        <?php $form = ActiveForm::begin(['id' => 'user-settings-form', 'enableClientScript' => false]) ?>
+
         <div class="block-field-setting">
             <label class="label-field-setting">Имя</label>
             <?= $form->field($model, 'name')

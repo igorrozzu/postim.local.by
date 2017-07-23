@@ -11,6 +11,8 @@ use app\assets\CustomScrollbarAsset;
 use app\components\mainMenu\MainMenuWidget;
 use app\components\socialWidgets\SocialWidget;
 use yii\helpers\Url;
+use \yii\widgets\Pjax;
+use \app\components\ListCityWidget\ListCityWidget;
 
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
@@ -29,23 +31,24 @@ $user = Yii::$app->user->identity;
     <?= Html::csrfMetaTags() ?>
     <title></title>
     <?php $this->head() ?>
-    <script src="/js/libs/jquery.js"></script>
-    <!--яндекс карта-->
-    <script src="https://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"> </script>
-    <!--яндекс карта-->
-
+    <?php $this->registerAssetBundle('yii\web\JqueryAsset',yii\web\View::POS_HEAD); ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
 
-<?=MainMenuWidget::widget(); ?>
+<?=MainMenuWidget::widget(
+    [
+        'select_category'=>$this->context->category ?? false,
+        'select_under_category'=>$this->context->under_category ?? false
+    ]
+); ?>
 
 <!--верхнее меню-->
 <div class="container-header">
     <div class="header authorized">
         <div class="menu-btn"></div>
         <div class="logo"></div>
-        <div class="select-city">Марьина Горка</div>
+        <div class="select-city btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
         <div class="btn_br">Добавить место</div>
         <div class="profile-icon-menu">
             <img class="round-img" src="<?=$user->getPhoto()?>">
@@ -237,7 +240,18 @@ $user = Yii::$app->user->identity;
     </div>
 </div>
 <!--профиль юзера end-->
-<?=$content;?>
+<?php
+Pjax::begin([
+    'timeout' => 1000,
+    'enablePushState' => true,
+    'id' => 'main-view-container',
+    'linkSelector' => '#main-view-container a, .menu-category .menu-category-list a, .right-menu-profile a',
+    'formSelector' => '#user-settings-form',
+]);
+echo $content;
+Pjax::end();
+
+?>
 
 <?=SocialWidget::widget();?>
 
@@ -276,6 +290,13 @@ $user = Yii::$app->user->identity;
     <?php endif;?>>
     <?=$this->params['form-message'] ?? ''?>
 </div>
+<?=ListCityWidget::widget(['settings'=>
+    [
+        'id'=>'menu_list_city',
+        'is_menu'=>true
+    ]
+
+]);?>
 <?php $this->endBody() ?>
 </body>
 </html>

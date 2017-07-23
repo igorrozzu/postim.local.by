@@ -1,8 +1,11 @@
 <?php
     use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
+
+    $data = $dataprovider->getModels();
+    $countPosts= count($data);
 ?>
-<?php foreach ($dataprovider as $item):?>
+<?php foreach ($data as $item):?>
     <div class="card-block ">
         <a href="/<?=$item['url_name']?>">
             <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
@@ -33,9 +36,13 @@
     </div>
 <?php endforeach;?>
 
-<?php if($this->context->settings['show-more-btn']):?>
+<?php if($this->context->settings['show-more-btn'] && ($dataprovider->pagination->getPageSize() == $countPosts)):?>
     <div class="replace-block mg-btm-30">
         <div class="btn-show-more">Показать больше мест</div>
+    </div>
+<?php else:?>
+    <div class="replace-block mg-btm-30">
+
     </div>
 <?php endif;?>
 

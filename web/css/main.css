@@ -1013,9 +1013,11 @@ body{
     height: 60px;
     display: flex;
 }
-.btn-sort{
+.btn-sort,
+.btn-sort a{
     padding: 0 20px;
     font-family: PT_Sans bold;
+    text-decoration: none;
     font-size: 14px;
     color: #788399;
     height: 58px;
@@ -1024,10 +1026,18 @@ body{
     cursor: pointer;
     margin-right: 20px;
 }
-.btn-sort:last-child{
+.btn-sort:last-child,
+.btn-sort:last-child a{
     margin-right: 0px;
 }
 .btn-sort:hover{
+    border-bottom: 4px solid #a7c9ff;
+    color: #444444;
+}
+.btn-sort:hover a{
+    color: #444444;
+}
+.btn-sort.active{
     border-bottom: 4px solid #a7c9ff;
     color: #444444;
 }

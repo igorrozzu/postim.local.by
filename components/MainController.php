@@ -4,7 +4,9 @@ namespace app\components;
 
 use app\models\News;
 use app\models\Posts;
+use app\models\PostsSearch;
 use Yii;
+use yii\data\Pagination;
 use yii\web\Controller;
 use app\models\LoginForm;
 
@@ -25,21 +27,23 @@ class MainController extends Controller
            Yii::$app->city->setDefault();
        }
 
-       //если есть город то прибавляем еще один релэйшен и условия выборки (перенести эту логику в поисковую модель!!!)
-       $spotlightQuery = Posts::find()
-           ->With('categories')
-           ->orderBy([
-               'rating'=>SORT_DESC,
-               'count_reviews'=>SORT_DESC
-           ])
-           ->limit(4);
+       $searchModel = new PostsSearch();
+       $pagination = new Pagination([
+           'pageSize' => Yii::$app->request->get('per-page', 4),
+           'page' => Yii::$app->request->get('page', 1)-1,
+       ]);
+       $sort =[
+           'rating'=>SORT_DESC,
+           'count_reviews'=>SORT_DESC
+       ];
 
-       if($city_name){
-           $spotlightQuery->joinWith('city.region')
-               ->where(['tbl_city.name'=>$city_name])
-               ->orWhere(['tbl_region.name'=>$city_name]);
-       }
-       $spotlight = $spotlightQuery->all();
+
+       $dataProvider = $searchModel->search(
+           Yii::$app->request->queryParams,
+           $pagination,
+           $sort
+       );
+
 
        $news = News::find()
            ->with('city.newsCity','city.region.newsRegion','totalView')
@@ -47,7 +51,7 @@ class MainController extends Controller
            ->all();
 
        return [
-           'spotlight' => $spotlight,
+           'spotlight' => $dataProvider,
            'news' => $news,
        ];
    }

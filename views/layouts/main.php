@@ -10,6 +10,7 @@ use app\assets\CustomScrollbarAsset;
 use app\components\mainMenu\MainMenuWidget;
 use app\components\socialWidgets\SocialWidget;
 use \app\components\ListCityWidget\ListCityWidget;
+use \yii\widgets\Pjax;
 
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
@@ -26,11 +27,7 @@ LoginFormsAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title></title>
     <?php $this->head() ?>
-    <script src="/js/libs/jquery.js"></script>
-    <!--яндекс карта-->
-    <!--<script src="https://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"> </script>-->
-    <!--яндекс карта-->
-
+    <?php $this->registerAssetBundle('yii\web\JqueryAsset',yii\web\View::POS_HEAD); ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -58,8 +55,19 @@ LoginFormsAsset::register($this);
     </div>
 </div>
 <!--верхнее меню end-->
+<?php
+Pjax::begin([
+    'timeout' => 60000,
+    'enablePushState' => true,
+    'id' => 'main-view-container',
+    'linkSelector' => '#main-view-container a, .menu-category .menu-category-list a',
+    'formSelector' => false,
+]);
+echo $content;
+Pjax::end();
 
-<?=$content;?>
+?>
+
 <?=SocialWidget::widget();?>
 <div class="block-footer">
     <div class="block-footer-content">
