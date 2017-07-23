@@ -57,7 +57,7 @@ var userSettings = (function (window, document, undefined, $) {
             },
 
             uploadUserPhotoHandler: function () {
-                $('#user-photo').on('change', function (e) {
+                $(document).on('change', '#user-photo', function (e) {
                     var file = e.target.files[0];
                     if(that.validateUploadUserPhoto(file)) {
                         var form = new FormData();
@@ -108,7 +108,7 @@ var userSettings = (function (window, document, undefined, $) {
                 });
             },
             changeEmailHandler: function () {
-                $('.сhange-email-btn').on('click', function () {
+                $(document).on('click', '.сhange-email-btn', function () {
                     forms.email.storage = forms.email.storage || that.getChangeEmailForm();
                     __$containerForms.html(forms.email.storage).show();
                 });
