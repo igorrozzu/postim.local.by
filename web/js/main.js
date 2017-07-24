@@ -27,8 +27,16 @@ var Main = (function (window, document, undefined,$) {
                 });
             },
             offPjaxEvents:function () {
+                // init pjax ленты категорий
                 $(document).off('click','#feed-category .block-sort a');
                 $(document).pjax("#feed-category a", "#feed-category", {"push":true,"replace":false,"timeout":60000,"scrollTo":false});
+
+                // init pjax настроек
+                $(document).off('click','#pjax-container-settings a');
+                $(document).off("submit", "#pjax-container-settings form");
+                $(document).pjax("#pjax-container-settings a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-settings"});
+                $(document).on("submit", "#pjax-container-settings form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-settings"});});
+
             }
         }
 

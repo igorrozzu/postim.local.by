@@ -7,23 +7,21 @@ use yii\web\View;
 use yii\widgets\ActiveForm;
 use \yii\widgets\Pjax;
 
-$this->registerJsFile('/js/user-settings.js', ['position' => View::POS_END]);
 $user = Yii::$app->user->identity;
 $userInfo = $user->userInfo;
 ?>
 <?php
 Pjax::begin([
     'timeout' => 60000,
-    'enablePushState' => true,
+    'enablePushState' => false,
     'id' => 'pjax-container-settings',
     'linkSelector' => '#pjax-container-settings a',
-    'enableReplaceState'=>true,
-    'formSelector' => '#user-settings-form',
+    'formSelector' => '#pjax-container-settings form',
 ]);
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
-    <?php $form = ActiveForm::begin(['id' => 'user-settings-form', 'enableClientScript' => false]) ?>
+    <?php $form = ActiveForm::begin(['id' => 'user-settings-form', 'enableClientScript' => false,'action'=>'/user/settings','options'=>['pjax-container-settings'=>'true']]) ?>
     <h1 class="h1-c center-mx" style="margin-top: 35px;">Персональные данные</h1>
     <div class="container-settings">
 
