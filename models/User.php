@@ -24,7 +24,6 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    private $userPhotoPath = null;
 
     public static function tableName()
     {
@@ -40,7 +39,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['name', 'city_id'], 'required'],
             [['name', 'surname'], 'string', 'max' => 25],
             [['email', 'password'], 'string'],
-            [['role', 'city_id', 'has_social_creation', 'has_changing_password'], 'integer'],
+            [['role', 'city_id', 'has_social_creation', 'has_changing_password', 'photo_hash'], 'integer'],
             [['password_reset_token'], 'string', 'max' => 100],
         ];
     }
@@ -173,16 +172,12 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getPhoto()
     {
-        if($this->userPhotoPath === null) {
-            $userPhotoDir = '/user_photo/' . $this->id;
-            if (is_dir(Yii::getAlias('@webroot' . $userPhotoDir))) {
-                $this->userPhotoPath = $userPhotoDir . '/' . Yii::$app->params['user.photoName'];
-            } else {
-                $this->userPhotoPath = '/img/default-profile-icon.png';
-            }
+        $userPhotoDir = '/user_photo/' . $this->id;
+        if (is_dir(Yii::getAlias('@webroot' . $userPhotoDir))) {
+            return $userPhotoDir . '/' . Yii::$app->params['user.photoName'] . '?' . $this->photo_hash;
+        } else {
+            return '/img/default-profile-icon.png';
         }
-
-        return $this->userPhotoPath;
     }
 
     /**

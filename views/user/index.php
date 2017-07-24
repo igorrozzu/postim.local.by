@@ -10,8 +10,13 @@
                     <?=$user->name . ' ' . $user->surname;?>
                 </div>
                 <div class="info-achievement">
-                    <div class="user-level-profile"><?=$user->userInfo->level;?> уровень</div>
-                    <div class="user-profile-points"><?=$user->userInfo->virtual_money;?> руб</div>
+                    <div class="user-level-profile"><?=$user->userInfo->level;?> <span class="user-profile-points-text">уровень</span></div>
+                    <?php if(Yii::$app->user->id === $user->id): ?>
+                    <div class="user-profile-points">
+                        <?=$user->userInfo->virtual_money;?> <span class="user-profile-points-text" style="margin-right: 5px;">руб</span>
+                        и 15.30<span class="user-profile-points-text">мега-руб</span>
+                    </div>
+                    <?php endif;?>
                 </div>
                 <div class="container-progress-level">
                     <div class="progress-level-bar"><div class="progress-complete"></div></div>

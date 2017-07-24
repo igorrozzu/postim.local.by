@@ -2324,7 +2324,7 @@ body{
     display: flex;
 }
 .profile-user-avatar{
-    margin-right: 30px;
+    margin: auto 30px auto 0;
 }
 .profile-user-avatar img{
     width: 164px;
@@ -2352,6 +2352,10 @@ body{
     align-items: center;
     height: 16px;
     margin-left: 20px;
+}
+.user-profile-points-text{
+  font-size: 12px;
+    margin: 3px 0 0 3px;
 }
 .user-profile-points:before{
     margin-right: 10px;

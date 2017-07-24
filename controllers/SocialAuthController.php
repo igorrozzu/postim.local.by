@@ -47,7 +47,7 @@ class SocialAuthController extends MainController
                     $user = $auth->user;
                     Yii::$app->user->login($user, Yii::$app->params['user.loginDuration']);
                 } else {
-                    $email = /*$attrClient->getEmail()*/null;
+                    $email = $attrClient->getEmail();
                     if($email === null) {
                         if($tempUser = $model->createTempSocialUser($attrClient)) {
                             $key = Yii::$app->security->encryptByKey($tempUser->id, Yii::$app->params['security.encryptionKey']);

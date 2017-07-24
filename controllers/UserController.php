@@ -113,10 +113,11 @@ class UserController extends MainController
         if(Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             $model = new UploadUserPhoto();
             $model->imageFile = UploadedFile::getInstanceByName('user-photo');
-            if ($model->upload()) {
+            $user = Yii::$app->user->identity;
+            if ($model->upload($user)) {
                 return $this->asJson([
                     'success' => true,
-                    'pathToPhoto' => Yii::$app->user->identity->getPhoto() . '?' . time(),
+                    'pathToPhoto' => $user->getPhoto(),
                     'message' => 'Изменения сохранены',
                 ]);
             } else {

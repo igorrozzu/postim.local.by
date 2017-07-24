@@ -3,6 +3,7 @@
 namespace app\models\uploads;
 
 use app\components\ImageHelper;
+use app\models\User;
 use Yii;
 use yii\base\Model;
 use yii\helpers\FileHelper;
@@ -26,17 +27,18 @@ class UploadUserPhoto extends Model
         ];
     }
 
-    public function upload()
+    public function upload($user)
     {
         if ($this->validate()) {
-            $id = Yii::$app->user->getId();
-            $dir = Yii::getAlias('@webroot/user_photo/' . $id . '/');
+            $dir = Yii::getAlias('@webroot/user_photo/' . $user->getId() . '/');
             if(!is_dir($dir)){
                 FileHelper::createDirectory($dir);
             }
             $pathToPhoto = $dir . Yii::$app->params['user.photoName'];
             if($this->imageFile->saveAs($pathToPhoto)) {
                 ImageHelper::createSquarePicture($pathToPhoto);
+                $user->photo_hash = time();
+                $user->save();
             }
             return true;
         } else {
