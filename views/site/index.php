@@ -12,7 +12,7 @@ use \app\components\ListCityWidget\ListCityWidget;
     <h1 class="h1-c center-mx">Сервис поиска и добовления интересных мест,
         карта достопримечательностей Беларуси</h1>
     <?=MainMenuWidget::widget(['typeMenu'=>MainMenuWidget::$catalogMenu])?>
-    <?php if(count($spotlight)):?>
+    <?php if($spotlight->totalCount):?>
     <h2 class="h2-c">В центре внимания</h2>
     <div class="cards-block">
         <?=CardsPlaceWidget::widget(['dataprovider'=>$spotlight,'settings'=>['show-more-btn'=>false]])?>

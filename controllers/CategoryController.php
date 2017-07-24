@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\MainController;
 use app\models\Posts;
 use app\models\PostsSearch;
 use Yii;
-use yii\data\Pagination;
+use app\components\Pagination;
+use yii\helpers\Url;
 use yii\web\Controller;
 
 class CategoryController extends MainController
@@ -22,8 +24,12 @@ class CategoryController extends MainController
 
         $searchModel = new PostsSearch();
         $pagination = new Pagination([
-            'pageSize' => Yii::$app->request->get('per-page', 16),
+            'pageSize' => Yii::$app->request->get('per-page', 2),
             'page' => Yii::$app->request->get('page', 1)-1,
+            'route'=>Yii::$app->request->getPathInfo(),
+            'selfParams'=>[
+                'sort'=>true,
+            ]
         ]);
 
         $paramSort = Yii::$app->request->get('sort', 'rating');
@@ -44,7 +50,12 @@ class CategoryController extends MainController
             'url'=> $url
         ];
 
-        return $this->render('index',$params);
+        if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
+            echo CardsPlaceWidget::widget(['dataprovider' => $dataProvider,'settings'=>['show-more-btn'=>true]]);
+        }else{
+            return $this->render('index',$params);
+        }
+
     }
 
 }

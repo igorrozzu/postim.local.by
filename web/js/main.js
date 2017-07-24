@@ -29,7 +29,7 @@ var Main = (function (window, document, undefined,$) {
             offPjaxEvents:function () {
                 // init pjax ленты категорий
                 $(document).off('click','#feed-category .block-sort a');
-                $(document).pjax("#feed-category a", "#feed-category", {"push":true,"replace":false,"timeout":60000,"scrollTo":false});
+                $(document).pjax("#feed-category a", "#feed-category", {"push":false,"replace":false,"timeout":60000,"scrollTo":false});
 
                 // init pjax настроек
                 $(document).off('click','#pjax-container-settings a');

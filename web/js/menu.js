@@ -100,6 +100,10 @@ var Menu = (function (window, document, undefined,$) {
                         $(this).addClass('selected');
 
                     })
+
+                    $(document).on('click','.menu-category-item a',function () {
+                        authMenu.unselectProfileMenu();
+                    });
                 })
 
             },
@@ -115,6 +119,13 @@ var Menu = (function (window, document, undefined,$) {
                 }else {
                     $elem.parent().find(".menu-category-item:first-child").addClass('selected');
                 }
+            },
+            unselectAllCategory:function () {
+                var $item = $('.menu-category').find('.menu-category-open');
+                $item.removeClass('menu-category-open');
+                $item.find('.menu-category-items').css('height', '0');
+                $item.find('.close-list-btn').attr('class', 'open-list-btn');
+                $item.find('.selected').removeClass('selected');
             }
         }
 

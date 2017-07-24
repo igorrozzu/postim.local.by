@@ -2,6 +2,7 @@
     use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
 
+
     $data = $dataprovider->getModels();
     $countPosts= count($data);
 ?>
@@ -36,14 +37,17 @@
     </div>
 <?php endforeach;?>
 
-<?php if($this->context->settings['show-more-btn'] && ($dataprovider->pagination->getPageSize() == $countPosts)):?>
-    <div class="replace-block mg-btm-30">
-        <div class="btn-show-more">Показать больше мест</div>
-    </div>
-<?php else:?>
-    <div class="replace-block mg-btm-30">
+<?php if($this->context->settings['show-more-btn']):?>
+    <?php if ($hrefNext = $dataprovider->pagination->getLinks()['next']??false): ?>
+        <div class="replace-block mg-btm-30" id="feed-posts">
+            <div class="btn-show-more" data-selector_replace="#feed-posts" data-href="<?=$hrefNext?>">Показать больше мест</div>
+        </div>
 
-    </div>
+    <?php else:?>
+        <div class="replace-block mg-btm-30">
+
+        </div>
+    <?php endif; ?>
 <?php endif;?>
 
 

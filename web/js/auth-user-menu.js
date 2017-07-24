@@ -23,9 +23,17 @@ var authUserMenu = (function (window, document, undefined,$) {
                         $('.right-menu-profile').animate({right:'-300px',top:'0px'},200);
                         e.stopPropagation();
                     })
+                    $(document).on('click','.right-menu-profile .container-item-menu a',function () {
+                        menu.unselectAllCategory();
+                        that.unselectProfileMenu();
+                        $(this).parents('.container-item-menu').addClass('selected');
+                    })
                 })
 
 
+            },
+            unselectProfileMenu:function () {
+                $('.right-menu-profile .container-item-menu').removeClass('selected');
             },
 
             notificationMenuInit:function () {

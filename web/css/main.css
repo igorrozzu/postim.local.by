@@ -2788,7 +2788,8 @@ body{
     display: flex;
     align-items: center;
 }
-.container-item-menu a:hover{
+.container-item-menu a:hover,
+.container-item-menu.selected a{
     color: #4b98df;
 }
 .container-item-menu a:last-child{

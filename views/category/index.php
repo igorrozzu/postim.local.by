@@ -21,19 +21,18 @@ use \yii\widgets\Pjax;
 <?php
 Pjax::begin([
     'timeout' => 60000,
-    'enablePushState' => true,
+    'enablePushState' => false,
     'id' => 'feed-category',
     'linkSelector' => '#feed-category .block-sort a',
-    'enableReplaceState'=>true,
     'formSelector' => false,
 ])
 ?>
 <div class="block-flex-white">
     <div class="block-content">
         <div class="block-sort">
-            <div class="btn-sort <?=$sort=='rating'?'active':''?>"><a href="<?=$url?>">По рейтингу</a></div>
-            <div class="btn-sort <?=$sort=='new'?'active':''?>"><a href="<?=$url.'?sort=new'?>">Новые</a></div>
-            <div class="btn-sort <?=$sort=='nigh'?'active':''?>"><a href="<?=$url.'?sort=nigh'?>">Рядом</a></div>
+            <a href="<?=$url?>" class="btn-sort <?=$sort=='rating'?'active':''?>">По рейтингу</a>
+            <a href="<?=$url.'?sort=new'?>" class="btn-sort <?=$sort=='new'?'active':''?>">Новые</a>
+            <a href="<?=$url.'?sort=nigh'?>" class="btn-sort <?=$sort=='nigh'?'active':''?>">Рядом</a>
         </div>
     </div>
 </div>

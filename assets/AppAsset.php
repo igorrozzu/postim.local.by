@@ -34,6 +34,8 @@ class AppAsset extends AssetBundle
         'js/menu.js',
         'js/list-city.js',
         'js/libs/jquery.toastmessage.js',
+        'js/show-more.js',
+        'js/category.js'
 
     ];
     public $depends = [
