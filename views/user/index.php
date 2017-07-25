@@ -25,16 +25,14 @@
                 <div class="info-city">
                     <?php if (isset($user->city)):?>
                         <?=$user->city->name?>
-                    <?php else: ?>
-                        Не установлен
                     <?php endif;?>
                 </div>
                 <div class="block-social-info">
-                    <a class="vk-icon"></a>
-                    <a class="ok-icon"></a>
-                    <a class="fb-icon"></a>
-                    <a class="inst-icon"></a>
-                    <a class="tw-icon"></a>
+                    <?php foreach($user->socialBindings ?? [] as $binding):?>
+                        <?php if($binding->source === 'google') continue;?>
+                        <a class="<?=$binding->source?>-icon"
+                           href="<?=$binding->createSocialUrl()?>" target="_blank"></a>
+                    <?php endforeach;?>
                 </div>
             </div>
         </div>

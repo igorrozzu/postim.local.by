@@ -1362,16 +1362,20 @@ body{
     margin-right: 0px;
 }
 
-.fb-icon:after{
+.fb-icon:after,
+.facebook-icon:after{
     content: url("../img/fb-icon30x30.png");
 }
-.vk-icon:after{
+.vk-icon:after,
+.vkontakte-icon:after{
     content: url("../img/vk-icon30x30.png");
 }
-.tw-icon:after{
+.tw-icon:after,
+.twitter-icon:after{
     content: url("../img/tw-icon30x30.png");
 }
-.ok-icon:after{
+.ok-icon:after,
+.odnoklassniki-icon:after{
     content: url("../img/ok-icon30x30.png");
 }
 .inst-icon:after{

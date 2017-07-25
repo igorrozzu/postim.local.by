@@ -22,7 +22,7 @@ class UserController extends MainController
     public function actionIndex($id)
     {
         $user = User::find()
-            ->with(['userInfo', 'city'])
+            ->with(['userInfo', 'city', 'socialBindings'])
             ->where(['tbl_users.id' => $id])
             ->one();
 
