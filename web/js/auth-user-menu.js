@@ -9,9 +9,31 @@ var authUserMenu = (function (window, document, undefined,$) {
                    type: 'GET',
                    data: 'time=' + time,
                    success: function (response) {
-                       container.replaceWith(response);
+                       container.replaceWith(response.rendering);
+                       methods.changeNoticeBlock(response.notifCount);
                    }
                 });
+            },
+            sendRequestOfGettingCountNotification: function () {
+                $.ajax('/notification/get-count-notifications', {
+                    type: 'POST',
+                    success: function (response) {
+                        methods.changeNoticeBlock(response);
+                    }
+                });
+            },
+            changeNoticeBlock: function (noticeCount) {
+                var container = $('.btn-notice');
+                var countNoticeBlock = container.find('.count-notice');
+                if(noticeCount > 0) {
+                    if(countNoticeBlock.length) {
+                        countNoticeBlock.text(noticeCount);
+                    } else {
+                        container.html('<span class="count-notice">' + noticeCount + '</span>')
+                    }
+                } else {
+                    countNoticeBlock.remove();
+                }
             },
             resetNotifMenu: function () {
                 $('.notif-menu .notif-content').replaceWith(
@@ -111,12 +133,16 @@ var authUserMenu = (function (window, document, undefined,$) {
                     $('.container-blackout-popup-window').hide();
                 });
             },
+            updatingNotificationInit: function() {
+                setInterval(methods.sendRequestOfGettingCountNotification, 1000 * 30);
+            },
 
             init: function () {
                 that.customScrollbarInit();
                 that.userProfileMenuInit();
                 that.notificationMenuInit();
                 that.closeNotificationFormHandler();
+                //that.updatingNotificationInit();
             }
         };
         return that;

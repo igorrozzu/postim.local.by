@@ -1,9 +1,8 @@
 <?php
-$data = $dataProvider->getModels();
 $currentPage = $dataProvider->pagination->getPage() + 1;
 $pageCount = $dataProvider->pagination->getPageCount();
 ?>
-<?php foreach ($dataProvider->getModels() as $item):?>
+<?php foreach ($notifications as $item):?>
 <div class="notif-item">
     <img src="<?=$item->sender->getPhoto();?>" class="user-icon">
     <div class="user-info">

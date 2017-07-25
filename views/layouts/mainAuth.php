@@ -5,6 +5,7 @@
 
 use app\assets\AuthUserAsset;
 use app\assets\LoginFormsAsset;
+use app\models\Notification;
 use yii\helpers\Html;
 use app\assets\AppAsset;
 use app\assets\CustomScrollbarAsset;
@@ -19,6 +20,7 @@ CustomScrollbarAsset::register($this);
 AuthUserAsset::register($this);
 
 $user = Yii::$app->user->identity;
+$countNotif = Notification::getCountNotifications();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -48,7 +50,11 @@ $user = Yii::$app->user->identity;
         <div class="profile-icon-menu">
             <img class="round-img" src="<?=$user->getPhoto()?>">
         </div>
-        <div class="btn-notice active"><span class="count-notice">12</span></div>
+        <div class="btn-notice active">
+            <?php if($countNotif > 0): ?>
+            <span class="count-notice"><?=$countNotif?></span>
+            <?php endif;?>
+        </div>
         <div class="btn_add_place"></div>
         <div class="search_block">
             <input class="search" type="text" placeholder="Поиск">

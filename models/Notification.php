@@ -30,7 +30,7 @@ class Notification extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'message', 'sender_id'], 'required'],
-            [['user_id', 'sender_id', 'date'], 'integer'],
+            [['user_id', 'sender_id', 'date', 'read'], 'integer'],
         ];
     }
 
@@ -62,5 +62,32 @@ class Notification extends \yii\db\ActiveRecord
     public function getSender()
     {
         return $this->hasOne(User::className(), ['id' => 'sender_id']);
+    }
+
+    public static function markAsRead(array $notifications): int
+    {
+        $ids = [];
+        foreach ($notifications as $item) {
+            if(!$item->isRead()) $ids[] = $item->id;
+        }
+        if(count($ids) > 0) {
+            return Notification::updateAll(['read' => 1], ['in', 'id', $ids]);
+        }
+
+        return 0;
+    }
+
+    public static function getCountNotifications(): int
+    {
+        return Notification::find()
+            ->where([
+                'user_id' => Yii::$app->user->id,
+                'read' => 0
+            ])->count();
+    }
+
+    public function isRead()
+    {
+        return (bool) $this->read;
     }
 }
