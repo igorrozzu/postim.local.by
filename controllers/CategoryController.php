@@ -44,10 +44,13 @@ class CategoryController extends MainController
 
         $url = $this->under_category?$this->under_category['url_name']:$this->category['url_name'];
 
+        $breadcrumbParams = $this->getParamsForBreadcrumb();
+
         $params=[
             'dataProvider'=>$dataProvider,
             'sort'=>$paramSort,
-            'url'=> $url
+            'url'=> $url,
+            'breadcrumbParams'=>$breadcrumbParams,
         ];
 
         if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
@@ -56,6 +59,43 @@ class CategoryController extends MainController
             return $this->render('index',$params);
         }
 
+    }
+
+    private function getParamsForBreadcrumb(){
+        $breadcrumbParams=[];
+
+        $currentUrl = Yii::$app->getRequest()->getHostInfo();
+        $breadcrumbParams[] = [
+            'name' => ucfirst(Yii::$app->getRequest()->serverName),
+            'url_name' => $currentUrl,
+            'pjax' => false
+        ];
+
+        if($city = Yii::$app->request->get('city')){
+            $currentUrl=$currentUrl.'/'.$city['url_name'];
+            $breadcrumbParams[]=[
+                'name'=>$city['name'],
+                'url_name'=>$currentUrl,
+                'pjax'=>false
+            ];
+        }
+
+        $breadcrumbParams[]=[
+            'name'=>$this->category['name'],
+            'url_name'=>$currentUrl.'/'.$this->category['url_name'],
+            'pjax'=>true
+        ];
+
+        if($this->under_category){
+            $breadcrumbParams[]=[
+                'name'=>$this->under_category['name'],
+                'url_name'=>$currentUrl.'/'.$this->under_category['url_name'],
+                'pjax'=>true
+            ];
+        }
+
+
+        return $breadcrumbParams;
     }
 
 }

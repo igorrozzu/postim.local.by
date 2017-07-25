@@ -4,18 +4,13 @@ use \app\components\cardsPlaceWidget\CardsPlaceWidget;
 use \app\components\cardsNewsWidget\CardsNewsWidget;
 use \app\components\ListCityWidget\ListCityWidget;
 use \yii\widgets\Pjax;
+use \app\components\breadCrumb\BreadCrumb;
 ?>
 <div class="margin-top60"></div>
 <div id="map_block" class="block-map"></div>
 
 <div class="block-content">
-    <div class="bread-crumb">
-        <a href="#">Главная</a>
-        <span class="separator"></span>
-        <a class="pre" href="#">Где поесть</a>
-        <span class="separator"></span>
-        <a href="#">Рестораны</a>
-    </div>
+    <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v">Рестораны Беларуси</h1>
 </div>
 <?php
@@ -42,6 +37,21 @@ Pjax::begin([
     </div>
 </div>
 <?php
+$settings= [
+        'select_category'=>$this->context->category ?? false,
+        'select_under_category'=>$this->context->under_category ?? false
+];
+
+if ($settings['select_category']) {
+    $select_category = $settings["select_category"]['name'];
+    $select_under_category = $settings["select_under_category"]['name'] ?? 'NuN';
+$js = <<<js
+        $(document).ready(function() {
+          menu.openCategoryInLeftMenu('$select_category','$select_under_category')
+        });
+js;
+}
+echo "<script>$js</script>";
 
 Pjax::end();
 

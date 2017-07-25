@@ -18,10 +18,6 @@ class MainMenuWidget extends Widget
     public $dataprovider=[];
     public $typeMenu = null;
 
-    public $select_category=false;
-    public $select_under_category=false;
-
-
     public static $leftMenu='leftMenu';
     public static $catalogMenu='catalogMenu';
 
@@ -48,10 +44,6 @@ class MainMenuWidget extends Widget
     {
         echo $this->render('index',[
             'dataprovider'=>$this->dataprovider,
-            'settings'=>[
-                'select_category'=>$this->select_category,
-                'select_under_category'=>$this->select_under_category
-            ]
         ]);
     }
     public function getViewPath()

@@ -32,12 +32,7 @@ LoginFormsAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<?=MainMenuWidget::widget(
-        [
-            'select_category'=>$this->context->category ?? false,
-            'select_under_category'=>$this->context->under_category ?? false
-        ]
-); ?>
+<?=MainMenuWidget::widget(); ?>
 
 <!--верхнее меню-->
 <div class="container-header">
@@ -62,6 +57,7 @@ Pjax::begin([
     'id' => 'main-view-container',
     'linkSelector' => '.main-pjax a',
     'formSelector' => false,
+    'scrollTo'=>1
 ]);
 echo $content;
 Pjax::end();

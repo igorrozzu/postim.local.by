@@ -102,12 +102,15 @@ var Menu = (function (window, document, undefined,$) {
                     })
 
                     $(document).on('click','.menu-category-item a',function () {
-                        authMenu.unselectProfileMenu();
+                        setTimeout(function () {
+                            $( ".close-main-menu" ).trigger( "click" );
+                        },100)
                     });
                 })
 
             },
             openCategoryInLeftMenu:function (category,under_category) {
+                that.unselectAllCategory();
 
                 var $elem = $(".category-list-title[data-category_name='"+category+"']");
                 $elem.find('span').attr('class', 'close-list-btn');

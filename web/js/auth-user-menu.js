@@ -49,7 +49,14 @@ var authUserMenu = (function (window, document, undefined,$) {
                         menu.unselectAllCategory();
                         that.unselectProfileMenu();
                         $(this).parents('.container-item-menu').addClass('selected');
+                        setTimeout(function () {
+                            $( ".right-menu-profile .btn-close" ).trigger( "click" );
+                        },100)
                     })
+
+                    $(document).on('click','.menu-category-item a',function () {
+                        that.unselectProfileMenu();
+                    });
                 })
 
 

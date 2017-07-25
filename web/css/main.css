@@ -1000,7 +1000,8 @@ body{
 .separator:after{
     color: #adcdfe;
     content: "/";
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 .block-flex-white{
     width: 100%;

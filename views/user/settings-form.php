@@ -15,7 +15,7 @@ Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => false,
     'id' => 'pjax-container-settings',
-    'linkSelector' => '#pjax-container-settings a',
+    'linkSelector' => false,
     'formSelector' => '#pjax-container-settings form',
 ]);
 ?>

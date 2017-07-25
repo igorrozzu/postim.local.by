@@ -36,12 +36,7 @@ $user = Yii::$app->user->identity;
 <body>
 <?php $this->beginBody() ?>
 
-<?=MainMenuWidget::widget(
-    [
-        'select_category'=>$this->context->category ?? false,
-        'select_under_category'=>$this->context->under_category ?? false
-    ]
-); ?>
+<?=MainMenuWidget::widget(); ?>
 
 <!--верхнее меню-->
 <div class="container-header">
