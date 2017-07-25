@@ -204,6 +204,22 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(City::className(), ['id' =>'city_id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNotificationToMe()
+    {
+        return $this->hasMany(Notification::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNotificationFromMe()
+    {
+        return $this->hasMany(Notification::className(), ['sender_id' => 'id']);
+    }
+
     public function isCityDefined()
     {
         return $this->city_id > 0 && $this->city_id !== self::CITY_NOT_DEFINED;

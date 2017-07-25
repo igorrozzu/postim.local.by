@@ -7,6 +7,7 @@ $config = [
     'timeZone' => 'UTC',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'language' => 'ru-RU',
     'components' => [
         'session' => [
             'class' => 'yii\web\DbSession', //'yii\web\DbSession',
@@ -68,8 +69,14 @@ $config = [
                 ]
             ],
         ],
+
         'city'=>[
             'class' => 'app\components\City',
+        ],
+
+        'formatter' => [
+            'class' => 'app\components\Formatter',
+            'timeZone' => 'UTC',
         ],
 
         'authClientCollection' => require ('authClientCollection.php'),

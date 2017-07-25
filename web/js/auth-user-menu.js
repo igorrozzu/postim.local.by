@@ -1,9 +1,31 @@
 var authUserMenu = (function (window, document, undefined,$) {
 
     return function () {
+        var methods = {
+            sendRequestOfGettingNotification: function (time) {
+                var container = $('.replace-notif-block');
+                var url  = container.attr('href');
+                $.ajax(url, {
+                   type: 'GET',
+                   data: 'time=' + time,
+                   success: function (response) {
+                       container.replaceWith(response);
+                   }
+                });
+            },
+            resetNotifMenu: function () {
+                $('.notif-menu .notif-content').replaceWith(
+                '<div class="notif-content">' +
+                    '<div class="replace-notif-block" href="/notification/index">' +
+                    '<div id="loader-box">' +
+                    '<div class="loader"></div>' +
+                    '</div></div></div>'
+                );
+                that.customScrollbarInit();
+            },
+        };
 
         var that = {
-
             userProfileMenuInit:function () {
                 var rightMenu={isOpen:false};
                 $(document).ready(function () {
@@ -38,27 +60,38 @@ var authUserMenu = (function (window, document, undefined,$) {
 
             notificationMenuInit:function () {
                 var notifMenu={
-                    isOpen:false, width: '-484px', openTime: 200
+                    isOpen:false, width: '-484px', openTime: 200, pointTime: null
                 };
                 $(document).ready(function () {
                     $(document).on('click','.btn-notice,.right-arrow',function () {
                         if(!notifMenu.isOpen){
                             notifMenu.isOpen=true;
+                            notifMenu.pointTime = Math.floor(Date.now() / 1000);
                             $('.notif-menu').animate({right:'0px', top:'0px'}, notifMenu.openTime);
                         }else {
                             notifMenu.isOpen=false;
-                            $('.notif-menu').animate({right:notifMenu.width, top:'0px'}, notifMenu.openTime);
+                            $('.notif-menu').animate({right:notifMenu.width, top:'0px'}, {
+                                duration: notifMenu.openTime,
+                                complete: methods.resetNotifMenu
+                            });
                         }
                     });
+
                     $(document).click(function (e) {
                         if ($(e.target).closest(".notif-menu,.btn-notice").length) return;
                         notifMenu.isOpen=false;
-                        $('.notif-menu').animate({right:notifMenu.width, top:'0px'}, notifMenu.openTime);
+                        $('.notif-menu').animate({right:notifMenu.width, top:'0px'},  {
+                            duration: notifMenu.openTime,
+                            complete: methods.resetNotifMenu
+                        });
                         e.stopPropagation();
                     });
 
-                })
+                    $(document).on('click', '.btn-notice,.replace-notif-block .bottom-btn', function () {
+                        methods.sendRequestOfGettingNotification(notifMenu.pointTime);
+                    })
 
+                })
             },
             customScrollbarInit: function(){
                 $(document).ready(function () {

@@ -9,6 +9,7 @@ namespace app\commands;
 
 use app\models\Category;
 use app\models\City;
+use app\models\Notification;
 use app\models\Region;
 use app\models\UnderCategory;
 use yii\console\Controller;
@@ -89,6 +90,25 @@ class HelloController extends Controller
             }
             fclose($handle);
         }
+    }
+
+    public function actionInsertNotif($idFrom, $idTo, $count){
+        for ($i = 0; $i < $count; $i++) {
+            $notif = new Notification();
+            $notif->user_id = $idTo;
+            $notif->sender_id = $idFrom;
+            $notif->message = json_encode([
+                'type' => 'xz',
+                'data' => 'Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>'
+            ]);
+            $notif->date = time();
+            if ($notif->validate() && $notif->save()) {
+                echo 'Notif ' . $notif->id . " была сохранена\n\r";
+            } else {
+                echo 'Notif ' . $notif->id . " не была сохранена\n\r";
+            }
+        }
+
     }
 
 
