@@ -1,9 +1,12 @@
 <?php
+$data = $dataProvider->getModels();
 $currentPage = $dataProvider->pagination->getPage() + 1;
 $pageCount = $dataProvider->pagination->getPageCount();
 ?>
-<?php foreach ($notifications as $item):?>
-<div class="notif-item">
+<?php foreach ($data as $item):?>
+<div class="notif-item
+    <?php if(!$item->isRead())
+        echo 'notif-not-read'?>">
     <img src="<?=$item->sender->getPhoto();?>" class="user-icon">
     <div class="user-info">
         <p class="notif-username"><?=$item->sender->name . ' ' . $item->sender->surname;?></p>

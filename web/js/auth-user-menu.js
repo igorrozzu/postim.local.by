@@ -10,7 +10,6 @@ var authUserMenu = (function (window, document, undefined,$) {
                    data: 'time=' + time,
                    success: function (response) {
                        container.replaceWith(response.rendering);
-                       methods.changeNoticeBlock(response.notifCount);
                    }
                 });
             },
@@ -22,20 +21,40 @@ var authUserMenu = (function (window, document, undefined,$) {
                     }
                 });
             },
+            sendRequestOfMarkNotifAsRead: function () {
+                $.ajax('/notification/mark-as-read', {
+                    type: 'POST',
+                    success: function (response) {
+                        if (response < 0) {
+                            console.log('Error marking of notification');
+                        } else {
+                            that.updatingNotificationOn();
+                        }
+                    }
+                });
+            },
             changeNoticeBlock: function (noticeCount) {
                 var container = $('.btn-notice');
                 var countNoticeBlock = container.find('.count-notice');
+                var currentNotifCount = parseInt(countNoticeBlock.text());
                 if(noticeCount > 0) {
-                    if(countNoticeBlock.length) {
-                        countNoticeBlock.text(noticeCount);
-                    } else {
-                        container.html('<span class="count-notice">' + noticeCount + '</span>')
+                    if(noticeCount !== currentNotifCount) {
+                        if (countNoticeBlock.length) {
+                            countNoticeBlock.text(noticeCount);
+                        } else {
+                            container.html('<span class="count-notice">' + noticeCount + '</span>')
+                        }
+                        container.removeClass('btn-notice-unactive').addClass('btn-notice-active');
                     }
                 } else {
-                    countNoticeBlock.remove();
+                    if(countNoticeBlock.length) {
+                        countNoticeBlock.remove();
+                        container.removeClass('btn-notice-active').addClass('btn-notice-unactive');
+                    }
                 }
             },
             resetNotifMenu: function () {
+                methods.sendRequestOfMarkNotifAsRead();
                 $('.notif-menu .notif-content').replaceWith(
                 '<div class="notif-content">' +
                     '<div class="replace-notif-block" href="/notification/index">' +
@@ -48,6 +67,8 @@ var authUserMenu = (function (window, document, undefined,$) {
         };
 
         var that = {
+            intervalId: null,
+            intervalTime: 1000 * 10,
             userProfileMenuInit:function () {
                 var rightMenu={isOpen:false};
                 $(document).ready(function () {
@@ -108,17 +129,24 @@ var authUserMenu = (function (window, document, undefined,$) {
 
                     $(document).click(function (e) {
                         if ($(e.target).closest(".notif-menu,.btn-notice").length) return;
-                        notifMenu.isOpen=false;
-                        $('.notif-menu').animate({right:notifMenu.width, top:'0px'},  {
-                            duration: notifMenu.openTime,
-                            complete: methods.resetNotifMenu
-                        });
-                        e.stopPropagation();
+                        if(notifMenu.isOpen) {
+                            notifMenu.isOpen = false;
+                            $('.notif-menu').animate({right: notifMenu.width, top: '0px'}, {
+                                duration: notifMenu.openTime,
+                                complete: methods.resetNotifMenu
+                            });
+                            e.stopPropagation();
+                        }
                     });
 
                     $(document).on('click', '.btn-notice,.replace-notif-block .bottom-btn', function () {
                         methods.sendRequestOfGettingNotification(notifMenu.pointTime);
-                    })
+                    });
+
+                    $(document).on('click', '.btn-notice', function () {
+                        that.updatingNotificationOff();
+                        methods.changeNoticeBlock(0);
+                    });
 
                 })
             },
@@ -133,16 +161,18 @@ var authUserMenu = (function (window, document, undefined,$) {
                     $('.container-blackout-popup-window').hide();
                 });
             },
-            updatingNotificationInit: function() {
-                setInterval(methods.sendRequestOfGettingCountNotification, 1000 * 30);
+            updatingNotificationOn: function() {
+                //this.intervalId = setInterval(methods.sendRequestOfGettingCountNotification, this.intervalTime);
             },
-
+            updatingNotificationOff: function() {
+                clearInterval(this.intervalId);
+            },
             init: function () {
                 that.customScrollbarInit();
                 that.userProfileMenuInit();
                 that.notificationMenuInit();
                 that.closeNotificationFormHandler();
-                //that.updatingNotificationInit();
+                that.updatingNotificationOn();
             }
         };
         return that;

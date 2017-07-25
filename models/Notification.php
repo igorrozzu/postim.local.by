@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "tbl_notification".
@@ -64,17 +65,16 @@ class Notification extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'sender_id']);
     }
 
-    public static function markAsRead(array $notifications): int
+    public static function markAsRead(): int
     {
-        $ids = [];
-        foreach ($notifications as $item) {
-            if(!$item->isRead()) $ids[] = $item->id;
+        try {
+            return Notification::updateAll(['read' => 1], [
+                'user_id' => Yii::$app->user->id,
+                'read' => 0
+            ]);
+        } catch (Exception $e) {
+            return -1;
         }
-        if(count($ids) > 0) {
-            return Notification::updateAll(['read' => 1], ['in', 'id', $ids]);
-        }
-
-        return 0;
     }
 
     public static function getCountNotifications(): int
