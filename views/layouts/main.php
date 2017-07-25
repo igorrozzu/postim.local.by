@@ -25,7 +25,7 @@ LoginFormsAsset::register($this);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <?= Html::csrfMetaTags() ?>
-    <title></title>
+    <title><?=$this->title?></title>
     <?php $this->head() ?>
     <?php $this->registerAssetBundle('yii\web\JqueryAsset',yii\web\View::POS_HEAD); ?>
 </head>

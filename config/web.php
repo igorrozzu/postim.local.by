@@ -69,6 +69,17 @@ $config = [
                 ]
             ],
         ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'fileMap' => [
+                        'app'       => 'app.php',
+                        'app/locativus' =>'locativus.php'
+                    ],
+                ],
+            ],
+        ],
 
         'city'=>[
             'class' => 'app\components\City',

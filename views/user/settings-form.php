@@ -111,12 +111,12 @@ Pjax::begin([
                 <?php $activeBinding = SocialAuth::findBySource($socialBindings, $client->getName())?>
                 <div class="icon-social icon-<?=$client->getName()?>-30">
                     <?php if($activeBinding): ?>
-                        <a class="to-plug" target="_blank" href="<?=$activeBinding->createSocialUrl()?>">
+                        <a class="to-plug" target="_blank" data-pjax=0 href="<?=$activeBinding->createSocialUrl()?>">
                             <?=($activeBinding->screen_name !== '') ?
                                 $activeBinding->screen_name : $activeBinding->source_id?>
                         </a>
                     <?php else: ?>
-                        <a class="to-plug" href="<?= $authAuthChoice->createClientUrl($client) ?>">Подключить</a>
+                        <a class="to-plug" data-pjax= 0 href="<?= $authAuthChoice->createClientUrl($client) ?>">Подключить</a>
                     <?php endif;?>
                 </div>
             <?php endforeach; ?>

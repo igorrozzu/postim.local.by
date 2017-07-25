@@ -11,7 +11,12 @@ use \app\components\breadCrumb\BreadCrumb;
 
 <div class="block-content">
     <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
-    <h1 class="h1-v">Рестораны Беларуси</h1>
+    <?php
+        $categoryText = $this->context->under_category?$this->context->under_category['name']:$this->context->category['name'];
+        $h1_text=$categoryText.' в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']);
+        $this->title = $h1_text;
+    ?>
+    <h1 class="h1-v"><?=$h1_text?></h1>
 </div>
 <?php
 Pjax::begin([
