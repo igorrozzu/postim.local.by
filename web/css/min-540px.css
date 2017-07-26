@@ -87,25 +87,7 @@
     height: 35px;
     border-radius: 15px;
 }
-.btn-notice:after{
-    width:23px;
-    height: 27px;
-    background-image: url('../img/icon-btn-notice-22p.png');
-    background-position: 0 0;
-}
-.btn-notice:hover:after{
-    background-image: url('../img/icon-btn-notice-22p.png');
-    background-position: 23px 0;
-}
-.btn-notice.active:after{
-    height: 27px;
-    background-image: url("../img/icon-btn-notice-active22p.png");
-    background-position: 0 0;
-}
-.btn-notice.active:hover:after{
-    background-image: url("../img/icon-btn-notice-active22p.png");
-    background-position: 23px 0;
-}
+
 .block-social{
     width: 100%;
 }

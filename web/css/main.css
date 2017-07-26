@@ -230,17 +230,19 @@ body{
     cursor: pointer;
     margin-left: 30px;
 }
+.btn-notice-unactive{
+    background-image: url("../img/icon-btn-notice.png");
+}
+.btn-notice-active{
+    background-image: url("../img/icon-btn-notice-active.png");
+}
 .btn-notice:after{
     content: '';
     height: 30px;
     width: 26px;
-    background-image: url("../img/icon-btn-notice.png");
-    background-position: 0 0;
 }
-.btn-notice.active:after{
-    background-image: url("../img/icon-btn-notice-active.png");
-}
-.btn-notice:hover:after{
+
+.btn-notice:hover{
     background-position: 26px 0;
 }
 .count-notice{
@@ -2847,7 +2849,10 @@ body{
 .notif-item{
     display: flex;
     align-items: stretch;
-    margin: 30px;
+    padding: 30px;
+}
+.notif-not-read{
+    background-color: #f1f4fd;
 }
 .user-icon{
     height: 26px;

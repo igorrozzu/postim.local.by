@@ -50,7 +50,7 @@ $countNotif = Notification::getCountNotifications();
         <div class="profile-icon-menu">
             <img class="round-img" src="<?=$user->getPhoto()?>">
         </div>
-        <div class="btn-notice active">
+        <div class="btn-notice btn-notice-<?=($countNotif === 0) ? 'un': '' ?>active">
             <?php if($countNotif > 0): ?>
             <span class="count-notice"><?=$countNotif?></span>
             <?php endif;?>

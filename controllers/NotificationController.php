@@ -2,13 +2,13 @@
 
 namespace app\controllers;
 
-use app\components\MainController;
+use app\components\AuthController;
 use app\models\Notification;
 use app\models\NotificationSearch;
 use Yii;
 use yii\data\Pagination;
 
-class NotificationController extends MainController
+class NotificationController extends AuthController
 {
     public function actionIndex()
     {
@@ -21,19 +21,20 @@ class NotificationController extends MainController
             Yii::$app->request->queryParams,
             $pagination
         );
-        $notifications = $dataProvider->getModels();
-        Notification::markAsRead($notifications);
         $json = new \stdClass();
         $json->rendering = $this->renderPartial('index', [
-            'dataProvider' => $dataProvider,
-            'notifications' => $notifications
+            'dataProvider' => $dataProvider
         ]);
-        $json->notifCount = Notification::getCountNotifications();
         return $this->asJson($json);
     }
 
     public function actionGetCountNotifications()
     {
         return Notification::getCountNotifications();
+    }
+
+    public function actionMarkAsRead()
+    {
+        return Notification::markAsRead();
     }
 }
