@@ -39,7 +39,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['name', 'city_id'], 'required'],
             [['name', 'surname'], 'string', 'max' => 25],
             [['email', 'password'], 'string'],
-            [['role', 'city_id', 'has_social_creation', 'has_changing_password', 'photo_hash'], 'integer'],
+            [['role', 'city_id', 'has_social_creation', 'has_changing_password',
+                'photo_hash', 'timezone_offset_in_hour'], 'integer'],
             [['password_reset_token'], 'string', 'max' => 100],
         ];
     }
@@ -253,5 +254,21 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->name = mb_substr($this->name, 0, $length);
         $this->surname = mb_substr($this->surname, 0, $length);
+    }
+
+    public function setTimezoneOffset()
+    {
+        $cookie = Yii::$app->request->cookies->get('timezone_offset');
+        if(isset($cookie)) {
+            $timezoneOffset = (int)$cookie->value;
+            if ($this->timezone_offset_in_hour !== $timezoneOffset) {
+                $this->timezone_offset_in_hour = $timezoneOffset;
+                $this->save();
+            }
+        }
+    }
+    public function getTimezoneInSeconds()
+    {
+        return $this->timezone_offset_in_hour * 3600;
     }
 }

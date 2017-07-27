@@ -88,6 +88,7 @@ class LoginModel extends Model
     public function login()
     {
         if ($this->validate()) {
+            $this->getUser()->setTimezoneOffset();
             return Yii::$app->user->login($this->getUser(), Yii::$app->params['user.loginDuration']);
         }
         return false;
