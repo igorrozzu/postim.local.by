@@ -64,7 +64,7 @@
 .menu-btns-card{
     padding: 15px 0;
 }
-.btn2-menu:hover {
+.btn2-menu:hover, .btn2-menu-active {
     box-shadow: 0px 0px 0px 0px  #a7c9ff;
 }
 

@@ -38,7 +38,14 @@ Pjax::begin([
 </div>
 <div class="block-content">
     <div class="cards-block">
-        <?= CardsPlaceWidget::widget(['dataprovider' => $dataProvider,'settings'=>['show-more-btn'=>true]]); ?>
+        <?= CardsPlaceWidget::widget([
+            'dataprovider' => $dataProvider,
+            'settings'=>[
+                'show-more-btn'=>true,
+                'replace-container-id' => 'feed-posts',
+                'load-time' => $loadTime,
+            ]
+        ]); ?>
     </div>
 </div>
 <?php

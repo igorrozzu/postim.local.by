@@ -45,7 +45,7 @@ class PostsSearch extends Posts
      *
      * @return ActiveDataProvider
      */
-    public function search($params, Pagination $pagination, Array $sort)
+    public function search($params, Pagination $pagination, Array $sort, $loadTime = null)
     {
         $query = Posts::find()
             ->joinWith('categories.category')
@@ -58,11 +58,20 @@ class PostsSearch extends Posts
             'pagination' => $pagination
         ]);
 
-
-
         if (!$this->load($params,'') && !$this->validate()) {
-
             return $dataProvider;
+        }
+
+        if(isset($params['loadTime']) || isset($loadTime) ){
+            $query->andWhere(['<=', 'tbl_posts.date', $params['loadTime'] ?? $loadTime]);
+        }
+        if(isset($params['id'])){
+            $query->andWhere(['user_id' => $params['id']]);
+        }
+        if(isset($params['moderation']) && $params['moderation'] === '1'){
+            $query->andWhere(['status' => 0]);
+        } else {
+            $query->andWhere(['status' => 1]);
         }
 
         if(!empty($this->city)){

@@ -1,9 +1,15 @@
+<?php
+use app\components\cardsReviewsWidget\CardsReviewsWidget;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
+?>
+
 <div class="margin-top60"></div>
-<div class="block-profile-user">
+<div class="block-profile-user" data-user-id="<?=$user->id?>">
     <div class="block-content">
         <div class="container-profile">
             <div class="profile-user-avatar">
-                <img src="<?=$user->getPhoto();?>">
+                <img src="<?= $user->getPhoto();?>">
             </div>
             <div class="container-profile-info">
                 <div class="name-user">
@@ -51,56 +57,15 @@
         </div>
     </div>
 </div>
-<div class="block-flex-white">
-    <div class="block-content">
-        <div class="menu-btns-card">
-            <div class="btn2-menu">Отзывы</div>
-            <div class="btn2-menu">Комментарии <?=$user->userInfo->total_comments;?></div>
-            <div class="btn2-menu">Места <?=$user->userInfo->count_places_added;?></div>
-            <div class="btn2-menu">На модерации <?=$user->userInfo->count_place_moderation;?></div>
-        </div>
-    </div>
-</div>
-<div class="block-content">
-    <div class="block-reviews">
-        <div class="review-header">
-            <img class="profile-icon60x60" src="img/default-profile-icon.png">
-            <div class="block-between">
-                <div class="block-info-review">
-                    <div class="block-info-review-user">
-                        <p class="user-name">Василий Утконосов</p>
-                        <span class="user-points">123</span>
-                    </div>
-                    <div class="date-time-review">21 февраля в 10:45</div>
-                </div>
-                <div class="block-btn-circle-share">
-                    <div class="btn-circle-share"></div>
-                    <div class="btn-circle-share"></div>
-                    <div class="btn-circle-share"></div>
-                    <div class="btn-circle-share"></div>
-                    <div class="btn-circle-share open-share"></div>
-                </div>
-            </div>
-        </div>
-        <div class="block-review-content">
-            <div class="rating-r bg-r4">4</div>
-            <div class="review-text">Все очень вкусно, пришли, заказали роллы. (Очень вкусные, свежие, сочные) Принесли минут за 10, вежливый
-                персонал. Может потому что будний день, все очень быстро... не знаю. Напитки мгновенно. Нас ничего не
-                смутило. Попробуйте "жареное молоко" из десертов. Вкусно, ням-нам-ням были первый раз. По возможности
-                заглянем ещё.</div>
-        </div>
-        <div class="review-photo" style="background-image: url('testP.png')">
-            <div class="block-total-photo-review">12</div>
-        </div>
-        <div class="review-footer">
-            <div class="review-footer-btn btn-like">2</div>
-            <div class="review-footer-btn btn-comm">Ответить</div>
-            <div class="review-footer-btn">Пожаловаться</div>
-        </div>
-    </div>
-    <div class="review-show-more">
-        <div class="btn-show-more">Показать больше отзывов</div>
-    </div>
-</div>
 
+<?php
+Pjax::begin([
+    'timeout' => 60000,
+    'enablePushState' => false,
+    'id' => 'feeds-of-user',
+    'linkSelector' => '.feeds-btn-bar a',
+    'formSelector' => false,
+]);
+echo $feedReviews;
+Pjax::end();?>
 <div style="margin-bottom:30px;"></div>

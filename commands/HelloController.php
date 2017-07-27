@@ -10,7 +10,9 @@ namespace app\commands;
 use app\models\Category;
 use app\models\City;
 use app\models\Notification;
+use app\models\Posts;
 use app\models\Region;
+use app\models\Reviews;
 use app\models\UnderCategory;
 use yii\console\Controller;
 
@@ -106,6 +108,56 @@ class HelloController extends Controller
                 echo 'Notif ' . $notif->id . " была сохранена\n\r";
             } else {
                 echo 'Notif ' . $notif->id . " не была сохранена\n\r";
+            }
+        }
+
+    }
+
+    public function actionInsertReviews($postId, $userId, $count){
+        for ($i = 0; $i < $count; $i++) {
+            $review = new Reviews([
+                'user_id' => (int)$userId,
+                'post_id' => (int)$postId,
+                'rating' => 4,
+                'like' => 2,
+                'date' => time(),
+                'data' => 'Все очень вкусно, пришли, заказали роллы. (Очень вкусные, свежие, сочные)
+                 Принесли минут за 10, вежливый персонал. Может потому что будний день, все очень 
+                 быстро... не знаю. Напитки мгновенно. Нас ничего не смутило. Попробуйте "жареное 
+                 молоко" из десертов. Вкусно, ням-нам-ням были первый раз. По возможности 
+                 заглянем ещё.',
+            ]);
+
+            if ($review->validate() && $review->save()) {
+                echo 'review ' . $review->id . " была сохранена\n\r";
+            } else {
+                echo 'review ' . $review->id . " не была сохранена\n\r";
+            }
+        }
+
+    }
+
+    public function actionInsertPlaces($userId, $count){
+        for ($i = 0; $i < $count; $i++) {
+            $model = new Posts([
+                'user_id' => (int)$userId,
+                'url_name' => 'zvezda-dav',
+                'city_id' => 1,
+                'cover' => '/post-img/testP.png',
+                'date' => time(),
+                'rating' => 2,
+                'data' => 'Кофе бар довиды',
+                'address' => 'ст. метро Партизанская</br>ул. Белгородского полка, 56а',
+                'count_reviews' => 10,
+                'under_category_id' => 1,
+                'count_favorites' => 15,
+                'status' => 1
+            ]);
+
+            if ($model->validate() && $model->save()) {
+                echo 'model ' . $model->id . " была сохранена\n\r";
+            } else {
+                echo 'model ' . $model->id . " не была сохранена\n\r";
             }
         }
 

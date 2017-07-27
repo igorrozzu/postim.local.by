@@ -2,14 +2,20 @@
 
 namespace app\controllers;
 
-use app\components\MailSender;
+use app\components\cardsPlaceWidget\CardsPlaceWidget;
+use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use app\components\MainController;
 use app\models\City;
+use app\models\Posts;
+use app\models\PostsSearch;
+use app\models\Reviews;
+use app\models\ReviewsSearch;
 use app\models\TempEmail;
 use app\models\uploads\UploadUserPhoto;
 use app\models\User;
 use app\models\UserSettings;
 use Yii;
+use app\components\Pagination;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -26,8 +32,22 @@ class UserController extends MainController
             ->where(['tbl_users.id' => $id])
             ->one();
 
+        $searchModel = new ReviewsSearch();
+        $pagination = new Pagination(['pageSize' => 5, 'page' => 0]);
+        $loadTime = time();
+        $dataProvider = $searchModel->search(
+            Yii::$app->request->queryParams,
+            $pagination,
+            $loadTime
+        );
+        $feedReviews = $this->renderPartial('feed-reviews', [
+            'user' => $user,
+            'dataProvider' => $dataProvider,
+            'loadTime' => $loadTime,
+        ]);
         return $this->render('index', [
-            'user' => $user
+            'user' => $user,
+            'feedReviews' => $feedReviews
         ]);
     }
 
@@ -153,5 +173,86 @@ class UserController extends MainController
         }
         Yii::$app->session->setFlash('render-form-view', 'failed-confirm-email');
         return $this->goHome();
+    }
+
+    public function actionReviews()
+    {
+        if(Yii::$app->request->isAjax) {
+            $searchModel = new ReviewsSearch();
+            $pagination = new Pagination([
+                'pageSize' => Yii::$app->request->get('per-page', 5),
+                'page' => Yii::$app->request->get('page', 0),
+            ]);
+            $loadTime = Yii::$app->request->get('loadTime', time());
+            $dataProvider = $searchModel->search(
+                Yii::$app->request->queryParams,
+                $pagination,
+                $loadTime
+            );
+
+            if(!Yii::$app->request->get('_pjax',false) ){
+                return CardsReviewsWidget::widget([
+                    'dataProvider' => $dataProvider,
+                    'settings' => [
+                        'show-more-btn' => true,
+                        'replace-container-id' => 'feed-reviews',
+                        'load-time' => $loadTime,
+                        'user-id' => Yii::$app->request->get('id'),
+                    ]
+                ]);
+            }else{
+                $user = User::find()
+                    ->with(['userInfo'])
+                    ->where(['tbl_users.id' => Yii::$app->request->get('id')])
+                    ->one();
+                return $this->renderPartial('feed-reviews', [
+                    'user' => $user,
+                    'dataProvider' => $dataProvider,
+                    'loadTime' => $loadTime,
+                ]);
+            }
+        }
+
+    }
+
+    public function actionPlaces()
+    {
+        if(Yii::$app->request->isAjax) {
+            $searchModel = new PostsSearch();
+            $pagination = new Pagination([
+                'pageSize' => Yii::$app->request->get('per-page', 4),
+                'page' => Yii::$app->request->get('page', 1) - 1,
+            ]);
+            $loadTime = Yii::$app->request->get('loadTime', time());
+            $dataProvider = $searchModel->search(
+                Yii::$app->request->queryParams,
+                $pagination,
+                PostsSearch::getSortArray('new'),
+                $loadTime
+            );
+
+            if(!Yii::$app->request->get('_pjax',false) ){
+                return  CardsPlaceWidget::widget([
+                    'dataprovider' => $dataProvider,
+                    'settings' => [
+                        'show-more-btn' => true,
+                        'replace-container-id' => 'feed-posts',
+                        'load-time' => $loadTime
+                    ]
+                ]);
+            }else{
+                $user = User::find()
+                    ->with(['userInfo'])
+                    ->where(['tbl_users.id' => Yii::$app->request->get('id')])
+                    ->one();
+                return $this->renderPartial('feed-places', [
+                    'user' => $user,
+                    'dataProvider' => $dataProvider,
+                    'loadTime' => $loadTime,
+                    'moderation' => Yii::$app->request->get('moderation', null)
+                ]);
+            }
+        }
+
     }
 }

@@ -35,11 +35,12 @@ class CategoryController extends MainController
         $paramSort = Yii::$app->request->get('sort', 'rating');
         $sort = PostsSearch::getSortArray($paramSort);
 
-
+        $loadTime = Yii::$app->request->get('loadTime', time());
         $dataProvider = $searchModel->search(
             Yii::$app->request->queryParams,
             $pagination,
-            $sort
+            $sort,
+            $loadTime
         );
 
         $url = $this->under_category?$this->under_category['url_name']:$this->category['url_name'];
@@ -51,10 +52,18 @@ class CategoryController extends MainController
             'sort'=>$paramSort,
             'url'=> $url,
             'breadcrumbParams'=>$breadcrumbParams,
+            'loadTime' => $loadTime,
         ];
 
         if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
-            echo CardsPlaceWidget::widget(['dataprovider' => $dataProvider,'settings'=>['show-more-btn'=>true]]);
+            echo CardsPlaceWidget::widget([
+                'dataprovider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-posts',
+                    'load-time' => $loadTime
+                ]
+            ]);
         }else{
             return $this->render('index',$params);
         }

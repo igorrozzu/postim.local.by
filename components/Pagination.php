@@ -7,8 +7,9 @@ use yii\web\Request;
 
 class Pagination extends \yii\data\Pagination{
 
-    public $selfParams = null;
-
+    public $selfParams = [
+        'moderation' => true,
+    ];
 
     public function createUrl($page, $pageSize = null, $absolute = false)
     {
