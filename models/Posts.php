@@ -70,6 +70,11 @@ class Posts extends \yii\db\ActiveRecord
       return  $this->hasOne(City::className(),['id'=>'city_id']);
     }
 
+    public function getReviews()
+    {
+        return $this->hasMany(Reviews::className(),['post_id' => 'id']);
+    }
+
 
 
 

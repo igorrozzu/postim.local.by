@@ -10,7 +10,7 @@ var Category = (function (window, document, undefined,$) {
             init:function () {
                 $(document).ready(function () {
 
-                    $(document).on('click','#feed-posts .btn-show-more',function () {
+                    $(document).on('click','#feed-posts .btn-show-more,#feed-reviews .btn-show-more',function () {
 
                         var params = {
                             selector:$(this).data('selector_replace'),

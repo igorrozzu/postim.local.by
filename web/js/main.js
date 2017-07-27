@@ -31,6 +31,10 @@ var Main = (function (window, document, undefined,$) {
                 $(document).off('click','#feed-category .block-sort a');
                 $(document).pjax("#feed-category a", "#feed-category", {"push":false,"replace":false,"timeout":60000,"scrollTo":false});
 
+                // init pjax лент юзера
+                $(document).off('click','.feeds-btn-bar a');
+                $(document).pjax(".feeds-btn-bar a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false});
+
                 // init pjax настроек
                 $(document).off('click','#pjax-container-settings a');
                 $(document).off("submit", "#pjax-container-settings form");

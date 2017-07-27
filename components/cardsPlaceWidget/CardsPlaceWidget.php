@@ -18,6 +18,9 @@ class CardsPlaceWidget extends Widget
 
     public function run()
     {
-        echo $this->render('index',['dataprovider'=>$this->dataprovider]);
+        echo $this->render('index', [
+            'dataprovider' => $this->dataprovider,
+            'settings' => $this->settings,
+        ]);
     }
 }
