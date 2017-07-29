@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
+use app\components\cardsPromoWidget\CardsPromoWidget;
 use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use app\components\MainController;
 use app\models\City;
@@ -10,10 +11,12 @@ use app\models\Posts;
 use app\models\PostsSearch;
 use app\models\Reviews;
 use app\models\ReviewsSearch;
+use app\models\search\UsersPromoSearch;
 use app\models\TempEmail;
 use app\models\uploads\UploadUserPhoto;
 use app\models\User;
 use app\models\UserSettings;
+use app\models\UsersPromo;
 use Yii;
 use app\components\Pagination;
 use yii\helpers\ArrayHelper;
@@ -253,6 +256,86 @@ class UserController extends MainController
                 ]);
             }
         }
+    }
 
+    public function actionMoiPromocody()
+    {
+        $searchModel = new UsersPromoSearch();
+        $request = Yii::$app->request;
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 2),
+            'page' => $request->get('page', 1) - 1,
+            'selfParams'=> [
+                'status' => true,
+                'type' => true
+            ],
+        ]);
+        $loadTime = $request->get('loadTime', time());
+        $_GET['status'] = $_GET['status'] ?? 'active';
+        $_GET['type'] = $_GET['type'] ?? 'promocode';
+        $dataProvider = $searchModel->search(
+            $request->queryParams,
+            $pagination,
+            $loadTime
+        );
+
+        if($request->isAjax && !$request->get('_pjax',false)) {
+            return CardsPromoWidget::widget([
+                'dataProvider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-promo',
+                    'load-time' => $loadTime,
+                    'show-more-btn-text' => 'Показать больше промокодов',
+                    'not-found-text' => 'Вы пока не купили ни одного промокода.',
+                ]
+            ]);
+        } else {
+            return $this->render('feed-promo', [
+                'dataProvider' => $dataProvider,
+                'loadTime' => $loadTime,
+                'status' => $request->queryParams['status']
+            ]);
+        }
+    }
+    public function actionMoiSertifikaty()
+    {
+        $searchModel = new UsersPromoSearch();
+        $request = Yii::$app->request;
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 2),
+            'page' => $request->get('page', 1) - 1,
+            'selfParams'=> [
+                'status' => true,
+                'type' => true
+            ],
+        ]);
+        $loadTime = $request->get('loadTime', time());
+        $_GET['status'] = $_GET['status'] ?? 'active';
+        $_GET['type'] = $_GET['type'] ?? 'certificate';
+        $dataProvider = $searchModel->search(
+            $request->queryParams,
+            $pagination,
+            $loadTime
+        );
+
+        if($request->isAjax && !$request->get('_pjax',false)) {
+            return CardsPromoWidget::widget([
+                'dataProvider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-certificate',
+                    'load-time' => $loadTime,
+                    'show-more-btn-text' => 'Показать больше сертификатов',
+                    'not-found-text' => 'Вы пока не купили ни одного сертификата.',
+                ]
+            ]);
+        } else {
+            return $this->render('feed-certificate', [
+                'dataProvider' => $dataProvider,
+                'loadTime' => $loadTime,
+                'status' => $request->queryParams['status']
+            ]);
+        }
     }
 }
