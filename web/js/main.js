@@ -33,7 +33,7 @@ var Main = (function (window, document, undefined,$) {
 
                 // init pjax лент юзера
                 $(document).off('click','.feeds-btn-bar a');
-                $(document).pjax(".feeds-btn-bar a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false});
+                $(document).pjax(".feeds-btn-bar a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false, 'container':'#feeds-of-user'});
 
                 // init pjax настроек
                 $(document).off('click','#pjax-container-settings a');

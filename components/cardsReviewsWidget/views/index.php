@@ -18,7 +18,9 @@ $pageCount = $dataProvider->pagination->getPageCount();
                         <p class="user-name"><?=$review->user->name . ' ' . $review->user->surname;?></p>
                         <span class="user-points"><?=$review->userInfo->exp_points?></span>
                     </div>
-                    <div class="date-time-review"><?=Yii::$app->formatter->printDate($review->date)?></div>
+                    <div class="date-time-review">
+                        <?=Yii::$app->formatter->printDate($review->date + $review->user->getTimezoneInSeconds())?>
+                    </div>
                 </div>
                 <div class="block-btn-circle-share">
                     <div class="btn-circle-share"></div>

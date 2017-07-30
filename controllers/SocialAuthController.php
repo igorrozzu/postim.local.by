@@ -45,6 +45,7 @@ class SocialAuthController extends MainController
             if (Yii::$app->user->isGuest) {
                 if ($auth) {
                     $user = $auth->user;
+                    $user->setTimezoneOffset();
                     Yii::$app->user->login($user, Yii::$app->params['user.loginDuration']);
                 } else {
                     $email = $attrClient->getEmail();

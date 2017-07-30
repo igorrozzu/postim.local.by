@@ -10,10 +10,14 @@ $pageCount = $dataProvider->pagination->getPageCount();
     <img src="<?=$item->sender->getPhoto();?>" class="user-icon">
     <div class="user-info">
         <p class="notif-username"><?=$item->sender->name . ' ' . $item->sender->surname;?></p>
-        <div class="notif-date-time"><?=Yii::$app->formatter->printDate($item->date)?></div>
+        <div class="notif-date-time">
+            <?=Yii::$app->formatter->printDate($item->date + $item->recipient->getTimezoneInSeconds())?>
+        </div>
     </div>
     <div class="notif-text"><?=json_decode($item->message)->data;?>
-        <div class="notif-date-time hidden-date"><?=Yii::$app->formatter->printDate($item->date)?></div>
+        <div class="notif-date-time hidden-date">
+            <?=Yii::$app->formatter->printDate($item->date + $item->recipient->getTimezoneInSeconds())?>
+        </div>
     </div>
 </div>
 <?php endforeach;?>

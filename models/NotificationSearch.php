@@ -43,7 +43,7 @@ class NotificationSearch extends Notification
     public function search($params, Pagination $pagination)
     {
         $query = Notification::find()
-            ->with('sender')
+            ->with(['sender', 'recipient'])
             ->where(['user_id' => Yii::$app->user->id])
             ->andWhere(['<=', 'date', $params['time']])
             ->orderBy(['date' => SORT_DESC]);

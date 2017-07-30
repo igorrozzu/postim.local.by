@@ -40,6 +40,7 @@ class SiteController extends MainController
         $model->scenario = LoginModel::SCENARIO_LOGIN;
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
             return $this->asJson([
                 'success' => true,
                 'redirect' => Yii::$app->getHomeUrl()

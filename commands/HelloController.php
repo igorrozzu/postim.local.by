@@ -162,6 +162,4 @@ class HelloController extends Controller
         }
 
     }
-
-
 }

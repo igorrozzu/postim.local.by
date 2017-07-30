@@ -40,4 +40,9 @@ class TotalView extends \yii\db\ActiveRecord
             'count' => 'Count',
         ];
     }
+
+    public function getDiscount()
+    {
+        return $this->hasOne(Discounts::className(), ['total_view_id' => 'id']);
+    }
 }
