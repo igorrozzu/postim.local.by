@@ -37,16 +37,23 @@ Pjax::begin([
     </div>
 </div>
 <div class="block-content">
-    <div class="cards-block">
-        <?= CardsPlaceWidget::widget([
-            'dataprovider' => $dataProvider,
-            'settings'=>[
-                'show-more-btn'=>true,
-                'replace-container-id' => 'feed-posts',
-                'load-time' => $loadTime,
-            ]
-        ]); ?>
-    </div>
+    <?php if($dataProvider->totalCount):?>
+        <div class="cards-block">
+            <?= CardsPlaceWidget::widget([
+                'dataprovider' => $dataProvider,
+                'settings'=>[
+                    'show-more-btn'=>true,
+                    'replace-container-id' => 'feed-posts',
+                    'load-time' => $loadTime,
+                ]
+            ]); ?>
+        </div>
+    <?php else:?>
+        <div class="container-message">
+            <p>К сожалению, в <?=Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name'])?> на сайте <?=ucfirst(Yii::$app->getRequest()->serverName)?> в категории <?=$categoryText?> пока нет ничего. Если вы знаете о подходящем месте, добавьте его через кнопку <a href="#">"Добавить место"</a>. Это бесплатно, да еще и выгодно. За размещение новых мест на сайте мы начисляем <a href="#">бонусы</a> пользователям.</p>
+        </div>
+    <?php endif;?>
+
 </div>
 <?php
 $settings= [
