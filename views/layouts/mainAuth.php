@@ -110,7 +110,9 @@ $countNotif = Notification::getCountNotifications();
             </a>
         </div>
         <div class="container-item-menu">
-            <a><span><img src="/img/add-favorit-icon.png"></span>Избранное</a>
+            <a href="<?=Url::to(['user/izbrannoe'])?>">
+                <span><img src="/img/add-favorit-icon.png"></span>Избранное
+            </a>
         </div>
         <div class="container-item-menu">
             <a><span><img src="/img/news-icon.png"></span>Все отзовы</a>

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\entities\FavoritesNews;
 use Yii;
 
 /**
@@ -83,5 +84,13 @@ class News extends \yii\db\ActiveRecord
 
     public function getCity(){
         return $this->hasOne(City::className(),['id'=>'city_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFavoriteNews()
+    {
+        return $this->hasMany(FavoritesNews::className(),['news_id' => 'id']);
     }
 }
