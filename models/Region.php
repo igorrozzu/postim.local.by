@@ -10,6 +10,7 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property string $url_name
+ * @property integer $countries_id
  */
 class Region extends \yii\db\ActiveRecord
 {
@@ -28,8 +29,8 @@ class Region extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['name'], 'string'],
-            [['url_name'], 'string', 'max' => 40],
+            [['name', 'url_name'], 'string'],
+            [['countries_id'], 'integer'],
         ];
     }
 
@@ -42,10 +43,11 @@ class Region extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'url_name' => 'Url Name',
+            'countries_id' => 'Countries ID',
         ];
     }
 
-    public function getNewsRegion(){
-        return $this->hasOne(NewsRegion::className(),['region_id'=>'id']);
+    public function getCoutries(){
+        return $this->hasOne(Countries::className(),['id'=>'countries_id']);
     }
 }

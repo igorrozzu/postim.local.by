@@ -3,10 +3,11 @@
 namespace app\components;
 
 use app\models\News;
+use app\models\search\NewsSearch;
 use app\models\Posts;
 use app\models\PostsSearch;
-use app\models\search\NewsSearch;
 use Yii;
+use app\components\Pagination;
 use yii\web\Controller;
 use app\models\LoginForm;
 
@@ -41,20 +42,24 @@ class MainController extends Controller
            Yii::$app->request->queryParams, $pagination, $sort, time()
        );
 
-       $searchModel = new NewsSearch();
-       $newsPagination = new Pagination([
+
+       $NewsSearchModel = new NewsSearch();
+       $pagination = new Pagination([
            'pageSize' => Yii::$app->request->get('per-page', 4),
-           'page' => Yii::$app->request->get('page', 1)-1,
+           'page' => Yii::$app->request->get('page', 1) - 1,
        ]);
 
-       $newsProvider = $searchModel->search(
-           Yii::$app->request->queryParams, $newsPagination,
-           PostsSearch::getSortArray('new'), time()
+       $newsDataProvider = $NewsSearchModel->search(
+           Yii::$app->request->queryParams,
+           $pagination,
+           PostsSearch::getSortArray('new'),
+           time()
        );
+
 
        return [
            'spotlight' => $dataProvider,
-           'news' => $newsProvider,
+           'news' => $newsDataProvider,
        ];
    }
 }

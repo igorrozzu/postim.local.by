@@ -4,6 +4,9 @@
     $data = $dataprovider->getModels();
 ?>
 <?php foreach ($data as $item):?>
+    <?php
+        $url_category = '/'.$item['city']['url_name'].'/'.$item['categories']['url_name'];
+    ?>
     <div class="card-block ">
         <a href="/<?=$item['url_name']?>">
             <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
@@ -19,7 +22,7 @@
 
 
         <div class="card-block-info">
-            <p class="info-head"><?=$item['categories']['name']?></p>
+            <p class="info-head"><a href="<?=$url_category?>"><?=$item['categories']['name']?></a></p>
             <p class="card-info"><?=Html::encode($item['data'])?></p>
         </div>
         <div class="time-work">

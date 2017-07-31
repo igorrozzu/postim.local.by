@@ -89,17 +89,13 @@ var authUserMenu = (function (window, document, undefined,$) {
                         e.stopPropagation();
                     })
                     $(document).on('click','.right-menu-profile .container-item-menu a',function () {
-                        menu.unselectAllCategory();
-                        that.unselectProfileMenu();
+                        menu_control.fireMethodClose();
                         $(this).parents('.container-item-menu').addClass('selected');
                         setTimeout(function () {
                             $( ".right-menu-profile .btn-close" ).trigger( "click" );
                         },100)
                     })
 
-                    $(document).on('click','.menu-category-item a',function () {
-                        that.unselectProfileMenu();
-                    });
                 })
 
 
@@ -181,4 +177,5 @@ var authUserMenu = (function (window, document, undefined,$) {
 }(window,document,undefined,jQuery));
 
 var authMenu = authUserMenu();
+menu_control.addMethodMenuClose(authMenu.unselectProfileMenu);
 authMenu.init();

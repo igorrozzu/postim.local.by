@@ -40,7 +40,7 @@ class CommentsNews extends \yii\db\ActiveRecord
             [['date'], 'safe'],
             [['data'], 'string'],
             [['main_comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => CommentsNews::className(), 'targetAttribute' => ['main_comment_id' => 'id']],
-            [['news_id'], 'exist', 'skipOnError' => true, 'targetClass' => TblNews::className(), 'targetAttribute' => ['news_id' => 'id']],
+            [['news_id'], 'exist', 'skipOnError' => true, 'targetClass' => News::className(), 'targetAttribute' => ['news_id' => 'id']],
         ];
     }
 
@@ -83,5 +83,9 @@ class CommentsNews extends \yii\db\ActiveRecord
     public function getNews()
     {
         return $this->hasOne(News::className(), ['id' => 'news_id']);
+    }
+
+    public function getUser(){
+        return $this->hasOne(User::className(),['id'=>'user_id']);
     }
 }

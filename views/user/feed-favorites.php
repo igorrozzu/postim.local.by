@@ -39,17 +39,30 @@ Pjax::begin([
 </div>
 
 <div class="block-content">
-    <div class="<?= $isNewsFeed ? 'block-news' : 'cards-block'?>">
-    <?= $widgetName::widget([
-        'dataprovider' => $dataProvider,
-        'settings' => [
-            'show-more-btn' => true,
-            'replace-container-id' => 'feed-favorites',
-            'load-time' => $loadTime,
-        ]
-    ]);?>
+    <?php if($dataProvider->getTotalCount()):?>
+        <div class="<?= $isNewsFeed ? 'block-news' : 'cards-block'?>">
+            <?= $widgetName::widget([
+                'dataprovider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-favorites',
+                    'load-time' => $loadTime,
+                ]
+            ]); ?>
+    <?php else:?>
+        <div class="card-promo">
+            <?php if($isNewsFeed):?>
+                <p class="card-text-notice">Вы пока не добавили в избранное ни одной новости</p>
+             <?php else:?>
+                <p class="card-text-notice">Вы пока не добавили в избранное ни одного места</p>
+            <?php endif;?>
+        </div>
+    <?php endif;?>
+
     </div>
 </div>
+<div class="clear-fix"></div>
+<div class="mg-btm-30"></div>
 <?php
 Pjax::end();
 ?>

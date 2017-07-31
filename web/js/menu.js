@@ -59,6 +59,7 @@ var Menu = (function (window, document, undefined,$) {
                     var $mainMenu=$('.main-menu');
 
                     $(document).on('click','.menu-btn,.close-main-menu',function () {
+                        $mainMenu=$('.main-menu');
                         if(!__mainMenu.isOpen){
                             __mainMenu.isOpen=true;
                             $mainMenu.animate({left:'0px',top:'0px'},200);
@@ -110,7 +111,7 @@ var Menu = (function (window, document, undefined,$) {
 
             },
             openCategoryInLeftMenu:function (category,under_category) {
-                that.unselectAllCategory();
+                menu_control.fireMethodClose();
 
                 var $elem = $(".category-list-title[data-category_name='"+category+"']");
                 $elem.find('span').attr('class', 'close-list-btn');
@@ -129,6 +130,28 @@ var Menu = (function (window, document, undefined,$) {
                 $item.find('.menu-category-items').css('height', '0');
                 $item.find('.close-list-btn').attr('class', 'open-list-btn');
                 $item.find('.selected').removeClass('selected');
+            },
+
+            Control:function () {
+              var __repository_methods_close_menu={};
+
+              var control = {
+
+                  addMethodMenuClose: function (method) {
+                      if (method.name && !(method.name in __repository_methods_close_menu)) {
+                          __repository_methods_close_menu[method.name] = method;
+                      }
+
+                  },
+                  fireMethodClose:function () {
+                      for (var method_name in __repository_methods_close_menu){
+                          __repository_methods_close_menu[method_name].call()
+                      }
+                  }
+              };
+
+              return control;
+
             }
         }
 
@@ -138,5 +161,7 @@ var Menu = (function (window, document, undefined,$) {
 }(window,document,undefined,jQuery));
 
 var menu = Menu();
+var menu_control =menu.Control();
 menu.leftMenuInit();
 menu.catalogMenuInit();
+menu_control.addMethodMenuClose(menu.unselectAllCategory);

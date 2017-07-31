@@ -23,6 +23,8 @@ use Yii;
  */
 class News extends \yii\db\ActiveRecord
 {
+
+    public $is_like=false;
     /**
      * @inheritdoc
      */

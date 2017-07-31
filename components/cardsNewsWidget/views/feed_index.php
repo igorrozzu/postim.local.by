@@ -2,7 +2,6 @@
 $data = $dataprovider->getModels();
 ?>
 
-<div class="block-news">
     <?php foreach ($data as $item):?>
         <div class="card-block ">
             <a href="/<?=$item['url_name'].'-n'.$item['id']?>">
@@ -36,11 +35,9 @@ $data = $dataprovider->getModels();
             </div>
         </div>
     <?php endforeach;?>
-</div>
 
-<?php if(count($data)==4):?>
-    <div class="clear-fix"></div>
-    <div class="main-pjax">
-        <a href="<?=Yii::$app->city->getSelected_city()['url_name']?'/'.Yii::$app->city->getSelected_city()['url_name']:''?>/novosti" class="btn-show-more">Показать больше новостей</a>
+<?php if ($hrefNext = $dataprovider->pagination->getLinks()['next']??false): ?>
+    <div class="replace-block mg-btm-30" id="<?=$settings['replace-container-id']?>">
+        <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>" data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?>">Показать больше мест</div>
     </div>
-<?php endif;?>
+<?php endif; ?>

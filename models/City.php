@@ -52,9 +52,6 @@ class City extends \yii\db\ActiveRecord
         return $this->hasOne(Region::className(),['id'=>'region_id']);
     }
 
-    public function getNewsCity(){
-        return $this->hasOne(NewsCity::className(),['city_id'=>'id']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery

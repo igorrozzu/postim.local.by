@@ -5,21 +5,20 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "tbl_news_region".
+ * This is the model class for table "tbl_countries".
  *
  * @property integer $id
- * @property string $url_name
  * @property string $name
- * @property integer $region_id
+ * @property string $url_name
  */
-class NewsRegion extends \yii\db\ActiveRecord
+class Countries extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'tbl_news_region';
+        return 'tbl_countries';
     }
 
     /**
@@ -28,9 +27,9 @@ class NewsRegion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['url_name', 'name', 'region_id'], 'required'],
-            [['region_id'], 'integer'],
-            [['url_name', 'name'], 'string', 'max' => 100],
+            [['name'], 'required'],
+            [['name', 'url_name'], 'string', 'max' => 30],
+            [['name'], 'unique'],
         ];
     }
 
@@ -41,9 +40,8 @@ class NewsRegion extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'url_name' => 'Url Name',
             'name' => 'Name',
-            'region_id' => 'Region ID',
+            'url_name' => 'Url Name',
         ];
     }
 }

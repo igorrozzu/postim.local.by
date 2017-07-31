@@ -49,8 +49,7 @@ class PostsSearch extends Posts
      */
     public function search($params, Pagination $pagination, Array $sort, $loadTime = null)
     {
-        $query = Posts::find()
-            ->orderBy($sort);
+        $query = Posts::find()->orderBy($sort);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -62,7 +61,7 @@ class PostsSearch extends Posts
             return $dataProvider;
         }
 
-        $relations = ['categories.category'];
+        $relations = ['categories.category','city.region'];
         if(isset($this->favorite) && $this->favorite === 'posts') {
             $relations[] = 'favoritePosts';
         }
@@ -84,8 +83,7 @@ class PostsSearch extends Posts
         }
 
         if(!empty($this->city)){
-            $query->joinWith('city.region')
-                ->orWhere(['tbl_region.url_name'=>$this->city['url_name']])
+            $query->orWhere(['tbl_region.url_name'=>$this->city['url_name']])
                 ->orWhere(['tbl_city.url_name'=>$this->city['url_name']]);
         }
 

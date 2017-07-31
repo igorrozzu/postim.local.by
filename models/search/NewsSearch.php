@@ -3,6 +3,7 @@
 namespace app\models\search;
 
 use app\components\Pagination;
+use app\models\City;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -15,6 +16,7 @@ class NewsSearch extends News
 {
     public $favorite;
     public $favorite_id;
+    public $city;
     /**
      * @inheritdoc
      */
@@ -23,7 +25,7 @@ class NewsSearch extends News
         return [
             [['id', 'city_id', 'total_view_id', 'count_favorites', 'date'], 'integer'],
             [['header', 'description', 'data', 'description_s', 'key_word_s',
-                'cover', 'favorite', 'favorite_id'], 'safe'],
+                'cover','city', 'favorite', 'favorite_id'], 'safe'],
         ];
     }
 
@@ -46,8 +48,9 @@ class NewsSearch extends News
     public function search($params, Pagination $pagination, Array $sort, $loadTime = null)
     {
         $query = News::find()
-            ->with('city.newsCity', 'city.region.newsRegion', 'totalView')
+            ->joinWith('city.region')
             ->orderBy($sort);
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -61,6 +64,13 @@ class NewsSearch extends News
 
         if(isset($this->favorite) && $this->favorite === 'news') {
             $query->innerJoinWith('favoriteNews');
+        }
+
+        if(!empty($this->city)){
+            $city = City::find()->with('region')->where(['url_name' => $this->city['url_name']])->one();
+            $query->orWhere(['tbl_region.url_name' => $city->region->url_name])
+                ->orWhere(['tbl_city.url_name' => $city->url_name])
+                ->orWhere(['tbl_city.name' => 'Беларусь']);
         }
 
         if(isset($params['loadTime']) || isset($loadTime) ){

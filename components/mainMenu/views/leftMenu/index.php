@@ -1,7 +1,6 @@
 <?php
 use yii\web\View;
 ?>
-<!--левое меню-->
 <div class="main-menu main-pjax">
     <div class="header-menu">
         <div class="header-menu-title">Меню</div>
@@ -23,5 +22,3 @@ use yii\web\View;
         </ul>
     </div>
 </div>
-<!--левое меню end-->
-<?php

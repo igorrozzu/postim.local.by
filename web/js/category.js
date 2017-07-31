@@ -8,17 +8,7 @@ var Category = (function (window, document, undefined,$) {
         var that = {
 
             init:function () {
-                $(document).ready(function () {
 
-                    $(document).on('click','.btn-show-more',function () {
-
-                        var params = {
-                            selector:$(this).data('selector_replace'),
-                            href:$(this).data('href')
-                        };
-                        showMore.render(params);
-                    })
-                });
             }
 
         };

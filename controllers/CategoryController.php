@@ -24,7 +24,7 @@ class CategoryController extends MainController
 
         $searchModel = new PostsSearch();
         $pagination = new Pagination([
-            'pageSize' => Yii::$app->request->get('per-page', 2),
+            'pageSize' => Yii::$app->request->get('per-page', 8),
             'page' => Yii::$app->request->get('page', 1)-1,
             'route'=>Yii::$app->request->getPathInfo(),
             'selfParams'=>[
@@ -77,7 +77,7 @@ class CategoryController extends MainController
         $breadcrumbParams[] = [
             'name' => ucfirst(Yii::$app->getRequest()->serverName),
             'url_name' => $currentUrl,
-            'pjax' => false
+            'pjax' => 'class="main-header-pjax a"'
         ];
 
         if($city = Yii::$app->request->get('city')){
@@ -85,21 +85,21 @@ class CategoryController extends MainController
             $breadcrumbParams[]=[
                 'name'=>$city['name'],
                 'url_name'=>$currentUrl,
-                'pjax'=>false
+                'pjax'=>'class="main-pjax a"'
             ];
         }
 
         $breadcrumbParams[]=[
             'name'=>$this->category['name'],
             'url_name'=>$currentUrl.'/'.$this->category['url_name'],
-            'pjax'=>true
+            'pjax'=>'class="main-pjax a"'
         ];
 
         if($this->under_category){
             $breadcrumbParams[]=[
                 'name'=>$this->under_category['name'],
                 'url_name'=>$currentUrl.'/'.$this->under_category['url_name'],
-                'pjax'=>true
+                'pjax'=>'class="main-pjax a"'
             ];
         }
 

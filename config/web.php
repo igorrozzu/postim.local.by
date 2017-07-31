@@ -66,7 +66,11 @@ $config = [
                 'id<id:\d+>' => 'user/index',
                 [
                     'class' => 'app\components\customUrlManager\CityAndCategoryUrlRule',
-                ]
+                ],
+                [
+                    'class' => 'app\components\customUrlManager\NewsUrlRule',
+                ],
+                '<url:.+>-n<id:\d+>'=>'news/news'
             ],
         ],
         'i18n' => [

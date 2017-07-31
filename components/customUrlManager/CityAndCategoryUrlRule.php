@@ -9,7 +9,7 @@ use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use app\models\City;
 
-class CityAndCategoryUrlRule extends Object implements UrlRuleInterface{
+class CityAndCategoryUrlRule extends CityUrlRule {
 
     public function createUrl($manager, $route, $params)
     {
@@ -23,7 +23,7 @@ class CityAndCategoryUrlRule extends Object implements UrlRuleInterface{
 
         $queryParams= explode('/',$pathInfo);
 
-        $arrIndex = $this->getIndexArrayCitiesAndCategories();
+        $arrIndex = $this->getIndexArray();
 
 
 
@@ -89,15 +89,9 @@ class CityAndCategoryUrlRule extends Object implements UrlRuleInterface{
         return false;
     }
 
-    private function getIndexArrayCitiesAndCategories(){
-        if(!$indexCities = \Yii::$app->cache->get('list_citi_from_bd')){
-            $indexCities = ArrayHelper::index(City::find()
-                ->select(['name','url_name'])
-                ->orderBy(['name'=>SORT_ASC])
-                ->all(),'url_name');
-
-            \Yii::$app->cache->add('list_citi_from_bd',$indexCities,600);
-        }
+    protected function getIndexArray()
+    {
+        $array= parent::getIndexArray();
 
         if(!$index_under_category =\Yii::$app->cache->get('list_under_cat_from_bd')){
             $index_under_category = ArrayHelper::index(UnderCategory::find()
@@ -115,10 +109,10 @@ class CityAndCategoryUrlRule extends Object implements UrlRuleInterface{
             \Yii::$app->cache->add('list_cat_from_bd',$index_category,600);
         }
 
-        return [
-            'indexCities' => $indexCities,
-            'index_under_category' => $index_under_category,
-            'index_category'=>$index_category
-        ];
+        $array['index_under_category']=$index_under_category;
+        $array['index_category']=$index_category;
+
+        return $array;
+
     }
 }
