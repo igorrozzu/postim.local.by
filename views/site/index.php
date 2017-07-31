@@ -15,13 +15,18 @@ use \app\components\ListCityWidget\ListCityWidget;
     <?php if($spotlight->totalCount):?>
     <h2 class="h2-c">В центре внимания</h2>
     <div class="cards-block">
-        <?=CardsPlaceWidget::widget(['dataprovider'=>$spotlight,'settings'=>['show-more-btn'=>false]])?>
+        <?=CardsPlaceWidget::widget(['dataprovider'=>$spotlight, 'settings'=>['show-more-btn'=>false]])?>
     </div>
     <div class="clear-fix"></div>
     <?php endif;?>
     <h2 class="h2-c">Последние новости</h2>
     <div class="container-news">
-        <?=CardsNewsWidget::widget(['dataprovider'=>$news])?>
+        <div class="block-news>">
+            <?=CardsNewsWidget::widget([
+                'dataprovider' => $news,
+                'settings' => ['show-more-btn' => false]
+            ])?>
+        </div>
     </div>
 
 </div>

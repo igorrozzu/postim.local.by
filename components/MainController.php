@@ -5,8 +5,8 @@ namespace app\components;
 use app\models\News;
 use app\models\Posts;
 use app\models\PostsSearch;
+use app\models\search\NewsSearch;
 use Yii;
-use yii\data\Pagination;
 use yii\web\Controller;
 use app\models\LoginForm;
 
@@ -37,22 +37,24 @@ class MainController extends Controller
            'count_reviews'=>SORT_DESC
        ];
 
-
        $dataProvider = $searchModel->search(
-           Yii::$app->request->queryParams,
-           $pagination,
-           $sort
+           Yii::$app->request->queryParams, $pagination, $sort, time()
        );
 
+       $searchModel = new NewsSearch();
+       $newsPagination = new Pagination([
+           'pageSize' => Yii::$app->request->get('per-page', 4),
+           'page' => Yii::$app->request->get('page', 1)-1,
+       ]);
 
-       $news = News::find()
-           ->with('city.newsCity','city.region.newsRegion','totalView')
-           ->limit(4)
-           ->all();
+       $newsProvider = $searchModel->search(
+           Yii::$app->request->queryParams, $newsPagination,
+           PostsSearch::getSortArray('new'), time()
+       );
 
        return [
            'spotlight' => $dataProvider,
-           'news' => $news,
+           'news' => $newsProvider,
        ];
    }
 }

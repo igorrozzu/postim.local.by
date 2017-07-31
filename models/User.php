@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\entities\FavoritesNews;
+use app\models\entities\FavoritesPost;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -227,6 +229,22 @@ class User extends ActiveRecord implements IdentityInterface
     public function getReviews()
     {
         return $this->hasMany(Reviews::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFavoritesNews()
+    {
+        return $this->hasMany(FavoritesNews::className(),['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFavoritesPost()
+    {
+        return $this->hasMany(FavoritesPost::className(),['user_id' => 'id']);
     }
 
     public function isCityDefined()

@@ -2,26 +2,22 @@
 
 namespace app\controllers;
 
+use app\components\cardsNewsWidget\CardsNewsWidget;
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\cardsPromoWidget\CardsPromoWidget;
 use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use app\components\MainController;
 use app\models\City;
-use app\models\Posts;
 use app\models\PostsSearch;
-use app\models\Reviews;
 use app\models\ReviewsSearch;
+use app\models\search\NewsSearch;
 use app\models\search\UsersPromoSearch;
 use app\models\TempEmail;
 use app\models\uploads\UploadUserPhoto;
 use app\models\User;
 use app\models\UserSettings;
-use app\models\UsersPromo;
 use Yii;
 use app\components\Pagination;
-use yii\helpers\ArrayHelper;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
@@ -335,6 +331,50 @@ class UserController extends MainController
                 'dataProvider' => $dataProvider,
                 'loadTime' => $loadTime,
                 'status' => $request->queryParams['status']
+            ]);
+        }
+    }
+
+    public function actionIzbrannoe()
+    {
+        $request = Yii::$app->request;
+        $_GET['favorite'] = $request->get('favorite', 'posts');
+        $_GET['favorite_id'] = $request->get('favorite_id', Yii::$app->user->id);
+        $isNewsFeed = $_GET['favorite'] === 'news';
+        $searchModel = $isNewsFeed ? new NewsSearch() : new PostsSearch();
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 2),
+            'page' => $request->get('page', 1) - 1,
+            'selfParams'=> [
+                'favorite' => true,
+                'favorite_id' => true,
+            ],
+        ]);
+        $loadTime = $request->get('loadTime', time());
+
+        $dataProvider = $searchModel->search(
+            $request->queryParams,
+            $pagination,
+            PostsSearch::getSortArray('new'),
+            $loadTime
+        );
+
+        $widgetName = $isNewsFeed ? CardsNewsWidget::className() : CardsPlaceWidget::className();
+        if($request->isAjax && !$request->get('_pjax',false)) {
+            return $widgetName::widget([
+                'dataprovider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-favorites',
+                    'load-time' => $loadTime,
+                ]
+            ]);
+        } else {
+            return $this->render('feed-favorites', [
+                'dataProvider' => $dataProvider,
+                'loadTime' => $loadTime,
+                'isNewsFeed' => $isNewsFeed,
+                'widgetName' => $widgetName,
             ]);
         }
     }

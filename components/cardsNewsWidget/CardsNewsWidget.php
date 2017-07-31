@@ -14,9 +14,13 @@ use yii\base\Widget;
 class CardsNewsWidget extends Widget
 {
     public $dataprovider;
+    public $settings;
 
     public function run()
     {
-        echo $this->render('index',['dataprovider'=>$this->dataprovider]);
+        return $this->render('index', [
+            'dataProvider'=> $this->dataprovider,
+            'settings' => $this->settings
+        ]);
     }
 }

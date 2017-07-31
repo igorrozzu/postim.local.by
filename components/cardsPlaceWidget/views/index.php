@@ -2,7 +2,6 @@
     use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     $data = $dataprovider->getModels();
-    $countPosts= count($data);
 ?>
 <?php foreach ($data as $item):?>
     <div class="card-block ">

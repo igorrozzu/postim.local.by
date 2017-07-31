@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\entities\FavoritesPost;
 use Yii;
 
 /**
@@ -75,7 +76,13 @@ class Posts extends \yii\db\ActiveRecord
         return $this->hasMany(Reviews::className(),['post_id' => 'id']);
     }
 
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFavoritePosts()
+    {
+        return $this->hasMany(FavoritesPost::className(),['post_id' => 'id']);
+    }
 
 
 
