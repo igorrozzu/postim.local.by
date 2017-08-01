@@ -64,6 +64,8 @@ class NewsSearch extends News
 
         if(isset($this->favorite) && $this->favorite === 'news') {
             $query->innerJoinWith('favoriteNews');
+        } else if(!Yii::$app->user->isGuest) {
+            $query->joinWith('hasLike');
         }
 
         if(!empty($this->city)){

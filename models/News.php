@@ -24,7 +24,7 @@ use Yii;
 class News extends \yii\db\ActiveRecord
 {
 
-    public $is_like=false;
+    public $is_like = false;
     /**
      * @inheritdoc
      */
@@ -95,4 +95,22 @@ class News extends \yii\db\ActiveRecord
     {
         return $this->hasMany(FavoritesNews::className(),['news_id' => 'id']);
     }
+
+    public function getHasLike()
+    {
+        return $this->getFavoriteNews()->onCondition([
+            FavoritesNews::tableName().'.user_id' => Yii::$app->user->id
+        ]);
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        if ($this->isRelationPopulated('favoriteNews') ||
+            ($this->isRelationPopulated('hasLike') && !empty($this->hasLike))) {
+            $this->is_like = true;
+        }
+    }
+
+
 }

@@ -64,6 +64,8 @@ class PostsSearch extends Posts
         $relations = ['categories.category','city.region'];
         if(isset($this->favorite) && $this->favorite === 'posts') {
             $relations[] = 'favoritePosts';
+        } else if(!Yii::$app->user->isGuest) {
+            $query->joinWith('hasLike');
         }
         $query->innerJoinWith($relations);
 

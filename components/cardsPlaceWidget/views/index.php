@@ -7,7 +7,7 @@
     <?php
         $url_category = '/'.$item['city']['url_name'].'/'.$item['categories']['url_name'];
     ?>
-    <div class="card-block ">
+    <div class="card-block" data-item-id="<?=$item['id']?>" data-type="post">
         <a href="/<?=$item['url_name']?>">
             <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
                 <div class="glass">
@@ -15,7 +15,9 @@
                         <div class="rating bg-r<?=$item["rating"]?>"><?=$item["rating"]?></div>
                         <div class="total-reviews"><?=$item["count_reviews"]?> отзывов</div>
                     </div>
-                    <div class="bookmarks-btn<?=$item->is_like?'-active':''?>"><?=$item["count_favorites"]?></div>
+                    <div class="bookmarks-btn<?=$item->is_like?'-active':''?>">
+                        <?=$item["count_favorites"]?>
+                    </div>
                 </div>
             </div>
         </a>

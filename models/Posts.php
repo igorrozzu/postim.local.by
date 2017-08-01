@@ -84,12 +84,19 @@ class Posts extends \yii\db\ActiveRecord
         return $this->hasMany(FavoritesPost::className(),['post_id' => 'id']);
     }
 
+    public function getHasLike()
+    {
+        return $this->getFavoritePosts()->onCondition([
+            FavoritesPost::tableName().'.user_id' => Yii::$app->user->id
+        ]);
+    }
 
-
-
-
-
-
-
-
+    public function afterFind()
+    {
+        parent::afterFind();
+        if ($this->isRelationPopulated('favoritePosts') ||
+            ($this->isRelationPopulated('hasLike') && !empty($this->hasLike))) {
+            $this->is_like = true;
+        }
+    }
 }

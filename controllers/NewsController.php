@@ -6,12 +6,14 @@ use app\components\cardsNewsWidget\CardsNewsWidget;
 use app\components\MainController;
 use app\components\Pagination;
 use app\models\CommentsNews;
+use app\models\entities\FavoritesNews;
 use app\models\News;
 use app\models\PostsSearch;
 use app\models\search\NewsSearch;
 use app\models\Region;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\Exception;
 use yii\helpers\Url;
 use yii\web\Controller;
 
@@ -195,10 +197,28 @@ class NewsController extends MainController
         ];
 
         return $breadcrumbParams;
-
-
-
     }
 
-
+    public function actionFavoriteState()
+    {
+        $request = Yii::$app->request;
+        if($request->isAjax) {
+            $itemId = (int)$request->post('itemId');
+            $action = $request->post('action');
+            try {
+                if ($action === 'add') {
+                    $model = new FavoritesNews([
+                        'user_id' => Yii::$app->user->id,
+                        'news_id' => $itemId
+                    ]);
+                    $model->save();
+                } else if ($action === 'remove') {
+                    FavoritesNews::deleteAll([
+                        'user_id' => Yii::$app->user->id,
+                        'news_id' => $itemId
+                    ]);
+                }
+            } catch (Exception $e) {}
+        }
+    }
 }

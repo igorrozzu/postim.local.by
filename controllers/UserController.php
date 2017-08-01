@@ -343,7 +343,7 @@ class UserController extends MainController
         $isNewsFeed = $_GET['favorite'] === 'news';
         $searchModel = $isNewsFeed ? new NewsSearch() : new PostsSearch();
         $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 2),
+            'pageSize' => $request->get('per-page', 3),
             'page' => $request->get('page', 1) - 1,
             'selfParams'=> [
                 'favorite' => true,
