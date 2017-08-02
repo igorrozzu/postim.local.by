@@ -15,13 +15,21 @@ use ReflectionClass;
 class CommentsNewsWidget extends Widget
 {
     public $dataprovider=[];
+    public $is_only_comments = false;
 
 
     public function run()
     {
-        echo $this->render('index',[
-            'dataprovider'=>$this->dataprovider,
-        ]);
+        if(!$this->is_only_comments){
+            echo $this->render('index',[
+                'dataprovider'=>$this->dataprovider
+            ]);
+        }else{
+            echo $this->render('item_comment',[
+                'dataprovider'=>$this->dataprovider,
+            ]);
+        }
+
     }
     public function getViewPath()
     {

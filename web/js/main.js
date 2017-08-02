@@ -26,7 +26,12 @@ var Main = (function (window, document, undefined,$) {
                             href:$(this).data('href')
                         };
                         showMore.render(params);
-                    })
+                    });
+
+                    $(document).off('click','.close-complaint-btn')
+                        .on('click','.close-complaint-btn',function () {
+                            main.closeFormComplaint();
+                        })
                 });
 
                 $(document).on('pjax:end', function(data, status, xhr, options) {
@@ -37,6 +42,7 @@ var Main = (function (window, document, undefined,$) {
                     }
 
                 });
+
             },
             reloadViewPjaxEvents:function () {
                 // init pjax ленты категорий
@@ -53,6 +59,43 @@ var Main = (function (window, document, undefined,$) {
                 $(document).pjax("#pjax-container-settings a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-settings"});
                 $(document).on("submit", "#pjax-container-settings form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-settings"});});
 
+            },
+            User:{
+                is_guest:true
+            },
+            setSelectionRange:function (input, selectionStart, selectionEnd) {
+                if (input.setSelectionRange) {
+                    input.focus();
+                    input.setSelectionRange(selectionStart, selectionEnd);
+                }
+                else if (input.createTextRange) {
+                    var range = input.createTextRange();
+                    range.collapse(true);
+                    range.moveEnd('character', selectionEnd);
+                    range.moveStart('character', selectionStart);
+                    range.select();
+                }
+            },
+            getFormComplaint:function () {
+                if(main.getFormComplaint.cache==undefined)
+                    main.getFormComplaint.cache = {};
+
+                if(main.getFormComplaint.cache['Complaint']==undefined){
+                    $.ajax({
+                        url: '/site/get-form-complaint',
+                        type: "GET",
+                        async:false,
+                        success: function (response) {
+                            main.getFormComplaint.cache['Complaint']=response;
+                        }
+                    });
+                }
+
+                return  main.getFormComplaint.cache['Complaint'];
+            },
+            closeFormComplaint:function () {
+                $('.container-popup-window.form-complaint').remove();
+                $('.container-blackout-popup-window').hide();
             }
         }
 

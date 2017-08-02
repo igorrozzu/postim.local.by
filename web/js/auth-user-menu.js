@@ -169,6 +169,8 @@ var authUserMenu = (function (window, document, undefined,$) {
                 that.notificationMenuInit();
                 that.closeNotificationFormHandler();
                 that.updatingNotificationOn();
+
+                main.User.is_guest=false;
             }
         };
         return that;

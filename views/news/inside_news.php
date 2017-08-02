@@ -12,7 +12,6 @@ $this->title = $news['header'];
         <div class="block-between page-news">
             <div class="block-info-reviewsAndfavorites">
                 <div class="add-favorite <?=$news['is_like']?'active':''?>"></div>
-                <div class="total-comments"><?=$news->totalComments?></div>
             </div>
             <div class="date-time-text"><?=Yii::$app->formatter->printDate($news['date'])?></div>
         </div>
@@ -31,9 +30,8 @@ $this->title = $news['header'];
             <div class="elem-count-views"><?=$news->totalView['count']?></div>
         </div>
     </div>
-    <h2 class="h2-c">Комментарии <span class="total"><?=$news->totalComments?></span></h2>
-    <div class="block-сomments-post">
-        <?=CommentsNewsWidget::widget(['dataprovider'=>$dataProviderComments])?>
+    <div id="comments_news_container" data-news_id="<?=$news['id']?>">
+        <?=$this->render('comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$news->totalComments])?>
     </div>
     <h2 class="h2-c">Последнии новости</h2>
     <div class="block-news-container">

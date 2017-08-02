@@ -37,6 +37,7 @@ class AppAsset extends AssetBundle
         'js/show-more.js',
         'js/category.js',
         'js/news.js',
+        'js/libs/autoresize-textarea.js',
 
     ];
     public $depends = [

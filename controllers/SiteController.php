@@ -176,4 +176,8 @@ class SiteController extends MainController
 
     }
 
+    public function actionGetFormComplaint(){
+        return $this->renderPartial('form_complaint');
+    }
+
 }

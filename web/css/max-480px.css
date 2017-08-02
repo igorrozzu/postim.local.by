@@ -59,8 +59,12 @@
 .main-write-comment{
     flex-direction: column;
 }
-.textarea-main-comment{
+.textarea-main-comment,
+.textarea-under-comment{
     width: 100%;
+}
+.profile_under_comment{
+    margin: 10px 20px 0px 0px;
 }
 .btns-comment{
     margin-left: -60px;

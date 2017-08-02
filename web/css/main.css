@@ -1506,7 +1506,6 @@ a.btn-show-more{
     border-radius: 3px;
     background-color: #6b778f;
     margin-top: -2px;
-    min-width: 60px;
 }
 .elem-count-views:before{
     margin-right: 5px;
@@ -1556,6 +1555,12 @@ a.btn-show-more{
     height: 40px;
     width: 40px;
     border-radius: 20px;
+}
+.profile_under_comment{
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    margin: 10px 20px 0px 20px;
 }
 .profile-user-reviews{
     display: flex;
@@ -2034,7 +2039,22 @@ a.btn-show-more{
     padding:20px;
     display: flex;
 }
-.textarea-main-comment{
+.container-write-comments.under{
+    display: flex;
+    flex-direction: column;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    z-index: 1;
+}
+.under-write-comment{
+    padding: 0px 20px 20px 20px;
+    display: flex;
+}
+.container-write-comments.under + .container-comment .comment-content{
+    border-top: 0px;
+}
+.textarea-main-comment,
+.textarea-under-comment{
     color: #6b778f;
     font-family: PT_Sans;
     font-size: 16px;
@@ -2132,7 +2152,9 @@ a.btn-show-more{
 .comment-text{
     margin-top: 20px;
     font-size: 16px;
-    color: #000000;
+    line-height: 24px;
+    color: #444444;
+    font-family: PT_Sans;
 }
 .btns-comment{
     display: flex;
@@ -2156,7 +2178,8 @@ a.btn-show-more{
     content: url("../img/icon-like.png");
     margin-right: 10px;
 }
-.btn-comment.btn-like:hover:before{
+.btn-comment.btn-like:hover:before,
+.btn-comment.btn-like.active:before{
     content: url("../img/icon-like-active.png");
     margin-right: 10px;
 }
@@ -3126,7 +3149,7 @@ a.btn-show-more{
 .field-btn{
     display: flex;
     flex-direction: column;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 .field-line-btns{
     display: flex;
@@ -3830,7 +3853,7 @@ a.btn-show-more{
 }
 .complain-text{
     font-size: 23px;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 .pre-popup-photo, .next-popup-photo{display: none;}
 .hidden-complaint-message{display: none;}

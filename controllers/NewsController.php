@@ -3,12 +3,16 @@
 namespace app\controllers;
 
 use app\components\cardsNewsWidget\CardsNewsWidget;
+use app\components\commentsWidget\CommentsNewsWidget;
 use app\components\MainController;
 use app\components\Pagination;
+use app\models\CommentsComplaint;
 use app\models\CommentsNews;
+use app\models\CommentsNewsLike;
 use app\models\entities\FavoritesNews;
 use app\models\News;
 use app\models\PostsSearch;
+use app\models\search\CommentsNewsSearch;
 use app\models\search\NewsSearch;
 use app\models\Region;
 use Yii;
@@ -16,6 +20,7 @@ use yii\data\ActiveDataProvider;
 use yii\db\Exception;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\Response;
 
 class NewsController extends MainController
 {
@@ -80,25 +85,22 @@ class NewsController extends MainController
             $loadTime
         );
 
-        $queryComments = CommentsNews::find()
-            ->with('underComments.user.userInfo')
-            ->with('user.userInfo')
-            ->where([
-                'news_id'=>$news['id'],
-                'main_comment_id'=>null
-            ]);
+        $commentsNewsSearch = new CommentsNewsSearch();
+
         $paginationComments= new Pagination([
-            'pageSize' => Yii::$app->request->get('per-page', 2),
+            'pageSize' => Yii::$app->request->get('per-page', 16),
             'page' => Yii::$app->request->get('page', 1) - 1,
             'route' => '/news/get-comments',
             'selfParams'=>[
                 'id'=>true,
             ]
         ]);
-        $dataProviderComments = new ActiveDataProvider([
-            'query' => $queryComments,
-            'pagination' => $paginationComments
-        ]);
+
+        $dataProviderComments = $commentsNewsSearch->search( Yii::$app->request->queryParams,
+            $paginationComments,
+            $news['id'],
+            CommentsNewsSearch::getSortArray('old')
+        );
 
 
         $breadcrumbParams = $this->getParamsForBreadcrumbInside($news);
@@ -110,6 +112,186 @@ class NewsController extends MainController
             'dataProviderComments'=>$dataProviderComments,
             'loadTime'=>$loadTime
         ]);
+    }
+
+    public function actionGetComments($id)
+    {
+        $commentsNewsSearch = new CommentsNewsSearch();
+        $paginationComments= new Pagination([
+            'pageSize' => Yii::$app->request->get('per-page', 16),
+            'page' => Yii::$app->request->get('page', 1) - 1,
+            'route' => '/news/get-comments',
+            'selfParams'=>[
+                'id'=>true,
+            ]
+        ]);
+        $dataProviderComments = $commentsNewsSearch->search( Yii::$app->request->queryParams,
+            $paginationComments,
+            $id,
+            CommentsNewsSearch::getSortArray('old')
+        );
+
+        if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax', false)) {
+           echo CommentsNewsWidget::widget([
+               'dataprovider'=>$dataProviderComments,
+               'is_only_comments'=>true
+           ]);
+        }
+    }
+
+    public function actionReloadComments($id){
+
+        $commentsNewsSearch = new CommentsNewsSearch();
+
+        $perpage =  Yii::$app->request->get('per-page', 16)+1;
+        if($perpage<17){
+            $perpage=17;
+        }
+        $paginationComments= new Pagination([
+            'pageSize' => $perpage,
+            'page' => Yii::$app->request->get('page', 1) - 1,
+            'route' => '/news/get-comments',
+            'selfParams'=>[
+                'id'=>true,
+            ]
+        ]);
+        $dataProviderComments = $commentsNewsSearch->search( Yii::$app->request->queryParams,
+            $paginationComments,
+            $id,
+            CommentsNewsSearch::getSortArray('old')
+        );
+
+        $totalComments = CommentsNews::find()->where(['news_id'=>$id])->count();
+
+        if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax', false)) {
+            return $this->renderAjax('comments', [
+                    'dataProviderComments' => $dataProviderComments,
+                    'totalComments' => $totalComments
+                ]
+            );
+        }
+    }
+
+    public function actionAddComments(){
+
+        if(!Yii::$app->user->isGuest){
+            $response = new \stdClass();
+            $response->status='OK';
+
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            $model = new CommentsNews();
+            if(Yii::$app->request->post('comment_id',false)){
+                $model->setScenario(CommentsNews::$ADD_UNDER_COMMENT);
+            }else{
+                $model->setScenario(CommentsNews::$ADD_MAIN_COMMENT);
+            }
+
+            $model->user_id = Yii::$app->user->id;
+            $model->load(Yii::$app->request->post(), '');
+            if ($model->validate() && $model->save()) {
+                return $response;
+            } else {
+                $name_attribute = key($model->getErrors());
+                $response->status = 'error';
+                $response->message = $model->getFirstError($name_attribute);
+            }
+
+            return $response;
+        }
+
+    }
+
+    public function actionGetContainerWriteComment(int $id){
+        $comment = CommentsNews::find()->with('user')->where(['id'=>$id])->one();
+        if($comment){
+            if($comment->main_comment_id == null){
+                return $this->renderAjax('_write_undercomment',['comment'=>$comment]);
+            }else{
+                return $this->renderAjax('_write_under_undercomment',['comment'=>$comment]);
+            }
+        }
+
+    }
+
+    public function actionDeleteComment(){
+        $response = new \stdClass();
+        $response->status='OK';
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if(!Yii::$app->user->isGuest){
+            $id = Yii::$app->request->post('id',0);
+            $news_id =Yii::$app->request->post('news_id',0);
+            $comment = CommentsNews::find()->with('underComments')->where(['news_id'=>$news_id,'id'=>$id])->one();
+            if(!$comment->underComments){
+                if($comment && $comment->user_id == Yii::$app->user->id){
+                    $comment->delete();
+                }else{
+                    $response->status='error';
+                    $response->message='У вас нет прав на удаление комментария';
+                }
+            }else{
+                $response->status='error';
+                $response->message='Комментарий не может быть удален';
+            }
+
+        }
+        return $response;
+    }
+
+    public function actionAddRemoveLikeComment(int $id){
+        $response = new \stdClass();
+        $response->status='OK';
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if(!Yii::$app->user->isGuest){
+            $comment = CommentsNews::find()->with('likeUser')->where(['id'=>$id])->one();
+            if($comment->likeUser==null){
+                if($comment->updateCounters(['like' => 1])){
+                    $commentsNewsLike= new CommentsNewsLike(['comment_id'=>$comment->id,
+                        'user_id'=>Yii::$app->user->id]);
+                    if($commentsNewsLike->validate() && $commentsNewsLike->save()){
+                        $response->status='add';
+                    }
+                }
+
+            }else{
+                if($comment->updateCounters(['like' => -1])){
+                    if($comment->likeUser->delete()){
+                        $response->status='remove';
+                    }
+                }
+            }
+
+            $response->count=$comment->like;
+        }
+        return $response;
+    }
+
+    public function actionComplainComment(){
+        $response = new \stdClass();
+        $response->status='OK';
+        $response->message='Спасибо, что помогаете!<br>Ваша жалоба будет рассмотрена модераторами';
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if(!Yii::$app->user->isGuest){
+            $comment_id =Yii::$app->request->post('id',null);
+            $message = Yii::$app->request->post('message',null);
+            $commentComplaint = new CommentsComplaint(['comment_id' => $comment_id,
+                'message'=>$message,
+                'user_id'=>Yii::$app->user->id
+            ]);
+
+            if ($commentComplaint->validate() && $commentComplaint->save()) {
+                return $response;
+            } else {
+                $name_attribute = key($commentComplaint->getErrors());
+                $response->status = 'error';
+                $response->message = $commentComplaint->getFirstError($name_attribute);
+            }
+            return $response;
+        }
     }
 
     private function getParamsForBreadcrumb(&$h1){

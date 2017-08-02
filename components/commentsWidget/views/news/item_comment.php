@@ -2,7 +2,7 @@
 $model = $dataprovider->getModels();
 foreach ($model as $item):
 ?>
-<div class="container-comment main">
+<div class="container-comment main" data-comment_id="<?=$item->id?>">
     <div class="profile-commentator">
         <img class="profile-icon-commentator" src="<?=$item->user->getPhoto()?>">
     </div>
@@ -14,11 +14,17 @@ foreach ($model as $item):
             </div>
             <span class="comment-time"><?=Yii::$app->formatter->printDate($item->date)?></span>
         </div>
-        <div class="comment-text"><?=$item->data?></div>
+        <div class="comment-text"><?=\yii\helpers\Html::encode($item->data)?></div>
         <div class="btns-comment">
-            <div class="btn-comment btn-like"><?=$item->like?></div>
-            <div class="btn-comment btn-comm">Ответить</div>
-            <div class="btn-comment">Пожаловаться</div>
+            <div class="btn-comment btn-like <?=$item->is_like?'active':''?>"><?=$item->like?></div>
+            <div class="btn-comment btn-comm reply">Ответить</div>
+            <?php if(Yii::$app->user->isGuest || $item->user->id!=Yii::$app->user->id):?>
+                <?php if(!$item->is_complaint):?>
+                    <div class="btn-comment cplt">Пожаловаться</div>
+                <?php endif;?>
+            <?php elseif(!$item->underComments):?>
+                <div class="btn-comment delete">Удалить</div>
+            <?php endif;?>
         </div>
     </div>
 </div>
