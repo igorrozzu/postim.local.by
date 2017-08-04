@@ -30,6 +30,12 @@ class CommentsNews extends \yii\db\ActiveRecord
     public static $ADD_MAIN_COMMENT='add_main_comment';
     public static $ADD_UNDER_COMMENT='add_under_comment';
 
+    public static $STATUS_COMMENT_WAS_DELETED_BY=1;
+
+    public static $status_map=[
+        1=>'Комментарий был удален пользователем'
+    ];
+
     public $comment_id = null;
     public $is_like=false;
     public $is_complaint=false;

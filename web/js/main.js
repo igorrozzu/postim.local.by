@@ -25,7 +25,11 @@ var Main = (function (window, document, undefined,$) {
                             selector:$(this).data('selector_replace'),
                             href:$(this).data('href')
                         };
-                        showMore.render(params);
+
+                        if(params.href!==undefined && params.selector !== undefined){
+                            showMore.render(params);
+                        }
+
                     });
 
                     $(document).off('click','.close-complaint-btn')
@@ -96,7 +100,16 @@ var Main = (function (window, document, undefined,$) {
             closeFormComplaint:function () {
                 $('.container-popup-window.form-complaint').remove();
                 $('.container-blackout-popup-window').hide();
-            }
+            },
+            showErrorAut:function (text) {
+                $().toastmessage('showToast', {
+                    text: text,
+                    stayTime:5000,
+                    type:'error'
+                });
+
+                $( ".sign_in_btn" ).trigger( "click" );
+            },
         }
 
         return that;

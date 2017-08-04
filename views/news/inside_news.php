@@ -6,12 +6,12 @@ $this->title = $news['header'];
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
-    <div class="container-post">
+    <div class="container-post" data-item-id="<?=$news['id']?>" data-type="news">
         <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
         <h1 class="h1-v"><?=$news['header']?></h1>
         <div class="block-between page-news">
             <div class="block-info-reviewsAndfavorites">
-                <div class="add-favorite <?=$news['is_like']?'active':''?>"></div>
+                <div class="add-favorite <?=$news['is_like']?'active':''?>"><?=$news->count_favorites?></div>
             </div>
             <div class="date-time-text"><?=Yii::$app->formatter->printDate($news['date'])?></div>
         </div>
@@ -21,10 +21,10 @@ $this->title = $news['header'];
     </div>
     <div class="block-content-between">
         <div class="block-social-share">
-            <div class="social-btn-share"><p>Поделиться</p> <span>24</span></div>
-            <div class="social-btn-share"><span>3</span></div>
-            <div class="social-btn-share"><p>Твитнуть</p></div>
-            <div class="social-btn-share"><p>Поделиться</p><span>153</span></div>
+            <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk"></span></div>
+            <div class="social-btn-share goodshare" data-type="fb"><span data-counter="fb"></span></div>
+            <div class="social-btn-share goodshare" data-type="tw"><p>Твитнуть</p></div>
+            <div class="social-btn-share goodshare" data-type="ok"><p>Поделиться</p><span data-counter="ok"></span></div>
         </div>
         <div class="block-count-views">
             <div class="elem-count-views"><?=$news->totalView['count']?></div>
@@ -42,3 +42,14 @@ $this->title = $news['header'];
 </div>
 <div class="clear-fix"></div>
 <div style="margin-bottom:30px;"></div>
+<?php
+$js = <<<js
+    $(document).ready(function() {
+        newsComments.setAutoResize('.textarea-main-comment');
+        menu_control.fireMethodClose();
+    })
+js;
+
+echo "<script>$js</script>";
+
+?>

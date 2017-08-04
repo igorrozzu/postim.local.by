@@ -15,7 +15,7 @@
                         <div class="rating bg-r<?=$item["rating"]?>"><?=$item["rating"]?></div>
                         <div class="total-reviews"><?=$item["count_reviews"]?> отзывов</div>
                     </div>
-                    <div class="bookmarks-btn<?=$item->is_like?'-active':''?>">
+                    <div class="bookmarks-btn<?=$item->is_like?' active':''?>">
                         <?=$item["count_favorites"]?>
                     </div>
                 </div>

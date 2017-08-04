@@ -3,18 +3,26 @@ $model = $dataprovider->getModels();
 foreach ($model as $item):
 ?>
 <div class="container-comment main" data-comment_id="<?=$item->id?>">
-    <div class="profile-commentator">
-        <img class="profile-icon-commentator" src="<?=$item->user->getPhoto()?>">
+    <div class="profile-commentator main-pjax">
+        <a href="/id<?=$item->user->id?>"><img class="profile-icon-commentator" src="<?=$item->user->getPhoto()?>"></a>
     </div>
     <div class="comment-content">
         <div class="comment-content-header">
-            <div class="content-between">
-                <p class="user-name"><?=$item->user->name?> <?=$item->user->surname?></p>
+            <div class="content-between main-pjax">
+                <a href="/id<?=$item->user->id?>" class="user-name"><?=$item->user->name?> <?=$item->user->surname?></a>
                 <div class="user-level"><?=$item->user->userInfo->level?> <span>&nbsp;уровень</span></div>
             </div>
             <span class="comment-time"><?=Yii::$app->formatter->printDate($item->date)?></span>
         </div>
-        <div class="comment-text"><?=\yii\helpers\Html::encode($item->data)?></div>
+        <div class="comment-text">
+            <?php
+            if ($item->status == 0) {
+                echo \yii\helpers\Html::encode($item->data);
+            } else {
+                echo '<p class="comment-status">'.\app\models\CommentsNews::$status_map[$item->status].'</p>';
+            }
+            ?>
+        </div>
         <div class="btns-comment">
             <div class="btn-comment btn-like <?=$item->is_like?'active':''?>"><?=$item->like?></div>
             <div class="btn-comment btn-comm reply">Ответить</div>
@@ -22,7 +30,7 @@ foreach ($model as $item):
                 <?php if(!$item->is_complaint):?>
                     <div class="btn-comment cplt">Пожаловаться</div>
                 <?php endif;?>
-            <?php elseif(!$item->underComments):?>
+            <?php elseif($item->status == 0):?>
                 <div class="btn-comment delete">Удалить</div>
             <?php endif;?>
         </div>

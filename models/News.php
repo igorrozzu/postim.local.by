@@ -98,9 +98,8 @@ class News extends \yii\db\ActiveRecord
 
     public function getHasLike()
     {
-        return $this->getFavoriteNews()->onCondition([
-            FavoritesNews::tableName().'.user_id' => Yii::$app->user->id
-        ]);
+        return $this->hasOne(FavoritesNews::className(),['news_id' => 'id'])
+            ->onCondition([FavoritesNews::tableName().'.user_id' => Yii::$app->user->id]);
     }
 
     public function afterFind()

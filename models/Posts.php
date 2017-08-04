@@ -86,9 +86,9 @@ class Posts extends \yii\db\ActiveRecord
 
     public function getHasLike()
     {
-        return $this->getFavoritePosts()->onCondition([
-            FavoritesPost::tableName().'.user_id' => Yii::$app->user->id
-        ]);
+        return $this->hasOne(FavoritesPost::className(),['post_id' => 'id'])
+            ->onCondition([FavoritesPost::tableName().'.user_id' => Yii::$app->user->id]);
+
     }
 
     public function afterFind()

@@ -17,32 +17,60 @@ var News = (function (window, document, undefined,$) {
             init: function () {
                 $(document).ready(function () {
                     that.addToFavorite();
-
                 });
             },
             addToFavorite: function () {
-                $(document).on('click', '.bookmarks-btn-active,.bookmarks-btn', function () {
-                    var block = $(this).closest('.card-block');
-                    var item_id = block.data('item-id');
-                    var url = methods.defineUrlByItemType(block.data('type'));
-                    var action = null;
-                    if($(this).hasClass('bookmarks-btn')) {
-                        $(this).removeClass('bookmarks-btn').addClass('bookmarks-btn-active');
-                        action = 'add';
-                    } else {
-                        $(this).removeClass('bookmarks-btn-active').addClass('bookmarks-btn');
-                        action = 'remove';
+                $(document).on('click', '.bookmarks-btn', function () {
+                    if(main.User.is_guest){
+                        main.showErrorAut('Не авторизованые пользователи не могут оценивать записи');
+                        return false;
                     }
-                    that.sendRequsetForStateItem(url, item_id, action);
+                    var $container_replace = $(this);
+                    var $block = $container_replace.closest('.card-block');
+                    var item_id = $block.data('item-id');
+                    var url = methods.defineUrlByItemType($block.data('type'));
+
+                    that.sendRequsetForStateItem($container_replace,url, item_id);
                     return false;
                 });
+
+                $(document).on('click','.container-post .add-favorite',function () {
+                    if(main.User.is_guest){
+                        main.showErrorAut('Не авторизованые пользователи не могут оценивать записи');
+                        return false;
+                    }
+                    var $container_replace = $(this);
+                    var $block = $container_replace.closest('.container-post');
+                    var item_id = $block.data('item-id');
+                    var url = methods.defineUrlByItemType($block.data('type'));
+                    that.sendRequsetForStateItem($container_replace,url, item_id);
+                })
             },
 
-            sendRequsetForStateItem: function (url, item_id, action) {
+            sendRequsetForStateItem: function ($container_replace,url, item_id) {
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {action: action, itemId: item_id}
+                    data: {itemId: item_id},
+                    dataType: "json",
+                    async:false,
+                    success:function (response) {
+                        if(response.status=='error'){
+                            $().toastmessage('showToast', {
+                                text: response.message,
+                                stayTime:5000,
+                                type:'error'
+                            });
+
+                        }else {
+                            $container_replace.text(response.count)
+                            if(response.status=='add'){
+                                $container_replace.addClass('active');
+                            }else {
+                                $container_replace.removeClass('active');
+                            }
+                        }
+                    }
                 });
             },
 
@@ -66,14 +94,14 @@ var News = (function (window, document, undefined,$) {
                                            }
                                            comments.sendComment.apply(this);
                                        }else {
-                                           comments.showErrorAut('Не авторизованные пользователи не могут оставлять комментарии');
+                                           main.showErrorAut('Не авторизованные пользователи не могут оставлять комментарии');
                                        }
                                    }
                                );
                             $(document).off('click','.textarea-main-comment')
                                 .on('click','.textarea-main-comment',function (event) {
                                     if(main.User.is_guest){
-                                        comments.showErrorAut('Не авторизованные пользователи не могут оставлять комментарии');
+                                        main.showErrorAut('Не авторизованные пользователи не могут оставлять комментарии');
                                     }else {
                                         comments.closeUnderCommentForm();
                                     }
@@ -82,7 +110,7 @@ var News = (function (window, document, undefined,$) {
                             $(document).off('click','.container-comment .btn-comment.btn-comm.reply')
                                 .on('click','.container-comment .btn-comment.btn-comm.reply',function () {
                                     if(main.User.is_guest){
-                                        comments.showErrorAut('Не авторизованные пользователи не могут оставлять комментарии');
+                                        main.showErrorAut('Не авторизованные пользователи не могут оставлять комментарии');
                                     }else {
                                         comments.openUnderCommentForm.apply(this);
                                     }
@@ -96,7 +124,7 @@ var News = (function (window, document, undefined,$) {
                             $(document).off('click','.container-comment .btn-comment.delete')
                                 .on('click','.container-comment .btn-comment.delete',function () {
                                     if(main.User.is_guest){
-                                        comments.showErrorAut('Не авторизованные пользователи не могут удалять комментарии');
+                                        main.showErrorAut('Не авторизованные пользователи не могут удалять комментарии');
                                     }else {
                                         comments.deleteComment.apply(this);
                                     }
@@ -104,7 +132,7 @@ var News = (function (window, document, undefined,$) {
                             $(document).off('click','.container-comment .btn-comment.btn-like')
                                 .on('click','.container-comment .btn-comment.btn-like',function () {
                                     if(main.User.is_guest){
-                                        comments.showErrorAut('Не авторизованные пользователи не могут оценивать комментарии');
+                                        main.showErrorAut('Не авторизованные пользователи не могут оценивать комментарии');
                                     }else {
                                         comments.add_remove_like.apply(this);
                                     }
@@ -112,22 +140,14 @@ var News = (function (window, document, undefined,$) {
                             $(document).off('click','.container-comment .btn-comment.cplt')
                                 .on('click','.container-comment .btn-comment.cplt',function () {
                                     if(main.User.is_guest){
-                                        comments.showErrorAut('Не авторизованные пользователи не могут оставлять жалобы на комментарии');
+                                        main.showErrorAut('Не авторизованные пользователи не могут оставлять жалобы на комментарии');
                                     }else {
                                         comments.showFormComplaint.apply(this);
                                     }
                                 });
                         });
                     },
-                    showErrorAut:function (text) {
-                        $().toastmessage('showToast', {
-                            text: text,
-                            stayTime:5000,
-                            type:'error'
-                        });
 
-                        $( ".sign_in_btn" ).trigger( "click" );
-                    },
                     openUnderCommentForm:function () {
                         comments.closeUnderCommentForm();
                         __$container_to_which=$(this).parents('.container-comment');
@@ -139,15 +159,18 @@ var News = (function (window, document, undefined,$) {
                             __$container_to_which.find('.btn-comment.btn-comm.reply')
                                 .removeClass('reply').addClass('cancel').text('Отменить')
                             __$container_to_which.after(htmlContainerWrite);
+                            __$container_to_which.addClass('neig');
                             __$container_under_write = __$container_to_which.next();
                             __id_comment_to_which=comment_id;
                             comments.toFocusWrite(__$container_under_write.find('textarea'));
+
                         }
                     },
                     closeUnderCommentForm:function () {
                         if(__$container_to_which!=null){
                             __$container_to_which.find('.btn-comment.btn-comm.cancel')
-                                .removeClass('cancel').addClass('reply').text('Ответить')
+                                .removeClass('cancel').addClass('reply').text('Ответить');
+                            __$container_to_which.removeClass('neig');
                             __$container_to_which=null;
                         }
                         if(__$container_under_write !=null){
@@ -186,7 +209,7 @@ var News = (function (window, document, undefined,$) {
                         comments.setAutoResize('#tempBlockWrite');
                     },
                     setAutoResize:function (selector) {
-                        $(selector).autoResize();
+                        $(selector).autosize()
                     },
                     sendComment:function () {
                        var object_send ={

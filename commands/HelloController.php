@@ -146,15 +146,15 @@ class HelloController extends Controller
             $model = new Posts([
                 'user_id' => (int)$userId,
                 'url_name' => 'zvezda-dav',
-                'city_id' => 1,
+                'city_id' => 23,
                 'cover' => '/post-img/testP.png',
                 'date' => time(),
-                'rating' => 2,
+                'rating' => 4,
                 'data' => 'Кофе бар довиды',
                 'address' => 'ст. метро Партизанская</br>ул. Белгородского полка, 56а',
                 'count_reviews' => 10,
                 'under_category_id' => 1,
-                'count_favorites' => 15,
+                'count_favorites' => 0,
                 'status' => 1
             ]);
 

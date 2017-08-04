@@ -4,11 +4,11 @@ $data = $dataprovider->getModels();
 
 <div class="block-news">
     <?php foreach ($data as $item):?>
-        <div class="card-block" data-item-id="<?=$item['id']?>" data-type="news">
+        <div class="card-block main-pjax" data-item-id="<?=$item['id']?>" data-type="news">
             <a href="/<?=$item['url_name'].'-n'.$item['id']?>">
                 <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
                     <div class="glass">
-                        <div class="bookmarks-btn<?=$item->is_like ? '-active' : ''?>">
+                        <div class="bookmarks-btn<?=$item->is_like ? ' active' : ''?>">
                             <?=$item["count_favorites"]?>
                         </div>
                     </div>

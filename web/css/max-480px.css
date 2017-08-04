@@ -53,16 +53,37 @@
 .block-сomments-post .container-comment:first-child{
     border-top: 0px solid;
 }
+.neig .comment-content{
+    border-bottom: 0px;
+}
+.neig{
+    border-bottom: 1px solid #a7c9ff;
+}
+
+.container-write-comments.under + .container-comment{
+    border-top: 0px;
+}
+
+.container-write-comments.under{
+    margin-top: 21px;
+}
+
 .btn-comment{
     margin-left: 40px;
 }
+
 .main-write-comment{
-    flex-direction: column;
+    align-items: flex-start;
 }
-.textarea-main-comment,
-.textarea-under-comment{
+.textarea-comment,
+.textarea-comment{
     width: 100%;
+    margin-top: 12px;
 }
+.container-write-comments.under .textarea-comment{
+    margin-top: 12px;
+}
+
 .profile_under_comment{
     margin: 10px 20px 0px 0px;
 }

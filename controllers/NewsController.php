@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\cardsNewsWidget\CardsNewsWidget;
 use app\components\commentsWidget\CommentsNewsWidget;
+use app\components\Helper;
 use app\components\MainController;
 use app\components\Pagination;
 use app\models\CommentsComplaint;
@@ -64,7 +65,13 @@ class NewsController extends MainController
 
     public function actionNews($id){
         $loadTime = Yii::$app->request->get('loadTime',time());
-        $news = News::find()->with('totalView')->with('city.region')->where(['id'=>$id])->one();
+        $newsQuery = News::find()->with('totalView')->with('city.region')->where(['id'=>$id]);
+        if(!Yii::$app->user->isGuest){
+            $newsQuery->with('hasLike');
+        }
+        $news = $newsQuery->one();
+
+        Helper::addViews($news->totalView);
 
         $searchModel = new NewsSearch();
         $pagination = new Pagination([
@@ -205,11 +212,7 @@ class NewsController extends MainController
     public function actionGetContainerWriteComment(int $id){
         $comment = CommentsNews::find()->with('user')->where(['id'=>$id])->one();
         if($comment){
-            if($comment->main_comment_id == null){
-                return $this->renderAjax('_write_undercomment',['comment'=>$comment]);
-            }else{
-                return $this->renderAjax('_write_under_undercomment',['comment'=>$comment]);
-            }
+            return $this->renderAjax('_write_undercomment', ['comment' => $comment]);
         }
 
     }
@@ -232,8 +235,13 @@ class NewsController extends MainController
                     $response->message='У вас нет прав на удаление комментария';
                 }
             }else{
-                $response->status='error';
-                $response->message='Комментарий не может быть удален';
+                if($comment && $comment->user_id == Yii::$app->user->id){
+                    $comment->status=CommentsNews::$STATUS_COMMENT_WAS_DELETED_BY;
+                    $comment->update();
+                }else{
+                    $response->status='error';
+                    $response->message='У вас нет прав на удаление комментария';
+                }
             }
 
         }
@@ -247,7 +255,7 @@ class NewsController extends MainController
 
         if(!Yii::$app->user->isGuest){
             $comment = CommentsNews::find()->with('likeUser')->where(['id'=>$id])->one();
-            if($comment->likeUser==null){
+            if($comment && $comment->likeUser==null){
                 if($comment->updateCounters(['like' => 1])){
                     $commentsNewsLike= new CommentsNewsLike(['comment_id'=>$comment->id,
                         'user_id'=>Yii::$app->user->id]);
@@ -383,24 +391,37 @@ class NewsController extends MainController
 
     public function actionFavoriteState()
     {
+        $response = new \stdClass();
+        $response->status='OK';
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
         $request = Yii::$app->request;
-        if($request->isAjax) {
+        if( $request->isAjax && !Yii::$app->user->isGuest) {
             $itemId = (int)$request->post('itemId');
-            $action = $request->post('action');
-            try {
-                if ($action === 'add') {
-                    $model = new FavoritesNews([
-                        'user_id' => Yii::$app->user->id,
-                        'news_id' => $itemId
-                    ]);
-                    $model->save();
-                } else if ($action === 'remove') {
-                    FavoritesNews::deleteAll([
-                        'user_id' => Yii::$app->user->id,
-                        'news_id' => $itemId
-                    ]);
+
+            $news = News::find()->select('count_favorites,id')->with('hasLike')->where(['id'=>$itemId])->one();
+
+            if($news->hasLike){
+                if($news->updateCounters(['count_favorites' => -1])){
+                    if($news->hasLike->delete()){
+                        $response->status='remove';
+                    }
                 }
-            } catch (Exception $e) {}
+            }else{
+                if($news->updateCounters(['count_favorites' => 1])){
+                    $model = new FavoritesNews([
+                        'user_id'=>Yii::$app->user->id,
+                        'news_id'=>$news->id
+                    ]);
+                    if($model->save()){
+                        $response->status='add';
+                    }
+                }
+
+            }
+            $response->count=$news->count_favorites;
+
         }
+        return $response;
     }
 }

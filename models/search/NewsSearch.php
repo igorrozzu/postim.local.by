@@ -70,9 +70,11 @@ class NewsSearch extends News
 
         if(!empty($this->city)){
             $city = City::find()->with('region')->where(['url_name' => $this->city['url_name']])->one();
-            $query->orWhere(['tbl_region.url_name' => $city->region->url_name])
-                ->orWhere(['tbl_city.url_name' => $city->url_name])
-                ->orWhere(['tbl_city.name' => 'Беларусь']);
+            $query->andWhere(['or',
+                ['tbl_region.url_name' => $city->region->url_name],
+                ['tbl_city.url_name' => $city->url_name],
+                ['tbl_city.name' => 'Беларусь']
+            ]);
         }
 
         if(isset($params['loadTime']) || isset($loadTime) ){

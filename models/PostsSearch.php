@@ -85,8 +85,10 @@ class PostsSearch extends Posts
         }
 
         if(!empty($this->city)){
-            $query->orWhere(['tbl_region.url_name'=>$this->city['url_name']])
-                ->orWhere(['tbl_city.url_name'=>$this->city['url_name']]);
+            $query->andWhere(['or',
+                ['tbl_region.url_name'=>$this->city['url_name']],
+                ['tbl_city.url_name'=>$this->city['url_name']]
+            ]);
         }
 
         if(!empty($this->under_category)){

@@ -3,11 +3,11 @@ $data = $dataprovider->getModels();
 ?>
 
     <?php foreach ($data as $item):?>
-        <div class="card-block" data-item-id="<?=$item['id']?>" data-type="news">
+        <div class="card-block main-pjax" data-item-id="<?=$item['id']?>" data-type="news">
             <a href="/<?=$item['url_name'].'-n'.$item['id']?>">
                 <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
                     <div class="glass">
-                        <div class="bookmarks-btn<?=$item->is_like ? '-active' : ''?>">
+                        <div class="bookmarks-btn<?=$item->is_like ? ' active' : ''?>">
                             <?=$item["count_favorites"]?>
                         </div>
                     </div>
@@ -40,6 +40,6 @@ $data = $dataprovider->getModels();
 
 <?php if ($hrefNext = $dataprovider->pagination->getLinks()['next']??false): ?>
     <div class="replace-block mg-btm-30" id="<?=$settings['replace-container-id']?>">
-        <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>" data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?>">Показать больше мест</div>
+        <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>" data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?>">Показать больше новостей</div>
     </div>
 <?php endif; ?>
