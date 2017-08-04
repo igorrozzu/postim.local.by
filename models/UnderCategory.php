@@ -52,4 +52,9 @@ class UnderCategory extends \yii\db\ActiveRecord
     public function getCategory(){
         return $this->hasOne(Category::className(),['id'=>'category_id']);
     }
+
+    public function getPosts()
+    {
+        return $this->hasMany(Posts::className(), ['under_category_id' => 'id']);
+    }
 }

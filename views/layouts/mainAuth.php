@@ -115,7 +115,9 @@ $countNotif = Notification::getCountNotifications();
             </a>
         </div>
         <div class="container-item-menu">
-            <a><span><img src="/img/news-icon.png"></span>Все отзовы</a>
+            <a href="<?=Url::to(['user/vse-otzyvy'])?>">
+                <span><img src="/img/news-icon.png"></span>Все отзовы
+            </a>
         </div>
         <div class="container-item-menu">
             <a href="<?=Url::to(['user/settings'])?>">

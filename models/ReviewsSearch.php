@@ -13,6 +13,7 @@ use yii\data\Pagination;
  */
 class ReviewsSearch extends Reviews
 {
+    const BORDER_DIVIDED_REVIEWS = 3;
     /**
      * @inheritdoc
      */
@@ -40,12 +41,27 @@ class ReviewsSearch extends Reviews
     public function search($params, Pagination $pagination, $loadTime = null)
     {
         $query = Reviews::find()
-            ->joinWith(['user', 'userInfo'])
-            ->where(['tbl_reviews.user_id' => $params['id']])
-            ->andWhere(['<=', 'tbl_reviews.date', $params['loadTime'] ?? $loadTime])
+            ->joinWith(['user'])
+            ->innerJoinWith(['post.underCategory'])
+            ->where(['<=', 'tbl_reviews.date', $params['loadTime'] ?? $loadTime])
             ->orderBy(['tbl_reviews.date' => SORT_DESC]);
 
         // add conditions that should always apply here
+        if(isset($params['id'])) {
+            $query->andWhere(['tbl_reviews.user_id' => $params['id']]);
+        }
+
+        if(isset($params['region'])) {
+            $query->innerJoinWith(['post.city'], false)
+                ->where(['tbl_city.name' => $params['region']]);
+        }
+        if(isset($params['type']) && $params['type'] !== 'all') {
+            if($params['type'] === 'positive') {
+                $query->andWhere(['>=', 'tbl_reviews.rating', self::BORDER_DIVIDED_REVIEWS]);
+            } else if ($params['type'] === 'negative') {
+                $query->andWhere(['<', 'tbl_reviews.rating', self::BORDER_DIVIDED_REVIEWS]);
+            }
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

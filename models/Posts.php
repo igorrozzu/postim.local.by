@@ -91,6 +91,11 @@ class Posts extends \yii\db\ActiveRecord
 
     }
 
+    public function getUnderCategory()
+    {
+        return $this->hasOne(UnderCategory::className(), ['id' => 'under_category_id']);
+    }
+
     public function afterFind()
     {
         parent::afterFind();

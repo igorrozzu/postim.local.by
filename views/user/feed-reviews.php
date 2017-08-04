@@ -23,7 +23,6 @@ use yii\widgets\Pjax;
             'show-more-btn' => true,
             'replace-container-id' => 'feed-reviews',
             'load-time' => $loadTime,
-            'user-id' => $user->id,
         ]
     ]);
     ?>

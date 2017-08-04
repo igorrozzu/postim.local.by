@@ -77,12 +77,11 @@
 .btn-add-photo{
     width: 120px;
 }
-.block-review-content{
-    flex-direction: column;
-}
+
 .review-text{
     margin-top: 15px;
     width: 100%;
+    margin-left: 0;
 }
 .rating-r{
     margin-left: 0px;

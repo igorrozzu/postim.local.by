@@ -1593,6 +1593,8 @@ a.btn-show-more{
 .block-info-review{
     display: flex;
     flex-direction: column;
+    margin-left: 20px;
+    width: calc(90% - 4px);
 }
 .block-info-review-user{
     display: flex;
@@ -1670,21 +1672,20 @@ a.btn-show-more{
     content: url("../img/open-share-icon.png");
 }
 .block-review-content{
-    padding: 0 20px;
+    padding: 0 20px 0 20px;
     display: flex;
 }
 .rating-r{
     height: 40px;
     color: #ffffff;
     width: 40px;
-    border-radius: 20px;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 20px;
-    margin-right: 20px;
 }
 .review-text{
+    margin-left: 59px;
     display: flex;
     flex-wrap: wrap;
     font-size: 16px;
@@ -1694,7 +1695,7 @@ a.btn-show-more{
 }
 .review-photo{
     margin-top: 20px;
-    margin-left: 100px;
+    margin-left: 79px;
     width: 300px;
     height: 200px;
     background-position: center;
@@ -1741,7 +1742,7 @@ a.btn-show-more{
     color: #444444;
 }
 .review-footer-btn:first-child{
-    margin-left: 100px;
+    margin-left: 79px;
 }
 .review-footer-btn:last-child{
     margin-right: 0px;

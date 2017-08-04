@@ -18,6 +18,7 @@ use app\models\User;
 use app\models\UserSettings;
 use Yii;
 use app\components\Pagination;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
@@ -32,8 +33,16 @@ class UserController extends MainController
             ->one();
 
         $searchModel = new ReviewsSearch();
-        $pagination = new Pagination(['pageSize' => 5, 'page' => 0]);
+        $pagination = new Pagination([
+            'pageSize' => 5,
+            'page' => 0,
+            'route' => Url::to(['user/reviews']),
+            'selfParams'=> [
+                'id' => true,
+            ],
+        ]);
         $loadTime = time();
+        $_GET['id'] = $id;
         $dataProvider = $searchModel->search(
             Yii::$app->request->queryParams,
             $pagination,
@@ -178,9 +187,13 @@ class UserController extends MainController
     {
         if(Yii::$app->request->isAjax) {
             $searchModel = new ReviewsSearch();
+            $_GET['id'] = Yii::$app->request->get('id', Yii::$app->user->id);
             $pagination = new Pagination([
                 'pageSize' => Yii::$app->request->get('per-page', 5),
-                'page' => Yii::$app->request->get('page', 0),
+                'page' => Yii::$app->request->get('page', 1) - 1,
+                'selfParams'=> [
+                    'id' => true,
+                ],
             ]);
             $loadTime = Yii::$app->request->get('loadTime', time());
             $dataProvider = $searchModel->search(
@@ -196,7 +209,6 @@ class UserController extends MainController
                         'show-more-btn' => true,
                         'replace-container-id' => 'feed-reviews',
                         'load-time' => $loadTime,
-                        'user-id' => Yii::$app->request->get('id'),
                     ]
                 ]);
             }else{
@@ -211,7 +223,6 @@ class UserController extends MainController
                 ]);
             }
         }
-
     }
 
     public function actionPlaces()
@@ -375,6 +386,47 @@ class UserController extends MainController
                 'loadTime' => $loadTime,
                 'isNewsFeed' => $isNewsFeed,
                 'widgetName' => $widgetName,
+            ]);
+        }
+    }
+
+    public function actionVseOtzyvy()
+    {
+        $request = Yii::$app->request;
+        $_GET['region'] = $request->get('region', Yii::$app->city->getSelected_city()['name']);
+        $_GET['type'] = $request->get('type', 'all');
+        $searchModel = new ReviewsSearch();
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 8),
+            'page' => $request->get('page', 1) - 1,
+            'selfParams'=> [
+                'region' => true,
+                'type' => true,
+            ],
+        ]);
+        $loadTime = $request->get('loadTime', time());
+
+        $dataProvider = $searchModel->search(
+            $request->queryParams,
+            $pagination,
+            $loadTime
+        );
+
+        if($request->isAjax && !$request->get('_pjax',false)) {
+            return CardsReviewsWidget::widget([
+                'dataProvider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-all-reviews',
+                    'load-time' => $loadTime,
+                ]
+            ]);
+        } else {
+            return $this->render('feed-all-reviews', [
+                'dataProvider' => $dataProvider,
+                'loadTime' => $loadTime,
+                'region' => Yii::t('app/locativus', $request->queryParams['region']),
+                'type' => $request->queryParams['type'],
             ]);
         }
     }
