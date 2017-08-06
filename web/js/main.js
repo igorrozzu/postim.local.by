@@ -46,6 +46,7 @@ var Main = (function (window, document, undefined,$) {
                     }
 
                 });
+                that.shareSocialButtonsInit();
 
             },
             reloadViewPjaxEvents:function () {
@@ -110,6 +111,21 @@ var Main = (function (window, document, undefined,$) {
 
                 $( ".sign_in_btn" ).trigger( "click" );
             },
+            shareSocialButtonsInit:function () {
+                $(document).on('click','.btn-social-share',function () {
+
+                   var $block = $(this).parent().prev();
+                   if($block.attr('is-open') === '1') {
+                       $block.animate({right:'-160px',}, 500);
+                       $block.attr('is-open', '0');
+                   } else if($block.attr('is-open') === '0'){
+                       $block.animate({right:'40px'}, 500);
+                       $block.attr('is-open', '1');
+                   }
+
+                });
+            },
+
         }
 
         return that;

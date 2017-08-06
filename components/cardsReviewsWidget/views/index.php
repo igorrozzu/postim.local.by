@@ -8,9 +8,9 @@ $reviews = $dataProvider->getModels();
 
 <?php foreach ($reviews as $review):?>
     <div class="block-reviews">
-        <div class="block-review-content" style="margin-top: 20px;">
+        <div class="block-review-post" style="margin-top: 20px; border-bottom: solid 1px #D3E4FF; padding-bottom: 23px;">
             <div class="rating-r bg-r4"><?=$review->post->rating?></div>
-            <div class="block-info-review" style="border-bottom: solid 1px #D3E4FF; padding-bottom: 23px;">
+            <div class="block-info-review">
             <p class="user-name"><?=$review->post->data?></p>
             <div class="date-time-review"><?=$review->post->underCategory->name?></div>
             </div>
@@ -21,14 +21,37 @@ $reviews = $dataProvider->getModels();
                 <div class="block-info-review">
                     <div class="block-info-review-user">
                         <p class="user-name"><?=$review->user->name . ' ' . $review->user->surname;?></p>
+                        <span class="user-points"><?=$review->user->userInfo->exp_points?></span>
                     </div>
                     <div class="date-time-review">
                         <?=Yii::$app->formatter->printDate($review->date + $review->user->getTimezoneInSeconds())?>
                     </div>
                 </div>
+
+                <div class="block-btn-social-share" is-open="1">
+                    <div class="btn-circle-share"></div>
+                    <div class="btn-circle-share"></div>
+                    <div class="btn-circle-share"></div>
+                    <div class="btn-circle-share"></div>
+                </div>
+                <div class="block-btn-circle-share">
+                    <div class="btn-social-share open-share"></div>
+                </div>
             </div>
         </div>
         <div class="block-review-content">
+            <div class="rating-r bg-r4"><?=$review->rating?></div>
+            <div class="review-help-text">Оценка</div>
+            <div class="block-btn-m-social-share" is-open="0" style="right: -160px;">
+                <div class="btn-circle-share"></div>
+                <div class="btn-circle-share"></div>
+                <div class="btn-circle-share"></div>
+                <div class="btn-circle-share"></div>
+            </div>
+            <div class="block-btn-m-circle-share">
+                <div class="btn-social-share open-share"></div>
+            </div>
+
             <div class="review-text"><?=$review->data?></div>
         </div>
         <div class="review-photo" style="background-image: url('/testP.png')">

@@ -1589,12 +1589,14 @@ a.btn-show-more{
     width: 100%;
     display: flex;
     justify-content: space-between;
+    overflow: hidden;
+    position: relative;
 }
 .block-info-review{
     display: flex;
     flex-direction: column;
     margin-left: 20px;
-    width: calc(90% - 4px);
+    width: calc(100% - 60px);
 }
 .block-info-review-user{
     display: flex;
@@ -1617,15 +1619,41 @@ a.btn-show-more{
     margin-right: 10px;
     content: url("../img/crown-icon.png");
 }
-.date-time-review{
+.date-time-review, .review-help-text{
     margin-top: 10px;
     color:#6b778f;
     font-size: 12px;
 }
-.block-btn-circle-share{
+.review-help-text{
+    position: absolute;
+    line-height: 20px;
+    left: 50px;
+    display: none;
+}
+.block-btn-circle-share, .block-btn-social-share{
     display: flex;
 }
-.btn-circle-share{
+.block-btn-circle-share, .block-btn-m-circle-share {
+    margin-left: 10px;
+    background-color: white;
+    border-top-left-radius: 43%;
+    border-bottom-left-radius: 50%;
+    z-index: 3;
+    height: 32px;
+}
+.block-btn-social-share, .block-btn-m-social-share{
+    position: absolute;
+    right: 40px;
+    z-index: 2;
+}
+.block-btn-m-social-share, .block-btn-m-circle-share{
+    display: none;
+}
+.block-btn-m-circle-share{
+    position: absolute;
+    right: 0;
+}
+.btn-circle-share, .btn-social-share{
     width: 30px;
     height: 30px;
     display: flex;
@@ -1634,6 +1662,9 @@ a.btn-show-more{
     margin-left: 10px;
     border-radius: 15px;
     cursor: pointer;
+}
+.btn-social-share{
+    margin: 0;
 }
 .btn-circle-share:nth-child(1){
     background-color: #48729e;
@@ -1671,9 +1702,11 @@ a.btn-show-more{
     margin-left: -2px;
     content: url("../img/open-share-icon.png");
 }
-.block-review-content{
-    padding: 0 20px 0 20px;
+.block-review-content,.block-review-post{
+    margin: 0 20px 0 20px;
     display: flex;
+    position: relative;
+    overflow: hidden;
 }
 .rating-r{
     height: 40px;
@@ -1685,13 +1718,14 @@ a.btn-show-more{
     align-items: center;
 }
 .review-text{
-    margin-left: 59px;
+    margin-top: -6px;
+    margin-left: 20px;
     display: flex;
     flex-wrap: wrap;
     font-size: 16px;
     line-height: 24px;
     color: #444444;
-    width: calc(100% - 80px);
+    width: calc(100% - 60px);
 }
 .review-photo{
     margin-top: 20px;
