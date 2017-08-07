@@ -21,10 +21,10 @@ $this->title = $news['header'];
     </div>
     <div class="block-content-between">
         <div class="block-social-share">
-            <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk"></span></div>
-            <div class="social-btn-share goodshare" data-type="fb"><span data-counter="fb"></span></div>
+            <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk">0</span></div>
+            <div class="social-btn-share goodshare" data-type="fb"><p>Share</p><span data-counter="fb">0</span></div>
             <div class="social-btn-share goodshare" data-type="tw"><p>Твитнуть</p></div>
-            <div class="social-btn-share goodshare" data-type="ok"><p>Поделиться</p><span data-counter="ok"></span></div>
+            <div class="social-btn-share goodshare" data-type="ok"><span data-counter="ok">0</span></div>
         </div>
         <div class="block-count-views">
             <div class="elem-count-views"><?=$news->totalView['count']?></div>

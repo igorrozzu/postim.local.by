@@ -370,6 +370,8 @@ class UserController extends MainController
             $loadTime
         );
 
+        $breadcrumbParams = $this->getParamsForBreadcrumb('Избранное','/user/izbrannoe');
+
         $widgetName = $isNewsFeed ? CardsNewsWidget::className() : CardsPlaceWidget::className();
         if($request->isAjax && !$request->get('_pjax',false)) {
             return $widgetName::widget([
@@ -386,8 +388,38 @@ class UserController extends MainController
                 'loadTime' => $loadTime,
                 'isNewsFeed' => $isNewsFeed,
                 'widgetName' => $widgetName,
+                'breadcrumbParams'=>$breadcrumbParams
             ]);
         }
+    }
+
+    private function getParamsForBreadcrumb($name,$url_name){
+        $breadcrumbParams=[];
+
+        $currentUrl = Yii::$app->getRequest()->getHostInfo();
+        $breadcrumbParams[] = [
+            'name' => ucfirst(Yii::$app->getRequest()->serverName),
+            'url_name' => $currentUrl,
+            'pjax' => 'class="main-header-pjax a"'
+        ];
+
+        if($city = Yii::$app->city->getSelected_city()){
+            if($city['url_name']){
+                $currentUrl=$currentUrl.'/'.$city['url_name'];
+                $breadcrumbParams[]=[
+                    'name'=>$city['name'],
+                    'url_name'=>$currentUrl,
+                    'pjax'=>'class="main-pjax a"'
+                ];
+            }
+        }
+
+        $breadcrumbParams[]=[
+            'name'=>$name,
+            'url_name'=>$currentUrl.$url_name,
+            'pjax'=>'class="main-pjax a"'
+        ];
+        return $breadcrumbParams;
     }
 
     public function actionVseOtzyvy()

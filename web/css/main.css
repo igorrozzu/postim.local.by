@@ -546,8 +546,8 @@ body{
 }
 /*правый блок end*/
 /*в центре внимания*/
-.block-spotlight,
 .block-news{
+    margin-top: 10px;
 }
 .spotlight{
     margin-top: 30px;
@@ -1439,7 +1439,7 @@ a.btn-show-more{
     display: flex;
 }
 .social-btn-share{
-    padding: 10px;
+    padding: 10px 10px 10px 10px;
     display: flex;
     align-items: center;
     color: #ffffff;
@@ -2087,17 +2087,27 @@ a.btn-show-more{
     align-items: center;
     width: 100%;
 }
+.main-write-comment .profile-write-comment{
+    align-items: flex-start;
+}
 
 .textarea-comment{
     color: #6b778f;
     font-family: PT_Sans;
     font-size: 16px;
     resize: none;
-    width: calc(100% - 80px );
+    width: calc(100% - 81px );
     border: none;
     height: 0px;
     margin-top: -10px;
     line-height: 24px;
+}
+.main-write-comment .profile-write-comment .user-name{
+    margin-top: 5px;
+}
+.main-write-comment .textarea-comment{
+    margin-top: -30px;
+    margin-bottom: 10px;
 }
 .container-write-comments .large-wide-button{
     margin-top: -30px;
@@ -2878,7 +2888,7 @@ a.btn-show-more{
     box-shadow: 0 0 25px rgba(27,29,40,.25);
 }
 .container-header-right-menu{
-    display: flex;
+    display: block;
     width: 260px;
     padding-left: 40px;
     background-color: #3c5994;
@@ -2898,9 +2908,15 @@ a.btn-show-more{
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding-top: 30px;
+    padding-top: 0px;
     overflow: hidden;
     min-height: calc(100% - 120px);
+}
+.container-body-right-menu .container-item-menu:first-child{
+    margin-top: 25px;
+}
+.container-body-right-menu .container-item-menu:last-child{
+    margin-bottom: 25px;
 }
 .container-item-menu{
     display: flex;
@@ -2994,9 +3010,13 @@ a.btn-show-more{
 .notif-username{
     font-size: 14px;
     color: #444444;
+    margin-right: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .user-info{
-    width: 145px;
+    width: 135px;
     overflow: hidden;
 }
 .notif-text{

@@ -514,7 +514,7 @@
 				VK.Share = {
 					count: function(index, count) {
                         if(count==0){
-                            count='';
+                            count='0';
                             $('[data-counter="vk"]').text(roundCount(count));
                         }else{
                             $('[data-counter="vk"]').text(roundCount(count)).show();
@@ -529,7 +529,7 @@
 			 */
 			if (existCount('[data-counter="fb"]')) {
 				$.getJSON('https://graph.facebook.com/?id=' + encodeURIComponent(location.href) + '&callback=?', function(response) {
-					if (response.shares === undefined) $('[data-counter="fb"]').text('');
+					if (response.shares === undefined) $('[data-counter="fb"]').text('0');
 					else $('[data-counter="fb"]').text(roundCount(response.shares)).show();
 				});
 			};
@@ -542,7 +542,7 @@
 				if (!window.ODKL) ODKL = {};
 				ODKL.updateCount = function(index, count) {
                     if(count==0){
-                      count='';
+                      count='0';
                       $('[data-counter="ok"]').text( roundCount(count))
                     }else{
                       $('[data-counter="ok"]').text( roundCount(count)).show();

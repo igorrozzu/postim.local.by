@@ -5,11 +5,7 @@ use yii\widgets\Pjax;
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
-    <div class="bread-crumb">
-        <a class="pre" href="#">Главная</a>
-        <span class="separator"></span>
-        <p>Избранное</p>
-    </div>
+    <?= \app\components\breadCrumb\BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v">Избранное</h1>
 </div>
 <?php
@@ -50,6 +46,7 @@ Pjax::begin([
                 ]
             ]); ?>
     <?php else:?>
+        <div style="margin-top: 10px; display: flex"></div>
         <div class="card-promo">
             <?php if($isNewsFeed):?>
                 <p class="card-text-notice">Вы пока не добавили в избранное ни одной новости</p>

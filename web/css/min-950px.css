@@ -1,3 +1,9 @@
+.header-menu-title{
+    display: none;
+}
+.notif-menu .header-menu-title{
+    display: block;
+}
 .header-menu-title.btn-select-city{
     display: block;
 }

@@ -3,10 +3,12 @@
         <div class="profile-write-comment">
             <?php if(Yii::$app->user->isGuest):?>
                 <img class="profile-icon60x60" src="img/default-profile-icon.png">
+                <div class="user-name">Гость</div>
             <?php else:?>
                 <img class="profile-icon60x60" src="<?= Yii::$app->user->identity->getPhoto()?>">
+                <div class="user-name"><?= Yii::$app->user->identity->name.' '.Yii::$app->user->identity->surname?></div>
             <?php endif;?>
-            <div class="user-name">Игорь Борисов</div>
+
         </div>
         <textarea placeholder="Что скажете по этому поводу?" class="textarea-comment textarea-main-comment"></textarea>
     </div>

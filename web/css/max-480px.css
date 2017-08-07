@@ -80,6 +80,16 @@
     width: 100%;
     margin-top: 12px;
 }
+.main-write-comment .profile-write-comment{
+    align-items: center;
+}
+.main-write-comment .profile-write-comment .user-name{
+    margin-top: 0px;
+}
+.main-write-comment .textarea-comment{
+    margin-top: 12px;
+    margin-bottom: 0px;
+}
 .container-write-comments.under .textarea-comment{
     margin-top: 12px;
 }

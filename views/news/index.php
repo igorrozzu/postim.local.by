@@ -11,7 +11,6 @@ $this->title = $h1;
 </div>
 <div class="block-content">
     <div class="block-news-container">
-        <div style="margin-top: 10px"></div>
         <div class="block-news">
             <?= CardsNewsWidget::widget(['dataprovider' => $dataProvider, 'settings' => ['replace-container-id' => 'feed-news','load-time'=>$loadTime]]) ?>
         </div>
