@@ -39,6 +39,7 @@ class AppAsset extends AssetBundle
         'js/news.js',
         'js/libs/jquery.autosize.js',
         'js/goodShare.js',
+        'js/libs/debounce.js',
 
     ];
     public $depends = [
