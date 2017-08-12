@@ -7,8 +7,8 @@
     <?php
         $url_category = '/'.$item['city']['url_name'].'/'.$item['categories']['url_name'];
     ?>
-    <div class="card-block" data-item-id="<?=$item['id']?>" data-type="post">
-        <a href="/<?=$item['url_name']?>">
+    <div class="card-block main-pjax" data-item-id="<?=$item['id']?>" data-type="post">
+        <a href="/<?=$item['url_name']?>-p<?=$item['id']?>">
             <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
                 <div class="glass">
                     <div class="reviews-btn-icn">
@@ -28,7 +28,7 @@
             <p class="card-info"><?=Html::encode($item['data'])?></p>
         </div>
         <div class="time-work">
-            <?=$item->is_open?'<p class="open">Открыто</p>':'<p class="open">Закрыто</p>'?>
+            <?=$item->is_open?'<p class="open">Открыто</p>':'<p class="close">Закрыто</p>'?>
 
         </div>
         <hr class="hr-c">

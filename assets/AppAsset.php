@@ -36,6 +36,7 @@ class AppAsset extends AssetBundle
         'js/libs/jquery.toastmessage.js',
         'js/show-more.js',
         'js/category.js',
+        'js/post.js',
         'js/news.js',
         'js/libs/jquery.autosize.js',
         'js/goodShare.js',

@@ -34,13 +34,13 @@ var News = (function (window, document, undefined,$) {
                     return false;
                 });
 
-                $(document).on('click','.container-post .add-favorite',function () {
+                $(document).on('click','.block-info-reviewsAndfavorites .add-favorite',function () {
                     if(main.User.is_guest){
                         main.showErrorAut('Не авторизованые пользователи не могут оценивать записи');
                         return false;
                     }
                     var $container_replace = $(this);
-                    var $block = $container_replace.closest('.container-post');
+                    var $block = $container_replace.closest('.block-info-reviewsAndfavorites');
                     var item_id = $block.data('item-id');
                     var url = methods.defineUrlByItemType($block.data('type'));
                     that.sendRequsetForStateItem($container_replace,url, item_id);

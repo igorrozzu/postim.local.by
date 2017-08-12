@@ -942,6 +942,9 @@ a.btn-show-more{
 .p-text{
     color:#838da1;
     font-size: 16px;
+    height: 30px;
+    display: flex;
+    align-items: end;
 }
 .btn-filter{
     display: flex;
@@ -1177,7 +1180,7 @@ a.btn-show-more{
 .btn2-menu:last-child{
     margin-right: 0px;
 }
-.btn2-menu:hover,.btn2-menu-active {
+.btn2-menu:hover,.btn2-menu.active {
     color: #444444;
     box-shadow: 0px 4px 0px 0px  #a7c9ff;
 }
@@ -1265,12 +1268,11 @@ a.btn-show-more{
     padding: 20px;
     display: flex;
     justify-content: space-between;
-    height: 30px;
+    height: auto;
     overflow-y: hidden;
     background-color: #ffffff;
     border-radius: 3px 3px 0px 0px;
     box-shadow: 0px 1px 0px 0px #d3e4ff;
-    cursor: pointer;
     margin-bottom: 1px;
 }
 .info-row:last-child{
@@ -1280,12 +1282,14 @@ a.btn-show-more{
 .left-block-f1{
     display: flex;
     flex-direction: row;
+    width: calc(100% - 30px);
 }
 .right-block-f{
     display: flex;
     margin-left: 15px;
     height: 30px;
     align-items: center;
+    position: relative;
 }
 .web-site-card{
     color: #838da1;
@@ -1300,6 +1304,7 @@ a.btn-show-more{
     display: flex;
     line-height: 26px;
     width: 170px;
+    min-width: 170px;
     margin-right: 10px;
     margin-bottom: 10px;
 }
@@ -1311,8 +1316,12 @@ a.btn-show-more{
     color: #838da1;
     font-size: 16px;
     display: flex;
-    line-height: 30px;
+    line-height: 14px;
     margin-right: 10px;
+}
+.phone-card span{
+    display: flex;
+    align-items: center;
 }
 .phone-card:before{
     margin-right: 15px;
@@ -1336,14 +1345,18 @@ a.btn-show-more{
     flex-wrap: wrap;
 }
 .dop-info{
-    margin-top: 15px;
+    margin-top: 5px;
+    font-size: 16px;
+    color: #444444;
 }
-.info-card-text{
+.info-card-text,
+.info-card-text a{
     font-size: 16px;
     color: #444444;
     display: flex;
     flex-wrap: wrap;
     line-height: 32px;
+    text-decoration: none;
 }
 .info-card-text2{
     font-size: 16px;
@@ -1352,15 +1365,40 @@ a.btn-show-more{
     flex-wrap: wrap;
     line-height: 32px;
 }
-.btn-open-info-card{
+.lists-features{
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 16px;
+    color: #444444;
+    line-height: 32px;
+}
+.lists-feature{
+    margin-right: 18px;
+}
+.lists-feature:before{
+    display: flex;
+    margin-right: 6px;
+    margin-left: -12px;
+    content: '•';
+    color: #3c5994;
+    height: 1px;
+
+}
+.btn-info-card{
     cursor: pointer;
     display: none;
 }
-.btn-open-info-card:after{
+.btn-info-card:after{
     content: url("../img/direction-d.png");
 }
-.btn-open-info-card:hover:after{
+.btn-info-card:hover:after{
     content: url("../img/direction-d-hover.png");
+}
+.info-row.active .btn-info-card:after{
+    content: url("../img/direction-t.png");
+}
+.info-row.active .btn-info-card:hover:after{
+    content: url("../img/directiont-hover.png");
 }
 .block-social-info{
     display: flex;
@@ -1374,6 +1412,26 @@ a.btn-show-more{
     margin-right: 0px;
 }
 
+.info-row.show-open{
+    cursor: pointer;
+}
+.info-row.show-open .btn-info-card{
+    display: block;
+}
+.info-row.active .block-inside{
+    height: auto;
+    cursor: default;
+}
+.lists-phones {
+    display: flex;
+    flex-direction: column;
+}
+.lists-phones li{
+    color: #838da1;
+    font-size: 16px;
+    display: flex;
+    line-height: 30px;
+}
 .fb-icon:after,
 .facebook-icon:after{
     content: url("../img/fb-icon30x30.png");
@@ -1401,12 +1459,17 @@ a.btn-show-more{
 .block-schedules{
     margin-top: 15px;
     display: flex;
-    min-width: 340px;
+    width: 0px;
+}
+.info-row.active .block-schedules{
+    width: auto;
+    overflow-x: auto;
+    /*max-width: 240px;*/
 }
 .sh-day{
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 2px;
 }
 .sh-title-day{
     color: #838da1;
@@ -2534,6 +2597,9 @@ a.btn-show-more{
 .block-social-info{
     margin-top: 10px;
     display: flex;
+}
+.info-row .block-social-info{
+    margin-top: 0px;
 }
 .block-social-info a{
     margin-right: 10px;
@@ -4590,7 +4656,9 @@ form .field-input:first-child{
 
 
 
-
+.bg-r0{
+    background-color:#444444;
+}
 .bg-r1{
     background-color:#fe4c5a;
 }

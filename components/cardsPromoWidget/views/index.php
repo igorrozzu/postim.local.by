@@ -3,7 +3,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 $data = $dataProvider->getModels();
 $count = count($data);
-$timezone = Yii::$app->user->identity->getTimezoneInSeconds();
+$timezone = Yii::$app->user->getTimezoneInSeconds();
 ?>
 <?php foreach ($data as $item):?>
     <div class="card-promo">

@@ -11,12 +11,12 @@ $pageCount = $dataProvider->pagination->getPageCount();
     <div class="user-info">
         <p class="notif-username"><?=$item->sender->name . ' ' . $item->sender->surname;?></p>
         <div class="notif-date-time">
-            <?=Yii::$app->formatter->printDate($item->date + $item->recipient->getTimezoneInSeconds())?>
+            <?=Yii::$app->formatter->printDate($item->date + Yii::$app->user->getTimezoneInSeconds())?>
         </div>
     </div>
     <div class="notif-text"><?=json_decode($item->message)->data;?>
         <div class="notif-date-time hidden-date">
-            <?=Yii::$app->formatter->printDate($item->date + $item->recipient->getTimezoneInSeconds())?>
+            <?=Yii::$app->formatter->printDate($item->date + Yii::$app->user->getTimezoneInSeconds())?>
         </div>
     </div>
 </div>

@@ -51,6 +51,7 @@ class PostsSearch extends Posts
     {
         $query = Posts::find()->orderBy($sort);
         // add conditions that should always apply here
+        $query->addOrderBy(['data'=>SORT_ASC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -96,6 +97,8 @@ class PostsSearch extends Posts
         }elseif(!empty($this->category)){
             $query->andWhere(['tbl_category.url_name'=>$this->category['url_name']]);
         }
+
+        $query->with('workingHours');
 
 
         return $dataProvider;

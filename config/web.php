@@ -64,14 +64,15 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<url:.+>-p<id:\d+>'=>'post/index',//информация о месте
                 'id<id:\d+>' => 'user/index',
                 [
-                    'class' => 'app\components\customUrlManager\CityAndCategoryUrlRule',
+                    'class' => 'app\components\customUrlManager\CityAndCategoryUrlRule',//лента категории
                 ],
                 [
-                    'class' => 'app\components\customUrlManager\NewsUrlRule',
+                    'class' => 'app\components\customUrlManager\NewsUrlRule', //лента новостей
                 ],
-                '<url:.+>-n<id:\d+>'=>'news/news'
+                '<url:.+>-n<id:\d+>'=>'news/news'//статья новости
             ],
         ],
         'i18n' => [

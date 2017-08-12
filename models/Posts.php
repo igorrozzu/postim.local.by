@@ -2,14 +2,17 @@
 
 namespace app\models;
 
+use app\components\Helper;
 use app\models\entities\FavoritesPost;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "tbl_posts".
  *
  * @property integer $id
  * @property string $url_name
+ * @property string $latlon
  * @property integer $city_id
  * @property string $cover
  * @property integer $rating
@@ -22,7 +25,9 @@ class Posts extends \yii\db\ActiveRecord
 {
 
     public $is_like=false;
-    public $is_open=true;
+    public $is_open=false;
+    public $current_working_hours=null;
+    public $timeOpenOrClosed=null;
 
     /**
      * @inheritdoc
@@ -38,8 +43,8 @@ class Posts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['url_name', 'city_id', 'under_category_id', 'cover', 'rating', 'data'], 'required'],
-            [['url_name', 'cover', 'data', 'address'], 'string'],
+            [['url_name', 'city_id', 'under_category_id', 'cover', 'rating', 'data','total_view_id'], 'required'],
+            [['url_name', 'cover', 'data', 'address','latlon'], 'string'],
             [['city_id', 'rating', 'count_favorites', 'count_reviews'], 'integer'],
         ];
     }
@@ -60,8 +65,30 @@ class Posts extends \yii\db\ActiveRecord
             'address' => 'Address',
             'count_favorites' => 'Count Favorites',
             'count_reviews' => 'Count Reviews',
+            'latlon'=>'Координаты'
         ];
     }
+
+    public function behaviors()
+    {
+        return [
+            'OpenPlace' => [
+                'class' => 'app\behaviors\OpenPlace',
+                'only_is_open' => false
+            ],
+            'slug' => [
+                'class' => 'app\behaviors\Slug',
+                'in_attribute' => 'data',
+                'out_attribute' => 'url_name',
+            ],
+            'SaveJson' => [
+                'class' => 'app\behaviors\SaveJson',
+                'in_attributes' => ['latlon'],
+            ]
+
+        ];
+    }
+
 
     public function getCategories(){
        return $this->hasOne(UnderCategory::className(),['id'=>'under_category_id']);
@@ -94,6 +121,19 @@ class Posts extends \yii\db\ActiveRecord
     public function getUnderCategory()
     {
         return $this->hasOne(UnderCategory::className(), ['id' => 'under_category_id']);
+    }
+
+    public function getInfo(){
+        return $this->hasOne(PostInfo::className(),['post_id'=>'id']);
+    }
+
+    public function getWorkingHours(){
+        return $this->hasMany(WorkingHours::className(),['post_id'=>'id'])
+            ->orderBy(['day_type'=>SORT_ASC]);
+    }
+
+    public function getTotalView(){
+        return $this->hasOne(TotalView::className(),['id'=>'total_view_id']);
     }
 
     public function afterFind()

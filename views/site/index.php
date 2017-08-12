@@ -20,12 +20,14 @@ use \app\components\ListCityWidget\ListCityWidget;
         </div>
         <div class="clear-fix"></div>
     <?php endif; ?>
+    <?php if($news->totalCount):?>
     <h2 class="h2-c">Последние новости</h2>
     <div class="container-news">
         <div class="block-news">
             <?= CardsNewsWidget::widget(['dataprovider' => $news, 'settings' => ['last-news' => true]]) ?>
         </div>
     </div>
+    <?php endif;?>
 
 </div>
 <div class="clear-fix"></div>

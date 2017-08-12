@@ -24,7 +24,7 @@ $reviews = $dataProvider->getModels();
                         <span class="user-points"><?=$review->user->userInfo->exp_points?></span>
                     </div>
                     <div class="date-time-review">
-                        <?=Yii::$app->formatter->printDate($review->date + $review->user->getTimezoneInSeconds())?>
+                        <?=Yii::$app->formatter->printDate($review->date + Yii::$app->user->getTimezoneInSeconds())?>
                     </div>
                 </div>
 
