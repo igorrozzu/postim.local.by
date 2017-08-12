@@ -10,13 +10,13 @@ namespace app\commands;
 use app\models\Category;
 use app\models\City;
 use app\models\Discounts;
+use app\models\entities\DiscountOrder;
 use app\models\Notification;
 use app\models\Posts;
 use app\models\Region;
 use app\models\Reviews;
 use app\models\TotalView;
 use app\models\UnderCategory;
-use app\models\UsersPromo;
 use yii\console\Controller;
 
 /**
@@ -30,10 +30,10 @@ use yii\console\Controller;
 class TestDataController extends Controller
 {
 
-    public function actionUsersPromo($userId, $discountId, $pincode, $status, $count)
+    public function actionDiscountOrder($userId, $discountId, $pincode, $status, $count)
     {
         for ($i = 0; $i < $count; $i++) {
-            $model = new UsersPromo([
+            $model = new DiscountOrder([
                 'user_id' => (int)$userId,
                 'discount_id' => (int)$discountId,
                 'date_buy' => time(),
@@ -52,7 +52,7 @@ class TestDataController extends Controller
 
     }
 
-    public function actionDiscounts($postId, $totalViewId, $status, $count)
+    public function actionDiscounts($postId, $totalViewId, $status, $type, $count)
     {
         for ($i = 0; $i < $count; $i++) {
             $model = new Discounts([
@@ -68,6 +68,7 @@ class TestDataController extends Controller
                 'total_view_id' => (int)$totalViewId,
                 'date_start' => time(),
                 'date_finish' => time() + 3600 * 12,
+                'type' => (int)$type,
             ]);
 
             if ($model->validate() && $model->save()) {

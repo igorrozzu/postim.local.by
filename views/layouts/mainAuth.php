@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use app\assets\AuthUserAsset;
+use app\assets\BusinessAccountAsset;
 use app\assets\LoginFormsAsset;
 use app\models\Notification;
 use yii\helpers\Html;
@@ -18,7 +19,9 @@ use \app\components\ListCityWidget\ListCityWidget;
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
 AuthUserAsset::register($this);
-
+//условие
+BusinessAccountAsset::register($this);
+//конец условия
 $user = Yii::$app->user->identity;
 $countNotif = Notification::getCountNotifications();
 ?>
@@ -92,8 +95,10 @@ $countNotif = Notification::getCountNotifications();
         <div class="container-item-menu active">
             <a class="close-right-menu-list" data-id-open="business"><span><img src="/img/icon-business.png"></span>Бизнес акаунт</a>
             <div class="menu-list open-list" id="business">
-                <a><span></span>Заказы промокодов</a>
-                <a><span></span>Заказы сертификатов</a>
+                <a href="<?=Url::to(['user/zakazy-promokodov'])?>">
+                    <span></span>Заказы промокодов</a>
+                <a href="<?=Url::to(['user/zakazy-sertifikatov'])?>">
+                    <span></span>Заказы сертификатов</a>
             </div>
         </div>
         <div class="container-item-menu">
@@ -187,7 +192,8 @@ Pjax::end();
         'is_menu'=>true
     ]
 
-]);?>
+]);
+?>
 <?php $this->endBody() ?>
 </body>
 </html>

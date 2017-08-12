@@ -7,11 +7,13 @@ use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\cardsPromoWidget\CardsPromoWidget;
 use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use app\components\MainController;
+use app\components\orderStatisticsWidget\OrderStatisticsWidget;
 use app\models\City;
+use app\models\entities\DiscountOrder;
 use app\models\PostsSearch;
 use app\models\ReviewsSearch;
+use app\models\search\DiscountOrderSearch;
 use app\models\search\NewsSearch;
-use app\models\search\UsersPromoSearch;
 use app\models\TempEmail;
 use app\models\uploads\UploadUserPhoto;
 use app\models\User;
@@ -267,7 +269,7 @@ class UserController extends MainController
 
     public function actionMoiPromocody()
     {
-        $searchModel = new UsersPromoSearch();
+        $searchModel = new DiscountOrderSearch();
         $request = Yii::$app->request;
         $pagination = new Pagination([
             'pageSize' => $request->get('per-page', 2),
@@ -307,7 +309,7 @@ class UserController extends MainController
     }
     public function actionMoiSertifikaty()
     {
-        $searchModel = new UsersPromoSearch();
+        $searchModel = new DiscountOrderSearch();
         $request = Yii::$app->request;
         $pagination = new Pagination([
             'pageSize' => $request->get('per-page', 2),
@@ -459,6 +461,114 @@ class UserController extends MainController
                 'loadTime' => $loadTime,
                 'region' => Yii::t('app/locativus', $request->queryParams['region']),
                 'type' => $request->queryParams['type'],
+            ]);
+        }
+    }
+
+    public function actionZakazyPromokodov()
+    {
+        $searchModel = new DiscountOrderSearch();
+        $request = Yii::$app->request;
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 2),
+            'page' => $request->get('page', 1) - 1,
+            'selfParams'=> [
+                'status' => true,
+                'type' => true,
+                'order_time' => true,
+                'promo_code' => true,
+            ],
+        ]);
+        $loadTime = $request->get('loadTime', time());
+        $_GET['status'] = $_GET['status'] ?? 'all';
+        $_GET['type'] = $_GET['type'] ?? 'promocode';
+        $dataProvider = $searchModel->statisticsSearch(
+            $request->queryParams,
+            $pagination,
+            $loadTime
+        );
+
+        if($request->isAjax && !$request->get('_pjax',false)) {
+            return OrderStatisticsWidget::widget([
+                'dataProvider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-promo',
+                    'load-time' => $loadTime,
+                    'view-name' => $request->get('only_rows', false) ? 'rows' : 'index',
+                    'column-status-view' => 'promocode',
+                    'time-range' => $searchModel->getTimeRange(),
+                ]
+            ]);
+        } else {
+            $allOrderCount = DiscountOrder::getAllCount(DiscountOrder::TYPE['promoCode']);
+            $activeOrderCount = DiscountOrder::getActiveCount(DiscountOrder::TYPE['promoCode'],
+                DiscountOrder::STATUS['active']);
+            return $this->render('statistics-promo', [
+                'dataProvider' => $dataProvider,
+                'loadTime' => $loadTime,
+                'status' => $request->queryParams['status'],
+                'order_time' => $request->queryParams['order_time'] ?? null,
+                'timeRange' => $searchModel->getTimeRange(),
+                'countItems' => [
+                    'all'=> $allOrderCount,
+                    'active' => $activeOrderCount,
+                    'inactive' => $allOrderCount - $activeOrderCount,
+                ]
+            ]);
+        }
+    }
+
+    public function actionZakazySertifikatov()
+    {
+        $searchModel = new DiscountOrderSearch();
+        $request = Yii::$app->request;
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 2),
+            'page' => $request->get('page', 1) - 1,
+            'selfParams'=> [
+                'status' => true,
+                'type' => true,
+                'order_time' => true,
+                'promo_code' => true,
+            ],
+        ]);
+        $loadTime = $request->get('loadTime', time());
+        $_GET['status'] = $_GET['status'] ?? 'all';
+        $_GET['type'] = $_GET['type'] ?? 'certificate';
+        $dataProvider = $searchModel->statisticsSearch(
+            $request->queryParams,
+            $pagination,
+            $loadTime
+        );
+
+        if($request->isAjax && !$request->get('_pjax',false)) {
+            return OrderStatisticsWidget::widget([
+                'dataProvider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-promo',
+                    'load-time' => $loadTime,
+                    'view-name' => $request->get('only_rows', false) ? 'rows' : 'index',
+                    'column-status-view' => 'certificate',
+                    'time-range' => $searchModel->getTimeRange(),
+                ]
+            ]);
+        } else {
+            $allOrderCount = DiscountOrder::getAllCount(DiscountOrder::TYPE['certificate']);
+            $activeOrderCount = DiscountOrder::getActiveCount(DiscountOrder::TYPE['certificate'],
+                                DiscountOrder::STATUS['active']);
+            return $this->render('statistics-certificate', [
+                'dataProvider' => $dataProvider,
+                'loadTime' => $loadTime,
+                'status' => $request->queryParams['status'],
+                'order_time' => $request->queryParams['order_time'] ?? null,
+                'timeRange' => $searchModel->getTimeRange(),
+                'countItems' => [
+                    'all'=> $allOrderCount,
+                    'active' => $activeOrderCount,
+                    'inactive' => $allOrderCount - $activeOrderCount,
+                ]
             ]);
         }
     }

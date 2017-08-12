@@ -46,7 +46,7 @@ class Pagination extends \yii\data\Pagination{
         $resultParams=[];
 
         foreach ($params as $key => $param){
-            if(isset($this->selfParams[$key])){
+            if(isset($this->selfParams[$key]) && $this->selfParams[$key]){
                 $resultParams[$key]=$param;
             }
         }

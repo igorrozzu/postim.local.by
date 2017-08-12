@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\entities\DiscountOrder;
+use app\models\entities\OwnerPost;
 use Yii;
 
 /**
@@ -23,7 +25,7 @@ use Yii;
  *
  * @property Posts $post
  * @property TotalView $totalView
- * @property UsersPromo[] $tblUsersPromos
+ * @property DiscountOrder[] $tblUsersPromos
  */
 class Discounts extends \yii\db\ActiveRecord
 {
@@ -41,11 +43,12 @@ class Discounts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['post_id', 'data', 'header', 'cover', 'price', 'number_purchases', 'price_promo', 'discount', 'total_view_id', 'status', 'date_start', 'date_finish'], 'required'],
-            [['post_id', 'number_purchases', 'total_view_id', 'status', 'date_start', 'date_finish'], 'integer'],
+            [['post_id', 'data', 'header', 'cover', 'price', 'number_purchases', 'price_promo', 'discount', 'total_view_id', 'status', 'date_start', 'date_finish', 'type'], 'required'],
+            [['post_id', 'number_purchases', 'total_view_id', 'status', 'date_start', 'date_finish', 'type'], 'integer'],
             [['data', 'header', 'cover'], 'string'],
             [['price', 'price_promo', 'discount'], 'number'],
             [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
+            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => OwnerPost::className(), 'targetAttribute' => ['post_id' => 'post_id']],
             [['total_view_id'], 'exist', 'skipOnError' => true, 'targetClass' => TotalView::className(), 'targetAttribute' => ['total_view_id' => 'id']],
         ];
     }
@@ -91,8 +94,24 @@ class Discounts extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsersPromos()
+    public function getDiscountOrder()
     {
-        return $this->hasMany(UsersPromo::className(), ['discount_id' => 'id']);
+        return $this->hasMany(DiscountOrder::className(), ['discount_id' => 'id']);
+    }
+
+    public function getOwnerPost()
+    {
+        return $this->hasMany(OwnerPost::className(), ['post_id' => 'post_id']);
+    }
+
+    public function getOwners()
+    {
+        return $this->hasMany(User::className(), ['id' => 'owner_id'])
+            ->via('ownerPost');
+    }
+
+    public function getSumOfPrice()
+    {
+        return self::find()->sum('price');
     }
 }

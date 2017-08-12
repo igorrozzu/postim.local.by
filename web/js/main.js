@@ -8,6 +8,11 @@ var Main = (function (window, document, undefined,$) {
 
         var that = {
 
+            NewObj:function () {
+               var newObj ={};
+               return newObj;
+            },
+
             init:function () {
 
                 if (window.devicePixelRatio !== 1) { // Костыль для определения иных устройств, с коэффициентом отличным от 1
@@ -19,7 +24,7 @@ var Main = (function (window, document, undefined,$) {
 
                 $(document).ready(function () {
 
-                    $(document).on('click','.btn-show-more',function () {
+                    $(document).on('click','.btn-show-more,.btn-load-more',function () {
 
                         var params = {
                             selector:$(this).data('selector_replace'),
@@ -125,8 +130,7 @@ var Main = (function (window, document, undefined,$) {
 
                 });
             },
-
-        }
+        };
 
         return that;
     }
