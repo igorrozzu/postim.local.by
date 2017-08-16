@@ -30,6 +30,7 @@ class AppAsset extends AssetBundle
         'css/main-media.css',
     ];
     public $js = [
+        'js/uploads.js',
         'js/main.js',
         'js/menu.js',
         'js/list-city.js',

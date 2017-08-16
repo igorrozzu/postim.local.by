@@ -69,6 +69,9 @@ var Main = (function (window, document, undefined,$) {
                 $(document).pjax("#pjax-container-settings a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-settings"});
                 $(document).on("submit", "#pjax-container-settings form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-settings"});});
 
+                $(document).off("click", ".menu-btns-card a");
+                $(document).pjax(".menu-btns-card a", {"push":true,"replace":false,"timeout":60000,"scrollTo":false,"container":"#post-feeds"});
+
             },
             User:{
                 is_guest:true

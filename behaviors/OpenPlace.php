@@ -64,7 +64,7 @@ class OpenPlace extends Behavior{
                                             break;
                                         }
                                     }
-                                    $i=$i==7?1:$i+1;
+                                    $i = $i == 7 ? 1 : $i + 1;
                                     $max--;
                                 }
                             }

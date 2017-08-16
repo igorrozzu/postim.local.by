@@ -1199,7 +1199,7 @@ a.btn-show-more{
     display: flex;
     flex-wrap: wrap;
 }
-.photo{
+.photo, .photo-not-found{
     margin-top: 20px;
     width: 301.2px;
     height: 200px;
@@ -1207,7 +1207,11 @@ a.btn-show-more{
     background-size: cover;
     margin-right: 5px;
 }
-.photo:last-child{
+.photo-not-found{
+    background: #E5E7E6 url("../img/post-not-found-photo.png") no-repeat calc(100%/2) 50px;
+    background-size: auto;
+}
+.photo:last-child, .photo-not-found:last-child{
     margin-right: 0px;
 }
 .block-photos-bottom{
@@ -3604,10 +3608,7 @@ a.btn-show-more{
     align-items: center;
     justify-content: center;
 }
-.photo-right-arrow div, .photo-left-arrow div{
-    width: 25px;
-    height: 46px;
-}
+
 .photo-right-arrow div{
     background: url("../img/icon-next.png") 25px 0px;
 }
@@ -3622,6 +3623,18 @@ a.btn-show-more{
     cursor: pointer;
     background: url("../img/icon-pre.png") 25px 0px;
 }
+.photo-right-arrow div, .photo-left-arrow div{
+    width: 25px;
+    height: 46px;
+}
+
+.prev-btn-hide .photo-left-arrow div,
+.prev-btn-hide .photo-left-arrow div:hover,
+.next-btn-hide .photo-right-arrow div,
+.next-btn-hide .photo-right-arrow div:hover {
+    display: none;
+}
+
 .close-photo-popup{
     position: fixed;
     right: 20px;

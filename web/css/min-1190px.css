@@ -68,14 +68,15 @@
 .card-block-discount{
     width: calc((100% - 20px)/2 );
 }
-.photo{
+.photo, .photo-not-found{
     width: calc((100% - 5px)/2 );
 }
 .block-widgets{
     display: none;
 }
 .card-block:nth-child(even),
-.photo:nth-child(even){
+.photo:nth-child(even),
+.photo-not-found:nth-child(even){
     margin-right: 0px;
 }
 .block-cities{

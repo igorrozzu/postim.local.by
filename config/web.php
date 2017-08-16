@@ -64,6 +64,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'Fotografii-<name:.+>-p<postId:\d+>' => 'post/gallery',
                 '<url:.+>-p<id:\d+>'=>'post/index',//информация о месте
                 'id<id:\d+>' => 'user/index',
                 [
@@ -72,7 +73,7 @@ $config = [
                 [
                     'class' => 'app\components\customUrlManager\NewsUrlRule', //лента новостей
                 ],
-                '<url:.+>-n<id:\d+>'=>'news/news'//статья новости
+                '<url:.+>-n<id:\d+>'=>'news/news',//статья новости
             ],
         ],
         'i18n' => [

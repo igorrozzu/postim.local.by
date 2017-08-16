@@ -1,10 +1,23 @@
 <?php
+use app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
+
 ?>
 <div class="margin-top60"></div>
 <div id="map_block" class="block-map"></div>
+<?php
+Pjax::begin([
+    'timeout' => 60000,
+    'enablePushState' => true,
+    'id' => 'post-feeds',
+    'linkSelector' => '.menu-btns-card a',
+    'formSelector' => false,
+])
+?>
 <div class="block-content">
-    <?=\app\components\breadCrumb\BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
+    <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v"><?=$post->data?></h1>
     <div class="block-info-reviewsAndfavorites" data-item-id="<?=$post->id?>" data-type="post">
         <div class="rating-b bg-r<?=$post['rating']?>"><?=$post['rating']?></div>
@@ -15,24 +28,38 @@ use \app\components\Helper;
 <div class="block-flex-white">
     <div class="block-content">
         <div class="menu-btns-card">
-            <div class="btn2-menu active">Информация</div>
-            <div class="btn2-menu">Фотографии 48</div>
-            <div class="btn2-menu">Отзывы</div>
-            <div class="btn2-menu">Скидки</div>
+
+            <a href="<?=Url::to(['post/index', 'url' => $post['url_name'], 'id' => $post['id']])?>" >
+                <div class="btn2-menu active">Информация</div>
+            </a>
+            <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
+                <div class="btn2-menu ">Фотографии <?=$photoCount?></div>
+            </a>
+            <a href="">
+                <div class="btn2-menu">Отзывы</div>
+            </a>
+            <a href="">
+                <div class="btn2-menu">Скидки</div>
+            </a>
         </div>
     </div>
 </div>
 <div class="block-content">
     <div class="block-photos-container">
-        <div class="block-photos">
-            <div class="photo n1" style="background-image: url('testP.png')"></div>
-            <div class="photo n2" style="background-image: url('testP.png')"></div>
-            <div class="photo n3" style="background-image: url('testP.png')"></div>
-            <div class="photo n4" style="background-image: url('testP.png')"></div>
+        <div class="block-photos" data-type="all">
+            <?php foreach ($previewPhoto as $index => $photo):?>
+            <div class="photo n<?=$index+1?>" style="background-image: url('<?=$photo->getPhotoPath()?>')"
+            data-sequence="<?=$index?>"></div>
+            <?php endforeach;?>
+            <?php for ($i = count($previewPhoto); $i < 4; $i++):?>
+                <div class="photo-not-found n<?=$i+1?>"></div>
+            <?php endfor;?>
         </div>
         <div class="block-photos-bottom">
-            <div class="block-photos-text">4805 фотографий</div>
-            <div class="btn-add-photo">Добавить фото</div>
+            <div class="block-photos-text"><?=$photoCount?> фотографий</div>
+            <label class="btn-add-photo" for="post-photos">Добавить фото</label>
+            <input type="file" name="post-photos" id="post-photos" style="display: none;" multiple
+                   accept="image/*,image/jpeg,image/gif,image/png" data-id="<?=$post->id?>">
         </div>
     </div>
     <div class="block-content-between">
@@ -270,12 +297,39 @@ use \app\components\Helper;
     </div>
 </div>
 <?php
+$loadTime = time();
 $js = <<<js
     $(document).ready(function() {
         post.info.init();
+        post.photos.setLoadTime($loadTime);
+        post.photos.setPostId($post->id);
     })
 js;
 
 echo "<script>$js</script>";
+?>
 
+<div class="container-blackout-photo-popup"></div>
+<div class="photo-popup">
+    <div class="close-photo-popup"></div>
+    <div class="photo-left-arrow"><div></div></div>
+    <div class="photo-popup-content">
+        <div class="photo-info">
+            <div class="photo-header" >
+                <?=$post->data?>
+            </div>
+        </div>
+        <div class="photo-wrap">
+            <div class="pre-photo pre-popup-photo"></div>
+            <img class="photo-popup-item">
+            <div class="next-photo next-popup-photo"></div>
+        </div>
+        <div class="photo-source">
+            <a href="#">Источник</a>
+        </div>
+    </div>
+    <div class="photo-right-arrow"><div></div></div>
+</div>
+<?php
+Pjax::end();
 ?>

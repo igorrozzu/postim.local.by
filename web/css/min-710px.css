@@ -18,6 +18,7 @@
 }
 .card-block,
 .photo,
+.photo-not-found,
 .card-block-discount{
     width: 100%;
 }
@@ -146,13 +147,18 @@
     background: none;
     cursor: auto;
 }
+.prev-btn-hide .pre-popup-photo,
+.next-btn-hide .next-popup-photo{
+    display: none;
+}
+
 .pre-popup-photo, .next-popup-photo{
     display: flex;
     z-index: 5;
 }
 .pre-popup-photo{margin-right: -75px;}
 .next-popup-photo{margin-left: -75px;}
-.photo-left-arrow, .photo-right-arrow{width: 10px;}
+.photo-left-arrow, .photo-right-arrow{width: 0px;}
 .photo-header, .photo-source{
     margin-left: 0;
 }
