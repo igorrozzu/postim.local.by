@@ -52,15 +52,19 @@ class UploadPostPhotos extends Model
                 }
                 $headers = ['link', 'post_id', 'user_id', 'user_status', 'date'];
                 $rows = [];
-                $userId = Yii::$app->user->id;
+                $user = Yii::$app->user->identity;
+                $posts = $user->relatedPosts;
+                if (count($posts) > 0) {
+                    $this->userStatus = Gallery::USER_STATUS['owner'];
+                }
                 foreach ($this->files as $file) {
-
                     $photoName = Yii::$app->security->generateRandomString(8).time().'.png';
+
                     if ($file->saveAs($dir . $photoName)) {
                         $rows[] = [
                             'link' => $photoName,
                             'post_id' => $this->postId,
-                            'user_id' => $userId,
+                            'user_id' => $user->id,
                             'user_status' => $this->userStatus,
                             'date' => time(),
                         ];

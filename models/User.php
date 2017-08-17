@@ -247,6 +247,12 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(FavoritesPost::className(),['user_id' => 'id']);
     }
 
+    public function getRelatedPosts()
+    {
+        return $this->hasMany(Posts::className(), ['id' => 'post_id'])
+            ->viaTable('tbl_owner_post', ['owner_id' => 'id']);
+    }
+
     public function isCityDefined()
     {
         return $this->city_id > 0 && $this->city_id !== self::CITY_NOT_DEFINED;
