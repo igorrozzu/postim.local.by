@@ -1207,6 +1207,9 @@ a.btn-show-more{
     background-size: cover;
     margin-right: 5px;
 }
+.photo {
+    cursor: pointer;
+}
 .photo-not-found{
     background: #E5E7E6 url("../img/post-not-found-photo.png") no-repeat calc(100%/2) 50px;
     background-size: auto;

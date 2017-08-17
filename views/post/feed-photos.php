@@ -48,7 +48,7 @@ Pjax::begin([
         <?php foreach ($ownerPhotos as $index => $photo):?>
             <div class="container-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>">
                 <div class="block-blackout">
-                    <img class="avatar-user" src="img/default-profile-icon.png">
+                    <img class="avatar-user" src="<?=$photo->user->getPhoto()?>">
                 </div>
             </div>
         <?php endforeach;?>

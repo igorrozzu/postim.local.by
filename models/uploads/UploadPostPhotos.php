@@ -55,7 +55,7 @@ class UploadPostPhotos extends Model
                 $userId = Yii::$app->user->id;
                 foreach ($this->files as $file) {
 
-                    $photoName = $file->baseName . Yii::$app->security->generateRandomString(16) . '.png';
+                    $photoName = Yii::$app->security->generateRandomString(8).time().'.png';
                     if ($file->saveAs($dir . $photoName)) {
                         $rows[] = [
                             'link' => $photoName,

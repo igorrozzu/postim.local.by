@@ -160,10 +160,10 @@ class PostController extends MainController
 
     public function actionGetPhotos()
     {
-        if(Yii::$app->request->isAjax ) {
+        if (Yii::$app->request->isAjax) {
             $request = Yii::$app->request;
             $searchModel = new GallerySearch();
-            $perPage = (int)$request->get('per-page', 16);
+            $perPage = (int) $request->get('per-page', 16);
             $perPage = ($perPage < 16) ? 16 : $perPage;
 
             $pagination = new Pagination([
@@ -190,7 +190,7 @@ class PostController extends MainController
 
     public function actionLoadMorePhotos()
     {
-        if(Yii::$app->request->isAjax ) {
+        if (Yii::$app->request->isAjax) {
             $request = Yii::$app->request;
             $searchModel = new GallerySearch();
             $pagination = new Pagination([
