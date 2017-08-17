@@ -84,6 +84,8 @@ var Post = (function (window, document, undefined,$) {
                     imgSize: {height: null, width: null},
                     state: {
                         $photoBox: null,
+                        $leftSliderButton: null,
+                        $rightSliderButton: null,
                         left: true,
                         right: true
                     },
@@ -119,6 +121,9 @@ var Post = (function (window, document, undefined,$) {
                     current: function () {
                         if(_container.state.$photoBox === null) {
                             _container.state.$photoBox = $('.photo-popup');
+                            _container.state.$leftSliderButton = $('.photo-left-arrow div');
+                            _container.state.$rightSliderButton = $('.photo-right-arrow div');
+
                         }
                         if(_container.data[_container.currentItem] === undefined) {
                             _container.loadToContainer();
@@ -220,30 +225,42 @@ var Post = (function (window, document, undefined,$) {
                             $('.photo-popup-item').attr('src', '/post_photo/' + _container.postId + '/' + imgUrl);
                             that.methods.resizePopupPhoto();
                         },
+                        showErrorMessage: function (text) {
+                            $().toastmessage('showToast', {
+                                text     : text,
+                                stayTime:  5000,
+                                type     : 'error'
+                            });
+                        }
                     },
                     init:function () {
-                        that.uploadPostPhotosHandler();
-                        that.photoPopupWindowInit();
+                        $(document).ready(function () {
+                            that.uploadPostPhotosHandler();
+                            that.photoPopupWindowInit();
+                        });
                     },
                     uploadPostPhotosHandler: function () {
-                        $(document).off('change','#post-photos').on('change','#post-photos', function (e) {
-                            if(uploads.validatePhotos(e.target.files)) {
-                                var form = new FormData();
-                                $.each(e.target.files, function(key, value){
-                                    form.append('post-photos[]', value);
-                                });
-                                form.append('postId', $(this).data('id'));
-                                uploads.uploadFiles('/post/upload-photo', form, that.successUploadPostPhotosHandler)
-                            } else {
-                                $().toastmessage('showToast', {
-                                    text     : 'Изображение должно быть в формате JPG, GIF или PNG.' +
-                                    ' Макс. размер файла: 15 МБ.',
-                                    stayTime:  5000,
-                                    type     : 'error'
-                                });
-                            }
-                            $(this).val('');
-                        });
+                        if(main.User.is_guest === true) {
+                            $(document).off('click', '.btn-add-photo').on('click', '.btn-add-photo', function (e) {
+                                that.methods.showErrorMessage('Для добавления фото необходимо войти на сайт');
+                                e.preventDefault();
+                            });
+                        } else {
+                            $(document).off('change', '#post-photos').on('change', '#post-photos', function (e) {
+                                if (uploads.validatePhotos(e.target.files)) {
+                                    var form = new FormData();
+                                    $.each(e.target.files, function (key, value) {
+                                        form.append('post-photos[]', value);
+                                    });
+                                    form.append('postId', $(this).data('id'));
+                                    uploads.uploadFiles('/post/upload-photo', form, that.successUploadPostPhotosHandler)
+                                } else {
+                                    that.methods.showErrorMessage('Изображение должно быть в формате JPG, GIF или PNG.' +
+                                        ' Макс. размер файла: 15 МБ.');
+                                }
+                                $(this).val('');
+                            });
+                        }
                     },
                     successUploadPostPhotosHandler: function (response) {
                         if(response.success) {
@@ -257,6 +274,9 @@ var Post = (function (window, document, undefined,$) {
                                 stayTime: 5000,
                                 type: 'success'
                             });
+                        } else {
+                            that.methods.showErrorMessage('Изображение должно быть в формате JPG, GIF или PNG.' +
+                                ' Макс. размер файла: 15 МБ.');
                         }
                     },
 
@@ -292,9 +312,17 @@ var Post = (function (window, document, undefined,$) {
                                 if(_container.state.left) {
                                     that.methods.changePopupPhoto(_container.prev());
                                 }
-
                             });
-                            $(window).bind('resize', $.debounce(250,that.methods.resizePopupPhoto));
+                            $(window).keydown(function(e){
+                                if(_container !== undefined && _container.state.$photoBox !== null) {
+                                    switch (e.keyCode) {
+                                        case 37: _container.state.$leftSliderButton.trigger('click'); break;
+                                        case 39: _container.state.$rightSliderButton.trigger('click'); break;
+                                        default: return false;
+                                    }
+                                }
+                            });
+                            $(window).bind('resize', $.debounce(250, that.methods.resizePopupPhoto));
                             $(document).on('click','.close-photo-popup', function () {
                                 _container.resetState();
                                 $('.container-blackout-photo-popup').css('display', 'none');

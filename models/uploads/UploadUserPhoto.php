@@ -5,6 +5,7 @@ namespace app\models\uploads;
 use app\components\ImageHelper;
 use app\models\User;
 use Yii;
+use yii\base\Exception;
 use yii\base\Model;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
@@ -29,19 +30,23 @@ class UploadUserPhoto extends Model
 
     public function upload($user)
     {
-        if ($this->validate()) {
-            $dir = Yii::getAlias('@webroot/user_photo/' . $user->getId() . '/');
-            if(!is_dir($dir)){
-                FileHelper::createDirectory($dir);
+        try {
+            if ($this->validate()) {
+                $dir = Yii::getAlias('@webroot/user_photo/' . $user->getId() . '/');
+                if(!is_dir($dir)){
+                    FileHelper::createDirectory($dir);
+                }
+                $pathToPhoto = $dir . Yii::$app->params['user.photoName'];
+                if($this->imageFile->saveAs($pathToPhoto)) {
+                    ImageHelper::createSquarePicture($pathToPhoto);
+                    $user->photo_hash = time();
+                    $user->save();
+                }
+                return true;
+            } else {
+                return false;
             }
-            $pathToPhoto = $dir . Yii::$app->params['user.photoName'];
-            if($this->imageFile->saveAs($pathToPhoto)) {
-                ImageHelper::createSquarePicture($pathToPhoto);
-                $user->photo_hash = time();
-                $user->save();
-            }
-            return true;
-        } else {
+        } catch (Exception $e) {
             return false;
         }
     }
