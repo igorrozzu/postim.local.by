@@ -155,7 +155,7 @@ class PostController extends MainController
             } else {
                 return $this->asJson([
                     'success' => false,
-                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ.'
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
                 ]);
             }
         }

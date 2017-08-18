@@ -5,7 +5,8 @@ var Uploads = (function (window, document, undefined,$) {
         var that = {
             photo: {
                 validFormats: /(image\/jpeg)|(image\/png)|(image\/gif)/,
-                maxPhotoSize:  15728640 //15 мб
+                maxPhotoSize:  15728640, //15 мб
+                maxPhotoCount: 10,
             },
             uploadFiles: function (action, data, handler) {
                 $.ajax({
@@ -22,8 +23,10 @@ var Uploads = (function (window, document, undefined,$) {
             },
 
             validatePhotos: function (files) {
-
-                for(var i in files) {
+                if (files.length > that.photo.maxPhotoCount) {
+                    return false;
+                }
+                for (var i in files) {
                     if(!that.photo.validFormats.test(files[i].type) ||
                         files[i].size > that.photo.maxPhotoSize) {
                         return false;

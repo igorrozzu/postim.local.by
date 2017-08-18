@@ -46,14 +46,17 @@ Pjax::begin([
 <div class="block-content">
     <div class="block-photos-owner" data-type="owner">
         <?php foreach ($ownerPhotos as $index => $photo):?>
-            <div class="container-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>">
+            <div class="container-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>" data-source="<?=$photo->source ?? ''?>">
                 <div class="block-blackout">
-                    <img class="avatar-user" src="<?=$photo->user->getPhoto()?>">
+                    <a href="<?=Url::to(['user/index', 'id' => $photo->user->id])?>">
+                        <img class="avatar-user" src="<?=$photo->user->getPhoto()?>">
+                    </a>
                 </div>
             </div>
         <?php endforeach;?>
 
-        <label class="large-wide-button non-border fx-bottom" for="post-photos"><p>Добавить фотографии</p></label>
+        <label class="large-wide-button non-border fx-bottom photo-upload-sign" for="post-photos">
+            <p>Добавить фотографии</p></label>
         <input type="file" name="post-photos" id="post-photos" style="display: none;" multiple
                accept="image/*,image/jpeg,image/gif,image/png" data-id="<?=$post->id?>">
 
@@ -84,8 +87,8 @@ Pjax::begin([
             <img class="photo-popup-item">
             <div class="next-photo next-popup-photo"></div>
         </div>
-        <div class="photo-source">
-            <a href="#">Источник</a>
+        <div class="photo-source" style="display: none;">
+            <a href="#" target="_blank">Источник</a>
         </div>
     </div>
     <div class="photo-right-arrow"><div></div></div>

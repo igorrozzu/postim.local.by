@@ -1,12 +1,16 @@
-<?php foreach ($dataProvider->getModels() as $photo):?>
+<?php use yii\helpers\Url;
+
+foreach ($dataProvider->getModels() as $photo):?>
     <div class="container-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$sequence++?>">
         <div class="block-blackout">
-            <img class="avatar-user" src="<?=$photo->user->getPhoto()?>">
+            <a href="<?=Url::to(['user/index', 'id' => $photo->user->id])?>">
+                <img class="avatar-user" src="<?=$photo->user->getPhoto()?>">
+            </a>
         </div>
     </div>
 <?php endforeach;?>
 <?php if ($hrefNext = $dataProvider->pagination->getLinks()['next'] ?? false): ?>
-    <div class="large-wide-button non-border fx-bottom btn-load-more"
+    <div class="btn-show-more"
          data-selector_replace="#btn-load-post-photos" id="btn-load-post-photos"
          data-href="<?=$hrefNext?>&loadTime=<?=$loadTime?>&sequence=<?=$sequence?>">
         <p>Показать больше фотографии</p></div>

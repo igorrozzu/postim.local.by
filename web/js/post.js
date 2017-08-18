@@ -81,9 +81,11 @@ var Post = (function (window, document, undefined,$) {
                     loadTime: null,
                     postId: null,
                     data: [],
+                    sources: [],
                     imgSize: {height: null, width: null},
                     state: {
                         $photoBox: null,
+                        $sourceBox: null,
                         $leftSliderButton: null,
                         $rightSliderButton: null,
                         left: true,
@@ -119,12 +121,8 @@ var Post = (function (window, document, undefined,$) {
                         return this.data[this.currentItem];
                     },
                     current: function () {
-                        if(_container.state.$photoBox === null) {
-                            _container.state.$photoBox = $('.photo-popup');
-                            _container.state.$leftSliderButton = $('.photo-left-arrow div');
-                            _container.state.$rightSliderButton = $('.photo-right-arrow div');
+                        that.methods.initContainer();
 
-                        }
                         if(_container.data[_container.currentItem] === undefined) {
                             _container.loadToContainer();
                         }
@@ -147,6 +145,7 @@ var Post = (function (window, document, undefined,$) {
                                 var img = $(this).css('background-image');
                                 var match = img.match(/post_photo\/\d+\/(.+)"\)$/);
                                 _container.data.push(match[1]);
+                                _container.sources.push($(this).data('source'));
                             })
                         }
                     },
@@ -160,6 +159,7 @@ var Post = (function (window, document, undefined,$) {
                                     _container.url = response.url;
                                     for (var i in response.data) {
                                         _container.data.push(response.data[i].link);
+                                        _container.sources.push(response.data[i].source);
                                     }
                                 }
                             });
@@ -171,7 +171,6 @@ var Post = (function (window, document, undefined,$) {
                         _container.state.$photoBox.removeClass('prev-btn-hide');
                         _container.state.$photoBox.removeClass('next-btn-hide');
                         _container.state.$photoBox = null;
-
                     },
                 };
 
@@ -183,6 +182,7 @@ var Post = (function (window, document, undefined,$) {
                     setPostId: function (postId) {
 
                         _container.data = [];
+                        _container.sources = [];
                         _container.url = false;
                         _container.postId = postId;
 
@@ -231,7 +231,24 @@ var Post = (function (window, document, undefined,$) {
                                 stayTime:  5000,
                                 type     : 'error'
                             });
-                        }
+                        },
+                        initContainer: function () {
+                            if(_container.state.$photoBox === null) {
+                                _container.state.$photoBox = $('.photo-popup');
+                                _container.state.$sourceBox = $('.photo-popup-content .photo-source');
+                                _container.state.$leftSliderButton = $('.photo-left-arrow div');
+                                _container.state.$rightSliderButton = $('.photo-right-arrow div');
+                            }
+                        },
+                        setSourceInPhoto: function () {
+                            var source = _container.sources[_container.currentItem];
+                            if (source !== null && source !== '') {
+                                _container.state.$sourceBox.children().attr('href', source);
+                                _container.state.$sourceBox.show();
+                            } else {
+                                _container.state.$sourceBox.hide();
+                            }
+                        },
                     },
                     init:function () {
                         $(document).ready(function () {
@@ -241,7 +258,8 @@ var Post = (function (window, document, undefined,$) {
                     },
                     uploadPostPhotosHandler: function () {
                         if(main.User.is_guest === true) {
-                            $(document).off('click', '.btn-add-photo').on('click', '.btn-add-photo', function (e) {
+                            $(document).off('click', '.photo-upload-sign').on('click', '.photo-upload-sign', function (e) {
+                                $('.sign_in_btn').trigger('click');
                                 that.methods.showErrorMessage('Для добавления фото необходимо войти на сайт');
                                 e.preventDefault();
                             });
@@ -256,7 +274,7 @@ var Post = (function (window, document, undefined,$) {
                                     uploads.uploadFiles('/post/upload-photo', form, that.successUploadPostPhotosHandler)
                                 } else {
                                     that.methods.showErrorMessage('Изображение должно быть в формате JPG, GIF или PNG.' +
-                                        ' Макс. размер файла: 15 МБ.');
+                                        ' Макс. размер файла: 15 МБ. Не более 10 файлов');
                                 }
                                 $(this).val('');
                             });
@@ -282,14 +300,16 @@ var Post = (function (window, document, undefined,$) {
 
                     photoPopupWindowInit: function () {
                         $(document).ready(function () {
-                            $(document).on('click','.block-photos .photo, .container-photo', function () {
-
+                            $(document).on('click','.block-photos .photo, .container-photo', function (e) {
+                                if($(e.target).hasClass('avatar-user')) {
+                                    return;
+                                }
                                 _container.currentItem = $(this).data('sequence');
                                 var type = $(this).parent().data('type');
                                 if(type === 'owner') {
                                     _container.loadToContainer = _container.loadPhotosFromPage;
                                     _container.url = null;
-                                }else {
+                                } else {
                                     _container.loadToContainer = _container.loadPhotosFromServer;
                                     if (_container.url === false) {
                                         _container.url = '/post/get-photos?type=' + type + '&postId=' + _container.postId;
@@ -300,17 +320,22 @@ var Post = (function (window, document, undefined,$) {
                                 }
 
                                 var url = _container.current();
+                                that.methods.setSourceInPhoto();
                                 that.methods.showPopupPhoto(url);
                             });
 
                             $(document).on('click','.photo-right-arrow div,.next-popup-photo', function () {
                                 if(_container.state.right) {
-                                    that.methods.changePopupPhoto(_container.next());
+                                    var url = _container.next();
+                                    that.methods.setSourceInPhoto();
+                                    that.methods.changePopupPhoto(url);
                                 }
                             });
                             $(document).on('click','.photo-left-arrow div,.pre-popup-photo', function () {
                                 if(_container.state.left) {
-                                    that.methods.changePopupPhoto(_container.prev());
+                                    var url = _container.prev();
+                                    that.methods.setSourceInPhoto();
+                                    that.methods.changePopupPhoto(url);
                                 }
                             });
                             $(window).keydown(function(e){

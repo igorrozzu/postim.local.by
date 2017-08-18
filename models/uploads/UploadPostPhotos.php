@@ -53,10 +53,6 @@ class UploadPostPhotos extends Model
                 $headers = ['link', 'post_id', 'user_id', 'user_status', 'date'];
                 $rows = [];
                 $user = Yii::$app->user->identity;
-                $posts = $user->relatedPosts;
-                if (count($posts) > 0) {
-                    $this->userStatus = Gallery::USER_STATUS['owner'];
-                }
                 foreach ($this->files as $file) {
                     $photoName = Yii::$app->security->generateRandomString(8).time().'.png';
 
@@ -86,7 +82,7 @@ class UploadPostPhotos extends Model
             'owner_id' => Yii::$app->user->id,
             'post_id' => (int)Yii::$app->request->post('postId'),
         ])->one();
-        if(isset($result)) {
+        if (isset($result)) {
             $this->userStatus = Gallery::USER_STATUS['owner'];
         }
         return parent::beforeValidate();

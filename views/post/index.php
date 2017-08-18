@@ -48,8 +48,7 @@ Pjax::begin([
     <div class="block-photos-container">
         <div class="block-photos" data-type="all">
             <?php foreach ($previewPhoto as $index => $photo):?>
-            <div class="photo n<?=$index+1?>" style="background-image: url('<?=$photo->getPhotoPath()?>')"
-            data-sequence="<?=$index?>"></div>
+            <div class="photo n<?=$index+1?>" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>"></div>
             <?php endforeach;?>
             <?php for ($i = count($previewPhoto); $i < 4; $i++):?>
                 <div class="photo-not-found n<?=$i+1?>"></div>
@@ -57,7 +56,7 @@ Pjax::begin([
         </div>
         <div class="block-photos-bottom">
             <div class="block-photos-text"><?=$photoCount?> фотографий</div>
-            <label class="btn-add-photo" for="post-photos">Добавить фото</label>
+            <label class="btn-add-photo photo-upload-sign" for="post-photos">Добавить фото</label>
             <input type="file" name="post-photos" id="post-photos" style="display: none;" multiple
                    accept="image/*,image/jpeg,image/gif,image/png" data-id="<?=$post->id?>">
         </div>
@@ -312,7 +311,7 @@ echo "<script>$js</script>";
             <div class="next-photo next-popup-photo"></div>
         </div>
         <div class="photo-source">
-            <a href="#">Источник</a>
+            <a href="#" target="_blank">Источник</a>
         </div>
     </div>
     <div class="photo-right-arrow"><div></div></div>
