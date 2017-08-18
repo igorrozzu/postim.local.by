@@ -11,7 +11,6 @@ use yii\helpers\Json;
  * @property string $phones
  * @property string $web_site
  * @property string $social_networks
- * @property string $features
  * @property string $editors
  * @property string $article
  * @property integer $post_id
@@ -35,7 +34,7 @@ class PostInfo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['phones', 'social_networks', 'features', 'editors', 'article'], 'string'],
+            [['phones', 'social_networks', 'editors', 'article'], 'string'],
             [['post_id'], 'required'],
             [['post_id'], 'integer'],
             [['web_site'], 'string', 'max' => 50],
@@ -53,7 +52,6 @@ class PostInfo extends \yii\db\ActiveRecord
             'phones' => 'Phones',
             'web_site' => 'Web Site',
             'social_networks' => 'Social Networks',
-            'features' => 'Features',
             'editors' => 'Editors',
             'article' => 'Article',
             'post_id' => 'Post ID',
@@ -67,7 +65,7 @@ class PostInfo extends \yii\db\ActiveRecord
 
             'SaveJson' => [
                 'class' => 'app\behaviors\SaveJson',
-                'in_attributes' => ['phones','social_networks','features','editors'],
+                'in_attributes' => ['phones','social_networks','editors'],
             ]
 
         ];
@@ -90,9 +88,6 @@ class PostInfo extends \yii\db\ActiveRecord
         }
         if($this->social_networks){
             $this->social_networks=Json::decode($this->social_networks);
-        }
-        if($this->features){
-            $this->features=Json::decode($this->features);
         }
 
     }

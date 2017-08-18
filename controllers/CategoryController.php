@@ -3,11 +3,14 @@
 namespace app\controllers;
 
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
+use app\components\Helper;
 use app\components\MainController;
 use app\models\Posts;
 use app\models\PostsSearch;
+use app\models\UnderCategoryFeatures;
 use Yii;
 use app\components\Pagination;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
 
@@ -23,13 +26,16 @@ class CategoryController extends MainController
         $this->under_category =Yii::$app->request->get('under_category',false);
 
         $searchModel = new PostsSearch();
+
+        $selfParams=['sort'=>true,'open'=>true,'filters'=>true];
+        $selfFilterParams = Yii::$app->request->get('filters',false)?$this->getSelfFilters($this->category,$this->under_category):[];
+        $selfParams = ArrayHelper::merge($selfParams,$selfFilterParams);
+
         $pagination = new Pagination([
             'pageSize' => Yii::$app->request->get('per-page', 8),
             'page' => Yii::$app->request->get('page', 1)-1,
             'route'=>Yii::$app->request->getPathInfo(),
-            'selfParams'=>[
-                'sort'=>true,
-            ]
+            'selfParams'=>$selfParams
         ]);
 
         $paramSort = Yii::$app->request->get('sort', 'rating');
@@ -40,17 +46,16 @@ class CategoryController extends MainController
             Yii::$app->request->queryParams,
             $pagination,
             $sort,
-            $loadTime
+            $loadTime,
+            $selfFilterParams
         );
-
-        $url = $this->under_category?$this->under_category['url_name']:$this->category['url_name'];
 
         $breadcrumbParams = $this->getParamsForBreadcrumb();
 
         $params=[
             'dataProvider'=>$dataProvider,
             'sort'=>$paramSort,
-            'url'=> $url,
+            'selfParams'=> $selfParams,
             'breadcrumbParams'=>$breadcrumbParams,
             'loadTime' => $loadTime,
         ];
@@ -105,6 +110,73 @@ class CategoryController extends MainController
 
 
         return $breadcrumbParams;
+    }
+
+    public function actionGetFilters(){
+        $arrayRequest= explode('/',Yii::$app->request->post('url',''));
+        $category = array_pop($arrayRequest);
+        $features=[];
+
+        if($cat=Yii::$app->category->getUnderCategoryByName($category)){
+            $features= UnderCategoryFeatures::find()
+                ->innerJoinWith('features')
+                ->where(['under_category_id'=>$cat->id])
+                ->andWhere(['filter_status'=>1])
+                ->andWhere(['main_features'=>null])
+                ->all();
+        }
+        if($cat=Yii::$app->category->getCategoryByName($category)){
+
+        }
+
+        $response = new \stdClass();
+        $response->rubrics=[];
+        $response->additionally=[];
+
+        foreach ($features as $feature){
+            if($feature->features->type==1){
+                array_push($response->additionally,$feature->features);
+            }else{
+                if($feature->features->type==2){
+                    array_unshift($response->rubrics,$feature->features);
+                }else{
+                    array_push($response->rubrics,$feature->features);
+                }
+
+            }
+        }
+
+        return $this->renderPartial('_filters',['features'=>$response]);
+    }
+
+    private function getSelfFilters($category,$under_category){
+
+        $filtersSelf = [];
+
+        if($under_category){
+            $features= UnderCategoryFeatures::find()
+                ->innerJoinWith('features')
+                ->where(['under_category_id'=>$under_category->id])
+                ->andWhere(['filter_status'=>1])
+                ->andWhere(['main_features'=>null])
+                ->all();
+
+            foreach ($features as $feature){
+                if($feature->features->underFeatures==null){
+                    $filtersSelf[$feature->features->id]=true;
+                }else{
+                    foreach ($feature->features->underFeatures as $underFeature){
+                        $filtersSelf[$underFeature->id]=true;
+                    }
+                }
+            }
+
+        }
+        if($category){
+
+        }
+
+        return $filtersSelf;
     }
 
 }

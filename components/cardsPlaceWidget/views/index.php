@@ -1,30 +1,30 @@
 <?php
     use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
+    use app\components\cardsPlaceWidget\CardsPlaceWidget;
     $data = $dataprovider->getModels();
 ?>
 <?php foreach ($data as $item):?>
-    <?php
-        $url_category = '/'.$item['city']['url_name'].'/'.$item['categories']['url_name'];
-    ?>
-    <div class="card-block main-pjax" data-item-id="<?=$item['id']?>" data-type="post">
-        <a href="/<?=$item['url_name']?>-p<?=$item['id']?>">
-            <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
-                <div class="glass">
-                    <div class="reviews-btn-icn">
-                        <div class="rating bg-r<?=$item["rating"]?>"><?=$item["rating"]?></div>
-                        <div class="total-reviews"><?=$item["count_reviews"]?> отзывов</div>
-                    </div>
-                    <div class="bookmarks-btn<?=$item->is_like?' active':''?>">
-                        <?=$item["count_favorites"]?>
+
+    <div class="card-block" data-item-id="<?=$item['id']?>" data-type="post">
+        <div class="main-pjax">
+            <a href="/<?=$item['url_name']?>-p<?=$item['id']?>">
+                <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
+                    <div class="glass">
+                        <div class="reviews-btn-icn">
+                            <div class="rating bg-r<?=$item["rating"]?>"><?=$item["rating"]?></div>
+                            <div class="total-reviews"><?=$item["count_reviews"]?> отзывов</div>
+                        </div>
+                        <div class="bookmarks-btn<?=$item->is_like?' active':''?>">
+                            <?=$item["count_favorites"]?>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a>
-
+            </a>
+        </div>
 
         <div class="card-block-info">
-            <p class="info-head"><a href="<?=$url_category?>"><?=$item['categories']['name']?></a></p>
+            <p class="info-head"><?=CardsPlaceWidget::renderCategories($item['categories'],$item['city'])?></p>
             <p class="card-info"><?=Html::encode($item['data'])?></p>
         </div>
         <div class="time-work">

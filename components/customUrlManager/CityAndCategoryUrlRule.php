@@ -8,6 +8,7 @@ use yii\web\UrlRuleInterface;
 use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use app\models\City;
+use Yii;
 
 class CityAndCategoryUrlRule extends CityUrlRule {
 
@@ -35,21 +36,16 @@ class CityAndCategoryUrlRule extends CityUrlRule {
                 'url_name'=>$params['city']['url_name']]);
 
             if(isset($queryParams[1]) &&
-                (isset($arrIndex['index_under_category'][$queryParams[1]]) ||
-                    isset($arrIndex['index_category'][$queryParams[1]])
-                )
+                Yii::$app->category->getUnderCategoryByName($queryParams[1]??false) ||
+                Yii::$app->category->getCategoryByName($queryParams[1]??false)
             ){
                 $route='/category/index';
 
-                if(isset($arrIndex['index_category'][$queryParams[1]])){
-                    $params['category']['name']=$arrIndex['index_category'][$queryParams[1]]['name'];
-                    $params['category']['url_name']=$arrIndex['index_category'][$queryParams[1]]['url_name'];
+                if(Yii::$app->category->getCategoryByName($queryParams[1])){
+                    $params['category']=Yii::$app->category->getCategoryByName($queryParams[1]??false);
                 }else{
-                    $params['category']['name']=$arrIndex['index_under_category'][$queryParams[1]]['category']['name'];
-                    $params['category']['url_name']=$arrIndex['index_under_category'][$queryParams[1]]['category']['url_name'];
-
-                    $params['under_category']['name']=$arrIndex['index_under_category'][$queryParams[1]]['name'];
-                    $params['under_category']['url_name']=$arrIndex['index_under_category'][$queryParams[1]]['url_name'];
+                    $params['category'] = Yii::$app->category->getUnderCategoryByName($queryParams[1]??false)['category'];
+                    $params['under_category']=Yii::$app->category->getUnderCategoryByName($queryParams[1]??false);
                 }
 
 
@@ -64,21 +60,17 @@ class CityAndCategoryUrlRule extends CityUrlRule {
 
 
         if(isset($queryParams[0]) &&
-            (isset($arrIndex['index_under_category'][$queryParams[0]]) ||
-                isset($arrIndex['index_category'][$queryParams[0]])
+            (Yii::$app->category->getUnderCategoryByName($queryParams[0]) ||
+                Yii::$app->category->getCategoryByName($queryParams[0])
             )
         ){
             $route='/category/index';
 
-            if(isset($arrIndex['index_category'][$queryParams[0]])){
-                $params['category']['name']=$arrIndex['index_category'][$queryParams[0]]['name'];
-                $params['category']['url_name']=$arrIndex['index_category'][$queryParams[0]]['url_name'];
+            if(Yii::$app->category->getCategoryByName($queryParams[0])){
+                $params['category']=Yii::$app->category->getCategoryByName($queryParams[0]);
             }else{
-                $params['category']['name']=$arrIndex['index_under_category'][$queryParams[0]]['category']['name'];
-                $params['category']['url_name']=$arrIndex['index_under_category'][$queryParams[0]]['category']['url_name'];
-
-                $params['under_category']['name']=$arrIndex['index_under_category'][$queryParams[0]]['name'];
-                $params['under_category']['url_name']=$arrIndex['index_under_category'][$queryParams[0]]['url_name'];
+                $params['category'] = Yii::$app->category->getUnderCategoryByName($queryParams[0])['category'];
+                $params['under_category']=Yii::$app->category->getUnderCategoryByName($queryParams[0]);
             }
 
             \Yii::$app->city->setDefault();
@@ -92,25 +84,6 @@ class CityAndCategoryUrlRule extends CityUrlRule {
     protected function getIndexArray()
     {
         $array= parent::getIndexArray();
-
-        if(!$index_under_category =\Yii::$app->cache->get('list_under_cat_from_bd')){
-            $index_under_category = ArrayHelper::index(UnderCategory::find()
-                ->innerJoinWith('category')
-                ->orderBy(['tbl_under_category.name'=>SORT_ASC])
-                ->all(),'url_name');
-            \Yii::$app->cache->add('list_under_cat_from_bd',$index_under_category,600);
-        }
-
-        if(!$index_category =\Yii::$app->cache->get('list_cat_from_bd')){
-            $index_category = ArrayHelper::index(Category::find()
-                ->select(['name','url_name'])
-                ->orderBy(['name'=>SORT_ASC])
-                ->all(),'url_name');
-            \Yii::$app->cache->add('list_cat_from_bd',$index_category,600);
-        }
-
-        $array['index_under_category']=$index_under_category;
-        $array['index_category']=$index_category;
 
         return $array;
 

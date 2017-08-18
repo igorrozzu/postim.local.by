@@ -166,23 +166,10 @@ Pjax::begin([
                 <div class="btn-info-card"></div>
             </div>
         </div>
-        <?php if(is_array($post->info['features'])):?>
-            <div class="info-row">
-                <div class="left-block-f">
-                    <div class="title-info-card">Особенности</div>
-                    <div class="block-inside">
-                        <ul class="lists-features">
-                            <?php foreach ($post->info['features'] as $key=>$feature):?>
-                                <li class="lists-feature"><?=Helper::getFeature($key,$feature)?></li>
-                            <?php endforeach;?>
-                        </ul>
-                    </div>
-                </div>
-                <div class="right-block-f">
-                    <div class="btn-info-card"></div>
-                </div>
-            </div>
-        <?php endif;?>
+
+            <?php Helper::getFeature($post->getFeatures())?>
+
+
 
         <div class="info-row">
             <div class="left-block-f">

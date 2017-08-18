@@ -42,7 +42,7 @@ class ReviewsSearch extends Reviews
     {
         $query = Reviews::find()
             ->joinWith(['user.userInfo'])
-            ->innerJoinWith(['post.underCategory'])
+            ->innerJoinWith(['post.categories'])
             ->where(['<=', 'tbl_reviews.date', $params['loadTime'] ?? $loadTime])
             ->orderBy(['tbl_reviews.date' => SORT_DESC]);
 
@@ -67,6 +67,7 @@ class ReviewsSearch extends Reviews
             'query' => $query,
             'pagination' => $pagination,
         ]);
+        $query->groupBy(['tbl_reviews.id']);
 
         return $dataProvider;
     }

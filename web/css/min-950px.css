@@ -1,9 +1,11 @@
 .header-menu-title{
     display: none;
 }
-.notif-menu .header-menu-title{
+.notif-menu .header-menu-title,
+.left-menu .header-menu-title{
     display: block;
 }
+
 .header-menu-title.btn-select-city{
     display: block;
 }

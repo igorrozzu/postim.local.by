@@ -17,6 +17,7 @@ use app\models\Region;
 use app\models\Reviews;
 use app\models\TotalView;
 use app\models\UnderCategory;
+use app\models\WorkingHours;
 use yii\console\Controller;
 use yii\base\Security;
 
@@ -244,6 +245,21 @@ class HelloController extends Controller
                 }
             }
 
+        }
+    }
+
+    public function actionConvertTime(){
+        $workingHours = WorkingHours::find()->all();
+        foreach ($workingHours as $working){
+            if($working->time_start > $working->time_finish){
+                $working->time_finish+=24*3600;
+                if($working->save()){
+                    echo "был сохранен под id ".$working->id."\n\r";
+                }else{
+                    echo "не был сохранен под id ".$working->id."\n\r";
+                }
+
+            }
         }
     }
 

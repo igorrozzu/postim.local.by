@@ -125,6 +125,9 @@
 .btn-filter{
     margin-right: 0px;
 }
+.left-menu.filter .btn-filter{
+    display: flex;
+}
 .btn2-menu:nth-child(2n){
     margin-right: 0px;
 }

@@ -133,6 +133,9 @@ var Main = (function (window, document, undefined,$) {
 
                 });
             },
+            getLoadBlock:function () {
+                return $('<div id="loader-box"><div class="loader"></div></div>');
+            }
         };
 
         return that;

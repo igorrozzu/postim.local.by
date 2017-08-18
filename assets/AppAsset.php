@@ -42,6 +42,7 @@ class AppAsset extends AssetBundle
         'js/libs/jquery.autosize.js',
         'js/goodShare.js',
         'js/libs/debounce.js',
+        'js/libs/jquery-ui.min.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

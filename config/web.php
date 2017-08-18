@@ -91,6 +91,9 @@ $config = [
         'city'=>[
             'class' => 'app\components\City',
         ],
+        'category'=>[
+            'class' => 'app\components\Category',
+        ],
 
         'formatter' => [
             'class' => 'app\components\Formatter',

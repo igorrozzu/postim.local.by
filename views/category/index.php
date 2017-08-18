@@ -5,8 +5,18 @@ use \app\components\cardsNewsWidget\CardsNewsWidget;
 use \app\components\ListCityWidget\ListCityWidget;
 use \yii\widgets\Pjax;
 use \app\components\breadCrumb\BreadCrumb;
+use \app\components\Helper;
 ?>
 <div class="margin-top60"></div>
+<div class="menu-info-cards-contener">
+    <div class="menu-info-cards">
+        <div class="btns-filter">
+            <div class="btn-filter btn-bb active">Места <?=$dataProvider->totalCount?></div>
+            <div class="btn-filter btn-bb" data-name_filter="open" data-value="now">Открыто сейчас</div>
+        </div>
+        <div class="btn-filter icon-filter"><span>Все фильтры</span></div>
+    </div>
+</div>
 <div id="map_block" class="block-map"></div>
 
 <div class="block-content">
@@ -30,9 +40,9 @@ Pjax::begin([
 <div class="block-flex-white">
     <div class="block-content">
         <div class="block-sort">
-            <a href="<?=$url?>" class="btn-sort <?=$sort=='rating'?'active':''?>">По рейтингу</a>
-            <a href="<?=$url.'?sort=new'?>" class="btn-sort <?=$sort=='new'?'active':''?>">Новые</a>
-            <a href="<?=$url.'?sort=nigh'?>" class="btn-sort <?=$sort=='nigh'?'active':''?>">Рядом</a>
+            <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'rating'])?>" class="btn-sort <?=$sort=='rating'?'active':''?>">По рейтингу</a>
+            <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'new'])?>" class="btn-sort <?=$sort=='new'?'active':''?>">Новые</a>
+            <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'nigh'])?>" class="btn-sort <?=$sort=='nigh'?'active':''?>">Рядом</a>
         </div>
     </div>
 </div>
@@ -56,22 +66,30 @@ Pjax::begin([
 
 </div>
 <?php
+$defaultUrl='/'.Yii::$app->request->getPathInfo();
+$js = <<<js
+    $(document).ready(function() {
+      category.filters.setDefaultUrl({url:'$defaultUrl'});
+      category.filters.addParamOther('sort','$sort')
+    });
+js;
+echo "<script>$js</script>";
+Pjax::end();
+
 $settings= [
-        'select_category'=>$this->context->category ?? false,
-        'select_under_category'=>$this->context->under_category ?? false
+    'select_category'=>$this->context->category ?? false,
+    'select_under_category'=>$this->context->under_category ?? false
 ];
 
 if ($settings['select_category']) {
     $select_category = $settings["select_category"]['name'];
     $select_under_category = $settings["select_under_category"]['name'] ?? 'NuN';
-$js = <<<js
+    $js = <<<js
         $(document).ready(function() {
-          menu.openCategoryInLeftMenu('$select_category','$select_under_category')
+          menu.openCategoryInLeftMenu('$select_category','$select_under_category');
+          category.filters.init();
         });
 js;
 }
 echo "<script>$js</script>";
-
-Pjax::end();
-
 ?>

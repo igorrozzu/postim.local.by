@@ -19,15 +19,17 @@ class PostsSearch extends Posts
     public $city;
     public $favorite;
     public $favorite_id;
+    public $open;
+    public $filters;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'city_id', 'rating', 'count_favorites', 'count_reviews', 'under_category_id'], 'integer'],
+            [['id', 'city_id', 'rating', 'count_favorites', 'count_reviews'], 'integer'],
             [['url_name', 'cover', 'data', 'address','city',
-                'category','under_category','city', 'favorite', 'favorite_id'], 'safe'],
+                'category','under_category','city', 'favorite', 'favorite_id','open','filters'], 'safe'],
         ];
     }
 
@@ -47,9 +49,9 @@ class PostsSearch extends Posts
      *
      * @return ActiveDataProvider
      */
-    public function search($params, Pagination $pagination, Array $sort, $loadTime = null)
+    public function search($params, Pagination $pagination, Array $sort, $loadTime = null , array $self_filters =[])
     {
-        $query = Posts::find()->orderBy($sort);
+        $query = Posts::find()->select('tbl_posts.*')->orderBy($sort);
         // add conditions that should always apply here
         $query->addOrderBy(['data'=>SORT_ASC]);
 
@@ -62,13 +64,14 @@ class PostsSearch extends Posts
             return $dataProvider;
         }
 
-        $relations = ['categories.category','city.region'];
+        $relations = ['city.region'];
         if(isset($this->favorite) && $this->favorite === 'posts') {
             $relations[] = 'favoritePosts';
         } else if(!Yii::$app->user->isGuest) {
             $query->joinWith('hasLike');
         }
         $query->innerJoinWith($relations);
+        $query->joinWith('categories.category');
 
         if(isset($params['loadTime']) || isset($loadTime) ){
             $query->andWhere(['<=', 'tbl_posts.date', $params['loadTime'] ?? $loadTime]);
@@ -92,13 +95,60 @@ class PostsSearch extends Posts
             ]);
         }
 
+
+       if($this->open){
+           $query->innerJoinWith(['workingHours'=>function ($query) {
+               $query->andWhere(['day_type' =>date('w')==0?7:date('w')]);
+           }]);
+           $currentTimestamp = Yii::$app->formatter->asTimestamp(Yii::$app->formatter->asTime(time() + Yii::$app->user->getTimezoneInSeconds(), 'short'));
+           $currentTime = idate('H', $currentTimestamp) * 3600 + idate('i', $currentTimestamp) * 60 + idate('s', $currentTimestamp);
+           $query->andWhere(['<=', 'tbl_working_hours.time_start', $currentTime]);
+           $query->andWhere(['>=', 'tbl_working_hours.time_finish', $currentTime]);
+            $this->filters--;
+        }else{
+           $query->with(['workingHours'=>function ($query) {
+              $query->orderBy(['day_type'=>SORT_ASC]);
+           }]);
+       }
+
+       if($self_filters){
+           $query->innerJoinWith('postFeatures');
+           $queryFiltersBool=[0=>'or'];
+           foreach ($params as $nameFilter => $value){
+                if(isset($self_filters[$nameFilter])){
+                    if($value == 'true'){
+                        $queryFiltersBool[] = ['and',
+                                                ['tbl_post_features.features_id'=>$nameFilter],
+                                                ['tbl_post_features.value'=>1]
+                                              ];
+                    }else{
+                        $minMax = explode(',',$value,2);
+                        if(isset($minMax[1])){
+                            $min = (int) $minMax[0];
+                            $max = (int) $minMax[1];
+                            $queryFiltersBool[] = ['and',
+                                ['tbl_post_features.features_id'=>$nameFilter],
+                                ['>=','tbl_post_features.value',$min],
+                                ['<=','tbl_post_features.value',$max]
+                            ];
+                        }
+                    }
+                }
+           }
+
+           if(count($queryFiltersBool)>1){
+               $query->andWhere($queryFiltersBool);
+               $query->having('count(distinct features_id) = '.$this->filters);
+           }
+       }
+
         if(!empty($this->under_category)){
             $query->andWhere(['tbl_under_category.url_name'=> $this->under_category['url_name']]);
         }elseif(!empty($this->category)){
             $query->andWhere(['tbl_category.url_name'=>$this->category['url_name']]);
         }
 
-        $query->with('workingHours');
+        $query->groupBy(['tbl_posts.id']);
 
 
         return $dataProvider;

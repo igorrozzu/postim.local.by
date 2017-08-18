@@ -72,6 +72,13 @@ body{
 .menu-content{
     height:calc(100% - 60px);
 }
+.left-menu.under-filter{
+    z-index: 102;
+}
+.container-filters{
+    margin-top: 40px;
+    margin-bottom: 90px;
+}
 
 .bottom-btn{
     position: absolute;
@@ -661,6 +668,7 @@ body{
 .info-head a{
     color: #788399;
     text-decoration: none;
+    line-height: 16px;
 }
 .info-head a:hover{
     text-decoration: underline;
@@ -1050,23 +1058,22 @@ a.btn-show-more{
     border-bottom: 4px solid #a7c9ff;
     color: #444444;
 }
-.average-check{
+.average-item{
     display: flex;
     flex-direction: column;
-    margin-top: 30px;
     padding: 0 36px 0 40px;
 }
-.average-check-label{
+.average-item-label{
     display: flex;
     color: #788399;
     font-size: 16px;
     justify-content: space-between;
 }
-.average-check-range{
+.average-item-range{
     margin: 30px 0px;
     height: 25px;
 }
-.average-check-text{
+.average-item-text{
     align-items: flex-end;
 }
 .check-cost{
@@ -1088,7 +1095,43 @@ a.btn-show-more{
     border: 1px solid #d3e4ff;
     border-radius: 25px;
 }
-.btn-filters:hover, .sign-official-answer:hover{
+.left-menu.filter .btn-filter{
+    outline: none;
+    margin-bottom: 20px;
+    height: 41px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 80px);
+    margin-left: 40px;
+    margin-right: 40px;
+    color: #788399;
+    font-family: PT_Sans;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #d3e4ff;
+    border-radius: 25px;
+}
+.btn-container-filters{
+    outline: none;
+    margin-bottom: 20px;
+    height: 41px;
+    display: flex;
+    align-items: center;
+    width: calc(100% - 80px);
+    margin-left: 40px;
+    margin-right: 40px;
+    color: #788399;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #d3e4ff;
+    border-radius: 25px;
+}
+.btn-filters:hover,
+.sign-official-answer:hover,
+.btn-filters.active,
+.left-menu.filter .btn-filter:hover,
+.left-menu.filter .btn-filter.active{
     border: 1px solid #a7c9ff;
     color: #444444;
 }
@@ -1099,20 +1142,62 @@ a.btn-show-more{
     display: inline-block;
     margin-top: 7px;
 }
-.btn-filters span{
+.btn-container-filters .name_filters{
+    height: 20px;
+    margin-left: 16px;
+    margin-right: 10px;
+}
+.btn-filters .name_filter,
+.left-menu.filter .btn-filter .name_filter{
     height: 20px;
 }
-.icon-plus:after{
-    content: url(../img/icon-plus.png);
-    position: relative;
+.btn-container-filters .count{
+    color: #a9b0bf;
+    font-size: 14px;
+}
+.icon-add-filters{
+    content: '';
+    width: 22px;
+    height: 22px;
+    background-image: url("../img/icons_plus.png");
+    background-position: 0 0;
+    position: absolute;
     display: flex;
     align-items: center;
-    height: 41px;
-    left: 70px;
+    margin-left: 188px;
 }
-.btn-filters:hover.icon-plus:after{
-    content: url(../img/icon-plus-hover.png);
+.icon-remove-filters{
+    content: '';
+    width: 22px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    margin-left: 188px;
+    background-image: url("../img/icons_close.png");
+    background-position: -1px 0;
+    height: 26px;
 }
+.btn-container-filters:hover,
+.btn-container-filters.active{
+    border: 1px solid #a7c9ff;
+}
+.btn-filters.active,
+.btn-filters:hover{
+    color: #4b98df;
+}
+.btn-container-filters:hover .name_filters,
+.btn-container-filters.active .name_filters,
+.left-menu.filter .btn-filter:hover .name_filter,
+.left-menu.filter .btn-filter.active .name_filter{
+    color: #4b98df;
+}
+.btn-container-filters:hover .icon-add-filters{
+    background-position: 22px 0;
+}
+.icon-remove-filters:hover{
+    background-position: 23px 0;
+}
+
 /*категория карточек end*/
 /*страница карточки товара*/
 .block-info-reviewsAndfavorites{
@@ -2361,7 +2446,8 @@ a.btn-show-more{
     padding-left: 20px;
     padding-right: 20px;
 }
-.btn-bb:hover{
+.btn-bb:hover,
+.btn-bb.active{
     color: #444444;
     box-shadow: 0px 4px 0px 0px #a7c9ff;
     height: 56px;
@@ -4673,7 +4759,7 @@ form .field-input:first-child{
 
 
 .bg-r0{
-    background-color:#444444;
+    background-color:#7b7b7b;
 }
 .bg-r1{
     background-color:#fe4c5a;

@@ -194,6 +194,27 @@ Pjax::end();
 
 ]);
 ?>
+<div class="left-menu filter">
+    <div class="header-menu">
+        <div class="header-menu-title">Все фильтры</div>
+        <div class="left-arrow close-menu"></div>
+    </div>
+    <div class="menu-content">
+
+    </div>
+    <div class="bottom-btn filter-complete"><span>Готово</span></div>
+</div>
+<div class="left-menu under-filter">
+    <div class="header-menu">
+        <div class="header-menu-title">Все фильтры</div>
+        <div class="left-arrow close-menu"></div>
+    </div>
+    <div class="menu-content">
+
+    </div>
+    <div class="bottom-btn filter-complete"><span>Готово</span></div>
+</div>
+
 <?php $this->endBody() ?>
 </body>
 </html>

@@ -22,7 +22,10 @@ class PostController extends MainController
     public function actionIndex(int $id){
 
          $post = Posts::find()->with([
-                'info', 'workingHours',
+                'info',
+                'workingHours'=>function ($query) {
+                    $query->orderBy(['day_type'=>SORT_ASC]);
+                },
                 'city', 'totalView',
                 'hasLike','categories.category'])
             ->where(['id'=>$id])
@@ -69,19 +72,19 @@ class PostController extends MainController
             ];
         }
 
-        if(isset($post->categories->category)){
-            $currentUrl=$currentUrl.'/'.$post->categories->category['url_name'];
+        if(isset($post->categories[0]['category'])){
+            $currentUrl=$currentUrl.'/'.$post->categories[0]['category']['url_name'];
             $breadcrumbParams[]=[
-                'name'=>$post->categories->category['name'],
+                'name'=>$post->categories[0]['category']['name'],
                 'url_name'=>$currentUrl,
                 'pjax'=>'class="main-header-pjax a"'
             ];
         }
 
-        if($post->categories){
-            $currentUrl=$currentUrl.'/'.$post->categories['url_name'];
+        if(isset($post->categories[0])){
+            $currentUrl=$currentUrl.'/'.$post->categories[0]['url_name'];
             $breadcrumbParams[]=[
-                'name'=>$post->categories['name'],
+                'name'=>$post->categories[0]['name'],
                 'url_name'=>$currentUrl,
                 'pjax'=>'class="main-header-pjax a"'
             ];

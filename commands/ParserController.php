@@ -2,9 +2,14 @@
 
 namespace app\commands;
 
+use app\models\Features;
+use app\models\News;
+use app\models\PostFeatures;
 use app\models\PostInfo;
 use app\models\Posts;
+use app\models\PostUnderCategory;
 use app\models\TotalView;
+use app\models\UnderCategoryFeatures;
 use app\models\WorkingHours;
 use dosamigos\transliterator\TransliteratorHelper;
 use linslin\yii2\curl\Curl;
@@ -22,7 +27,11 @@ class ParserController extends Controller{
     private $working_hours=[];
     private $nameFile='';
 
-    public function actionIndex($text){
+    private $post_features=[];
+    private $under_category;
+
+    public function actionIndex($text,$under_category){
+        $this->under_category =$under_category;
         $this->nameFile= str_replace('/','',TransliteratorHelper::process(trim($text)).'.txt');
 
         $curl = new Curl();
@@ -53,6 +62,7 @@ class ParserController extends Controller{
             $this->post= new Posts();
             $this->post_info = new PostInfo();
             $this->working_hours=[];
+            $this->post_features=[];
 
             foreach ($dataInfoPlace as $key=>$value){
                 if(method_exists($this,$key)){
@@ -60,54 +70,68 @@ class ParserController extends Controller{
                 }
             }
 
-           // $this->save($dataLatLon);
+            $this->save($dataLatLon);
         }
     }
 
     private function save($latLon){
-
+        $under_category = $this->under_category;
         $transaction = Yii::$app->db->beginTransaction();
+            if($postFind = Posts::find()->where(['address'=>$this->post->address,'data'=>$this->post->data])->one()){
+                $post_under_category =  new PostUnderCategory(['post_id'=>$postFind->id,'under_category_id'=>$under_category]);
+                $post_under_category->save();
+                $transaction->commit();
+            }else{
+                $total_view = new TotalView(['count'=>0]);
+                if($total_view->save()){
+                    $this->post->city_id=90;
+                    $this->post->date=time();
+                    $this->post->status=1;
+                    $this->post->user_id=15;
+                    $this->post->latlon=$latLon;
+                    $this->post->cover='/post-img/default.png';
+                    $this->post->rating=0;
+                    $this->post->count_favorites=0;
+                    $this->post->count_reviews=0;
+                    $this->post->total_view_id=$total_view->id;
+                    try{
 
-            $total_view = new TotalView(['count'=>0]);
-            if($total_view->save()){
-                $this->post->city_id=90;
-                $this->post->under_category_id=75;
-                $this->post->date=time();
-                $this->post->status=1;
-                $this->post->user_id=15;
-                $this->post->latlon=$latLon;
-                $this->post->cover='/post-img/default.png';
-                $this->post->rating=0;
-                $this->post->count_favorites=0;
-                $this->post->count_reviews=0;
-                $this->post->total_view_id=$total_view->id;
-                try{
+                        if($this->post->save()){
 
-                    if($this->post->save()){
-                        $this->post_info->post_id=$this->post->id;
-                        $this->post_info->editors=[15];
-                        if($this->post_info->save()){
-                            foreach ($this->working_hours as $working_hour){
-                                $working_hour->post_id = $this->post->id;
-                                $working_hour->save();
+                            $post_under_category =  new PostUnderCategory(['post_id'=>$this->post->id,'under_category_id'=>$under_category]);
+                            $post_under_category->save();
 
+                            foreach ($this->post_features as $feature){
+                                $feature->post_id=$this->post->id;
+                                $feature->save();
                             }
-                            echo 'пост и информация были сохранены :'.$this->post->id."\n\r";
-                            $transaction->commit();
+
+                            $this->post_info->post_id=$this->post->id;
+                            $this->post_info->editors=[15];
+                            if($this->post_info->save()){
+                                foreach ($this->working_hours as $working_hour){
+                                    $working_hour->post_id = $this->post->id;
+                                    $working_hour->save();
+
+                                }
+                                echo 'пост и информация были сохранены :'.$this->post->id."\n\r";
+                                $transaction->commit();
+                            }else{
+                                echo "информация не были сохранены :".$this->post->id."\n\r";
+                                $transaction->rollback();
+                            }
                         }else{
-                            echo "информация не были сохранены :".$this->post->id."\n\r";
+                            echo "пост и информация не были сохранены :\n\r";
                             $transaction->rollback();
                         }
-                    }else{
-                        echo "пост и информация не были сохранены :\n\r";
+
+                    }catch (\ErrorException $exception){
                         $transaction->rollback();
                     }
 
-                }catch (\ErrorException $exception){
-
                 }
-
             }
+
 
 
     }
@@ -146,9 +170,9 @@ class ParserController extends Controller{
             foreach ($availab as $day_name=>$is_work){
                 if(!isset($availab['Intervals'])){
                     if(isset($availab['TwentyFourHours']) && $availab['TwentyFourHours']){
-                        $timestamp_start =Yii::$app->formatter->asTimestamp('00:00');
+                        $timestamp_start =Yii::$app->formatter->asTimestamp('24:00');
                         $time_start = idate('H',$timestamp_start)*3600+idate('i',$timestamp_start)*60+idate('s',$timestamp_start);
-                        $timestamp_start_finish =Yii::$app->formatter->asTimestamp('00:00');
+                        $timestamp_start_finish =Yii::$app->formatter->asTimestamp('24:00');
                         $time_finish =idate('H',$timestamp_start_finish)*3600+idate('i',$timestamp_start_finish)*60+idate('s',$timestamp_start_finish);
                     }else{
                         $time_finish=null;
@@ -198,35 +222,96 @@ class ParserController extends Controller{
 
         foreach ($values as $value){
             if($value['type']=='bool' && $value['value']){
-                $arrayFeatures[$value['id']]=$value['name'];
-
-                $this->saveToJsonFile($value);
+                $this->saveFeatures($value,1);
             }
             if($value['type']=='text'){
-                $arrayFeatures[$value['id']]=$value['value'];
-
-                $this->saveToJsonFile($value);
-
-
+                $this->saveFeatures($value,2);
             }
             if($value['type']=='enum'){
                 if(in_array($value['id'],['type_public_catering'])){
                     continue;
                 }
-                $result = [];
-                foreach ($value['values'] as $enumValue){
-                     $result[$enumValue['id']]=$enumValue['value'];
-                }
-                $arrayFeatures[$value['id']]=$result;
+               $this->saveFeaturesArray($value);
 
-                $this->saveToJsonFile($value);
             }
 
         }
-        if($arrayFeatures){
-            $this->post_info->features=$arrayFeatures;
+
+    }
+
+    private function saveFeatures($value,$type){
+
+
+        if($findFeatures = Features::find()->where(['id'=>$value['id']])->one()){
+            if($type>1){
+                $price=floatval($value['value']);
+                $postFeatures = new PostFeatures(['value'=>$price]);
+            }else{
+                $postFeatures = new PostFeatures(['value'=>1]);
+            }
+            $postFeatures->features_id=$findFeatures->id;
+
         }else{
-            $this->post_info->features=null;
+            $features = new Features(['id'=>$value['id'],'type'=>$type,'filter_status'=>0,'name'=>$value['name']]);
+            $features->save();
+            if($type>1){
+                $price=floatval($value['value']);
+                $postFeatures = new PostFeatures(['value'=>$price]);
+            }else{
+                $postFeatures = new PostFeatures(['value'=>1]);
+            }
+
+            $postFeatures->features_id=$features->id;
+        }
+        array_push($this->post_features,$postFeatures);
+    }
+
+    private function saveFeaturesArray($value){
+
+        if($findFeatures = Features::find()->where(['id'=>$value['id']])->one()){
+            $postFeatures = new PostFeatures(['value'=>1]);
+            $postFeatures->features_id=$findFeatures->id;
+            array_push($this->post_features,$postFeatures);
+            foreach ($value['values'] as $enumValue){
+                $postFeaturesIns = new PostFeatures(['value'=>1]);
+                if($findFeaturesAr = Features::find()->where(['id'=>$enumValue['id']])->one()){
+                    $postFeaturesIns->features_id=$findFeaturesAr->id;
+                    $postFeaturesIns->features_main_id=$findFeaturesAr->main_features;
+                }else{
+                    $FeaturesAr = new Features(['id'=>$enumValue['id'],'type'=>1,'filter_status'=>0,'name'=>$enumValue['value'],'main_features'=>$findFeatures->id]);
+                    $FeaturesAr->save();
+                    $postFeaturesIns->features_id=$FeaturesAr->id;
+                    $postFeaturesIns->features_main_id=$FeaturesAr->main_features;
+                }
+                array_push($this->post_features,$postFeaturesIns);
+
+            }
+        }else{
+            if(!isset($value['name'])){
+                return false;
+            }
+            $features = new Features(['id'=>$value['id'],'type'=>3,'filter_status'=>0,'name'=>$value['name']]);
+            $features->save();
+            $postFeatures = new PostFeatures(['value'=>1]);
+            $postFeatures->features_id=$features->id;
+            array_push($this->post_features,$postFeatures);
+
+            foreach ($value['values'] as $enumValue){
+                $postFeaturesIns = new PostFeatures(['value'=>1]);
+                if($findFeaturesAr = Features::find()->where(['id'=>$enumValue['id']])->one()){
+                    $postFeaturesIns->features_id=$findFeaturesAr->id;
+                    $postFeaturesIns->features_main_id=$findFeaturesAr->main_features;
+                }else{
+                    $FeaturesAr = new Features(['id'=>$enumValue['id'],'type'=>1,'filter_status'=>0,'name'=>$enumValue['value'],'main_features'=>$features->id]);
+                    $FeaturesAr->save();
+                    $postFeaturesIns->features_id=$FeaturesAr->id;
+                    $postFeaturesIns->features_main_id=$FeaturesAr->main_features;
+                }
+                array_push($this->post_features,$postFeaturesIns);
+
+            }
+
+
         }
 
     }
@@ -299,5 +384,12 @@ class ParserController extends Controller{
             file_put_contents(Yii::getAlias('@app/web/tmp/'.$fileName),Json::encode($newData));
 
         }
+    }
+
+    public function actionSetFilter($under_category_id , $features_id){
+        $underCategoryFeature = new UnderCategoryFeatures([
+            'under_category_id'=>$under_category_id,
+            'features_id'=>$features_id]);
+        $underCategoryFeature->save();
     }
 }

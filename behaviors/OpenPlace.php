@@ -34,10 +34,7 @@ class OpenPlace extends Behavior{
                     $currentTimestamp =  Yii::$app->formatter->asTimestamp(Yii::$app->formatter->asTime(time()+Yii::$app->user->getTimezoneInSeconds(), 'short'));
                     $currentTime = idate('H',$currentTimestamp)*3600+idate('i',$currentTimestamp)*60+idate('s',$currentTimestamp);
 
-                    if (($currentTime >= $currentWorkingHours['time_start']
-                        && $currentTime <= $currentWorkingHours['time_finish']) ||
-                        ($currentTime >(12*3600) && $currentTime >= $currentWorkingHours['time_start'] && $currentTime <= ($currentWorkingHours['time_finish']+24*3600) && $currentWorkingHours['time_finish'] <(12*3600))
-                    ) {
+                    if($currentTime >= $currentWorkingHours['time_start'] && $currentTime <=$currentWorkingHours['time_finish']) {
                         $this->owner->is_open = true;
 
                         if(!$this->only_is_open){
@@ -46,21 +43,21 @@ class OpenPlace extends Behavior{
                                 $workingHours[$nextDay]['time_start'] == $currentWorkingHours['time_finish']){
                                 $this->owner->timeOpenOrClosed='';
                             }else{
-                                $this->owner->timeOpenOrClosed='до '.Yii::$app->formatter->asTime($currentWorkingHours['time_finish'], 'short');
+                                $this->owner->timeOpenOrClosed='до '.Yii::$app->formatter->asTime(($currentWorkingHours['time_finish']), 'short');
                             }
                         }
 
                     } else {
                         if(!$this->only_is_open){
                             if($currentTime < $currentWorkingHours['time_start']){
-                                $this->owner->timeOpenOrClosed='до '.Yii::$app->formatter->asTime($currentWorkingHours['time_start'], 'short');
+                                $this->owner->timeOpenOrClosed='до '.Yii::$app->formatter->asTime(($currentWorkingHours['time_start']), 'short');
                             }else{
                                 $max=7;
                                 $i=isset($workingHours[$currentDay+1])?$currentDay+1:1;
                                 while ($max){
                                     if(isset($workingHours[$i]) && $workingHours[$i]){
                                         if($workingHours[$i]['time_start']){
-                                            $this->owner->timeOpenOrClosed='до '.Yii::$app->formatter->asTime($currentWorkingHours['time_start'], 'short').', '.Helper::getShortNameDayById($i);
+                                            $this->owner->timeOpenOrClosed='до '.Yii::$app->formatter->asTime(($currentWorkingHours['time_start']), 'short').', '.Helper::getShortNameDayById($i);
                                             break;
                                         }
                                     }

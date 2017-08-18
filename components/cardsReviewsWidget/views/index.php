@@ -12,7 +12,7 @@ $reviews = $dataProvider->getModels();
             <div class="rating-r bg-r4"><?=$review->post->rating?></div>
             <div class="block-info-review">
             <p class="user-name"><?=$review->post->data?></p>
-            <div class="date-time-review"><?=$review->post->underCategory->name?></div>
+            <div class="date-time-review"><?=implode(', ',ArrayHelper::getColumn($review['post']['categories'],'name')) ?></div>
             </div>
         </div>
         <div class="review-header">
