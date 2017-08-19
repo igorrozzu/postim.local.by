@@ -3090,6 +3090,7 @@ a.btn-show-more{
     flex-direction: column;
     padding-top: 15px;
     padding-bottom: 15px;
+    position: relative;
 }
 .container-item-menu a{
     font-size: 16px;
@@ -3099,6 +3100,25 @@ a.btn-show-more{
     text-decoration: none;
     display: flex;
     align-items: center;
+}
+.container-item-menu.closed {
+    opacity: 0.6;
+}
+.container-item-menu.closed:hover,
+.container-item-menu.closed a:hover {
+    cursor: not-allowed;
+}
+.container-item-menu .section:after {
+    content: '';
+    width: 20px;
+    height: 27px;
+    background: url("../img/closed-section.png") no-repeat;
+    position: absolute;
+    top: 15px;
+    right: 50px;
+}
+.container-item-menu:nth-child(5) .section:after{
+    top: 10px;
 }
 .container-item-menu a:hover,
 .container-item-menu.selected a{

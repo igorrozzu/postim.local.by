@@ -92,12 +92,12 @@ $countNotif = Notification::getCountNotifications();
                 <span><img src="<?=$user->getPhoto()?>"></span>Мой профиль
             </a>
         </div>
-        <div class="container-item-menu active">
+        <!--<div class="container-item-menu active">
             <a class="close-right-menu-list" data-id-open="business"><span><img src="/img/icon-business.png"></span>Бизнес акаунт</a>
             <div class="menu-list open-list" id="business">
-                <a href="<?=Url::to(['user/zakazy-promokodov'])?>">
+                <a href="<?/*=Url::to(['user/zakazy-promokodov'])*/?>">
                     <span></span>Заказы промокодов</a>
-                <a href="<?=Url::to(['user/zakazy-sertifikatov'])?>">
+                <a href="<?/*=Url::to(['user/zakazy-sertifikatov'])*/?>">
                     <span></span>Заказы сертификатов</a>
             </div>
         </div>
@@ -105,12 +105,35 @@ $countNotif = Notification::getCountNotifications();
             <a><span><img src="/img/icon-big-purse.png"></span>Пополнить счет</a>
         </div>
         <div class="container-item-menu">
-            <a href="<?=Url::to(['user/promocody'])?>">
+            <a href="<?/*=Url::to(['user/promocody'])*/?>">
                 <span><img src="/img/icon-promotional.png"></span>Мои промокоды
             </a>
         </div>
         <div class="container-item-menu">
-            <a href="<?=Url::to(['user/sertifikaty'])?>">
+            <a href="<?/*=Url::to(['user/sertifikaty'])*/?>">
+                <span><img src="/img/icon-certificates.png"></span>Мои сертификаты
+            </a>
+        </div>-->
+
+        <div class="container-item-menu active closed">
+            <a class="close-right-menu-list section" data-id-open="business"><span><img src="/img/icon-business.png"></span>Бизнес акаунт</a>
+            <div class="menu-list open-list" id="business">
+                <a><span></span>Заказы промокодов</a>
+                <a><span></span>Заказы сертификатов</a>
+            </div>
+        </div>
+        <div class="container-item-menu closed">
+            <a class="section">
+                <span><img src="/img/icon-big-purse.png"></span>Пополнить счет
+            </a>
+        </div>
+        <div class="container-item-menu closed">
+            <a class="section">
+                <span><img src="/img/icon-promotional.png"></span>Мои промокоды
+            </a>
+        </div>
+        <div class="container-item-menu closed">
+            <a class="section">
                 <span><img src="/img/icon-certificates.png"></span>Мои сертификаты
             </a>
         </div>
