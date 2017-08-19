@@ -105,12 +105,12 @@ $countNotif = Notification::getCountNotifications();
             <a><span><img src="/img/icon-big-purse.png"></span>Пополнить счет</a>
         </div>
         <div class="container-item-menu">
-            <a href="<?=Url::to(['user/moi-promocody'])?>">
+            <a href="<?=Url::to(['user/promocody'])?>">
                 <span><img src="/img/icon-promotional.png"></span>Мои промокоды
             </a>
         </div>
         <div class="container-item-menu">
-            <a href="<?=Url::to(['user/moi-sertifikaty'])?>">
+            <a href="<?=Url::to(['user/sertifikaty'])?>">
                 <span><img src="/img/icon-certificates.png"></span>Мои сертификаты
             </a>
         </div>

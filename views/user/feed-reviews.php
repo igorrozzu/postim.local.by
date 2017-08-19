@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
             <a href="<?=Url::to(['user/reviews', 'id' => $user->id])?>">
-                <div class="btn2-menu btn2-menu-active">Отзывы</div></a>
+                <div class="btn2-menu active">Отзывы</div></a>
             <a href="<?=Url::to(['user/places', 'id' => $user->id])?>">
                 <div class="btn2-menu">Места <?=$user->userInfo->count_places_added;?></div></a>
             <a href="<?=Url::to(['user/places', 'id' => $user->id, 'moderation' => 1])?>" >

@@ -26,17 +26,17 @@ Pjax::begin([
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
             <a href="<?=Url::to(['user/vse-otzyvy'])?>">
-                <div class="btn2-menu <?=($type === 'all') ? 'btn2-menu-active' : ''?>">
+                <div class="btn2-menu <?=($type === 'all') ? 'active' : ''?>">
                     Все
                 </div>
             </a>
             <a href="<?=Url::to(['user/vse-otzyvy', 'type' => 'positive'])?>">
-                <div class="btn2-menu <?=($type === 'positive') ? 'btn2-menu-active' : ''?>">
+                <div class="btn2-menu <?=($type === 'positive') ? 'active' : ''?>">
                     Положительные
                 </div>
             </a>
             <a href="<?=Url::to(['user/vse-otzyvy', 'type' => 'negative'])?>">
-                <div class="btn2-menu <?=($type === 'negative') ? 'btn2-menu-active' : ''?>">
+                <div class="btn2-menu <?=($type === 'negative') ? 'active' : ''?>">
                     Отрицательные
                 </div>
             </a>

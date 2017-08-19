@@ -34,17 +34,17 @@ Pjax::begin([
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
             <a href="<?=Url::to(['user/zakazy-promokodov'])?>" >
-                <div class="btn2-menu <?=($status === 'all') ? 'btn2-menu-active' : ''?>">
+                <div class="btn2-menu <?=($status === 'all') ? 'active' : ''?>">
                     Все <?=$countItems['all']?>
                 </div>
             </a>
             <a href="<?=Url::to(['user/zakazy-promokodov', 'status' => 'unactive', 'type' => 'promocode'])?>">
-                <div class="btn2-menu <?=($status === 'unactive') ? 'btn2-menu-active' : ''?>">
+                <div class="btn2-menu <?=($status === 'unactive') ? 'active' : ''?>">
                     Использованные <?=$countItems['inactive']?>
                 </div>
             </a>
             <a href="<?=Url::to(['user/zakazy-promokodov', 'status' => 'active', 'type' => 'promocode'])?>">
-                <div class="btn2-menu <?=($status === 'active') ? 'btn2-menu-active' : ''?>">
+                <div class="btn2-menu <?=($status === 'active') ? 'active' : ''?>">
                     Действующие <?=$countItems['active']?>
                 </div>
             </a>

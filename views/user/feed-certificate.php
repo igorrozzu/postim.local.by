@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
         <span class="separator"></span>
         <p>Мои сертификаты</p>
     </div>
-    <h1 class="h1-v">Ресторан «Хижина Гранд»</h1>
+    <h1 class="h1-v">Мои сертификаты</h1>
 </div>
 <?php
 Pjax::begin([
@@ -24,18 +24,18 @@ Pjax::begin([
 <div class="block-flex-white">
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
-            <a href="<?=Url::to(['user/moi-sertifikaty'])?>">
-                <div class="btn2-menu <?=($status === 'active') ? 'btn2-menu-active' : ''?>">
+            <a href="<?=Url::to(['user/sertifikaty'])?>">
+                <div class="btn2-menu <?=($status === 'active') ? 'active' : ''?>">
                     Действующие
                 </div>
             </a>
-            <a href="<?=Url::to(['user/moi-sertifikaty', 'status' => 'unactive', 'type' => 'certificate'])?>">
-                <div class="btn2-menu <?=($status === 'unactive') ? 'btn2-menu-active' : ''?>">
+            <a href="<?=Url::to(['user/sertifikaty', 'status' => 'unactive', 'type' => 'certificate'])?>">
+                <div class="btn2-menu <?=($status === 'unactive') ? 'active' : ''?>">
                     Использованые
                 </div>
             </a>
-            <a href="<?=Url::to(['user/moi-sertifikaty', 'status' => 'all', 'type' => 'certificate'])?>" >
-                <div class="btn2-menu <?=($status === 'all') ? 'btn2-menu-active' : ''?>">
+            <a href="<?=Url::to(['user/sertifikaty', 'status' => 'all', 'type' => 'certificate'])?>" >
+                <div class="btn2-menu <?=($status === 'all') ? 'active' : ''?>">
                     Все
                 </div>
             </a>

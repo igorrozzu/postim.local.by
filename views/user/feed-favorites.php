@@ -21,12 +21,12 @@ Pjax::begin([
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
             <a href="<?=Url::to(['user/izbrannoe'])?>">
-                <div class="btn2-menu <?= !$isNewsFeed ? 'btn2-menu-active' : ''?>">
+                <div class="btn2-menu <?= !$isNewsFeed ? 'active' : ''?>">
                     Места
                 </div>
             </a>
             <a href="<?=Url::to(['user/izbrannoe', 'favorite' => 'news'])?>">
-                <div class="btn2-menu <?= $isNewsFeed ? 'btn2-menu-active' : ''?>">
+                <div class="btn2-menu <?= $isNewsFeed ? 'active' : ''?>">
                     Новости
                 </div>
             </a>

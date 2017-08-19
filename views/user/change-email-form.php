@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
         <div class="close-big-icon close-notif-message"></div>
     </div>
     <div class="body-popup-authentication">
-        <div class="text-label">Для изменения адреса электронной почты будет необходимо его подтверждение</div>
+        <div class="text-label">Для изменения эл. почты необходимо подтверждение</div>
         <?php $form = ActiveForm::begin([
             'id' => 'change-email-form',
             'enableClientScript' => false

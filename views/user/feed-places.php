@@ -10,10 +10,10 @@ use yii\helpers\Url;
             <a href="<?=Url::to(['user/reviews', 'id' => $user->id])?>">
                 <div class="btn2-menu">Отзывы</div></a>
             <a href="<?=Url::to(['user/places', 'id' => $user->id])?>">
-                <div class="btn2-menu <?php if($moderation === null) echo 'btn2-menu-active'?>">
+                <div class="btn2-menu <?php if($moderation === null) echo 'active'?>">
                     Места <?=$user->userInfo->count_places_added;?></div></a>
             <a href="<?=Url::to(['user/places', 'id' => $user->id, 'moderation' => 1])?>" >
-                <div class="btn2-menu <?php if($moderation !== null) echo 'btn2-menu-active'?>">
+                <div class="btn2-menu <?php if($moderation !== null) echo 'active'?>">
                     На модерации <?=$user->userInfo->count_place_moderation;?></div></a>
         </div>
     </div>

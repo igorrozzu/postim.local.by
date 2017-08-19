@@ -267,7 +267,7 @@ class UserController extends MainController
         }
     }
 
-    public function actionMoiPromocody()
+    public function actionPromocody()
     {
         $searchModel = new DiscountOrderSearch();
         $request = Yii::$app->request;
@@ -307,7 +307,7 @@ class UserController extends MainController
             ]);
         }
     }
-    public function actionMoiSertifikaty()
+    public function actionSertifikaty()
     {
         $searchModel = new DiscountOrderSearch();
         $request = Yii::$app->request;
