@@ -601,10 +601,15 @@ body{
     top: 0px;
     position: absolute;
     z-index: 2;
-    background: rgba(0, 0, 0, 0.4);
     width: 100%;
     height: 200px;
 
+}
+.card-photo .glass:hover{
+    background: rgba(0, 0, 0, 0.4);
+}
+.card-photo .glass:hover .total-reviews{
+    display: flex;
 }
 .reviews-btn-icn{
     display: flex;
@@ -622,13 +627,13 @@ body{
     font-size: 14px;
 }
 
-.total-reviews{
+.reviews-btn-icn .total-reviews{
     color: #ffffff;
     align-items: center;
     margin-left: 10px;
-    display: flex;
     font-size: 14px;
     cursor: pointer;
+    display: none;
 }
 .bookmarks-btn,
 .bookmarks-btn.active{
@@ -637,7 +642,7 @@ body{
     display: none;
     cursor: pointer;
     position: absolute;
-    bottom: 25px;
+    bottom: 26px;
     left: 25px;
 }
 .card-photo:hover .bookmarks-btn,

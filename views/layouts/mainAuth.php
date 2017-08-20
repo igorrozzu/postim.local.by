@@ -19,7 +19,7 @@ use \app\components\ListCityWidget\ListCityWidget;
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
 AuthUserAsset::register($this);
-//условие
+//проверка роли
 BusinessAccountAsset::register($this);
 //конец условия
 $user = Yii::$app->user->identity;
