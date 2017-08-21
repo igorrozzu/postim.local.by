@@ -6,12 +6,15 @@ use \app\components\ListCityWidget\ListCityWidget;
 use \yii\widgets\Pjax;
 use \app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
+
+
+$totalCount = $dataProvider->totalCount;
 ?>
 <div class="margin-top60"></div>
 <div class="menu-info-cards-contener">
     <div class="menu-info-cards">
         <div class="btns-filter">
-            <div class="btn-filter btn-bb active">Места <?=$dataProvider->totalCount?></div>
+            <div class="btn-filter btn-bb active total-count">Места <?=$totalCount?></div>
             <div class="btn-filter btn-bb" data-name_filter="open" data-value="now">Открыто сейчас</div>
         </div>
         <div class="btn-filter icon-filter"><span>Все фильтры</span></div>
@@ -58,10 +61,17 @@ Pjax::begin([
                 ]
             ]); ?>
         </div>
-    <?php else:?>
+    <?php elseif(Yii::$app->request->get('filters',false)):?>
         <div class="container-message">
-            <p>К сожалению, в <?=Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name'])?> на сайте <?=ucfirst(Yii::$app->getRequest()->serverName)?> в категории <?=$categoryText?> пока нет ничего. Если вы знаете о подходящем месте, добавьте его через кнопку <a href="#">"Добавить место"</a>. Это бесплатно, да еще и выгодно. За размещение новых мест на сайте мы начисляем <a href="#">бонусы</a> пользователям.</p>
+            <div class="message-filter">
+                <p>По вашим параметрам ничего не найдено</p>
+                <span>Попробуйте сбросить несколько фильров</span>
+            </div>
         </div>
+    <?php else:?>
+    <div class="container-message">
+        <p>К сожалению, в <?=Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name'])?> на сайте <?=ucfirst(Yii::$app->getRequest()->serverName)?> в категории <?=$categoryText?> пока нет ничего. Если вы знаете о подходящем месте, добавьте его через кнопку <a href="#">"Добавить место"</a>. За размещение новых мест на сайте мы начисляем бонусы пользователям.</p>
+    </div>
     <?php endif;?>
 
 </div>
@@ -71,6 +81,7 @@ $js = <<<js
     $(document).ready(function() {
       category.filters.setDefaultUrl({url:'$defaultUrl'});
       category.filters.addParamOther('sort','$sort')
+      category.refreshTotalCount('$totalCount');
     });
 js;
 echo "<script>$js</script>";

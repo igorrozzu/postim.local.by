@@ -1,6 +1,7 @@
 <?php
 use \app\components\Helper;
 ?>
+<div class="menu-content">
 <div class="container-filters">
     <?php foreach ($features->rubrics as $feature):?>
         <?php if($feature->type==3):?>
@@ -17,7 +18,7 @@ use \app\components\Helper;
             </div>
         <?php elseif($feature->type==2):?>
 
-            <div class="average-item" id="<?=$feature->id?>">
+            <div class="average-item" id="<?=$feature->id?>" data-max="<?=$feature->max?>" data-min="<?=$feature->min?>">
                 <div class="average-item-label">
                     <p><?=Helper::mb_ucasefirst($feature->name)?></p>
                     <p class="average-item-text">
@@ -44,5 +45,5 @@ use \app\components\Helper;
     <?php endif;?>
     <div class="btn-filter" data-name_filter="open" data-value="now"><span class="name_filter">Открыто сейчас</span></div>
 </div>
-
+</div>
 

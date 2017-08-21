@@ -20,7 +20,8 @@ use Yii;
 class Features extends \yii\db\ActiveRecord
 {
     public $underFeatures=null;
-    public $type_feature=false;
+    public $max = null;
+    public $min = null;
 
     /**
      * @inheritdoc
@@ -60,10 +61,25 @@ class Features extends \yii\db\ActiveRecord
     public function afterFind()
     {
         parent::afterFind();
-        if($this->type==3 && $this->main_features==null){
+        if ($this->type == 3 && $this->main_features == null) {
             $this->underFeatures = self::find()
-                ->where(['filter_status'=>1])
-                ->andWhere(['main_features'=>$this->id])->all();
+                ->where(['filter_status' => 1])
+                ->andWhere(['main_features' => $this->id])
+                ->orderBy('name')
+                ->all();
+        }
+
+        if($this->type == 2){
+
+            $min_max = (new \yii\db\Query())
+                ->select('MIN(value) as min , MAX(value) as max')
+                ->from(PostFeatures::tableName())
+                ->where(['features_id' => $this->id])
+                ->one();
+            if($min_max){
+                $this->min = $min_max['min'];
+                $this->max = $min_max['max'];
+            }
         }
     }
 

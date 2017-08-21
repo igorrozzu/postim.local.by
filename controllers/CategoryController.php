@@ -10,9 +10,11 @@ use app\models\PostsSearch;
 use app\models\UnderCategoryFeatures;
 use Yii;
 use app\components\Pagination;
+use yii\web\Response;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\Request;
 
 class CategoryController extends MainController
 {

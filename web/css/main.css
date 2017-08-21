@@ -968,6 +968,7 @@ a.btn-show-more{
     color: #788399;
     cursor: pointer;
     margin-right: 20px;
+    justify-content: center;
 }
 .btns-filter{
     display: flex;
@@ -984,12 +985,24 @@ a.btn-show-more{
     margin-right: 0px;
 }
 .icon-filter:after{
-    content: url("../img/icon-filter.png");
+    content: '';
+    width: 19px;
+    height: 19px;
+    background-image: url("../img/icons_filters.png");
+    background-position: 0 0;
     margin-left: 20px;
 }
-.btn-filter:hover.icon-filter:after{
-    content: url("../img/icon-filter-hover.png");
+.btn-filter:hover.icon-filter:after,
+.btn-filter.active.icon-filter:after{
+    content: '';
+    width: 19px;
+    height: 19px;
+    background-image: url("../img/icons_filters.png");
+    background-position: 19px 0;
     margin-left: 20px;
+}
+.btn-filter.active{
+    color: #444444;
 }
 .bread-crumb{
     margin-top: 20px;
@@ -1066,7 +1079,7 @@ a.btn-show-more{
 .average-item{
     display: flex;
     flex-direction: column;
-    padding: 0 36px 0 40px;
+    padding: 0 40px;
 }
 .average-item-label{
     display: flex;
@@ -1137,7 +1150,7 @@ a.btn-show-more{
 .btn-filters.active,
 .left-menu.filter .btn-filter:hover,
 .left-menu.filter .btn-filter.active{
-    border: 1px solid #a7c9ff;
+    border: 1px solid #4b98df;
     color: #444444;
 }
 .sign-official-answer:hover.sign-official-answer div{
@@ -1184,7 +1197,7 @@ a.btn-show-more{
 }
 .btn-container-filters:hover,
 .btn-container-filters.active{
-    border: 1px solid #a7c9ff;
+    border: 1px solid #4b98df;
 }
 .btn-filters.active,
 .btn-filters:hover{
@@ -2450,6 +2463,7 @@ a.btn-show-more{
 .btn-bb{
     padding-left: 20px;
     padding-right: 20px;
+    min-width: 70px;
 }
 .btn-bb:hover,
 .btn-bb.active{
@@ -4779,6 +4793,36 @@ form .field-input:first-child{
 }
 .container-message p a:hover{
     color: #4b98df;
+}
+.message-filter{
+    color: #6b778f;
+    font-family: PT_Sans;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.message-filter p{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    line-height: 24px;
+    font-family: PT_Sans;
+    color: #444444;
+    text-align: center;
+}
+.message-filter span{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    font-family: PT_Sans;
+    font-size: 16px;
+    line-height: 20px;
+    color: #444444;
+    text-align: center;
 }
 
 

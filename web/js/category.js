@@ -10,6 +10,9 @@ var Category = (function (window, document, undefined,$) {
             init:function () {
 
             },
+            refreshTotalCount: function (totalCount) {
+                $('.total-count','.menu-info-cards').html('Места '+' '+totalCount);
+            },
 
             Filters:function () {
 
@@ -95,7 +98,6 @@ var Category = (function (window, document, undefined,$) {
                                 });
                             $(document).off('click','.filter-complete')
                                 .on('click','.filter-complete',function () {
-                                    filters.competeFilter();
                                     filters.closeMenuUnderFilter();
                                     filters.closeMenu();
                                 });
@@ -137,7 +139,7 @@ var Category = (function (window, document, undefined,$) {
                                 async:true,
                                 success:function (response) {
                                     __loadFilters[url]=response;
-                                    __$leftMenuFilterContainer.find('.menu-content').html(response);
+                                    __$leftMenuFilterContainer.find('.menu-content').replaceWith(response);
                                     filters.initAverage();
                                     filters.initCustomScrollBar('.left-menu.filter .menu-content');
                                 }
@@ -147,16 +149,21 @@ var Category = (function (window, document, undefined,$) {
                     },
                     initAverage:function () {
 
-                        $('.average-item-range').slider({
-                            values: [0, 500],
-                            max: 500,
-                            min: 0,
-                            step: 1,
-                            range: true,
-                            create: displaySliderValues,
-                            slide: displaySliderValues,
-                            change: change
+                        $('.average-item-range').each(function () {
+                            var $averageContainer = $(this).parents('.average-item');
+
+                            $(this).slider({
+                                values: [$averageContainer.data('min'), $averageContainer.data('max')],
+                                max: $averageContainer.data('max'),
+                                min: $averageContainer.data('min'),
+                                step: 1,
+                                range: true,
+                                create: displaySliderValues,
+                                slide: displaySliderValues,
+                                change: change
+                            });
                         });
+
 
                         function displaySliderValues(e) {
                             var id_filter = $(e.target).data('name_filter');
@@ -172,7 +179,8 @@ var Category = (function (window, document, undefined,$) {
                             $('#'+id_filter+' .min-border').text(min);
                             $('#'+id_filter+' .max-border').text(max);
 
-                            if(min==0 && max==500){
+
+                            if(min == $('#'+id_filter).data('min') && max == $('#'+id_filter).data('max')){
                                 filters.removeFilter(id_filter);
                             }else {
                                 filters.addFilter(id_filter,min+','+max);
@@ -191,7 +199,7 @@ var Category = (function (window, document, undefined,$) {
                     },
                     closeMenu:function () {
                         if(__$leftMenuFilterContainer && __leftMenuFilter.isOpen){
-
+                            filters.competeFilter();
                             __leftMenuFilter.isOpen=false;
                             __$leftMenuFilterContainer.animate({left:'-300px',top:'0px'},200);
                         }
@@ -223,7 +231,7 @@ var Category = (function (window, document, undefined,$) {
 
                         var $btns = filters.createBlockUnderFilter(filters_params);
 
-                        __$leftMenuUnderFilterContainer.find('.menu-content').html($btns);
+                        __$leftMenuUnderFilterContainer.find('.menu-content').replaceWith($btns);
                         filters.initCustomScrollBar('.left-menu.under-filter .menu-content');
                         __$leftMenuUnderFilterContainer.find('.header-menu-title').text($(this).find('.name_filters').text());
                         __$leftMenuUnderFilterContainer.animate({left:'0px',top:'0px'},200);
@@ -237,7 +245,7 @@ var Category = (function (window, document, undefined,$) {
                     },
                     createBlockUnderFilter:function(filters_params){
                         var $tmp_btn_filter = $('<div class="btn-filters" data-name_filter="" data-value=true><span class="name_filter"></span></div>');
-                        var $tmp_container = $('<div class="container-filters"></div>');
+                        var $tmp_container = $('<div class="menu-content"><div class="container-filters"></div></div>');
 
                         for (var index in filters_params){
                             var $newElem=$tmp_btn_filter.clone();
@@ -248,7 +256,7 @@ var Category = (function (window, document, undefined,$) {
                             if(__storageUnderFilters.container[__storageUnderFilters.currentOpen] !=undefined && __storageUnderFilters.container[__storageUnderFilters.currentOpen][filters_params[index]['id_filter']] !=undefined){
                                 $newElem.addClass('active');
                             }
-                            $tmp_container.append($newElem);
+                            $tmp_container.find('.container-filters').append($newElem);
                         }
 
                         return $tmp_container;
@@ -357,8 +365,22 @@ var Category = (function (window, document, undefined,$) {
                     getUrl:function () {
                         return  __current_url;
                     },
-                    filtrate:function () {
-                        $.pjax.reload({container: '#feed-category', url: filters.getUrlWithFilters(),push:false,replace:false});
+                    filtrate: function () {
+                        $.pjax.reload({
+                            container: '#feed-category',
+                            url: filters.getUrlWithFilters(),
+                            push: false,
+                            replace: false
+                        });
+                        var $iconFilter =  $('.icon-filter','.menu-info-cards-contener');
+                        $iconFilter.removeClass('active');
+                        for (var index in __params_filters){
+                            if(index != 'open' ){
+                                $iconFilter.addClass('active');
+                                break;
+                            }
+                        }
+
                     }
                 };
 
