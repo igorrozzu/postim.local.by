@@ -5,9 +5,16 @@ var Post = (function (window, document, undefined,$) {
         var that = {
 
             init:function () {
-
+                that.transitionToPostHandler();
             },
+            transitionToPostHandler: function () {
+                $(document).off('click','.card-block').on('click','.card-block', function (e) {
+                    if(!$(e.target).is('a')) {
+                        $(this).find('.main-pjax a').trigger('click');
+                    }
 
+                });
+            },
 
             Info:function () {
 

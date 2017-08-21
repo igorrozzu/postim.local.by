@@ -87,15 +87,15 @@ var authUserMenu = (function (window, document, undefined,$) {
                         rightMenu.isOpen=false;
                         $('.right-menu-profile').animate({right:'-300px',top:'0px'},200);
                         e.stopPropagation();
-                    })
-                    $(document).on('click','.right-menu-profile .container-item-menu a',function () {
+                    });
+
+                    $(document).on('click','.right-menu-profile .container-item-menu.visible a',function () {
                         menu_control.fireMethodClose();
                         $(this).parents('.container-item-menu').addClass('selected');
                         setTimeout(function () {
                             $( ".right-menu-profile .btn-close" ).trigger( "click" );
                         },100)
                     })
-
                 })
 
 

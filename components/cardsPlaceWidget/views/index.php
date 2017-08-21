@@ -28,7 +28,8 @@
             <p class="card-info"><?=Html::encode($item['data'])?></p>
         </div>
         <div class="time-work">
-            <?=$item->is_open?'<p class="open">Открыто</p>':'<p class="close">Закрыто</p>'?>
+            <?=$item->is_open?'<p class="open">Открыто '.$item->timeOpenOrClosed.'</p>':
+                '<p class="close">Закрыто '.$item->timeOpenOrClosed.'</p>'?>
 
         </div>
         <hr class="hr-c">

@@ -83,9 +83,9 @@ class PostsSearch extends Posts
         }
 
         if(isset($params['moderation']) && $params['moderation'] === '1'){
-            $query->andWhere(['status' => 0]);
+            $query->andWhere([Posts::tableName().'.status' => 0]);
         } else {
-            $query->andWhere(['status' => 1]);
+            $query->andWhere([Posts::tableName().'.status' => 1]);
         }
 
         if(!empty($this->city)){
@@ -149,6 +149,7 @@ class PostsSearch extends Posts
         }
 
         $query->groupBy(['tbl_posts.id']);
+        $query->with('lastPhoto');
 
 
         return $dataProvider;

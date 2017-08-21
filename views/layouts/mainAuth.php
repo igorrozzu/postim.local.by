@@ -87,7 +87,7 @@ $countNotif = Notification::getCountNotifications();
         <div class="btn-close"></div>
     </div>
     <div class="container-body-right-menu">
-        <div class="container-item-menu">
+        <div class="container-item-menu visible">
             <a class="user_icon" href="<?=Url::to(['user/index', 'id'=>$user->getId()])?>">
                 <span><img src="<?=$user->getPhoto()?>"></span>Мой профиль
             </a>
@@ -137,22 +137,22 @@ $countNotif = Notification::getCountNotifications();
                 <span><img src="/img/icon-certificates.png"></span>Мои сертификаты
             </a>
         </div>
-        <div class="container-item-menu">
+        <div class="container-item-menu visible">
             <a href="<?=Url::to(['user/izbrannoe'])?>">
                 <span><img src="/img/add-favorit-icon.png"></span>Избранное
             </a>
         </div>
-        <div class="container-item-menu">
+        <div class="container-item-menu visible">
             <a href="<?=Url::to(['user/vse-otzyvy'])?>">
                 <span><img src="/img/news-icon.png"></span>Все отзовы
             </a>
         </div>
-        <div class="container-item-menu">
+        <div class="container-item-menu visible">
             <a href="<?=Url::to(['user/settings'])?>">
                 <span><img src="/img/icon-filter.png"></span>Настройки
             </a>
         </div>
-        <div class="container-item-menu">
+        <div class="container-item-menu visible">
             <a href="<?=Url::to(['site/logout'])?>"><span></span>Выход</a>
         </div>
     </div>

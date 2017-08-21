@@ -35,7 +35,7 @@ class PostController extends MainController
             ->count();
         $previewPhoto = Gallery::find()
             ->where(['post_id' => $id])
-            ->orderBy(['user_status' => SORT_DESC, 'date' => SORT_DESC, 'link' => SORT_DESC])
+            ->orderBy(['user_status' => SORT_DESC, 'id' => SORT_DESC])
             ->limit(4)->all();
 
         if($post){
@@ -224,7 +224,7 @@ class PostController extends MainController
         $searchModel = new GallerySearch();
         $_GET['type'] = $request->get('type', 'user');
         $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 3),
+            'pageSize' => $request->get('per-page', 16),
             'page' => $request->get('page', 1) - 1,
             'route' => Url::to(['post/load-more-photos']),
             'selfParams'=> [
