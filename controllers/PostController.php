@@ -30,13 +30,6 @@ class PostController extends MainController
                 'hasLike','categories.category'])
             ->where(['id'=>$id])
             ->one();
-        $photoCount = Gallery::find()
-            ->where(['post_id' => $id])
-            ->count();
-        $previewPhoto = Gallery::find()
-            ->where(['post_id' => $id])
-            ->orderBy(['user_status' => SORT_DESC, 'id' => SORT_DESC])
-            ->limit(4)->all();
 
         if($post){
             Helper::addViews($post->totalView);
@@ -44,8 +37,8 @@ class PostController extends MainController
             return $this->render('index', [
                 'post'=>$post,
                 'breadcrumbParams'=>$breadcrumbParams,
-                'photoCount' => $photoCount,
-                'previewPhoto' => $previewPhoto
+                'photoCount' => Gallery::getPostPhotoCount($id),
+                'previewPhoto' => Gallery::getPreviewPostPhoto($id, 4),
             ]);
         }else{
             throw new NotFoundHttpException();

@@ -85,4 +85,46 @@ class Gallery extends \yii\db\ActiveRecord
     {
         return self::PHOTO_FOLDER . $this->user_id . DIRECTORY_SEPARATOR . 'pho';
     }
+
+    public static function getProfilePhotoCount(int $userId): int
+    {
+        return static::find()
+            ->where(['user_id' => $userId])
+            ->count();
+    }
+
+    public static function getPostPhotoCount(int $postId): int
+    {
+        return static::find()
+            ->where(['post_id' => $postId])
+            ->count();
+    }
+
+    public static function getPreviewProfilePhoto(int $userId, int $limit): array
+    {
+        return static::find()
+            ->where(['user_id' => $userId])
+            ->orderBy(['id' => SORT_DESC])
+            ->limit($limit)
+            ->all();
+    }
+
+    public static function getPreviewPostPhoto(int $postId, int $limit): array
+    {
+        return static::find()
+            ->where(['post_id' => $postId])
+            ->orderBy(['user_status' => SORT_DESC, 'id' => SORT_DESC])
+            ->limit($limit)
+            ->all();
+    }
+
+    public static function getProfilePreviewPhoto(int $userId, int $limit): array
+    {
+        return static::find()
+            ->where(['user_id' => $userId])
+            ->orderBy(['id' => SORT_DESC])
+            ->limit($limit)
+            ->all();
+    }
+
 }

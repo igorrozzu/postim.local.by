@@ -15,6 +15,7 @@ class GallerySearch extends Gallery
 {
     public $type;
     public $postId;
+    public $userId;
     /**
      * @inheritdoc
      */
@@ -22,7 +23,7 @@ class GallerySearch extends Gallery
     {
         return [
             [['id', 'post_id', 'user_id', 'user_status', 'status', 'date'], 'integer'],
-            [['link', 'type', 'postId'], 'safe'],
+            [['link', 'type', 'postId', 'userId'], 'safe'],
         ];
     }
 
@@ -42,7 +43,7 @@ class GallerySearch extends Gallery
      *
      * @return ActiveDataProvider
      */
-    public function search($params, Pagination $pagination, $loadTime = null)
+    public function search($params, Pagination $pagination, $loadTime = null): ActiveDataProvider
     {
         $query = Gallery::find()
             ->joinWith('user')
@@ -69,7 +70,35 @@ class GallerySearch extends Gallery
         return $dataProvider;
     }
 
-    public function getAllOnwerPhotos()
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function searchProfilePhotos($params, Pagination $pagination, $loadTime = null): ActiveDataProvider
+    {
+        $query = Gallery::find()
+            ->innerJoinWith('post')
+            ->where(['<=', Gallery::tableName().'.date', $loadTime])
+            ->orderBy(['id' => SORT_DESC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => $pagination
+        ]);
+
+        $this->load($params, '');
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+
+        $query->andWhere([Gallery::tableName().'.user_id' => $this->userId]);
+        return $dataProvider;
+    }
+
+    public function getAllOnwerPhotos(): array
     {
         return Gallery::find()
             ->where(['post_id' => $this->postId, 'user_status' => Gallery::USER_STATUS['owner']])

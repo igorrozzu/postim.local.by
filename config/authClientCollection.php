@@ -37,6 +37,5 @@ return [
             'scope' => ['email'],
             'attributeNames' => ['id', 'name', 'first_name', 'last_name', 'email', 'picture.type(large)']
         ],
-
     ],
 ];

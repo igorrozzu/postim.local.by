@@ -45,17 +45,21 @@ use yii\widgets\Pjax;
     </div>
 </div>
 <div class="block-content">
+    <?php if($profilePhotoCount > 0): ?>
     <div class="block-photos-container">
-        <div class="block-photos">
-            <div class="photo n1" style="background-image: url('testP.png')"></div>
-            <div class="photo n2" style="background-image: url('testP.png')"></div>
-            <div class="photo n3" style="background-image: url('testP.png')"></div>
-            <div class="photo n4" style="background-image: url('testP.png')"></div>
+        <div class="block-photos" data-type="profile">
+            <?php foreach ($profilePreviewPhoto as $index => $photo):?>
+                <div class="photo n<?=$index+1?>" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>"></div>
+            <?php endforeach;?>
+            <?php for ($i = count($profilePreviewPhoto); $i < 4; $i++):?>
+                <div class="photo-not-found n<?=$i+1?>"></div>
+            <?php endfor;?>
         </div>
         <div class="block-photos-bottom">
-            <div class="block-photos-text">4805 фотографий</div>
+            <div class="block-photos-text"><?=$profilePhotoCount?> фотографий</div>
         </div>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php
@@ -67,5 +71,32 @@ Pjax::begin([
     'formSelector' => false,
 ]);
 echo $feedReviews;
-Pjax::end();?>
+?>
+<script>
+    $(document).ready(function() {
+        post.photos.setUserId(<?=$user->id?>);
+    })
+</script>
+<div class="container-blackout-photo-popup"></div>
+<div class="photo-popup">
+    <div class="close-photo-popup"></div>
+    <div class="photo-left-arrow"><div></div></div>
+    <div class="photo-popup-content">
+        <div class="photo-info">
+            <div class="photo-header" >
+                <a href="#">Title</a>
+            </div>
+        </div>
+        <div class="photo-wrap">
+            <div class="pre-photo pre-popup-photo"></div>
+            <img class="photo-popup-item">
+            <div class="next-photo next-popup-photo"></div>
+        </div>
+        <div class="photo-source">
+            <a href="#" target="_blank">Источник</a>
+        </div>
+    </div>
+    <div class="photo-right-arrow"><div></div></div>
+</div>
+<?Pjax::end();?>
 <div style="margin-bottom:30px;"></div>

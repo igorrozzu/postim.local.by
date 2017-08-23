@@ -10,9 +10,11 @@ use app\components\MainController;
 use app\components\orderStatisticsWidget\OrderStatisticsWidget;
 use app\models\City;
 use app\models\entities\DiscountOrder;
+use app\models\entities\Gallery;
 use app\models\PostsSearch;
 use app\models\ReviewsSearch;
 use app\models\search\DiscountOrderSearch;
+use app\models\search\GallerySearch;
 use app\models\search\NewsSearch;
 use app\models\TempEmail;
 use app\models\uploads\UploadUserPhoto;
@@ -27,7 +29,7 @@ use yii\web\UploadedFile;
 class UserController extends MainController
 {
 
-    public function actionIndex($id)
+    public function actionIndex(int $id)
     {
         $user = User::find()
             ->with(['userInfo', 'city', 'socialBindings'])
@@ -55,9 +57,12 @@ class UserController extends MainController
             'dataProvider' => $dataProvider,
             'loadTime' => $loadTime,
         ]);
+
         return $this->render('index', [
             'user' => $user,
-            'feedReviews' => $feedReviews
+            'feedReviews' => $feedReviews,
+            'profilePhotoCount' => Gallery::getProfilePhotoCount($user->id),
+            'profilePreviewPhoto' => Gallery::getProfilePreviewPhoto($user->id, 4)
         ]);
     }
 
@@ -570,6 +575,41 @@ class UserController extends MainController
                     'inactive' => $allOrderCount - $activeOrderCount,
                 ]
             ]);
+        }
+    }
+
+    public function actionGetPhotos()
+    {
+        if (Yii::$app->request->isAjax) {
+            $request = Yii::$app->request;
+            $searchModel = new GallerySearch();
+            $perPage = (int) $request->get('per-page', 16);
+
+            $pagination = new Pagination([
+                'pageSize' => $perPage,
+                'page' => $request->get('page', 1) - 1,
+                'selfParams'=> [
+                    'type' => true,
+                    'userId' => true,
+                ],
+            ]);
+            $loadTime = $request->get('loadTime', time());
+            $dataProvider = $searchModel->searchProfilePhotos(
+                $request->queryParams,
+                $pagination,
+                $loadTime
+            );
+
+            $response = new \stdClass();
+            $response->data = $dataProvider->getModels();
+            foreach ($response->data as $photo) {
+                $response->postInfo[] = [
+                    'title' => $photo->post->data,
+                    'url' => $photo->post->url_name,
+                ];
+            }
+            $response->url = $dataProvider->pagination->getLinks()['next'] ?? null;
+            return $this->asJson($response);
         }
     }
 }
