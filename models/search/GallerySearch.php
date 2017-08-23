@@ -47,7 +47,7 @@ class GallerySearch extends Gallery
         $query = Gallery::find()
             ->joinWith('user')
             ->where(['<=', 'date', $loadTime])
-            ->orderBy(['user_status' => SORT_DESC, 'date' => SORT_DESC, 'link' => SORT_DESC]);
+            ->orderBy(['user_status' => SORT_DESC, 'id' => SORT_DESC]);
 
         // add conditions that should always apply here
 
@@ -73,6 +73,6 @@ class GallerySearch extends Gallery
     {
         return Gallery::find()
             ->where(['post_id' => $this->postId, 'user_status' => Gallery::USER_STATUS['owner']])
-            ->orderBy(['date' => SORT_DESC, 'link' => SORT_DESC])->all();
+            ->orderBy(['id' => SORT_DESC])->all();
     }
 }
