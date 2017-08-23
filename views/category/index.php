@@ -65,7 +65,7 @@ Pjax::begin([
         <div class="container-message">
             <div class="message-filter">
                 <p>По вашим параметрам ничего не найдено</p>
-                <span>Попробуйте сбросить несколько фильров</span>
+                <span>Попробуйте сбросить несколько фильтров</span>
             </div>
         </div>
     <?php else:?>

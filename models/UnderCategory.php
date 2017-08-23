@@ -57,4 +57,9 @@ class UnderCategory extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Posts::className(), ['under_category_id' => 'id']);
     }
+
+    public function getCountPlace(){
+        return $this->hasOne(PostCategoryCount::className(),['category_url_name'=>'url_name'])
+            ->where(['city_name'=>Yii::$app->city->getSelected_city()['name']]);
+    }
 }

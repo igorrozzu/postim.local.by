@@ -117,6 +117,7 @@ class CategoryController extends MainController
     public function actionGetFilters(){
         $arrayRequest= explode('/',Yii::$app->request->post('url',''));
         $category = array_pop($arrayRequest);
+        $under_category = false;
         $features=[];
 
         if($cat=Yii::$app->category->getUnderCategoryByName($category)){
@@ -126,6 +127,8 @@ class CategoryController extends MainController
                 ->andWhere(['filter_status'=>1])
                 ->andWhere(['main_features'=>null])
                 ->all();
+            $under_category = $category;
+            $category=false;
         }
         if($cat=Yii::$app->category->getCategoryByName($category)){
 
@@ -140,6 +143,7 @@ class CategoryController extends MainController
                 array_push($response->additionally,$feature->features);
             }else{
                 if($feature->features->type==2){
+                    $feature->features->setMinMax($category,$under_category);
                     array_unshift($response->rubrics,$feature->features);
                 }else{
                     array_push($response->rubrics,$feature->features);

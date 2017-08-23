@@ -1,4 +1,11 @@
-<?php if (isset($category['name']) && isset($category['underCategory']) && count($category['underCategory']) != 0): ?>
+<?php if (isset($category['name'])
+    && isset($category['underCategory'])
+    && count($category['underCategory']) != 0
+    && $category->isRelationPopulated('countPlace')
+    && $category->countPlace != null
+    && $category->countPlace->count != 0
+):
+?>
 
     <li class="menu-category-list">
         <div class="category-list-title" data-category_name="<?=$category['name']?>">

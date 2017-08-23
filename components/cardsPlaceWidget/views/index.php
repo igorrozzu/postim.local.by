@@ -24,7 +24,7 @@
         </div>
 
         <div class="card-block-info">
-            <p class="info-head"><?=CardsPlaceWidget::renderCategories($item['categories'],$item['city'])?></p>
+            <p class="info-head"><?=CardsPlaceWidget::renderCategories($item->categories,$item->city)?></p>
             <p class="card-info"><?=Html::encode($item['data'])?></p>
         </div>
         <div class="time-work">

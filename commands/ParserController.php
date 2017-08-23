@@ -40,7 +40,7 @@ class ParserController extends Controller{
             'type' => 'biz',
             'lang' => 'ru_RU',
             'results' => 500,
-            'skip' => 0,
+            'skip' => 1,
             'bbox'=>'53.839823,27.413641~53.977871,27.669759',
             'rspn'=>1,
             'apikey' => '146ee555-76f9-47b3-a871-37bb1180da02',
@@ -78,9 +78,15 @@ class ParserController extends Controller{
         $under_category = $this->under_category;
         $transaction = Yii::$app->db->beginTransaction();
             if($postFind = Posts::find()->where(['address'=>$this->post->address,'data'=>$this->post->data])->one()){
-                $post_under_category =  new PostUnderCategory(['post_id'=>$postFind->id,'under_category_id'=>$under_category]);
-                $post_under_category->save();
-                $transaction->commit();
+
+                if(!PostUnderCategory::find()->where(['post_id'=>$postFind->id,'under_category_id'=>$under_category])->one()){
+                    $post_under_category =  new PostUnderCategory(['post_id'=>$postFind->id,'under_category_id'=>$under_category]);
+                    $post_under_category->save();
+                    $transaction->commit();
+                }else{
+                    $transaction->rollback();
+                }
+
             }else{
                 $total_view = new TotalView(['count'=>0]);
                 if($total_view->save()){

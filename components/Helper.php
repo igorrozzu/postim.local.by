@@ -96,7 +96,7 @@ class Helper{
 
         $featurePrice = ['average_bill2','beer_price','price_per_hour_sauna2','price_rolls'];
         if(in_array($feature['features_id'],$featurePrice)){
-            return self::mb_ucasefirst($feature['value']) .' BYR';
+            return self::mb_ucasefirst($feature['value']) .' BYN';
         }
         return self::mb_ucasefirst($feature['value']);
     }

@@ -12,7 +12,9 @@ use app\models\City;
 use app\models\CommentsNews;
 use app\models\News;
 use app\models\Notification;
+use app\models\PostCategoryCount;
 use app\models\Posts;
+use app\models\PostUnderCategory;
 use app\models\Region;
 use app\models\Reviews;
 use app\models\TotalView;
@@ -262,5 +264,55 @@ class HelloController extends Controller
             }
         }
     }
+
+    public function actionCalcCountPlace(){
+
+        $posts =  Posts::find()
+            ->with('categories.category')
+            ->with('city.region.coutries')
+            ->all();
+
+
+
+        foreach ($posts as $post){
+            $is_has_category = [];
+            foreach ($post->categories as $under_category){
+
+                $this->savePostCategoryCount($under_category->url_name,$post->city->name);
+                $this->savePostCategoryCount($under_category->url_name,$post->city->region->name);
+                $this->savePostCategoryCount($under_category->url_name,$post->city->region->coutries->name);
+                if(!isset($is_has_category[$under_category->category->url_name.$post->city->name])){
+                    $this->savePostCategoryCount($under_category->category->url_name,$post->city->name);
+                    $is_has_category[$under_category->category->url_name.$post->city->name]=true;
+                }
+
+                if(!isset($is_has_category[$under_category->category->url_name.$post->city->region->name])){
+                    $this->savePostCategoryCount($under_category->category->url_name,$post->city->region->name);
+                    $is_has_category[$under_category->category->url_name.$post->city->region->name]=true;
+                }
+
+                if(!isset($is_has_category[$under_category->category->url_name.$post->city->region->coutries->name])){
+                    $this->savePostCategoryCount($under_category->category->url_name,$post->city->region->coutries->name);
+                    $is_has_category[$under_category->category->url_name.$post->city->region->coutries->name]=true;
+                }
+
+            }
+
+        }
+    }
+
+    private function savePostCategoryCount($category_name,$city_name){
+        $model = PostCategoryCount::find()
+            ->where(['category_url_name'=>$category_name])
+            ->andWhere(['city_name'=>$city_name])->one();
+        if($model != null){
+            $model->updateCounters(['count' => 1]);
+        }else{
+            $model = new PostCategoryCount(['category_url_name' => $category_name,
+                                            'city_name'=>$city_name,'count'=>1]);
+            $model->save();
+        }
+    }
+
 
 }

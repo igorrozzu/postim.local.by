@@ -20,6 +20,9 @@ $config = [
                 ],
             ],
         ],
+        'category'=>[
+            'class' => 'app\components\Category',
+        ],
         'db' => $db,
     ],
     'params' => $params,

@@ -106,4 +106,46 @@ class Features extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UnderCategoryFeatures::className(), ['features_id' => 'id']);
     }
+
+    public function setMinMax($category = false,$under_category = false){
+        $city_url_name = Yii::$app->city->getSelected_city()['url_name'];
+        if(!$min_max = Yii::$app->cache->get([$category,$under_category,$this->id,$city_url_name.'_city'])){
+            $query = (new \yii\db\Query())
+                ->select('MIN(value) as min , MAX(value) as max')
+                ->from(PostFeatures::tableName())
+                ->innerJoin(Posts::tableName(),Posts::tableName().'.id = '.PostFeatures::tableName().'.post_id')
+                ->innerJoin(PostUnderCategory::tableName(),
+                    PostFeatures::tableName().'.post_id = '.PostUnderCategory::tableName().'.post_id')
+                ->innerJoin(UnderCategory::tableName(),
+                    UnderCategory::tableName().'.id = '.PostUnderCategory::tableName().'.under_category_id')
+                ->where(['features_id' => $this->id]);
+
+
+            if($category){
+                $query ->innerJoin(Category::tableName(),Category::tableName().'.id = '.UnderCategory::tableName().'.category_id')
+                    ->andWhere([Category::tableName().'.url_name'=>$category]);
+            }else{
+                $query->andWhere([UnderCategory::tableName().'.url_name'=>$under_category]);
+            }
+
+            if($city_url_name){
+                $query->innerJoin(City::tableName(),City::tableName().'.id = '.Posts::tableName().'.city_id')
+                    ->innerJoin(Region::tableName(),Region::tableName().'.id = '.City::tableName().'.region_id')
+                    ->andWhere(['or',
+                        ['tbl_region.url_name'=>$city_url_name],
+                        ['tbl_city.url_name'=>$city_url_name]
+                    ]);
+            }
+
+            $min_max =  $query->one();
+            Yii::$app->cache->set([$category,$under_category,$this->id,$city_url_name.'_city'],$min_max);
+        }
+
+        if($min_max){
+            $this->min = $min_max['min'];
+            $this->max = $min_max['max'];
+        }
+
+
+    }
 }

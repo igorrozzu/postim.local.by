@@ -28,14 +28,13 @@ class MainMenuWidget extends Widget
         if($this->typeMenu === null){
             $this->typeMenu = self::$leftMenu;
         }
-
-        if(!$this->dataprovider=\Yii::$app->cache->get('list_category_place')){
-
+        if(!$this->dataprovider=\Yii::$app->cache->get(['list_category_place', \Yii::$app->city->getSelected_city()['name']])){
             $this->dataprovider = Category::find()
-                ->joinWith('underCategory')
-                ->orderBy(['tbl_under_category.name'=>1,'tbl_category.name'=>1  ])
+                ->with('underCategorySort.countPlace')
+                ->innerJoinWith('countPlace')
+                ->orderBy(['tbl_category.name' => 1])
                 ->all();
-            \Yii::$app->cache->add('list_category_place',$this->dataprovider,600);
+            \Yii::$app->cache->add(['list_category_place', \Yii::$app->city->getSelected_city()['name']], $this->dataprovider, 600);
         }
 
     }

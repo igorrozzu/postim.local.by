@@ -36,6 +36,16 @@ class PostUnderCategory extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            'CountCategoryPlace' => [
+                'class' => 'app\behaviors\CountCategoryPlace',
+            ],
+
+        ];
+    }
+
     /**
      * @inheritdoc
      */
