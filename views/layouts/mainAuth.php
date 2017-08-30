@@ -137,6 +137,7 @@ $countNotif = Notification::getCountNotifications();
                 <span><img src="/img/icon-certificates.png"></span>Мои сертификаты
             </a>
         </div>
+
         <div class="container-item-menu visible">
             <a href="<?=Url::to(['user/izbrannoe'])?>">
                 <span><img src="/img/add-favorit-icon.png"></span>Избранное

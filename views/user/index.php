@@ -1,6 +1,5 @@
 <?php
-use app\components\cardsReviewsWidget\CardsReviewsWidget;
-use yii\helpers\Url;
+use yii\web\View;
 use yii\widgets\Pjax;
 ?>
 
@@ -75,6 +74,18 @@ echo $feedReviews;
 <script>
     $(document).ready(function() {
         post.photos.setUserId(<?=$user->id?>);
+        <?php if (isset($photoId)) :?>
+        post.photos.initSliderByPhotoId('<?=$photoId?>', 'profile');
+        <?php endif;?>
+        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
+        $(".photo-wrap").swipe({
+            swipeRight: function(event, direction) {
+                post.photos.prevPhoto();
+            },
+            swipeLeft: function(event, direction) {
+                post.photos.nextPhoto();
+            }
+        });
     })
 </script>
 <div class="container-blackout-photo-popup"></div>
@@ -92,11 +103,16 @@ echo $feedReviews;
             <img class="photo-popup-item">
             <div class="next-photo next-popup-photo"></div>
         </div>
+        <span class="complain-text">Пожаловаться</span>
         <div class="photo-source">
             <a href="#" target="_blank">Источник</a>
         </div>
     </div>
     <div class="photo-right-arrow"><div></div></div>
+    <div class="gallery-counter"><span>1</span> из <?=$profilePhotoCount?></div>
 </div>
-<?Pjax::end();?>
+
+<?php
+Pjax::end();
+?>
 <div style="margin-bottom:30px;"></div>

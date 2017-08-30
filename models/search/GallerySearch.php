@@ -16,6 +16,7 @@ class GallerySearch extends Gallery
     public $type;
     public $postId;
     public $userId;
+    public $photo_id;
     /**
      * @inheritdoc
      */
@@ -23,7 +24,7 @@ class GallerySearch extends Gallery
     {
         return [
             [['id', 'post_id', 'user_id', 'user_status', 'status', 'date'], 'integer'],
-            [['link', 'type', 'postId', 'userId'], 'safe'],
+            [['link', 'type', 'postId', 'userId', 'photo_id'], 'safe'],
         ];
     }
 
@@ -103,5 +104,29 @@ class GallerySearch extends Gallery
         return Gallery::find()
             ->where(['post_id' => $this->postId, 'user_status' => Gallery::USER_STATUS['owner']])
             ->orderBy(['id' => SORT_DESC])->all();
+    }
+
+    public function getPreviewsPhotoCount($loadTime): int
+    {
+        list($photoId, $userStatus) = explode('-', $this->photo_id);
+        $query = Gallery::find()
+            ->where(['<=', 'date', $loadTime])
+            ->andWhere(['post_id' => $this->postId])
+            ->andWhere(['or',
+                ['>=', 'id', (int) $photoId],
+                ['>', 'user_status', (int) $userStatus]
+            ]);
+
+        return $query->count();
+    }
+
+    public function getProfilePreviewsPhotoCount($loadTime): int
+    {
+        $query = Gallery::find()
+            ->where(['<=', 'date', $loadTime])
+            ->andWhere([Gallery::tableName().'.user_id' => $this->userId])
+            ->andWhere(['>=', 'id', (int) $this->photo_id]);
+
+        return $query->count();
     }
 }

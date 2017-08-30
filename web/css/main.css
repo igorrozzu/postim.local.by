@@ -2763,38 +2763,7 @@ a.btn-show-more{
     justify-content: space-between;
     z-index: 5;
 }
-.pre-photo,
-.next-photo{
-    display: flex;
-    width: 75px;
-    height: 100%;
-    background-color: rgba(49, 12, 52, 0.1);
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-.pre-photo:hover,
-.next-photo:hover{
-    background-color: rgba(0, 0, 0, 0.4);
-}
-.pre-photo:after{
-    width: 25px;
-    height: 46px;
-    background: url("../img/icon-pre.png") 0px 0;
-    content: '';
-}
-.next-photo:after{
-    width: 25px;
-    height: 46px;
-    background: url("../img/icon-next.png") 25px 0;
-    content: '';
-}
-.pre-photo:hover:after{
-    background: url("../img/icon-pre.png") 25px 0;
-}
-.next-photo:hover:after{
-    background: url("../img/icon-next.png") 0px 0;
-}
+
 .container-discount-info{
     padding: 20px;
     display: flex;
@@ -3131,10 +3100,11 @@ a.btn-show-more{
 .container-item-menu.closed {
     opacity: 0.6;
 }
-.container-item-menu.closed:hover,
+
 .container-item-menu.closed a:hover {
     cursor: not-allowed;
 }
+
 .container-item-menu .section:after {
     content: '';
     width: 20px;
@@ -3221,12 +3191,18 @@ a.btn-show-more{
     -webkit-border-radius: 50%;
 }
 .notif-username{
+    display: block;
+    height: 15px;
     font-size: 14px;
     color: #444444;
     margin-right: 20px;
     overflow: hidden;
+    text-decoration: none;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+.notif-username:hover{
+    text-decoration: underline;
 }
 .user-info{
     width: 135px;
@@ -3237,6 +3213,13 @@ a.btn-show-more{
     font-size: 14px;
     width: 242px;
     overflow: hidden;
+}
+.notif-text a{
+    color: #444444;
+    text-decoration: none;
+}
+.notif-text a:hover{
+    text-decoration: underline;
 }
 .notif-date-time{
     margin-top: 5px;
@@ -3744,6 +3727,7 @@ a.btn-show-more{
     justify-content: center;
     padding-top: 20px;
     z-index: 100;
+    position: relative;
 }
 .photo-right-arrow, .photo-left-arrow{
     display:flex;
@@ -3768,6 +3752,7 @@ a.btn-show-more{
 .photo-right-arrow div, .photo-left-arrow div{
     width: 25px;
     height: 46px;
+    z-index: 101;
 }
 
 .prev-btn-hide .photo-left-arrow div,
@@ -3790,17 +3775,36 @@ a.btn-show-more{
     background: url("../img/close-big-icon.png");
 }
 .photo-source{
-    margin: 27px 0px 0px -55px;
+    margin-left: 100px;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
 }
-.photo-source a{
-    color: #A7C9FF;
+
+.photo-source a,
+.complain-gallery-text{
+    color: #FFFFFF;
     text-decoration: underline;
     font-size: 13px;
 
 }
-.photo-source a:hover{text-decoration: none;}
+.complain-gallery-text{
+    position: absolute;
+    cursor: pointer;
+    bottom: 20px;
+    left: 20px;
+}
+.photo-source a:hover,
+.complain-gallery-text:hover{text-decoration: none;}
 .photo-source:before{
     content: url("../img/source.png");
+}
+.gallery-counter {
+    color: white;
+    font-size: 13px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 }
 .close-select-field,
 .close-block-field{
@@ -4169,7 +4173,7 @@ a.btn-show-more{
     font-size: 23px;
     margin-top: 20px;
 }
-.pre-popup-photo, .next-popup-photo{display: none;}
+
 .hidden-complaint-message{display: none;}
 .sign-official-answer{
     border: solid #D3E4FF 1px;

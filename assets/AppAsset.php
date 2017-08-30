@@ -43,6 +43,7 @@ class AppAsset extends AssetBundle
         'js/goodShare.js',
         'js/libs/debounce.js',
         'js/libs/jquery-ui.min.js',
+        '/js/libs/jquery.touchSwipe.min.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

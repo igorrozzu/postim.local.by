@@ -100,8 +100,7 @@ $config = [
             'timeZone' => 'UTC',
         ],
 
-        'authClientCollection' => require ('authClientCollection.php'),
-
+        'authClientCollection' => require 'authClientCollection.php',
     ],
     'params' => $params,
 ];

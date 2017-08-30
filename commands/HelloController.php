@@ -206,7 +206,7 @@ class HelloController extends Controller
         кассах стали медленнее обслуживать), у флампера появляется повод написать об этой компании новый отзыв.</div>',
                     'description_s'=>'В витебске открыли музей искуства',
                     'key_word_s'=>'В витебске открыли музей искуства',
-                    'count_favorites'=>rand(1,142),
+                    'count_favorites'=> 0,
                     'cover' => '/post-img/testP.png',
                     'url_name'=>$generateString->generateRandomString()
                 ]);

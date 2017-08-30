@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\behaviors\notification\handlers\NewComment;
 use Yii;
 use yii\bootstrap\Html;
 use yii\helpers\HtmlPurifier;
@@ -66,6 +67,16 @@ class CommentsNews extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            'notification' => [
+                'class' => 'app\behaviors\notification\Notification',
+                'handlerName' => NewComment::className()
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -112,6 +123,12 @@ class CommentsNews extends \yii\db\ActiveRecord
         return parent::beforeValidate();
     }
 
+    public function beforeSave($insert)
+    {
+        $this->receiver_comment_id = $this->comment_id;
+        return parent::beforeSave($insert);
+    }
+
     public function afterFind()
     {
         parent::afterFind();
@@ -140,11 +157,18 @@ class CommentsNews extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getReceiverComment()
+    {
+        return $this->hasOne(CommentsNews::className(), ['receiver_comment_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getUnderComments()
     {
         return $this->hasMany(CommentsNews::className(), ['main_comment_id' => 'id']);
     }
-
 
     /**
      * @return \yii\db\ActiveQuery

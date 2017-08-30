@@ -2,6 +2,7 @@
 use app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
 use yii\helpers\Url;
+use yii\web\View;
 use yii\widgets\Pjax;
 
 ?>
@@ -282,19 +283,26 @@ Pjax::begin([
         <div class="large-wide-button"><p>Опубликовать</p></div>
     </div>
 </div>
-<?php
-$loadTime = time();
-$js = <<<js
+
+<script>
     $(document).ready(function() {
         post.info.init();
-        post.photos.setLoadTime($loadTime);
-        post.photos.setPostId($post->id);
+        post.photos.setLoadTime(<?=time()?>);
+        post.photos.setPostId(<?=$post->id?>);
+        <?php if (isset($photoId)) :?>
+        post.photos.initSliderByPhotoId('<?=$photoId?>');
+        <?php endif;?>
+        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
+        $(".photo-wrap").swipe({
+            swipeRight: function(event, direction) {
+                post.photos.prevPhoto();
+            },
+            swipeLeft: function(event, direction) {
+                post.photos.nextPhoto();
+            }
+        });
     })
-js;
-
-echo "<script>$js</script>";
-?>
-
+</script>
 <div class="container-blackout-photo-popup"></div>
 <div class="photo-popup">
     <div class="close-photo-popup"></div>
@@ -306,16 +314,17 @@ echo "<script>$js</script>";
             </div>
         </div>
         <div class="photo-wrap">
-            <div class="pre-photo pre-popup-photo"></div>
             <img class="photo-popup-item">
-            <div class="next-photo next-popup-photo"></div>
-        </div>
-        <div class="photo-source">
-            <a href="#" target="_blank">Источник</a>
         </div>
     </div>
     <div class="photo-right-arrow"><div></div></div>
+    <span class="complain-gallery-text">Пожаловаться</span>
+    <div class="photo-source">
+        <a href="#" target="_blank">Источник</a>
+    </div>
+    <div class="gallery-counter"><span>1</span> из <?=$photoCount?></div>
 </div>
+
 <?php
 Pjax::end();
 ?>
