@@ -10,6 +10,7 @@ var Post = (function (window, document, undefined,$) {
             transitionToPostHandler: function () {
                 $(document).off('click','.card-block').on('click','.card-block', function (e) {
                     if(!$(e.target).is('a')) {
+                        event.stopPropagation();
                         $(this).find('.main-pjax a').trigger('click');
                     }
 
