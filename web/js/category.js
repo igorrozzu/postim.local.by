@@ -9,10 +9,21 @@ var Category = (function (window, document, undefined,$) {
 
             init:function () {
 
+                $(document).ready(function () {
+                    $(document).off('click', '.btn-sort.no-geolocation')
+                        .on('click', '.btn-sort.no-geolocation', function () {
+                            main.userGeolocation.requestGeolocation(function () {
+                                $('.btn-nigh.btn-sort').trigger("click");
+                            })
+
+                        });
+                })
+
             },
             refreshTotalCount: function (totalCount) {
                 $('.total-count','.menu-info-cards').html('Места '+' '+totalCount);
             },
+
 
             Filters:function () {
 

@@ -20,7 +20,17 @@ $totalCount = $dataProvider->totalCount;
         <div class="btn-filter icon-filter"><span>Все фильтры</span></div>
     </div>
 </div>
-<div id="map_block" class="block-map"></div>
+<div id="map_block" class="block-map preload-map">
+    <div class="btns-map">
+        <div class="action-map" title="Открыть карту"></div>
+        <div class="find-me" title="Найти меня"></div>
+        <div class="zoom-plus"></div>
+        <div class="zoom-minus"></div>
+    </div>
+
+    <div id="map" style="display: none"></div>
+</div>
+
 
 <div class="block-content">
     <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
@@ -45,7 +55,12 @@ Pjax::begin([
         <div class="block-sort">
             <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'rating'])?>" class="btn-sort <?=$sort=='rating'?'active':''?>">По рейтингу</a>
             <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'new'])?>" class="btn-sort <?=$sort=='new'?'active':''?>">Новые</a>
-            <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'nigh'])?>" class="btn-sort <?=$sort=='nigh'?'active':''?>">Рядом</a>
+            <?php if(Yii::$app->request->cookies->getValue('geolocation')):?>
+                <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'nigh'])?>" class="btn-sort <?=$sort=='nigh'?'active':''?>">Рядом</a>
+            <?php else:?>
+                <a style="display: none" href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'nigh'])?>" class="btn-nigh btn-sort <?=$sort=='nigh'?'active':''?>">Рядом</a>
+                <a class="btn-sort no-geolocation">Рядом</a>
+            <?php endif;?>
         </div>
     </div>
 </div>
@@ -58,6 +73,7 @@ Pjax::begin([
                     'show-more-btn'=>true,
                     'replace-container-id' => 'feed-posts',
                     'load-time' => $loadTime,
+                    'load-geolocation'=>$loadGeolocation
                 ]
             ]); ?>
         </div>
@@ -82,6 +98,7 @@ $js = <<<js
       category.filters.setDefaultUrl({url:'$defaultUrl'});
       category.filters.addParamOther('sort','$sort')
       category.refreshTotalCount('$totalCount');
+      map.setIdPlacesOnMap("$keyForMap");
     });
 js;
 echo "<script>$js</script>";

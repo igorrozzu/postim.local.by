@@ -7,12 +7,10 @@ use app\components\MainController;
 use app\components\Pagination;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
-use app\models\entities\GalleryComplaint;
 use app\models\Posts;
 use app\models\search\GallerySearch;
 use app\models\uploads\UploadPostPhotos;
 use Yii;
-use yii\db\Exception;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -21,8 +19,7 @@ use yii\web\UploadedFile;
 class PostController extends MainController
 {
 
-    public function actionIndex(int $id, string $photo_id = null){
-
+    public function actionIndex(int $id){
          $post = Posts::find()->with([
                 'info',
                 'workingHours'=>function ($query) {
@@ -36,12 +33,18 @@ class PostController extends MainController
         if($post){
             Helper::addViews($post->totalView);
             $breadcrumbParams = $this->getParamsForBreadcrumb($post);
+
+            $queryPost =  Posts::find()->where(['tbl_posts.id'=>$id])
+                ->prepare(Yii::$app->db->queryBuilder)
+                ->createCommand()->rawSql;
+            $keyForMap = Helper::saveQueryForMap($queryPost);
+
             return $this->render('index', [
                 'post'=>$post,
                 'breadcrumbParams'=>$breadcrumbParams,
                 'photoCount' => Gallery::getPostPhotoCount($id),
                 'previewPhoto' => Gallery::getPreviewPostPhoto($id, 4),
-                'photoId' => $photo_id
+                'keyForMap'=>$keyForMap
             ]);
         }else{
             throw new NotFoundHttpException();
@@ -69,10 +72,9 @@ class PostController extends MainController
         }
 
         if(isset($post->categories[0]['category'])){
-            $currentUrl=$currentUrl.'/'.$post->categories[0]['category']['url_name'];
             $breadcrumbParams[]=[
                 'name'=>$post->categories[0]['category']['name'],
-                'url_name'=>$currentUrl,
+                'url_name'=>$currentUrl.'/'.$post->categories[0]['category']['url_name'],
                 'pjax'=>'class="main-header-pjax a"'
             ];
         }
@@ -171,7 +173,6 @@ class PostController extends MainController
                 'selfParams'=> [
                     'type' => true,
                     'postId' => true,
-                    'photo_id' => true,
                 ],
             ]);
             $loadTime = $request->get('loadTime', time());
@@ -180,21 +181,10 @@ class PostController extends MainController
                 $pagination,
                 $loadTime
             );
-            $response = new \stdClass();
 
-            if (isset($request->queryParams['photo_id'])) {
-                $count = $searchModel->getPreviewsPhotoCount($loadTime);
-                $page = (int) ($count / 16);
-                $dataProvider->pagination->pageSize = ($page === 0) ? 16 : ($page + 1) * 16;
-                $response->data = $dataProvider->getModels();
-                $dataProvider->pagination->page = $page;
-                $dataProvider->pagination->pageSize = 16;
-                $response->url = $dataProvider->pagination->getLinks()['next'] ?? null;
-                $response->sequence = $count - 1;
-            } else {
-                $response->data = $dataProvider->getModels();
-                $response->url = $dataProvider->pagination->getLinks()['next'] ?? null;
-            }
+            $response = new \stdClass();
+            $response->data = $dataProvider->getModels();
+            $response->url = $dataProvider->pagination->getLinks()['next'] ?? null;
             return $this->asJson($response);
         }
     }
@@ -226,7 +216,7 @@ class PostController extends MainController
         }
     }
 
-    public function actionGallery(int $postId, string $photo_id = null)
+    public function actionGallery($postId)
     {
         $request = Yii::$app->request;
         $searchModel = new GallerySearch();
@@ -238,7 +228,6 @@ class PostController extends MainController
             'selfParams'=> [
                 'type' => true,
                 'postId' => true,
-                'photo_id' => true,
             ],
         ]);
         $loadTime = $request->get('loadTime', time());
@@ -265,6 +254,11 @@ class PostController extends MainController
             'pjax'=>'class="main-pjax a"'
         ];
 
+        $queryPost =  Posts::find()->where(['tbl_posts.id'=>$postId])
+            ->prepare(Yii::$app->db->queryBuilder)
+            ->createCommand()->rawSql;
+        $keyForMap = Helper::saveQueryForMap($queryPost);
+
         return $this->render('feed-photos.php', [
             'dataProvider' => $dataProvider,
             'ownerPhotos' => $searchModel->getAllOnwerPhotos(),
@@ -272,33 +266,40 @@ class PostController extends MainController
             'breadcrumbParams' => $breadcrumbParams,
             'photoCount' => $photoCount,
             'loadTime' => $loadTime,
-            'photoId' => $photo_id
+            'keyForMap'=>$keyForMap,
         ]);
     }
 
-    public function actionComplainGallery(){
+    public function actionGetPlaceForMap(string $id){
         $response = new \stdClass();
-        $response->success = true;
-        $response->message = 'Спасибо, что помогаете!<br>Ваша жалоба будет рассмотрена модераторами';
+        $response->status='error';
+        Yii::$app->response->format = Response::FORMAT_JSON;
 
-        if (!Yii::$app->user->isGuest) {
-            $photoId = Yii::$app->request->post('id', null);
-            $message = Yii::$app->request->post('message', null);
-            $galleryComplaint = new GalleryComplaint([
-                'photo_id' => $photoId,
-                'message' => $message,
-                'user_id' => Yii::$app->user->id
-            ]);
-
-            if ($galleryComplaint->validate() && $galleryComplaint->save()) {
-                return $this->asJson($response);
-            } else {
-                $nameAttribute = key($galleryComplaint->getErrors());
-                $response->success = false;
-                $response->message = $galleryComplaint->getFirstError($nameAttribute);
+        $queryFromRepository = Yii::$app->cache->get($id);
+        if($queryFromRepository){
+            $query = unserialize($queryFromRepository);
+            $response->places = Yii::$app->db->createCommand($query)->queryAll();
+            foreach ($response->places as &$place){
+                if($place['coordinates']){
+                    $latLng = explode(',',$place['coordinates']);
+                    $place['lat'] = str_replace('(','',$latLng[0]);
+                    $place['lon'] = str_replace(')','',$latLng[1]);
+                    unset($place['coordinates']);
+                }
             }
-            return $this->asJson($response);
+            $response->status = 'OK';
         }
+        return $response;
+    }
 
+    public function actionGetPopupPlaceForMap(int $id){
+        $post = Posts::find()
+            ->with('hasLike')
+            ->with(['workingHours'=>function ($query) {
+                $query->orderBy(['day_type'=>SORT_ASC]);
+            }])
+            ->where(['tbl_posts.id'=>$id])
+            ->one();
+        return $this->renderAjax('__popup_place',['post'=>$post]);
     }
 }

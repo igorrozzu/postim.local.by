@@ -162,6 +162,30 @@
 .container-profile-info{
     margin-top: 30px;
 }
+.pre-photo,
+.next-photo{
+    width: 32.5px
+}
+.pre-photo:after{
+    width: 12.5px;
+    height: 23px;
+    background: url("../img/icon-pre-25px.png") 0px 0;
+    content: '';
+}
+.next-photo:after{
+    width: 12.5px;
+    height: 23px;
+    background: url("../img/icon-next-25px.png") 12.5px 0;
+    content: '';
+}
+.pre-photo:hover:after{
+    background: url("../img/icon-pre-25px.png") 12.5px 0;
+}
+.next-photo:hover:after{
+    background: url("../img/icon-next-25px.png") 0px 0;
+}
+.next-popup-photo{margin-left: -32.5px;}
+.pre-popup-photo{margin-right: -32.5px;}
 /*меню уведомлений*/
 .notif-menu{
     right: -348px;

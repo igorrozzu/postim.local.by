@@ -30,6 +30,11 @@ class Posts extends \yii\db\ActiveRecord
     public $current_working_hours = null;
     public $timeOpenOrClosed = null;
 
+    public $lat;
+    public $lon;
+    public $distance=null;
+    public $distanceText = null;
+
     /**
      * @inheritdoc
      */
@@ -45,7 +50,7 @@ class Posts extends \yii\db\ActiveRecord
     {
         return [
             [['url_name', 'city_id', 'cover', 'rating', 'data', 'total_view_id'], 'required'],
-            [['url_name', 'cover', 'data', 'address', 'latlon'], 'string'],
+            [['url_name', 'cover', 'data', 'address'], 'string'],
             [['city_id', 'rating', 'count_favorites', 'count_reviews'], 'integer'],
         ];
     }
@@ -66,7 +71,6 @@ class Posts extends \yii\db\ActiveRecord
             'address' => 'Address',
             'count_favorites' => 'Count Favorites',
             'count_reviews' => 'Count Reviews',
-            'latlon' => 'Координаты'
         ];
     }
 
@@ -82,11 +86,6 @@ class Posts extends \yii\db\ActiveRecord
                 'in_attribute' => 'data',
                 'out_attribute' => 'url_name',
             ],
-            'SaveJson' => [
-                'class' => 'app\behaviors\SaveJson',
-                'in_attributes' => ['latlon'],
-            ]
-
         ];
     }
 
@@ -157,7 +156,7 @@ class Posts extends \yii\db\ActiveRecord
     {
         parent::afterFind();
 
-        if (strpos($this->cover, 'default') !== -1 && isset($this->lastPhoto)) {
+        if (strpos($this->cover, 'default') !== -1 && $this->isRelationPopulated('lastPhoto') && isset($this->lastPhoto)) {
             $this->cover = $this->lastPhoto->getPhotoPath();
         }
 
@@ -166,6 +165,31 @@ class Posts extends \yii\db\ActiveRecord
         ) {
             $this->is_like = true;
         }
+
+        if($this->coordinates){
+            $latLng = explode(',',$this->coordinates);
+            $this->lat = str_replace('(','',$latLng[0]);
+            $this->lon = str_replace(')','',$latLng[1]);
+        }
+        if(isset(Yii::$app->request->cookies)){
+            if($this->distance == null && $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation')?\yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')):false){
+                if($this->lat && $this->lon){
+                    $this->distanceText = Yii::$app->oldFormatter->asShortLength(Helper::getDistanceBP($this->lat,$this->lon,
+                        $CurrentMePosition['lat'],$CurrentMePosition['lon']));
+                }
+            }
+        }
+
+        if($this->distance){
+            $this->distanceText = Yii::$app->oldFormatter->asShortLength((int)$this->distance);
+        }
+
+    }
+
+    public function beforeValidate()
+    {
+        $this->coordinates = '('.$this->lat.','.$this->lon.')';
+        return parent::beforeValidate();
     }
 
     public function getFeatures()

@@ -60,6 +60,7 @@ class MainController extends Controller
        return [
            'spotlight' => $dataProvider,
            'news' => $newsDataProvider,
+           'keyForMap'=>$searchModel->getKeyForPlacesOnMap()
        ];
    }
 }

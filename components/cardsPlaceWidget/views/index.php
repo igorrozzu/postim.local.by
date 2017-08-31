@@ -2,7 +2,10 @@
     use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     use app\components\cardsPlaceWidget\CardsPlaceWidget;
+    use app\components\Helper;
     $data = $dataprovider->getModels();
+    $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation')?\yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')):false;
+    $oldFormatter = new \app\components\OldFormatter();
 ?>
 <?php foreach ($data as $item):?>
 
@@ -30,12 +33,19 @@
         <div class="time-work">
             <?=$item->is_open?'<p class="open">Открыто '.$item->timeOpenOrClosed.'</p>':
                 '<p class="close">Закрыто '.$item->timeOpenOrClosed.'</p>'?>
+            <?php if($item->distanceText):?>
+                 <div class="distance-to-me">
+                     <?=$item->distanceText?>
+                 </div>
+            <?php endif;?>
 
         </div>
         <hr class="hr-c">
         <div class="info-address">
             <div class="address-icon"></div>
-            <div class="address-text"><?=$item["address"]?></div>
+            <div class="address-block">
+                <div class="address-text"><?=$item["address"]?></div>
+            </div>
         </div>
     </div>
 <?php endforeach;?>
@@ -44,7 +54,7 @@
     <?php if ($hrefNext = $dataprovider->pagination->getLinks()['next'] ?? false): ?>
         <div class="replace-block mg-btm-30" id="<?=$settings['replace-container-id']?>">
             <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>"
-                 data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?>">
+                 data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?><?= isset($settings['load-geolocation'])&&is_array($settings['load-geolocation'])?'&'.http_build_query(array('load-geolocation'=>$settings['load-geolocation'])):''?>">
                 Показать больше мест</div>
         </div>
 

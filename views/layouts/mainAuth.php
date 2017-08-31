@@ -30,7 +30,7 @@ $countNotif = Notification::getCountNotifications();
 <html lang="<?= Yii::$app->language ?>" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <?= Html::csrfMetaTags() ?>
@@ -137,7 +137,6 @@ $countNotif = Notification::getCountNotifications();
                 <span><img src="/img/icon-certificates.png"></span>Мои сертификаты
             </a>
         </div>
-
         <div class="container-item-menu visible">
             <a href="<?=Url::to(['user/izbrannoe'])?>">
                 <span><img src="/img/add-favorit-icon.png"></span>Избранное

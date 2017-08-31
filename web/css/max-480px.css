@@ -1,5 +1,6 @@
 .header,
-.header-selected-city{
+.header-selected-city,
+.btns-map{
     width: calc(100% - 20px);
     margin: 0 10px;
 }

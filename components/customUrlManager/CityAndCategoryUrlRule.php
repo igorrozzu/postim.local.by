@@ -4,6 +4,7 @@ namespace app\components\customUrlManager;
 
 use app\models\Category;
 use app\models\UnderCategory;
+use yii\web\NotFoundHttpException;
 use yii\web\UrlRuleInterface;
 use yii\base\Object;
 use yii\helpers\ArrayHelper;
@@ -23,6 +24,10 @@ class CityAndCategoryUrlRule extends CityUrlRule {
         $pathInfo = $request->getPathInfo();
 
         $queryParams= explode('/',$pathInfo);
+
+        if(count($queryParams)>2){
+            throw new NotFoundHttpException();
+        }
 
         $arrIndex = $this->getIndexArray();
 

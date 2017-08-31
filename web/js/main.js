@@ -15,13 +15,6 @@ var Main = (function (window, document, undefined,$) {
 
             init:function () {
 
-                if (window.devicePixelRatio !== 1) { // Костыль для определения иных устройств, с коэффициентом отличным от 1
-                    var dpt = window.devicePixelRatio;
-                    var widthM = window.screen.width * dpt;
-                    var widthH = window.screen.height * dpt;
-                    document.write('<meta name="viewport" content="width=' + widthM+ ', height=' + widthH + '">');
-                }
-
                 $(document).ready(function () {
 
                     $(document).on('click','.btn-show-more,.btn-load-more',function () {
@@ -53,6 +46,10 @@ var Main = (function (window, document, undefined,$) {
                 });
                 that.shareSocialButtonsInit();
 
+
+            },
+            getDomainName:function () {
+              return 'postim.local.by';
             },
             reloadViewPjaxEvents:function () {
                 // init pjax ленты категорий
@@ -135,6 +132,70 @@ var Main = (function (window, document, undefined,$) {
             },
             getLoadBlock:function () {
                 return $('<div id="loader-box"><div class="loader"></div></div>');
+            },
+
+            UserGeolocation:function () {
+                var __userCoords = {};
+                var userGeolocation = {
+                    isSupportedGeolocation:false,
+
+                    init: function () {
+                        $(document).ready(function () {
+                            if (navigator.geolocation) {
+                                userGeolocation.isSupportedGeolocation=true;
+                            }
+                        })
+
+                    },
+                    setGeolocation:function (name , value) {
+                        if(value!==null && value != undefined){
+                            $.cookie(name, JSON.stringify(value), {expires: 5, path: '/', domain: that.getDomainName(), secure: true});
+                        }else {
+                            $.cookie(name, null);
+                        }
+
+                    },
+                    getGeolocation: function (name) {
+                       return $.cookie(name) || null;
+                    },
+                    refreshGeolocation:function (position) {
+                        if (position) {
+                            __userCoords.lat = position.coords.latitude;
+                            __userCoords.lon = position.coords.longitude;
+                            userGeolocation.setGeolocation('geolocation',__userCoords)
+                        }
+                    },
+                    requestGeolocation:function (cullBackF) {
+
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            if (position) {
+                                 __userCoords = {};
+                                __userCoords.lat = position.coords.latitude;
+                                __userCoords.lon = position.coords.longitude;
+                                userGeolocation.setGeolocation('geolocation', __userCoords);
+                                cullBackF.call();
+
+                            }
+                        }, function (error) {
+                            var text = 'Не удалось определить, где вы находитесь. Необходимо дать доступ к данным о вашем местоположении.';
+                            if(error.code == 1){
+                                text = 'У вас установлен запрет на определение местоположения, измените это в настройках браузера и повторите попытку.'
+                            }
+
+                            $().toastmessage('showToast', {
+                                text: text,
+                                stayTime:15000,
+                                type:'error'
+                            });
+                        });
+
+                        navigator.geolocation.watchPosition(userGeolocation.refreshGeolocation);
+                    }
+
+                };
+
+                return userGeolocation;
+
             }
         };
 
@@ -144,4 +205,6 @@ var Main = (function (window, document, undefined,$) {
 }(window,document,undefined,jQuery));
 
 var main = Main();
+main.userGeolocation = main.UserGeolocation();
 main.init();
+main.userGeolocation.init();

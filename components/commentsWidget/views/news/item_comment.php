@@ -2,7 +2,7 @@
 $model = $dataprovider->getModels();
 foreach ($model as $item):
 ?>
-<div class="container-comment main" data-comment_id="<?=$item->id?>" id="comment-<?=$item->id?>">
+<div class="container-comment main" data-comment_id="<?=$item->id?>">
     <div class="profile-commentator main-pjax">
         <a href="/id<?=$item->user->id?>"><img class="profile-icon-commentator" src="<?=$item->user->getPhoto()?>"></a>
     </div>

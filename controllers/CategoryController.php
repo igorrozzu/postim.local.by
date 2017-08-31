@@ -10,6 +10,7 @@ use app\models\PostsSearch;
 use app\models\UnderCategoryFeatures;
 use Yii;
 use app\components\Pagination;
+use yii\helpers\Json;
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -44,12 +45,15 @@ class CategoryController extends MainController
         $sort = PostsSearch::getSortArray($paramSort);
 
         $loadTime = Yii::$app->request->get('loadTime', time());
+        $geolocation = Yii::$app->request->cookies->getValue('geolocation')?Json::decode(Yii::$app->request->cookies->getValue('geolocation')):null;
+        $loadGeolocation = Yii::$app->request->get('load-geolocation', $geolocation);
         $dataProvider = $searchModel->search(
             Yii::$app->request->queryParams,
             $pagination,
             $sort,
             $loadTime,
-            $selfFilterParams
+            $selfFilterParams,
+            $loadGeolocation
         );
 
         $breadcrumbParams = $this->getParamsForBreadcrumb();
@@ -60,6 +64,8 @@ class CategoryController extends MainController
             'selfParams'=> $selfParams,
             'breadcrumbParams'=>$breadcrumbParams,
             'loadTime' => $loadTime,
+            'loadGeolocation'=>$loadGeolocation,
+            'keyForMap'=>$searchModel->getKeyForPlacesOnMap()
         ];
 
         if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
@@ -68,7 +74,8 @@ class CategoryController extends MainController
                 'settings' => [
                     'show-more-btn' => true,
                     'replace-container-id' => 'feed-posts',
-                    'load-time' => $loadTime
+                    'load-time' => $loadTime,
+                    'load-geolocation'=>$loadGeolocation
                 ]
             ]);
         }else{

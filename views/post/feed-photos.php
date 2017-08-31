@@ -2,11 +2,28 @@
 use app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
 use yii\helpers\Url;
-use yii\web\View;
 use yii\widgets\Pjax;
 ?>
 <div class="margin-top60"></div>
-<div id="map_block" class="block-map"></div>
+<div id="map_block" class="block-map preload-map">
+    <div class="btns-map">
+        <div class="action-map" title="Открыть карту"></div>
+        <div class="find-me" title="Найти меня"></div>
+        <div class="zoom-plus"></div>
+        <div class="zoom-minus"></div>
+    </div>
+
+    <div id="map" style="display: none"></div>
+</div>
+
+<?php
+$js = <<<js
+    $(document).ready(function() {
+      map.setIdPlacesOnMap("$keyForMap");
+    });
+js;
+echo "<script>$js</script>";
+?>
 <?php
 Pjax::begin([
     'timeout' => 60000,
@@ -45,10 +62,9 @@ Pjax::begin([
     </div>
 </div>
 <div class="block-content">
-    <div class="block-photos-owner" data-type="user">
+    <div class="block-photos-owner" data-type="owner">
         <?php foreach ($ownerPhotos as $index => $photo):?>
-            <div class="container-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>" data-source="<?=$photo->source ?? ''?>"
-                 data-id="<?=$photo->id?>" data-status="<?=$photo->user_status?>">
+            <div class="container-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>" data-source="<?=$photo->source ?? ''?>">
                 <div class="block-blackout">
                     <a href="<?=Url::to(['user/index', 'id' => $photo->user->id])?>">
                         <img class="avatar-user" src="<?=$photo->user->getPhoto()?>">
@@ -68,7 +84,7 @@ Pjax::begin([
         <?php echo $this->render('photo-list', [
             'dataProvider' => $dataProvider,
             'loadTime' => $loadTime,
-            'sequence' => isset($index) ? $index + 1 : 0,
+            'sequence' => 0,
         ])?>
     </div>
 
@@ -85,33 +101,23 @@ Pjax::begin([
             </div>
         </div>
         <div class="photo-wrap">
+            <div class="pre-photo pre-popup-photo"></div>
             <img class="photo-popup-item">
+            <div class="next-photo next-popup-photo"></div>
         </div>
         <div class="photo-source" style="display: none;">
             <a href="#" target="_blank">Источник</a>
         </div>
     </div>
     <div class="photo-right-arrow"><div></div></div>
-    <div class="gallery-counter"><span>1</span> из <?=$photoCount?></div>
 </div>
 <script>
     $(document).ready(function() {
         post.photos.setLoadTime(<?=$loadTime?>);
         post.photos.setPostId(<?=$post->id?>);
-        <?php if (isset($photoId)) :?>
-        post.photos.initSliderByPhotoId('<?=$photoId?>');
-        <?php endif;?>
-        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
-        $(".photo-wrap").swipe({
-            swipeRight: function(event, direction) {
-                post.photos.prevPhoto();
-            },
-            swipeLeft: function(event, direction) {
-                post.photos.nextPhoto();
-            }
-        });
     });
 </script>
+
 <?php
 Pjax::end();
 ?>

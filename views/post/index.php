@@ -2,12 +2,29 @@
 use app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
 use yii\helpers\Url;
-use yii\web\View;
 use yii\widgets\Pjax;
 
 ?>
 <div class="margin-top60"></div>
-<div id="map_block" class="block-map"></div>
+<div id="map_block" class="block-map preload-map">
+    <div class="btns-map">
+        <div class="action-map" title="Открыть карту"></div>
+        <div class="find-me" title="Найти меня"></div>
+        <div class="zoom-plus"></div>
+        <div class="zoom-minus"></div>
+    </div>
+    <div id="map" style="display: none"></div>
+</div>
+
+<?php
+$js = <<<js
+    $(document).ready(function() {
+      map.setIdPlacesOnMap("$keyForMap");
+    });
+js;
+echo "<script>$js</script>";
+?>
+
 <?php
 Pjax::begin([
     'timeout' => 60000,
@@ -65,14 +82,14 @@ Pjax::begin([
     <div class="block-content-between">
         <h2 class="h2-v">Информация</h2>
         <p class="text p-text">
-            Нашли неточность или ошибку, <a class="href-edit" href="#">исправьте&nbsp;или&nbsp;дополните&nbsp;информацию.</a>
+            Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="#">исправьте&nbsp;или&nbsp;дополните&nbsp;информацию.</a>
         </p>
     </div>
     <div class="block-info-card">
         <?php if($post['address']):?>
             <div class="info-row">
                 <div class="left-block-f1">
-                    <div class="address-card">Адрес</div>
+                    <div class="address-card"><span>Адрес</span></div>
                     <div class="block-inside">
                         <p class="info-card-text"><?=$post['address']?></p>
                         <?php if($post['additional_address']):?>
@@ -112,7 +129,7 @@ Pjax::begin([
                     <div class="web-site-card">Веб сайт</div>
                     <div class="block-inside">
                         <p class="info-card-text">
-                            <a href="<?=$post->info['web_site']?>"><?=Helper::getDomainNameByUrl($post->info['web_site'])?></a>
+                            <a target="_blank" rel="nofollow noopener" href="<?=$post->info['web_site']?>"><?=Helper::getDomainNameByUrl($post->info['web_site'])?></a>
                         </p>
                     </div>
                 </div>
@@ -125,10 +142,10 @@ Pjax::begin([
             <div class="info-row">
                 <div class="left-block-f">
                     <div class="title-info-card">Социальные&nbsp;сети</div>
-                    <div class="block-inside">
+                    <div class="block-inside social-info">
                         <div class="block-social-info">
                             <?php foreach ($post->info['social_networks'] as $key => $social_network):?>
-                                <a href="<?=$social_network?>" class="<?=$key?>-icon"></a>
+                                <a target="_blank" rel="nofollow noopener" href="<?=$social_network?>" class="<?=$key?>-icon"></a>
                             <?php endforeach;?>
                         </div>
                     </div>
@@ -166,11 +183,7 @@ Pjax::begin([
                 <div class="btn-info-card"></div>
             </div>
         </div>
-
             <?php Helper::getFeature($post->getFeatures())?>
-
-
-
         <div class="info-row">
             <div class="left-block-f">
                 <div class="title-info-card">Редакторы</div>
@@ -283,26 +296,19 @@ Pjax::begin([
         <div class="large-wide-button"><p>Опубликовать</p></div>
     </div>
 </div>
-
-<script>
+<?php
+$loadTime = time();
+$js = <<<js
     $(document).ready(function() {
         post.info.init();
-        post.photos.setLoadTime(<?=time()?>);
-        post.photos.setPostId(<?=$post->id?>);
-        <?php if (isset($photoId)) :?>
-        post.photos.initSliderByPhotoId('<?=$photoId?>');
-        <?php endif;?>
-        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
-        $(".photo-wrap").swipe({
-            swipeRight: function(event, direction) {
-                post.photos.prevPhoto();
-            },
-            swipeLeft: function(event, direction) {
-                post.photos.nextPhoto();
-            }
-        });
+        post.photos.setLoadTime($loadTime);
+        post.photos.setPostId($post->id);
     })
-</script>
+js;
+
+echo "<script>$js</script>";
+?>
+
 <div class="container-blackout-photo-popup"></div>
 <div class="photo-popup">
     <div class="close-photo-popup"></div>
@@ -314,17 +320,16 @@ Pjax::begin([
             </div>
         </div>
         <div class="photo-wrap">
+            <div class="pre-photo pre-popup-photo"></div>
             <img class="photo-popup-item">
+            <div class="next-photo next-popup-photo"></div>
+        </div>
+        <div class="photo-source">
+            <a href="#" target="_blank">Источник</a>
         </div>
     </div>
     <div class="photo-right-arrow"><div></div></div>
-    <span class="complain-gallery-text">Пожаловаться</span>
-    <div class="photo-source">
-        <a href="#" target="_blank">Источник</a>
-    </div>
-    <div class="gallery-counter"><span>1</span> из <?=$photoCount?></div>
 </div>
-
 <?php
 Pjax::end();
 ?>

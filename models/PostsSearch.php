@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\Helper;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -21,6 +22,9 @@ class PostsSearch extends Posts
     public $favorite_id;
     public $open;
     public $filters;
+
+    private $queryForPlaceOnMap=null;
+    private $key=null;
     /**
      * @inheritdoc
      */
@@ -49,16 +53,25 @@ class PostsSearch extends Posts
      *
      * @return ActiveDataProvider
      */
-    public function search($params, Pagination $pagination, Array $sort, $loadTime = null , array $self_filters =[])
+    public function search($params, Pagination $pagination, Array $sort, $loadTime = null , array $self_filters =[],$loadGeolocation=[])
     {
-        $query = Posts::find()->select('tbl_posts.*')->orderBy($sort);
+        $query = Posts::find()->orderBy(['priority'=>SORT_DESC]);
         // add conditions that should always apply here
-        $query->addOrderBy(['data'=>SORT_ASC]);
+        if(Yii::$app->request->get('sort',false)=='nigh' && $loadGeolocation){
+           $coordinates='POINT('.$loadGeolocation["lat"].' '.$loadGeolocation["lon"].')';
+           $query->select('tbl_posts.*,ST_distance_sphere(st_point("coordinates"[0],"coordinates"[1]),ST_GeomFromText(\''.$coordinates.'\')) as distance');
+           $query->addOrderBy(['distance'=>SORT_ASC]);
+        }else{
+            $query->addOrderBy(['data'=>SORT_ASC]);
+        }
+        $query->addOrderBy($sort);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => $pagination
         ]);
+
+        $this->queryForPlaceOnMap=Posts::find()->select('tbl_posts.id,tbl_posts.coordinates');
 
         if (!$this->load($params,'') && !$this->validate()) {
             return $dataProvider;
@@ -67,6 +80,7 @@ class PostsSearch extends Posts
         $relations = ['city.region'];
         if(isset($this->favorite) && $this->favorite === 'posts') {
             $relations[] = 'favoritePosts';
+            $this->queryForPlaceOnMap->innerJoinWith('favoritePosts');
         } else if(!Yii::$app->user->isGuest) {
             $query->joinWith('hasLike');
         }
@@ -75,17 +89,22 @@ class PostsSearch extends Posts
 
         if(isset($params['loadTime']) || isset($loadTime) ){
             $query->andWhere(['<=', 'tbl_posts.date', $params['loadTime'] ?? $loadTime]);
+            $this->queryForPlaceOnMap->andWhere(['<=', 'tbl_posts.date', $params['loadTime'] ?? $loadTime]);
         }
         if(isset($params['id'])){
             $query->andWhere(['tbl_posts.user_id' => $params['id']]);
+            $this->queryForPlaceOnMap->andWhere(['tbl_posts.user_id' => $params['id']]);
         } else if(isset($this->favorite_id)) {
             $query->andWhere(['tbl_favorites_post.user_id' => $this->favorite_id]);
+            $this->queryForPlaceOnMap->andWhere(['tbl_favorites_post.user_id' => $this->favorite_id]);
         }
 
         if(isset($params['moderation']) && $params['moderation'] === '1'){
             $query->andWhere([Posts::tableName().'.status' => 0]);
+            $this->queryForPlaceOnMap->andWhere([Posts::tableName().'.status' => 0]);
         } else {
             $query->andWhere([Posts::tableName().'.status' => 1]);
+            $this->queryForPlaceOnMap->andWhere([Posts::tableName().'.status' => 1]);
         }
 
         if(!empty($this->city)){
@@ -93,6 +112,13 @@ class PostsSearch extends Posts
                 ['tbl_region.url_name'=>$this->city['url_name']],
                 ['tbl_city.url_name'=>$this->city['url_name']]
             ]);
+
+            $this->queryForPlaceOnMap->innerJoinWith('city.region');
+            $this->queryForPlaceOnMap->andWhere(['or',
+                ['tbl_region.url_name'=>$this->city['url_name']],
+                ['tbl_city.url_name'=>$this->city['url_name']]
+            ]);
+
         }
 
 
@@ -100,11 +126,37 @@ class PostsSearch extends Posts
            $query->innerJoinWith(['workingHours'=>function ($query) {
                $query->andWhere(['day_type' =>date('w')==0?7:date('w')]);
            }]);
-           $currentTimestamp = Yii::$app->formatter->asTimestamp(Yii::$app->formatter->asTime(time() + Yii::$app->user->getTimezoneInSeconds(), 'short'));
+           $currentTimestamp = Yii::$app->formatter->asTimestamp(Yii::$app->formatter->asTime($loadTime + Yii::$app->user->getTimezoneInSeconds(), 'short'));
            $currentTime = idate('H', $currentTimestamp) * 3600 + idate('i', $currentTimestamp) * 60 + idate('s', $currentTimestamp);
-           $query->andWhere(['<=', 'tbl_working_hours.time_start', $currentTime]);
-           $query->andWhere(['>=', 'tbl_working_hours.time_finish', $currentTime]);
+           $query->andWhere(['or',
+               ['and',
+                   ['<=', 'tbl_working_hours.time_start', $currentTime],
+                   ['>=', 'tbl_working_hours.time_finish', $currentTime]
+               ],
+               ['and',
+                   ['>=', 'tbl_working_hours.time_finish', $currentTime+24*3600],
+                   ['<=', 'tbl_working_hours.time_start', $currentTime+24*3600]
+               ]
+           ]);
+
             $this->filters--;
+
+
+            $this->queryForPlaceOnMap->innerJoinWith(['workingHours'=>function ($query) {
+                $query->andWhere(['day_type' =>date('w')==0?7:date('w')]);
+            }]);
+            $this->queryForPlaceOnMap->andWhere(['or',
+                ['and',
+                    ['<=', 'tbl_working_hours.time_start', $currentTime],
+                    ['>=', 'tbl_working_hours.time_finish', $currentTime]
+                ],
+                ['and',
+                    ['>=', 'tbl_working_hours.time_finish', $currentTime+24*3600],
+                    ['<=', 'tbl_working_hours.time_start', $currentTime+24*3600]
+                ]
+            ]);
+
+
         }else{
            $query->with(['workingHours'=>function ($query) {
               $query->orderBy(['day_type'=>SORT_ASC]);
@@ -113,6 +165,8 @@ class PostsSearch extends Posts
 
        if($self_filters){
            $query->innerJoinWith('postFeatures');
+           $this->queryForPlaceOnMap->innerJoinWith('postFeatures');
+
            $queryFiltersBool=[0=>'or'];
            foreach ($params as $nameFilter => $value){
                 if(isset($self_filters[$nameFilter])){
@@ -139,20 +193,38 @@ class PostsSearch extends Posts
            if(count($queryFiltersBool)>1){
                $query->andWhere($queryFiltersBool);
                $query->having('count(distinct features_id) = '.$this->filters);
+
+               $this->queryForPlaceOnMap->andWhere($queryFiltersBool);
+               $this->queryForPlaceOnMap->having('count(distinct features_id) = '.$this->filters);
            }
        }
 
         if(!empty($this->under_category)){
             $query->andWhere(['tbl_under_category.url_name'=> $this->under_category['url_name']]);
+
+            $this->queryForPlaceOnMap->joinWith('categories.category');
+            $this->queryForPlaceOnMap->andWhere(['tbl_under_category.url_name'=> $this->under_category['url_name']]);
+
         }elseif(!empty($this->category)){
             $query->andWhere(['tbl_category.url_name'=>$this->category['url_name']]);
+            $this->queryForPlaceOnMap->joinWith('categories.category');
+            $this->queryForPlaceOnMap->andWhere(['tbl_category.url_name'=>$this->category['url_name']]);
         }
 
         $query->groupBy(['tbl_posts.id']);
+        $this->queryForPlaceOnMap->groupBy(['tbl_posts.id']);
+
+        $this->key = Helper::saveQueryForMap($this->queryForPlaceOnMap
+            ->prepare(Yii::$app->db->queryBuilder)
+            ->createCommand()->rawSql);
         $query->with('lastPhoto');
 
 
         return $dataProvider;
+    }
+
+    public function getKeyForPlacesOnMap(){
+        return $this->key;
     }
 
     public static function getSortArray($paramSort){

@@ -28,6 +28,13 @@
     .container-popup-window{
         top:0;
     }
+    .block-map{
+        height: 300px;
+    }
+    .preload-map{
+        height: 100px;
+        background-image: url("../img/map.png");
+    }
 }
 
 @media (min-width: 940px) and (max-width: 1040px){

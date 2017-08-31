@@ -1,6 +1,4 @@
 <?php
-use yii\helpers\Url;
-
 $data = $dataProvider->getModels();
 $currentPage = $dataProvider->pagination->getPage() + 1;
 $pageCount = $dataProvider->pagination->getPageCount();
@@ -9,12 +7,9 @@ $pageCount = $dataProvider->pagination->getPageCount();
 <div class="notif-item
     <?php if(!$item->isRead())
         echo 'notif-not-read'?>">
-    <a href="<?=Url::to(['user/index', 'id' => $item->sender->id])?>">
-        <img src="<?=$item->sender->getPhoto();?>" class="user-icon"></a>
+    <img src="<?=$item->sender->getPhoto();?>" class="user-icon">
     <div class="user-info">
-        <a class="notif-username" href="<?=Url::to(['user/index', 'id' => $item->sender->id])?>">
-            <?=$item->sender->name . ' ' . $item->sender->surname;?>
-        </a>
+        <p class="notif-username"><?=$item->sender->name . ' ' . $item->sender->surname;?></p>
         <div class="notif-date-time">
             <?=Yii::$app->formatter->printDate($item->date + Yii::$app->user->getTimezoneInSeconds())?>
         </div>

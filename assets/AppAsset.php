@@ -18,6 +18,9 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
+        'js/libs/leaflet/leaflet.css',
+        'js/libs/leaflet/markercluster/dist/MarkerCluster.Default.css',
+        'js/libs/leaflet/markercluster/dist/MarkerCluster.css',
         'css/main.css',
         ['css/jquery.mCustomScrollbar.css','media'=>'all'],
         'css/jquery-ui.css',
@@ -43,7 +46,10 @@ class AppAsset extends AssetBundle
         'js/goodShare.js',
         'js/libs/debounce.js',
         'js/libs/jquery-ui.min.js',
-        '/js/libs/jquery.touchSwipe.min.js',
+        'js/libs/jquery.cookie.js',
+        'js/libs/leaflet/leaflet.js',
+        'js/libs/leaflet/markercluster/dist/leaflet.markercluster-src.js',
+        'js/map.js'
     ];
     public $depends = [
         'yii\web\JqueryAsset',
