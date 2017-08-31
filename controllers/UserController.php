@@ -29,7 +29,7 @@ use yii\web\UploadedFile;
 class UserController extends MainController
 {
 
-    public function actionIndex(int $id)
+    public function actionIndex(int $id, int $photo_id = null)
     {
         $user = User::find()
             ->with(['userInfo', 'city', 'socialBindings'])
@@ -62,7 +62,8 @@ class UserController extends MainController
             'user' => $user,
             'feedReviews' => $feedReviews,
             'profilePhotoCount' => Gallery::getProfilePhotoCount($user->id),
-            'profilePreviewPhoto' => Gallery::getProfilePreviewPhoto($user->id, 4)
+            'profilePreviewPhoto' => Gallery::getProfilePreviewPhoto($user->id, 4),
+            'photoId' => $photo_id,
         ]);
     }
 
@@ -591,6 +592,7 @@ class UserController extends MainController
                 'selfParams'=> [
                     'type' => true,
                     'userId' => true,
+                    'photo_id' => true,
                 ],
             ]);
             $loadTime = $request->get('loadTime', time());
@@ -601,14 +603,26 @@ class UserController extends MainController
             );
 
             $response = new \stdClass();
-            $response->data = $dataProvider->getModels();
+
+            if (isset($request->queryParams['photo_id'])) {
+                $count = $searchModel->getProfilePreviewsPhotoCount($loadTime);
+                $page = (int) ($count / 16);
+                $dataProvider->pagination->pageSize = ($page === 0) ? 16 : ($page + 1) * 16;
+                $response->data = $dataProvider->getModels();
+                $dataProvider->pagination->page = $page;
+                $dataProvider->pagination->pageSize = 16;
+                $response->url = $dataProvider->pagination->getLinks()['next'] ?? null;
+                $response->sequence = $count - 1;
+            } else {
+                $response->data = $dataProvider->getModels();
+                $response->url = $dataProvider->pagination->getLinks()['next'] ?? null;
+            }
             foreach ($response->data as $photo) {
                 $response->postInfo[] = [
                     'title' => $photo->post->data,
                     'url' => $photo->post->url_name,
                 ];
             }
-            $response->url = $dataProvider->pagination->getLinks()['next'] ?? null;
             return $this->asJson($response);
         }
     }

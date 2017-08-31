@@ -7,10 +7,12 @@ use app\components\MainController;
 use app\components\Pagination;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
+use app\models\entities\GalleryComplaint;
 use app\models\Posts;
 use app\models\search\GallerySearch;
 use app\models\uploads\UploadPostPhotos;
 use Yii;
+use yii\db\Exception;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -19,7 +21,8 @@ use yii\web\UploadedFile;
 class PostController extends MainController
 {
 
-    public function actionIndex(int $id){
+    public function actionIndex(int $id, string $photo_id = null){
+
          $post = Posts::find()->with([
                 'info',
                 'workingHours'=>function ($query) {
@@ -44,6 +47,7 @@ class PostController extends MainController
                 'breadcrumbParams'=>$breadcrumbParams,
                 'photoCount' => Gallery::getPostPhotoCount($id),
                 'previewPhoto' => Gallery::getPreviewPostPhoto($id, 4),
+                'photoId' => $photo_id,
                 'keyForMap'=>$keyForMap
             ]);
         }else{
@@ -173,6 +177,7 @@ class PostController extends MainController
                 'selfParams'=> [
                     'type' => true,
                     'postId' => true,
+                    'photo_id' => true,
                 ],
             ]);
             $loadTime = $request->get('loadTime', time());
@@ -181,10 +186,21 @@ class PostController extends MainController
                 $pagination,
                 $loadTime
             );
-
             $response = new \stdClass();
-            $response->data = $dataProvider->getModels();
-            $response->url = $dataProvider->pagination->getLinks()['next'] ?? null;
+
+            if (isset($request->queryParams['photo_id'])) {
+                $count = $searchModel->getPreviewsPhotoCount($loadTime);
+                $page = (int) ($count / 16);
+                $dataProvider->pagination->pageSize = ($page === 0) ? 16 : ($page + 1) * 16;
+                $response->data = $dataProvider->getModels();
+                $dataProvider->pagination->page = $page;
+                $dataProvider->pagination->pageSize = 16;
+                $response->url = $dataProvider->pagination->getLinks()['next'] ?? null;
+                $response->sequence = $count - 1;
+            } else {
+                $response->data = $dataProvider->getModels();
+                $response->url = $dataProvider->pagination->getLinks()['next'] ?? null;
+            }
             return $this->asJson($response);
         }
     }
@@ -216,7 +232,7 @@ class PostController extends MainController
         }
     }
 
-    public function actionGallery($postId)
+    public function actionGallery(int $postId, string $photo_id = null)
     {
         $request = Yii::$app->request;
         $searchModel = new GallerySearch();
@@ -228,6 +244,7 @@ class PostController extends MainController
             'selfParams'=> [
                 'type' => true,
                 'postId' => true,
+                'photo_id' => true,
             ],
         ]);
         $loadTime = $request->get('loadTime', time());
@@ -267,7 +284,33 @@ class PostController extends MainController
             'photoCount' => $photoCount,
             'loadTime' => $loadTime,
             'keyForMap'=>$keyForMap,
+            'photoId' => $photo_id
         ]);
+    }
+
+    public function actionComplainGallery(){
+        $response = new \stdClass();
+        $response->success = true;
+        $response->message = 'Спасибо, что помогаете!<br>Ваша жалоба будет рассмотрена модераторами';
+
+        if (!Yii::$app->user->isGuest) {
+            $photoId = Yii::$app->request->post('id', null);
+            $message = Yii::$app->request->post('message', null);
+            $galleryComplaint = new GalleryComplaint([
+                'photo_id' => $photoId,
+                'message' => $message,
+                'user_id' => Yii::$app->user->id
+            ]);
+
+            if ($galleryComplaint->validate() && $galleryComplaint->save()) {
+                return $this->asJson($response);
+            } else {
+                $nameAttribute = key($galleryComplaint->getErrors());
+                $response->success = false;
+                $response->message = $galleryComplaint->getFirstError($nameAttribute);
+            }
+            return $this->asJson($response);
+        }
     }
 
     public function actionGetPlaceForMap(string $id){

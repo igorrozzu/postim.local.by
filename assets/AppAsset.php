@@ -46,10 +46,12 @@ class AppAsset extends AssetBundle
         'js/goodShare.js',
         'js/libs/debounce.js',
         'js/libs/jquery-ui.min.js',
+        '/js/libs/jquery.touchSwipe.min.js',
         'js/libs/jquery.cookie.js',
         'js/libs/leaflet/leaflet.js',
         'js/libs/leaflet/markercluster/dist/leaflet.markercluster-src.js',
         'js/map.js'
+
     ];
     public $depends = [
         'yii\web\JqueryAsset',
