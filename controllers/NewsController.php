@@ -63,7 +63,7 @@ class NewsController extends MainController
 
     }
 
-    public function actionNews($id){
+    public function actionNews(int $id, int $comment_id = null) {
         $loadTime = Yii::$app->request->get('loadTime',time());
         $newsQuery = News::find()->with('totalView')->with('city.region')->where(['id'=>$id]);
         if(!Yii::$app->user->isGuest){
@@ -94,8 +94,9 @@ class NewsController extends MainController
 
         $commentsNewsSearch = new CommentsNewsSearch();
 
+        $defaultLimit = isset($comment_id) ? 1000 : 16;
         $paginationComments= new Pagination([
-            'pageSize' => Yii::$app->request->get('per-page', 16),
+            'pageSize' => Yii::$app->request->get('per-page', $defaultLimit),
             'page' => Yii::$app->request->get('page', 1) - 1,
             'route' => '/news/get-comments',
             'selfParams'=>[
