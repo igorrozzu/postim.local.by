@@ -105,11 +105,14 @@ Pjax::begin([
         <div class="photo-wrap">
             <img class="photo-popup-item">
         </div>
-        <div class="photo-source" style="display: none;">
-            <a href="#" target="_blank">Источник</a>
-        </div>
     </div>
     <div class="photo-right-arrow"><div></div></div>
+    <ul class="wrap-photo-info">
+        <li class="complain-gallery-text">Пожаловаться</li>
+        <li class="photo-source" style="display: none;">
+            <a href="#" target="_blank"><span>Источник</span></a>
+        </li>
+    </ul>
     <div class="gallery-counter"><span>1</span> из <?=$photoCount?></div>
 </div>
 <script>

@@ -147,14 +147,14 @@
     background: none;
     cursor: auto;
 }
-
+.wrap-photo-info {
+    left: 10px;
+}
 .photo-left-arrow, .photo-right-arrow{width: 0px;}
 .photo-header{
     margin-left: 0;
 }
-.photo-source{
-    margin-left: 90px;
-}
+
 .complain-gallery-text {
     left: 10px;
 }

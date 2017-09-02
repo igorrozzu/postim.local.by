@@ -3994,29 +3994,36 @@ a.btn-show-more{
     cursor: pointer;
     background: url("../img/close-big-icon.png");
 }
-.photo-source{
-    margin-left: 100px;
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-}
 
-.photo-source a,
-.complain-gallery-text{
+.wrap-photo-info{
     color: #FFFFFF;
-    text-decoration: underline;
     font-size: 13px;
-
-}
-.complain-gallery-text{
     position: absolute;
     cursor: pointer;
     bottom: 20px;
     left: 20px;
 }
-.photo-source a:hover,
-.complain-gallery-text:hover{text-decoration: none;}
+.wrap-photo-info a{
+    color: #FFFFFF;
+}
+
+.wrap-photo-info li{
+    margin-right: 19px;
+    display: inline-block;
+}
+.wrap-photo-info li:hover,
+.wrap-photo-info li:hover a {
+    text-decoration: none;
+}
+.complain-gallery-text {
+    text-decoration: underline;
+}
+.photo-source a{
+    text-decoration: underline;
+    padding-left: 3px;
+}
 .photo-source:before{
+    text-decoration: none;
     content: url("../img/source.png");
 }
 .gallery-counter {

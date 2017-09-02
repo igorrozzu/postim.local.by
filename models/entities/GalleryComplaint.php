@@ -32,7 +32,7 @@ class GalleryComplaint extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['photo_id', 'user_id', 'message'], 'required'],
+            [['photo_id', 'user_id', 'message'], 'required', 'message' => 'Жалоба не может быть пустой'],
             [['photo_id', 'user_id'], 'integer'],
             [['message'], 'string', 'max' => 500],
             [['photo_id', 'user_id'], 'unique', 'targetAttribute' => ['photo_id', 'user_id'], 'message' => 'Ваша жалоба уже отправлена на рассмотрение'],

@@ -347,8 +347,7 @@ var Post = (function (window, document, undefined,$) {
                             var html = main.getFormComplaint();
                             var photo_id = _container.data[_container.currentItem].id;
                             $('.container-blackout-popup-window').html(html).show();
-                            $('.container-blackout-popup-window .form-complaint .complain-btn').off('click')
-                                .on('click',function () {
+                            $('.container-blackout-popup-window .form-complaint .complain-btn').on('click',function () {
                                 var message = $('.container-blackout-popup-window .form-complaint input[name="complain"]').val();
                                 $.ajax({
                                     url: '/post/complain-gallery',
@@ -363,17 +362,17 @@ var Post = (function (window, document, undefined,$) {
                                             $().toastmessage('showToast', {
                                                 text: response.message,
                                                 stayTime:5000,
-                                                type:'error'
+                                                type: 'success'
                                             });
 
                                         } else {
-                                            main.closeFormComplaint();
                                             $().toastmessage('showToast', {
                                                 text: response.message,
                                                 stayTime:8000,
-                                                type:'success'
+                                                type: 'error'
                                             });
                                         }
+                                        main.closeFormComplaint();
                                     }
                                 });
                             })
@@ -504,7 +503,6 @@ var Post = (function (window, document, undefined,$) {
                                 switch (e.keyCode) {
                                     case 37: that.prevPhoto(); break;
                                     case 39: that.nextPhoto(); break;
-                                    default: return false;
                                 }
                             }
                         });
