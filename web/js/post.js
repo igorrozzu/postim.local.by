@@ -246,8 +246,8 @@ var Post = (function (window, document, undefined,$) {
 
                     methods: {
                         resizePopupPhoto: function () {
-
-                            if ($('.photo-popup').css('display') !== 'none') {
+                            var $photoPopup = $('.photo-popup');
+                            if ($photoPopup.length != 0 && $photoPopup.css('display') !== 'none') {
                                 var wrapHeight = _container.state.$wrapPhotoBox.height();
                                 var wrapWidth = _container.state.$wrapPhotoBox.width();
                                 var $img = $(".photo-wrap img");
