@@ -306,7 +306,7 @@ Pjax::begin([
         <?php if (isset($photoId)) :?>
         post.photos.initSliderByPhotoId('<?=$photoId?>');
         <?php endif;?>
-        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
+        $('.photo-header').mCustomScrollbar({axis: "x", scrollInertia: 50, scrollbarPosition: "outside"});
         $(".photo-wrap").swipe({
             swipeRight: function(event, direction) {
                 post.photos.prevPhoto();

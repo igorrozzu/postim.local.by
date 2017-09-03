@@ -344,6 +344,14 @@ var Post = (function (window, document, undefined,$) {
 
                     sendComplaintHandler: function () {
                         $(document).on('click', '.complain-gallery-text', function () {
+                            if (main.User.is_guest) {
+                                $().toastmessage('showToast', {
+                                    text: 'Незарегистрированные пользователи не могут жаловаться на фото',
+                                    stayTime:8000,
+                                    type: 'error'
+                                });
+                                return;
+                            }
                             var html = main.getFormComplaint();
                             var photo_id = _container.data[_container.currentItem].id;
                             $('.container-blackout-popup-window').html(html).show();
@@ -364,7 +372,7 @@ var Post = (function (window, document, undefined,$) {
                                                 stayTime:5000,
                                                 type: 'success'
                                             });
-
+                                            main.closeFormComplaint();
                                         } else {
                                             $().toastmessage('showToast', {
                                                 text: response.message,
@@ -372,7 +380,6 @@ var Post = (function (window, document, undefined,$) {
                                                 type: 'error'
                                             });
                                         }
-                                        main.closeFormComplaint();
                                     }
                                 });
                             })
