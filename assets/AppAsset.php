@@ -48,9 +48,12 @@ class AppAsset extends AssetBundle
         'js/libs/jquery-ui.min.js',
         '/js/libs/jquery.touchSwipe.min.js',
         'js/libs/jquery.cookie.js',
+        'js/libs/jquery.mask.js',
         'js/libs/leaflet/leaflet.js',
         'js/libs/leaflet/markercluster/dist/leaflet.markercluster-src.js',
-        'js/map.js'
+        'js/map.js',
+        'js/add-post.js',
+
 
     ];
     public $depends = [

@@ -5,11 +5,13 @@ namespace app\controllers;
 use app\components\Helper;
 use app\components\MainController;
 use app\components\Pagination;
+use app\models\City;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
 use app\models\entities\GalleryComplaint;
 use app\models\Posts;
 use app\models\search\GallerySearch;
+use app\models\UnderCategory;
 use app\models\uploads\UploadPostPhotos;
 use Yii;
 use yii\db\Exception;
@@ -344,5 +346,16 @@ class PostController extends MainController
             ->where(['tbl_posts.id'=>$id])
             ->one();
         return $this->renderAjax('__popup_place',['post'=>$post]);
+    }
+
+
+    public function actionAdd(){
+
+		$categories = UnderCategory::find()->select('id , name')->orderBy('name')->asArray()->all();
+		$cities  = City::find()->select('id, name')->orderBy('name')->asArray()->all();
+		$params = ['categories' => $categories,
+			'cities' => $cities
+		];
+        return $this->render('add', ['params' => $params]);
     }
 }

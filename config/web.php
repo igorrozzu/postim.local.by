@@ -74,6 +74,7 @@ $config = [
                     'class' => 'app\components\customUrlManager\NewsUrlRule', //лента новостей
                 ],
                 '<url:.+>-n<id:\d+>'=>'news/news',//статья новости
+                '<url:^add$>'=>'post/add'
             ],
         ],
         'i18n' => [
