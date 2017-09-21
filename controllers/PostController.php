@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\Helper;
 use app\components\MainController;
 use app\components\Pagination;
+use app\models\AddPost;
 use app\models\City;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
@@ -12,7 +13,10 @@ use app\models\entities\GalleryComplaint;
 use app\models\Posts;
 use app\models\search\GallerySearch;
 use app\models\UnderCategory;
+use app\models\UnderCategoryFeatures;
 use app\models\uploads\UploadPostPhotos;
+use app\models\uploads\UploadPostPhotosTmp;
+use linslin\yii2\curl\Curl;
 use Yii;
 use yii\db\Exception;
 use yii\helpers\Url;
@@ -31,7 +35,7 @@ class PostController extends MainController
                     $query->orderBy(['day_type'=>SORT_ASC]);
                 },
                 'city', 'totalView',
-                'hasLike','categories.category'])
+                'hasLike','onlyOnceCategories.category'])
             ->where(['id'=>$id])
             ->one();
 
@@ -69,7 +73,7 @@ class PostController extends MainController
         ];
 
         if($post->city){
-            $currentUrl=$currentUrl.'/'.$post->city['url_name'];
+            $currentUrl=$currentUrl.$post->city['url_name']?'/'.$post->city['url_name']:'';
             $breadcrumbParams[]=[
                 'name'=>$post->city['name'],
                 'url_name'=>$currentUrl,
@@ -77,18 +81,18 @@ class PostController extends MainController
             ];
         }
 
-        if(isset($post->categories[0]['category'])){
+        if(isset($post->onlyOnceCategories[0]['category'])){
             $breadcrumbParams[]=[
-                'name'=>$post->categories[0]['category']['name'],
-                'url_name'=>$currentUrl.'/'.$post->categories[0]['category']['url_name'],
+                'name'=>$post->onlyOnceCategories[0]['category']['name'],
+                'url_name'=>$currentUrl.'/'.$post->onlyOnceCategories[0]['category']['url_name'],
                 'pjax'=>'class="main-header-pjax a"'
             ];
         }
 
-        if(isset($post->categories[0])){
-            $currentUrl=$currentUrl.'/'.$post->categories[0]['url_name'];
+        if(isset($post->onlyOnceCategories[0])){
+            $currentUrl=$currentUrl.'/'.$post->onlyOnceCategories[0]['url_name'];
             $breadcrumbParams[]=[
-                'name'=>$post->categories[0]['name'],
+                'name'=>$post->onlyOnceCategories[0]['name'],
                 'url_name'=>$currentUrl,
                 'pjax'=>'class="main-header-pjax a"'
             ];
@@ -164,6 +168,26 @@ class PostController extends MainController
             }
         }
     }
+
+    public function actionUploadTmpPhoto(){
+		if(Yii::$app->user->isGuest) {
+			throw new NotFoundHttpException('Cтраница не найдена');
+		}
+
+		if(Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+			$model = new UploadPostPhotosTmp();
+			$model->files = UploadedFile::getInstancesByName('photos');
+			if ($model->upload()) {
+				return $this->asJson(['success' => true,'data'=>$model->getSavedFiles()]);
+			} else {
+				return $this->asJson([
+					'success' => false,
+					'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+				]);
+			}
+		}
+
+	}
 
     public function actionGetPhotos()
     {
@@ -352,10 +376,81 @@ class PostController extends MainController
     public function actionAdd(){
 
 		$categories = UnderCategory::find()->select('id , name')->orderBy('name')->asArray()->all();
-		$cities  = City::find()->select('id, name')->orderBy('name')->asArray()->all();
+		$cities = City::find()->select('id, name')->orderBy('name')->asArray()->all();
 		$params = ['categories' => $categories,
-			'cities' => $cities
+				   'cities'     => $cities,
 		];
-        return $this->render('add', ['params' => $params]);
+		return $this->render('add', ['params' => $params]);
+
+
     }
+
+    public function actionSavePost(){
+		if(!Yii::$app->user->isGuest && Yii::$app->request->isPost){
+			$addPostModel = new AddPost();
+			if($addPostModel->load(Yii::$app->request->post(),'') && $addPostModel->save()){
+				return $this->redirect('/id'.Yii::$app->user->getId());
+			}
+		}
+	}
+
+    public function actionGetFeaturesByCategories(){
+		Yii::$app->response->format = Response::FORMAT_JSON;
+    	$ids = Yii::$app->request->get('categories');
+
+		$features = UnderCategoryFeatures::find()->select('features_id')->distinct('features_id')
+			->innerJoinWith('features')
+			->where(['under_category_id'=>$ids])
+			->andWhere(['main_features'=>null])
+			->all();
+
+		$response = new \stdClass();
+		$response->rubrics=[];
+		$response->additionally=[];
+
+		foreach ($features as $feature){
+			if($feature->features->type==1){
+				array_push($response->additionally,$feature->features);
+			}else{
+				if($feature->features->type==2){
+					array_unshift($response->rubrics,$feature->features);
+				}else{
+					$featureStd = new \stdClass();
+					$featureStd->underFeatures = $feature->features->underFeatures;
+					$featureStd->id = $feature->features->id;
+					$featureStd->name = $feature->features->name;
+					$featureStd->type = $feature->features->type;
+					$featureStd->filter_status = $feature->features->filter_status;
+					$featureStd->main_features = $feature->features->main_features;
+					array_push($response->rubrics,$featureStd);
+				}
+
+			}
+		}
+
+		return $response;
+
+
+	}
+
+	public function actionGetCodeVideo(){
+		$query = Yii::$app->request->get('query');
+
+		$response = new \stdClass();
+
+		if ($query) {
+			$curl = new Curl();
+			$response = $curl->get($query);
+		}
+		return $response;
+	}
+
+	public function actionGetPhotoInfo(){
+		$params = [
+			'src'=> Yii::$app->request->get('src',''),
+			'description'=> Yii::$app->request->get('description','')
+		];
+
+		return $this->renderAjax('__form_photo_info',$params);
+	}
 }

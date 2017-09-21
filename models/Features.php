@@ -68,19 +68,6 @@ class Features extends \yii\db\ActiveRecord
                 ->orderBy('name')
                 ->all();
         }
-
-        if($this->type == 2){
-
-            $min_max = (new \yii\db\Query())
-                ->select('MIN(value) as min , MAX(value) as max')
-                ->from(PostFeatures::tableName())
-                ->where(['features_id' => $this->id])
-                ->one();
-            if($min_max){
-                $this->min = $min_max['min'];
-                $this->max = $min_max['max'];
-            }
-        }
     }
 
     /**

@@ -56,6 +56,7 @@ class PostsSearch extends Posts
     public function search($params, Pagination $pagination, Array $sort, $loadTime = null , array $self_filters =[],$loadGeolocation=[])
     {
         $query = Posts::find()->orderBy(['priority'=>SORT_DESC]);
+		$query->addOrderBy($sort);
         // add conditions that should always apply here
         if(Yii::$app->request->get('sort',false)=='nigh' && $loadGeolocation){
            $coordinates='POINT('.$loadGeolocation["lat"].' '.$loadGeolocation["lon"].')';
@@ -64,7 +65,6 @@ class PostsSearch extends Posts
         }else{
             $query->addOrderBy(['data'=>SORT_ASC]);
         }
-        $query->addOrderBy($sort);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

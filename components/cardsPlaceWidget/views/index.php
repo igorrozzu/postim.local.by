@@ -44,7 +44,7 @@
         <div class="info-address">
             <div class="address-icon"></div>
             <div class="address-block">
-                <div class="address-text"><?=$item["address"]?></div>
+                <div class="address-text"><?=$item->city['name'].', '.$item["address"]?></div>
             </div>
         </div>
     </div>

@@ -89,12 +89,22 @@ class Posts extends \yii\db\ActiveRecord
         ];
     }
 
-
+	public function getPostUnderCategory(){
+		return $this->hasMany(PostUnderCategory::className(), ['post_id' => 'id']);
+	}
     public function getCategories()
     {
         return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
-            ->viaTable(PostUnderCategory::tableName(), ['post_id' => 'id']);
+            ->via('postUnderCategory');
     }
+	public function getOnlyOnceCategories()
+	{
+		return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
+			->via('postUnderCategory',function ($query) {
+				$query->orderBy(['priority' => SORT_DESC])
+					->limit(1);
+			});
+	}
 
     public function getPostFeatures()
     {
@@ -156,7 +166,7 @@ class Posts extends \yii\db\ActiveRecord
     {
         parent::afterFind();
 
-        if (strpos($this->cover, 'default') !== -1 && $this->isRelationPopulated('lastPhoto') && isset($this->lastPhoto)) {
+        if (strpos($this->cover, 'default') !== false && $this->isRelationPopulated('lastPhoto') && isset($this->lastPhoto)) {
             $this->cover = $this->lastPhoto->getPhotoPath();
         }
 

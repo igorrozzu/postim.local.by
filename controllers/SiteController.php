@@ -8,6 +8,7 @@ use app\models\News;
 use app\models\Posts;
 use app\models\TempUser;
 use app\models\User;
+use linslin\yii2\curl\Curl;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\Json;
@@ -16,6 +17,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use app\components\MainController;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class SiteController extends MainController
 {
@@ -179,5 +181,33 @@ class SiteController extends MainController
     public function actionGetFormComplaint(){
         return $this->renderPartial('form_complaint');
     }
+
+    public function actionGetCoordsByAddress(){
+    	$address = Yii::$app->request->get('address');
+    	$address = str_replace(' ','+',$address);
+
+
+
+		Yii::$app->response->format = Response::FORMAT_JSON;
+		$response = new \stdClass();
+		$response->error = true;
+		$response->zoom = 12;
+		if(mb_stripos($address,'область')){
+			$response->zoom = 7;
+		}
+
+		if ($address) {
+			$curl = new Curl();
+			$response->data = $curl->get('http://maps.googleapis.com/maps/api/geocode/json?address=Беларусь+'.$address);
+			$response->data = Json::decode($response->data);
+			if($response->data['status'] == 'OK'){
+				$response->error = false;
+				$response->location = $response->data['results'][0]['geometry']['location'];
+			}
+		}
+
+		return $response;
+
+	}
 
 }

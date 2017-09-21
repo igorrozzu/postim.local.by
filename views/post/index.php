@@ -92,7 +92,7 @@ Pjax::begin([
                 <div class="left-block-f1">
                     <div class="address-card"><span>Адрес</span></div>
                     <div class="block-inside">
-                        <p class="info-card-text"><?=$post['address']?></p>
+                        <p class="info-card-text"><?=$post->city['name'].', '.$post['address']?></p>
                         <?php if($post['additional_address']):?>
                             <div class="dop-info"><?=$post['additional_address']?></div>
                         <?php endif;?>
@@ -127,7 +127,7 @@ Pjax::begin([
         <?php if($post->info['web_site']):?>
             <div class="info-row">
                 <div class="left-block-f1">
-                    <div class="web-site-card">Веб сайт</div>
+                    <div class="web-site-card">Веб-сайт</div>
                     <div class="block-inside">
                         <p class="info-card-text">
                             <a target="_blank" rel="nofollow noopener" href="<?=$post->info['web_site']?>"><?=Helper::getDomainNameByUrl($post->info['web_site'])?></a>
@@ -146,7 +146,13 @@ Pjax::begin([
                     <div class="block-inside social-info">
                         <div class="block-social-info">
                             <?php foreach ($post->info['social_networks'] as $key => $social_network):?>
-                                <a target="_blank" rel="nofollow noopener" href="<?=$social_network?>" class="<?=$key?>-icon"></a>
+                                <?php if(is_array($social_network)):?>
+                                    <?php foreach ($social_network as $keyItem => $valueItem):?>
+                                        <a target="_blank" rel="nofollow noopener" href="<?=$valueItem?>" class="<?=$keyItem?>-icon"></a>
+                                    <?php endforeach;?>
+								<?php else:?>
+                                    <a target="_blank" rel="nofollow noopener" href="<?=$social_network?>" class="<?=$key?>-icon"></a>
+                                <?php endif;?>
                             <?php endforeach;?>
                         </div>
                     </div>
@@ -171,8 +177,8 @@ Pjax::begin([
                             <?php foreach ($post->workingHours as $workingHour):?>
                                 <div class="sh-day">
                                     <div class="sh-title-day"><?=Helper::getShortNameDayById($workingHour['day_type'])?></div>
-                                    <div class="sh-time-start"><?=Yii::$app->formatter->asTime($workingHour['time_start'], 'short')?></div>
-                                    <div class="sh-time-finish"><?=Yii::$app->formatter->asTime($workingHour['time_finish'], 'short')?></div>
+                                    <div class="sh-time-start"><?=Yii::$app->formatter->asTime($workingHour['time_start'], 'HH:mm')?></div>
+                                    <div class="sh-time-finish"><?=Yii::$app->formatter->asTime($workingHour['time_finish'], 'HH:mm')?></div>
                                 </div>
                             <?php endforeach;?>
                         </div>
@@ -188,10 +194,21 @@ Pjax::begin([
         <div class="info-row">
             <div class="left-block-f">
                 <div class="title-info-card">Редакторы</div>
-                <div class="block-inside">
-                    <p class="info-card-text2">
-                        ПостимБай
-                    </p>
+                <div class="block-inside user-editor">
+                    <div class="container-user-editor">
+                        <ul>
+							<?php if ($post->info && is_array($post->info->editors)): ?>
+								<?php foreach ($post->info->editors as $editor): ?>
+                                    <li>
+                                        <a href="/id<?= $editor->id ?>">
+                                            <img src="<?= $editor->getPhoto() ?>">
+                                            <span><?=$editor->name.' '.$editor->surname?></span>
+                                        </a>
+                                    </li>
+								<?php endforeach; ?>
+							<?php endif; ?>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="right-block-f">

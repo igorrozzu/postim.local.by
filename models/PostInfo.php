@@ -86,6 +86,11 @@ class PostInfo extends \yii\db\ActiveRecord
         if($this->phones){
             $this->phones=Json::decode($this->phones);
         }
+        if($this->editors){
+        	$idsUsers = Json::decode($this->editors);
+        	$users = User::find()->where(['id'=>$idsUsers])->all();
+			$this->editors = $users;
+		}
         if($this->social_networks){
             $this->social_networks=Json::decode($this->social_networks);
         }

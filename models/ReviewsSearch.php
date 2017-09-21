@@ -42,7 +42,8 @@ class ReviewsSearch extends Reviews
     {
         $query = Reviews::find()
             ->joinWith(['user.userInfo'])
-            ->innerJoinWith(['post.categories'])
+            ->innerJoinWith(['post'])
+			->with('post.categories')
             ->where(['<=', 'tbl_reviews.date', $params['loadTime'] ?? $loadTime])
             ->orderBy(['tbl_reviews.date' => SORT_DESC]);
 
