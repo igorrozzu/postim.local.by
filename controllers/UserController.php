@@ -243,6 +243,10 @@ class UserController extends MainController
             $pagination = new Pagination([
                 'pageSize' => Yii::$app->request->get('per-page', 4),
                 'page' => Yii::$app->request->get('page', 1) - 1,
+				'selfParams'=>[
+					'id'=>true,
+					'moderation'=>true
+				]
             ]);
             $loadTime = Yii::$app->request->get('loadTime', time());
             $dataProvider = $searchModel->search(

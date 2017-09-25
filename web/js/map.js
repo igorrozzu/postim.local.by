@@ -20,6 +20,8 @@ var Map = (function (window, document, undefined,$) {
     return function () {
         var __markers = null;
         var __marker_user = null;
+        var __marker_place = null;
+
         var that = {
             map_block:null,
             showId:null,
@@ -116,6 +118,39 @@ var Map = (function (window, document, undefined,$) {
 
                 })
             },
+            moveToMap:function(coords,zoom){
+                if(that.map_block!=null){
+					that.map_block.setView([coords.lat, coords.lon], zoom || 12);
+                }
+            },
+            initEventClickMap: function (FcallBack) {
+
+                function initMarkerStart() {
+					if(__marker_place!= null){
+						that.map_block.clearLayer(__marker_place);
+					}
+
+					__marker_place = that.marker.createMarkerPlaceStart(that.map_block.getCenter());
+					__marker_place.addTo(that.map_block);
+					__marker_place.on('click',function (e) {
+						that.setMarkerOnMap(e.target.getLatLng(), FcallBack);
+					})
+				}
+
+                setTimeout(function () {
+					if(that.map_block != null){
+
+                        initMarkerStart();
+
+                        that.map_block.on('move',function () {
+							initMarkerStart();
+						});
+					}else {
+					    that.initEventClickMap(FcallBack);
+                    }
+				},10)
+
+			},
             setIdPlacesOnMap:function (id) {
                 $('#map_block').attr('uniqueQuery',id);
                 that.showPlaceOnMap();
@@ -180,6 +215,20 @@ var Map = (function (window, document, undefined,$) {
                 $('.leaflet-popup-pane').html($html)
             },
 
+            setMarkerOnMap:function (latlng,fCallBack) {
+                if(__marker_place!= null){
+					that.map_block.clearLayer(__marker_place);
+                }
+
+                __marker_place = that.marker.createMarkerPlace(latlng.lat,latlng.lng);
+                __marker_place.addTo(that.map_block);
+
+				that.map_block.off('move');
+                fCallBack(latlng);
+				__marker_place.on('drag',function (e) {
+					fCallBack(e.latlng);
+				})
+			},
 
             marker:{
                 createMarker:function (lat,lon,id) {
@@ -195,6 +244,34 @@ var Map = (function (window, document, undefined,$) {
                         iconSize: [24, 41]
                     })
                 },
+				createMarkerPlace:function (lat,lon) {
+					var Icon = L.divIcon({
+						className: 'marker-place-edit',
+						html: '<img class="place-icon-dit" src="/img/marker_place.png"/>',
+						iconAnchor: [0, 41],
+						iconSize: [24, 41]
+					});
+
+					return L.marker([lat, lon],{
+						icon:Icon,
+						iconSize: [24, 41],
+						draggable: true
+					})
+				},
+				createMarkerPlaceStart:function (latlng) {
+					var Icon = L.divIcon({
+						className: 'marker-place-edit',
+						html: '<img class="place-icon-dit-start" src="/img/marker_place.png"/>',
+						iconAnchor: [0, 41],
+						iconSize: [24, 41]
+					});
+
+					return L.marker(latlng,{
+						icon:Icon,
+						iconSize: [24, 41],
+						draggable: true
+					})
+				},
                 createMarkerUser:function (lat,lon) {
                     var  Icon = L.divIcon({
                         className: 'marker-user',
@@ -204,7 +281,7 @@ var Map = (function (window, document, undefined,$) {
                     });
                     return L.marker([lat, lon],{
                         icon:Icon,
-                        iconSize: [29, 29]
+                        iconSize: [29, 29],
                     })
                 }
             }

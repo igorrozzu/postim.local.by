@@ -40,9 +40,13 @@ LoginFormsAsset::register($this);
         <div class="menu-btn"></div>
         <div class="logo"></div>
         <div class="select-city btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
-        <div class="btn_br">Добавить место</div>
+        <div class="main-pjax">
+            <a href="/add" class="btn_br">Добавить место</a>
+        </div>
         <div class="sign_in_btn">Войти</div>
-        <div class="btn_add_place"></div>
+        <div class="main-pjax">
+            <a href="/add" class="btn_add_place"></a>
+        </div>
         <div class="search_block">
             <input class="search" type="text" placeholder="Поиск">
             <span class="btn-search"></span>

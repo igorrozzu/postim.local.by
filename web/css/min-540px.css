@@ -116,6 +116,9 @@
 .social-btn-share p{
     display: none;
 }
+.address-card span{
+    display: none;
+}
 .review-photo{
     width: 270px;
     height: 190px;

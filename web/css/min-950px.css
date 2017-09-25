@@ -59,6 +59,9 @@
 .block-inside.social-info{
     height: 40px;
 }
+.block-inside.user-editor{
+    margin-top: 5px;
+}
 .autocomplete-result-search ul li{
     width: 33.3333333%;
 }

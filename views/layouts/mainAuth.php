@@ -49,7 +49,9 @@ $countNotif = Notification::getCountNotifications();
         <div class="menu-btn"></div>
         <div class="logo"></div>
         <div class="select-city btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
-        <div class="btn_br">Добавить место</div>
+        <div class="main-pjax">
+            <a href="/add" class="btn_br">Добавить место</a>
+        </div>
         <div class="profile-icon-menu">
             <img class="round-img" src="<?=$user->getPhoto()?>">
         </div>
@@ -58,7 +60,9 @@ $countNotif = Notification::getCountNotifications();
             <span class="count-notice"><?=$countNotif?></span>
             <?php endif;?>
         </div>
-        <div class="btn_add_place"></div>
+        <div class="main-pjax">
+            <a href="/add" class="btn_add_place"></a>
+        </div>
         <div class="search_block">
             <input class="search" type="text" placeholder="Поиск">
             <span class="btn-search"></span>
