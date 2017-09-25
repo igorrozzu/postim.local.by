@@ -324,7 +324,7 @@ Pjax::begin([
     <div class="photo-popup-content">
         <div class="photo-info">
             <div class="photo-header" >
-                <a href="<?=$post['url_name']?>-p<?=$post['id']?>"><?=$post->data?></a>
+                <a href="<?=$post['url_name']?>-p<?=$post['id']?>">arboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaar arboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarboreaarborea</a>
             </div>
         </div>
         <div class="photo-wrap">

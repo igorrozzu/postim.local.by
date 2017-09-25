@@ -30,7 +30,7 @@ class Notification extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'message', 'sender_id'], 'required'],
+            [['user_id', 'message'], 'required'],
             [['user_id', 'sender_id', 'date', 'read'], 'integer'],
         ];
     }

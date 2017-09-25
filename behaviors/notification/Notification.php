@@ -7,18 +7,23 @@ use yii\db\ActiveRecord;
 
 class Notification extends Behavior
 {
-    public $handlerName;
+    public $handlers;
+    public $params = [];
 
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_INSERT => 'run'
+            ActiveRecord::EVENT_AFTER_INSERT => 'handleEvent',
+            ActiveRecord::EVENT_AFTER_UPDATE => 'handleEvent'
         ];
     }
 
-    public function run( $event )
+    public function handleEvent($event)
     {
-        $handler = new $this->handlerName($this->owner);
-        $handler->run();
+        $e = $event->name;
+        if (isset($this->handlers[$e])) {
+            $handler = new $this->handlers[$e]($this->owner, $this->params[$e] ?? []);
+            $handler->run();
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\behaviors\notification\handlers\Reward;
 use app\models\entities\FavoritesNews;
 use app\models\entities\FavoritesPost;
 use Yii;
@@ -44,6 +45,21 @@ class User extends ActiveRecord implements IdentityInterface
             [['role', 'city_id', 'has_social_creation', 'has_changing_password',
                 'photo_hash', 'timezone_offset_in_hour'], 'integer'],
             [['password_reset_token'], 'string', 'max' => 100],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'notification' => [
+                'class' => 'app\behaviors\notification\Notification',
+                'handlers' => [
+                    'afterInsert' => Reward::className(),
+                ],
+                'params' => [
+                    'afterInsert' => ['exp' => 100, 'money' => 1, 'template' => 'reward.register'],
+                ],
+            ],
         ];
     }
 
@@ -108,6 +124,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function getId()
     {
         return $this->getPrimaryKey();
+    }
+
+    public function getUserId()
+    {
+        return $this->getId();
     }
 
     /**

@@ -72,7 +72,10 @@ class UserController extends MainController
         if(Yii::$app->user->isGuest) {
             throw new NotFoundHttpException('Cтраница не найдена');
         }
-        $user = Yii::$app->user->identity;
+        $user = User::find()
+            ->innerJoinWith('userInfo')
+            ->where([User::tableName().'.id' => Yii::$app->user->id])
+            ->one();
         $model = new UserSettings();
         $model->setUser($user);
         $toastMessage = null;

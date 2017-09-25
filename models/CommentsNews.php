@@ -72,7 +72,9 @@ class CommentsNews extends \yii\db\ActiveRecord
         return [
             'notification' => [
                 'class' => 'app\behaviors\notification\Notification',
-                'handlerName' => NewComment::className()
+                'handlers' => [
+                    'afterInsert' => NewComment::className()
+                ]
             ],
         ];
     }

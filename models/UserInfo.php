@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\behaviors\notification\handlers\FillingProfile;
 use Yii;
 
 /**
@@ -44,7 +45,9 @@ class UserInfo extends \yii\db\ActiveRecord
     {
         return [
             ['user_id', 'required'],
-            [['user_id', 'level', 'exp_points', 'total_comments', 'count_places_added', 'count_place_moderation', 'gender', 'email_alert_subscription', 'answers_to_reviews_sub', 'answers_to_comments_sub', 'reviews_and_comments_to_places_sub', 'places_and_discounts_sub'], 'integer'],
+            [['user_id', 'level', 'exp_points', 'total_comments', 'count_places_added', 'count_place_moderation',
+                'gender', 'email_alert_subscription', 'answers_to_reviews_sub', 'answers_to_comments_sub',
+                'reviews_and_comments_to_places_sub', 'places_and_discounts_sub', 'has_reward_for_filling_profile'], 'integer'],
             [['virtual_money'], 'number'],
         ];
     }
@@ -68,6 +71,21 @@ class UserInfo extends \yii\db\ActiveRecord
             'answers_to_comments_sub' => 'Answers To Comments Sub',
             'reviews_and_comments_to_places_sub' => 'Reviews And Comments To Places Sub',
             'places_and_discounts_sub' => 'Places And Discounts Sub',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'notification' => [
+                'class' => 'app\behaviors\notification\Notification',
+                'handlers' => [
+                    'afterUpdate' => FillingProfile::className()
+                ],
+                'params' => [
+                    'afterUpdate' => ['exp' => 100, 'money' => 1, 'template' => 'reward.profile'],
+                ],
+            ],
         ];
     }
 
