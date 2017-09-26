@@ -49,7 +49,7 @@ class Posts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['url_name', 'city_id', 'cover', 'rating', 'data', 'total_view_id'], 'required'],
+            [['url_name', 'city_id', 'rating', 'data', 'total_view_id'], 'required'],
             [['url_name', 'cover', 'data', 'address'], 'string'],
             [['city_id', 'rating', 'count_favorites', 'count_reviews'], 'integer'],
         ];
@@ -104,6 +104,20 @@ class Posts extends \yii\db\ActiveRecord
 				$query->orderBy(['priority' => SORT_DESC])
 					->limit(1);
 			});
+	}
+
+	public function getCategoriesPriority(){
+		$postUnderCategory = UnderCategory::find()
+			->where(['post_id'=> $this->id])
+			->innerJoin(PostUnderCategory::tableName(),'under_category_id = tbl_under_category.id')
+			->orderBy(['priority'=> SORT_DESC])
+			->asArray()
+			->all();
+		return $postUnderCategory;
+	}
+
+	public function getPostCategory(){
+		return $this->hasMany(PostUnderCategory::className(), ['post_id' => 'id']);
 	}
 
     public function getPostFeatures()

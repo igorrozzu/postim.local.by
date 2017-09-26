@@ -26,6 +26,7 @@ use yii\helpers\Url;
             'show-more-btn' => true,
             'replace-container-id' => 'feed-posts',
             'load-time' => $loadTime,
+			'moderation' => $moderation === null ? false : true,
         ]
     ]);
     ?>

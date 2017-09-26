@@ -259,7 +259,8 @@ class UserController extends MainController
                     'settings' => [
                         'show-more-btn' => true,
                         'replace-container-id' => 'feed-posts',
-                        'load-time' => $loadTime
+                        'load-time' => $loadTime,
+						'moderation' => Yii::$app->request->get('moderation', null) === null ? false : true,
                     ]
                 ]);
             }else{
