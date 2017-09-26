@@ -211,8 +211,10 @@
                 </div>
                 <input style="display: none" class="photo-add" name="photo-add" type="file" multiple accept="image/*,image/jpeg,image/gif,image/png">
             </div>
+        <?php endif;?>
 
             <div class="container-add-place">
+				<?php if(Yii::$app->user->identity->role > 1):?>
                 <div class="block-field-setting">
                     <label class="label-field-setting">Заголовок для поисковиков</label>
                     <input name="engine[title]" class="input-field-setting" placeholder="Введите текст" value="">
@@ -228,9 +230,14 @@
                 <div class="btn-setting-save">
                     <div class="large-wide-button"><p>Опубликовать</p></div>
                 </div>
+				<?php else:?>
+                    <div class="btn-setting-save">
+                        <div class="large-wide-button"><p>На модерацию</p></div>
+                    </div>
+                <?php endif;?>
             </div>
 
-		<?php endif;?>
+
     </form>
 </div>
 <div style="margin-bottom:30px;"></div>

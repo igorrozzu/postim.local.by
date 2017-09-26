@@ -27,8 +27,6 @@ class Slug extends Behavior{
     {
         if ( empty( $this->owner->{$this->out_attribute} ) ) {
             $this->owner->{$this->out_attribute} = $this->generateSlug( $this->owner->{$this->in_attribute} );
-        } else {
-            $this->owner->{$this->out_attribute} = $this->generateSlug( $this->owner->{$this->out_attribute} );
         }
     }
 

@@ -62,6 +62,33 @@ class PostController extends MainController
 
     }
 
+    public function actionPostModeration(int $id){
+		$post = Posts::find()->with([
+			'info',
+			'workingHours'=>function ($query) {
+				$query->orderBy(['day_type'=>SORT_ASC]);
+			},
+			])
+			->where(['id'=>$id])
+			->one();
+
+		if($post){
+			Helper::addViews($post->totalView);
+
+			$queryPost =  Posts::find()->where(['tbl_posts.id'=>$id])
+				->prepare(Yii::$app->db->queryBuilder)
+				->createCommand()->rawSql;
+			$keyForMap = Helper::saveQueryForMap($queryPost);
+
+			return $this->render('index_moderation', [
+				'post'=>$post,
+				'keyForMap'=>$keyForMap
+			]);
+		}else{
+			throw new NotFoundHttpException();
+		}
+	}
+
     public function getParamsForBreadcrumb($post){
         $breadcrumbParams=[];
 
@@ -382,12 +409,49 @@ class PostController extends MainController
 		];
 		return $this->render('add', ['params' => $params]);
 
-
     }
+
+    public function actionEdit(int $id){
+
+		$categories = UnderCategory::find()->select('id , name')->orderBy('name')->asArray()->all();
+		$cities = City::find()->select('id, name')->orderBy('name')->asArray()->all();
+		$photos = Gallery::find()->where(['post_id' => $id, 'user_status' => 1])->all();
+		if($photos==null){
+			$photos = [];
+		}
+
+		$post = Posts::find()
+			->where(['id'=>$id])
+			->with(['city', 'info',
+				'workingHours' => function ($query) {
+					$query->orderBy(['day_type' => SORT_ASC]);
+				}])
+			->one();
+
+		$params = ['categories' => $categories,
+			'cities' => $cities,
+			'post' => $post,
+			'photos' => $photos,
+		];
+
+		return $this->render('edit', ['params' => $params]);
+
+	}
 
     public function actionSavePost(){
 		if(!Yii::$app->user->isGuest && Yii::$app->request->isPost){
 			$addPostModel = new AddPost();
+			$addPostModel->setScenario(Yii::$app->user->identity->role > 1 ? AddPost::$SCENARIO_ADD_MODERATOR : AddPost::$SCENARIO_ADD_USER);
+			if($addPostModel->load(Yii::$app->request->post(),'') && $addPostModel->save()){
+				return $this->redirect('/id'.Yii::$app->user->getId());
+			}
+		}
+	}
+
+	public function actionSaveEditPost(){
+		if(!Yii::$app->user->isGuest && Yii::$app->request->isPost){
+			$addPostModel = new AddPost();
+			$addPostModel->setScenario(Yii::$app->user->identity->role > 1 ? AddPost::$SCENARIO_EDIT_MODERATOR : AddPost::$SCENARIO_EDIT_USER);
 			if($addPostModel->load(Yii::$app->request->post(),'') && $addPostModel->save()){
 				return $this->redirect('/id'.Yii::$app->user->getId());
 			}

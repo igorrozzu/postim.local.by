@@ -4,6 +4,7 @@ namespace app\components;
 use app\models\Category;
 use app\models\TotalView;
 use app\models\UnderCategory;
+use app\models\WorkingHours;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Request;
@@ -169,6 +170,63 @@ class Helper{
         $key=md5(serialize($queryReplaceTime));
         Yii::$app->cache->set($key,serialize($query));
         return $key;
+    }
+
+    public static function parserWorktime($workingHours):array {
+        $arrayResult = [1=>['day_type'=>1,'time_start'=>null,'time_finish'=>null],
+			['day_type'=>2,'time_start'=>null,'time_finish'=>null],
+			['day_type'=>3,'time_start'=>null,'time_finish'=>null],
+			['day_type'=>4,'time_start'=>null,'time_finish'=>null],
+			['day_type'=>5,'time_start'=>null,'time_finish'=>null],
+			['day_type'=>6,'time_start'=>null,'time_finish'=>null],
+			['day_type'=>7,'time_start'=>null,'time_finish'=>null],
+        ];
+
+        foreach ($workingHours as $workingHour){
+            $arrayResult[$workingHour['day_type']]['time_start'] = Yii::$app->formatter->asTime($workingHour['time_start'], 'HH:mm');
+            $arrayResult[$workingHour['day_type']]['time_finish'] = Yii::$app->formatter->asTime($workingHour['time_finish'], 'HH:mm');
+        }
+
+        return $arrayResult;
+    }
+
+    public static function parserForEditor(string $html, bool $editorDefault = false):string
+    {
+		$insertItems = \phpQuery::newDocument($html);
+
+		$containerEditor = pq('<div></div>');
+
+		$numberItem = 0;
+
+		foreach ($insertItems['.insert-item'] as $insertItem){
+            if(pq($insertItem)->hasClass('video')){
+                $tmpContainerItem = pq('<div class="item-editor item container-insert">
+                                            <div class="container-toolbar"> 
+                                                <div class="title-toolbar">Видео</div> 
+                                                <div class="btns-toolbar-container">
+                                                    <div class="btn-toolbar-top"></div> 
+                                                    <div class="btn-toolbar-down"></div> 
+                                                    <div class="btn-toolbar-close"></div>
+                                                </div>
+                                            </div>
+                                            <div class="block-insert video" style="display: block;"></div>
+                                    </div>');
+                $insert = pq($tmpContainerItem->find('.block-insert.video'));
+                $insert->html(pq($insertItem)->html());
+                $containerEditor->append($tmpContainerItem);
+
+            }else{
+                $tmpContainerItem = pq('<div class="item  container-editor"><div class="editable"></div></div>');
+                if($editorDefault && $numberItem++ == 0){
+					$tmpContainerItem->addClass('item-editor-default');
+                }
+                $editable = pq($tmpContainerItem->find('.editable'));
+                $editable->html(pq($insertItem)->html());
+                $containerEditor->append($tmpContainerItem);
+            }
+        }
+
+        return $containerEditor->html();
     }
 
 }

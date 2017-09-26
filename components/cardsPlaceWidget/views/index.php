@@ -11,7 +11,12 @@
 
     <div class="card-block" data-item-id="<?=$item['id']?>" data-type="post">
         <div class="main-pjax">
-            <a href="/<?=$item['url_name']?>-p<?=$item['id']?>">
+            <?php if($settings['moderation'] ?? false): ?>
+                <a href="/<?=$item['url_name']?><?=$item['main_id']!=null?'-p'.$item['main_id']:''?>-v<?=$item['id']?>">
+            <?php else:?>
+                <a href="/<?=$item['url_name']?>-p<?=$item['id']?>">
+            <?php endif;?>
+
                 <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
                     <div class="glass">
                         <div class="reviews-btn-icn">

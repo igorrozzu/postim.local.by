@@ -65,6 +65,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'Fotografii-<name:.+>-p<postId:\d+>' => 'post/gallery',
+				'<url:.+>-v<id:\d+>'=>'post/post-moderation',//модерируемая информация о месте
                 '<url:.+>-p<id:\d+>'=>'post/index',//информация о месте
                 'id<id:\d+>' => 'user/index',
                 [
@@ -74,7 +75,8 @@ $config = [
                     'class' => 'app\components\customUrlManager\NewsUrlRule', //лента новостей
                 ],
                 '<url:.+>-n<id:\d+>'=>'news/news',//статья новости
-                '<url:^add$>'=>'post/add'
+                '<url:^add$>'=>'post/add',
+                '<url:^edit>/<id:\d+>'=>'post/edit',
             ],
         ],
         'i18n' => [
