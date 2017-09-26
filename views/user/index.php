@@ -88,6 +88,9 @@ echo $feedReviews;
         });
     })
 </script>
+<?php
+Pjax::end();
+?>
 <div class="container-blackout-photo-popup"></div>
 <div class="photo-popup">
     <div class="close-photo-popup"></div>
@@ -115,8 +118,4 @@ echo $feedReviews;
 
     <div class="gallery-counter"><span>1</span> из <?=$profilePhotoCount?></div>
 </div>
-
-<?php
-Pjax::end();
-?>
 <div style="margin-bottom:30px;"></div>

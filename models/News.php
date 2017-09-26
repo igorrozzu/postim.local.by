@@ -110,6 +110,4 @@ class News extends \yii\db\ActiveRecord
             $this->is_like = true;
         }
     }
-
-
 }

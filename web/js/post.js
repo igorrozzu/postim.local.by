@@ -200,15 +200,13 @@ var Post = (function (window, document, undefined,$) {
                         _container.loadTime = loadTime;
                     },
                     setPostId: function (postId) {
-                        _container.data = [];
-                        _container.postInfo = [];
-                        _container.url = false;
                         _container.postId = postId;
                         _container.host = location.pathname;
+                        that.methods.resetContainerData();
                     },
                     setUserId: function (userId) {
                         _container.userId = userId;
-                        _container.postInfo = [];
+                        that.methods.resetContainerData();
                     },
 
                     initSliderByPhotoId: function (photoId, type) {
@@ -245,6 +243,12 @@ var Post = (function (window, document, undefined,$) {
                     },
 
                     methods: {
+                        resetContainerData: function () {
+                            _container.data = [];
+                            _container.postInfo = [];
+                            _container.url = false;
+                        },
+
                         resizePopupPhoto: function () {
                             var $photoPopup = $('.photo-popup');
                             if ($photoPopup.length != 0 && $photoPopup.css('display') !== 'none') {
@@ -266,7 +270,7 @@ var Post = (function (window, document, undefined,$) {
                             $('.photo-popup-item').attr('src', that.methods.createPhotoUrl(photo));
 
                             that.methods.resizePopupPhoto();
-                            $('#mCSB_2_container').css('left', 0);
+                            $('#mCSB_1_container').css('left', 0);
                             _container.state.galleryIsOpen = true;
                         },
                         changePopupPhoto: function (photo) {

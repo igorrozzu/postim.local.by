@@ -4159,7 +4159,6 @@ input.search-selected-field{
 .photo-left-arrow, .photo-right-arrow{width: 65px;}
 .photo-header{
     margin-left: -55px;
-    height: 20px;
     width: calc(100% + 62px);
 }
 .photo-header a{
@@ -4167,6 +4166,8 @@ input.search-selected-field{
     font-size: 18px;
     white-space: nowrap;
     text-decoration: none;
+    display: block;
+    padding: 20px 0px;
 }
 .photo-header a:hover{
     text-decoration: underline;
@@ -4174,9 +4175,7 @@ input.search-selected-field{
 .photo-popup-content{
     width: calc(100% - 150px);
 }
-.photo-info{
-    padding-top: 20px;
-}
+
 .photo-wrap{
     height: calc(100% - 120px);
     display:flex;
@@ -4838,6 +4837,9 @@ input.search-selected-field{
 }
 .horizontal-scroll12 .mCSB_scrollTools.mCSB_scrollTools_horizontal .mCSB_dragger .mCSB_dragger_bar{
     margin: 12px auto;
+}
+.photo-info #mCSB_1_scrollbar_horizontal {
+    bottom: -10px;
 }
 .block-sort-menu{
     margin-top: 20px;
