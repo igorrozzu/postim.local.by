@@ -19,10 +19,20 @@ class CardsPlaceWidget extends Widget
 
     public function run()
     {
-        echo $this->render('index', [
-            'dataprovider' => $this->dataprovider,
-            'settings' => $this->settings,
-        ]);
+
+    	if($this->settings['moderation']??false){
+			echo $this->render('index_moderation', [
+				'dataprovider' => $this->dataprovider,
+				'settings' => $this->settings,
+			]);
+		}else{
+			echo $this->render('index', [
+				'dataprovider' => $this->dataprovider,
+				'settings' => $this->settings,
+			]);
+		}
+
+
     }
 
     public static function renderCategories($categories,$city){

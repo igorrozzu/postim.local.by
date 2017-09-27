@@ -42,7 +42,7 @@ echo "<script>$js</script>";
     <div class="block-content-between">
         <h2 class="h2-v">Информация</h2>
         <p class="text p-text main-pjax">
-            Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/edit/<?=$post['id']?>">исправьте&nbsp;или&nbsp;дополните&nbsp;информацию.</a>
+            Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/edit/<?=$post['id']?>?moderation=now">исправьте&nbsp;или&nbsp;дополните&nbsp;информацию.</a>
         </p>
     </div>
     <div class="block-info-card">

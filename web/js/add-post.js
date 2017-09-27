@@ -393,37 +393,37 @@ var Post_add = (function (window, document, undefined, $) {
 					}
 					switch (caseField){
 						case 'Телефон':{
-							createBlock('/img/icon-phone-min.png','Номер телефона','contacts[phones][]','^[0-9 +]{3,20}$')
+							createBlock('img/icon-phone-min.png','Номер телефона','contacts[phones][]','^[0-9 +]{3,20}$')
 						}break;
 						case 'Веб-сайт':{
-							createBlock('/img/icon-link-min.png',
+							createBlock('img/icon-link-min.png',
 								'Ссылка на сайт', 'contacts[web_site]',
 								'^(https?:\\/\\/)?([\\da-z\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$'
 							);
 						}break;
 						case 'Вконтакте':{
-							createBlock('/img/icon-vk-min.png','https://vk.com/...','contacts[social_networks][][vk]','^https:\\/\\/vk.com\\/.+$','')
+							createBlock('img/icon-vk-min.png','https://vk.com/...','contacts[social_networks][][vk]','^https:\\/\\/vk.com\\/.+$','')
 						}break;
 						case 'Одноклассники':{
-							createBlock('/img/icon-ok-min.png',
+							createBlock('img/icon-ok-min.png',
 								'https://www.ok.ru/...', 'contacts[social_networks][][ok]',
 								'^https:\\/\\/(www\\.)?ok\\.ru\\/.+$'
 							);
 						}break;
 						case 'Twitter':{
-							createBlock('/img/icon-tw-min.png',
+							createBlock('img/icon-tw-min.png',
 								'https://twitter.com/...', 'contacts[social_networks][][tw]',
 								'^https:\\/\\/twitter.com\\/.+$'
 							);
 						}break;
 						case 'Facebook':{
-							createBlock('/img/icon-fb-min.png',
+							createBlock('img/icon-fb-min.png',
 								'https://www.facebook.com/...', 'contacts[social_networks][][fb]',
 								'^https:\\/\\/(www\\.)?facebook\\.com\\/.+$'
 							);
 						}break;
 						case 'Instagram':{
-							createBlock('/img/icon-instagram-min.png',
+							createBlock('img/icon-instagram-min.png',
 								'https://www.instagram.com/...', 'contacts[social_networks][][inst]',
 								'^https:\\/\\/www\\.instagram\\.com\\/.+$'
 							);

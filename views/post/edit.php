@@ -2,6 +2,9 @@
 <div class="block-content">
 	<form action="/post/save-edit-post" id="post-form" method="post">
         <input type="hidden" name="id" value="<?=$params['post']->id?>">
+        <?php if($params['moderation']):?>
+            <input type="hidden" name="moderation" value="true">
+        <?php endif;?>
 		<div class="container-add-place">
 			<div class="block-field-setting">
 				<label class="label-field-setting">Название места</label>

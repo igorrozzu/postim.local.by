@@ -11,6 +11,8 @@ use app\components\orderStatisticsWidget\OrderStatisticsWidget;
 use app\models\City;
 use app\models\entities\DiscountOrder;
 use app\models\entities\Gallery;
+use app\models\moderation_post\PostsModeration;
+use app\models\moderation_post\PostsModerationSearch;
 use app\models\PostsSearch;
 use app\models\ReviewsSearch;
 use app\models\search\DiscountOrderSearch;
@@ -240,6 +242,9 @@ class UserController extends MainController
     {
         if(Yii::$app->request->isAjax) {
             $searchModel = new PostsSearch();
+            if(Yii::$app->request->get('moderation', null) === null ? false : true){
+				$searchModel = new PostsModerationSearch();
+			}
             $pagination = new Pagination([
                 'pageSize' => Yii::$app->request->get('per-page', 4),
                 'page' => Yii::$app->request->get('page', 1) - 1,

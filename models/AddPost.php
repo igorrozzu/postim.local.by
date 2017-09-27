@@ -3,6 +3,11 @@
 	namespace app\models;
 
 	use app\models\entities\Gallery;
+	use app\models\moderation_post\PostModerationFeatures;
+	use app\models\moderation_post\PostModerationInfo;
+	use app\models\moderation_post\PostModerationUnderCategory;
+	use app\models\moderation_post\PostsModeration;
+	use app\models\moderation_post\WorkingHoursModeration;
 	use Yii;
 	use yii\base\Model;
 	use yii\helpers\FileHelper;
@@ -15,7 +20,8 @@
 			$comments_to_address,$coords_address,$id;
 
 		public $categories, $city, $contacts,
-			$time_work, $features, $photos, $engine;
+			$time_work, $features, $photos, $engine ,
+			$moderation;
 
 		private $cover = null;
 
@@ -24,13 +30,38 @@
 		public static $SCENARIO_ADD_USER = 'add-user';
 		public static $SCENARIO_EDIT_USER = 'edit-user';
 
+		private $PostUnderCategory;
+		private $PostFeatures;
+		private $PostInfo;
+		private $WorkingHours;
+		private $Posts;
+
+
+		public function init()
+		{
+			parent::init();
+
+			if(Yii::$app->user->identity->role > 1){
+				$this->PostUnderCategory = PostUnderCategory::className();
+				$this->PostFeatures = PostFeatures::className();
+				$this->PostInfo = PostInfo::className();
+				$this->WorkingHours = WorkingHours::className();
+				$this->Posts = Posts::className();
+			}else{
+				$this->PostUnderCategory = PostModerationUnderCategory::className();
+				$this->PostFeatures = PostModerationFeatures::className();
+				$this->PostInfo = PostModerationInfo::className();
+				$this->WorkingHours = WorkingHoursModeration::className();
+				$this->Posts = PostsModeration::className();
+			}
+		}
 
 		public function rules()
 		{
 			return [
 				[['name','coords_address', 'address_text','categories','time_work','city','id'], 'required','message'=> 'Поле обязательно для заполнения'],
 				[['name','address_text'], 'match', 'pattern'=>'/^\S.{3,}/i'],
-				[['article','comments_to_address','contacts','features','photos','engine'],'safe']
+				[['article','comments_to_address','contacts','features','photos','engine','moderation'],'safe']
 			];
 		}
 
@@ -38,7 +69,7 @@
 		{
 			return [
 				self::$SCENARIO_ADD_USER => ['name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
-				self::$SCENARIO_EDIT_USER => ['id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
+				self::$SCENARIO_EDIT_USER => ['id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features','moderation'],
 				self::$SCENARIO_EDIT_MODERATOR => ['id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
 				self::$SCENARIO_ADD_MODERATOR => ['name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
 			];
@@ -64,7 +95,8 @@
 		public function addPost(int $main_id = 0){
 			$total_view = new TotalView(['count' => 0]);
 			if ($total_view->save()) {
-				$post = new Posts();
+
+				$post = new $this->Posts();
 				$post->city_id = $this->city;
 
 				$latLng = explode(',', $this->coords_address);
@@ -84,7 +116,7 @@
 				$post->priority = 0;
 
 				$oldPost = null;
-				if($main_id!=0){
+				if ($main_id != 0) {
 					$post->main_id = $main_id;
 					$oldPost = Posts::find()->where(['id'=>$main_id])->one();
 				}
@@ -109,7 +141,10 @@
 					$this->addFeatures($post->id);
 					$this->addPostInfo($post->id);
 					$this->addWorkTime($post->id);
-					$this->addPhotos($post->id);
+
+					if(Yii::$app->user->identity->role > 1){
+						$this->addPhotos($post->id);
+					}
 
 					if($this->cover){
 						$post->cover = '/post_photo/'.$post->id.'/'. $this->cover;
@@ -124,11 +159,13 @@
 			}
 		}
 
-		public function editPost(){
+		public function editPost($post = null){
 
-			$post = Posts::find()
-				->with(['postCategory','info'])
-				->where(['id'=>$this->id])->one();
+			if($post == null){
+				$post = Posts::find()
+					->with(['postCategory','info'])
+					->where(['id'=>$this->id])->one();
+			}
 
 			$this->removeRelations($post);
 
@@ -162,8 +199,11 @@
 				$this->addFeatures($post->id);
 				$this->addPostInfo($post->id);
 				$this->addWorkTime($post->id);
-				$this->addPhotos($post->id);
-				$this->editPhotos($post->id);
+
+				if($this->getScenario()==self::$SCENARIO_EDIT_MODERATOR){
+					$this->addPhotos($post->id);
+					$this->editPhotos($post->id);
+				}
 
 				if ($this->cover) {
 					$post->cover = '/post_photo/' . $post->id . '/' . $this->cover;
@@ -174,18 +214,19 @@
 		}
 
 		public function editPostUser(){
-			$post = Posts::find()->where(['id'=>$this->id])->one();
-			if($post->main_id!= null || $post->user_id == Yii::$app->user->getId()){
-				$this->editPost();
-			}else{
-				$oldPost = Posts::find()->where(['main_id'=>$post->id,'user_id'=>Yii::$app->user->getId()])->one();
+			if ($this->moderation != null) {
+				$post = PostsModeration::find()->with(['postCategory','info'])->where(['id' => $this->id])->one();
+				$this->editPost($post);
+
+			} else {
+				$oldPost = PostsModeration::find()->with(['postCategory','info'])->where(['main_id'=>$this->id,'user_id'=>Yii::$app->user->getId()])->one();
 				if($oldPost!= null){
-					$this->id = $oldPost->id;
-					$this->editPost();
+					$this->editPost($oldPost);
 				}else{
 					$this->addPost($this->id);
 				}
 			}
+
 		}
 
 
@@ -260,8 +301,9 @@
 
 		private function addCategories(int $post_id){
 			$priority = 1;
+
 			foreach ($this->categories as $category) {
-				$post_under_category = new PostUnderCategory(['post_id' => $post_id,
+				$post_under_category = new $this->PostUnderCategory(['post_id' => $post_id,
 						'under_category_id' => $category,
 						'priority' => $priority===1?$priority++:0
 					]
@@ -271,32 +313,33 @@
 		}
 
 		private function addFeatures(int $post_id){
+
 			if ($this->features && is_array($this->features)) {
 				foreach ($this->features as $idFeature => $feature) {
 					if (!is_array($feature)) {
 						$feature = (double) str_replace(',','.',$feature);
-						$post_feature = new PostFeatures(['features_id' => $idFeature,
+						$post_feature = new $this->PostFeatures(['features_id' => $idFeature,
 							'post_id' => $post_id,
 							'value' => $feature,
 						]);
 						$post_feature->save();
 					} elseif ($idFeature == 'additionally') {
 						foreach ($feature as $additionally) {
-							$post_feature = new PostFeatures(['features_id' => $additionally,
+							$post_feature = new $this->PostFeatures(['features_id' => $additionally,
 								'post_id' => $post_id,
 								'value' => 1,
 							]);
 							$post_feature->save();
 						}
 					} else {
-						$post_main_feature = new PostFeatures([
+						$post_main_feature = new $this->PostFeatures([
 							'features_id' => $idFeature,
 							'post_id'     => $post_id,
 							'value'       => 1,
 						]);
 						$post_main_feature->save();
 						foreach ($feature as $item) {
-							$post_feature = new PostFeatures([
+							$post_feature = new $this->PostFeatures([
 								'features_id'      => $item,
 								'post_id'          => $post_id,
 								'value'            => 1,
@@ -310,8 +353,8 @@
 		}
 
 		private function addPostInfo(int $post_id){
+			$postInfo = new $this->PostInfo();
 
-			$postInfo = new PostInfo();
 			if($this->contacts && is_array($this->contacts)){
 				foreach ($this->contacts as $key => $contact) {
 					if ($key == 'phones') {
@@ -336,9 +379,10 @@
 		}
 
 		private function addWorkTime(int $post_id){
+
 			foreach ($this->time_work as $index => $item) {
 				if($item['start'] !== null){
-					$workingHours = new WorkingHours();
+					$workingHours = new $this->WorkingHours();
 					$workingHours->day_type = $index;
 					$workingHours->time_start = $item['start'];
 					$workingHours->time_finish = $item['finish'];
@@ -349,6 +393,7 @@
 		}
 
 		private function addPhotos(int $post_id){
+
 			if ($this->photos) {
 				$dir = Yii::getAlias('@webroot/post_photo/' . $post_id . '/');
 				if (!is_dir($dir)) {
@@ -378,6 +423,7 @@
 			}
 		}
 		private function editPhotos(int $pos_id){
+
 			$galleries = Gallery::find()->where(['post_id'=>$pos_id,'user_status'=>1])->all();
 
 			if($galleries && is_array($galleries)){
@@ -401,6 +447,7 @@
 
 				}
 			}
+
 		}
 
 		private function removeRelations($post){
@@ -408,9 +455,8 @@
 			foreach ($post->postCategory as $item){
 				$item->delete();
 			}
-
-			WorkingHours::deleteAll(['post_id'=>$post->id]);
-			PostFeatures::deleteAll(['post_id'=>$post->id]);
+			($this->WorkingHours)::deleteAll(['post_id'=>$post->id]);
+			($this->PostFeatures)::deleteAll(['post_id'=>$post->id]);
 
 			$post->info->delete();
 		}
@@ -425,7 +471,7 @@
 			$user  = UserInfo::find()->where(['user_id' => Yii::$app->user->getId()])->one();
 
 			$count = Posts::find()->where(['user_id'=>Yii::$app->user->getId(),'status'=>1])->count();
-			$countModeration = Posts::find()->where(['user_id'=>Yii::$app->user->getId(),'status'=>0])->count();
+			$countModeration = PostsModeration::find()->where(['user_id'=>Yii::$app->user->getId(),'status'=>0])->count();
 
 			$user->count_places_added = $count;
 			$user->count_place_moderation = $countModeration;

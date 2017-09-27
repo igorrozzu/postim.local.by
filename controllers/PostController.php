@@ -10,6 +10,7 @@ use app\models\City;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
 use app\models\entities\GalleryComplaint;
+use app\models\moderation_post\PostsModeration;
 use app\models\Posts;
 use app\models\search\GallerySearch;
 use app\models\UnderCategory;
@@ -62,8 +63,8 @@ class PostController extends MainController
 
     }
 
-    public function actionPostModeration(int $id){
-		$post = Posts::find()->with([
+    public function actionPostModeration($id){
+		$post = PostsModeration::find()->with([
 			'info',
 			'workingHours'=>function ($query) {
 				$query->orderBy(['day_type'=>SORT_ASC]);
@@ -75,7 +76,7 @@ class PostController extends MainController
 		if($post){
 			Helper::addViews($post->totalView);
 
-			$queryPost =  Posts::find()->where(['tbl_posts.id'=>$id])
+			$queryPost =  PostsModeration::find()->where(['tbl_posts_moderation.id'=>$id])
 				->prepare(Yii::$app->db->queryBuilder)
 				->createCommand()->rawSql;
 			$keyForMap = Helper::saveQueryForMap($queryPost);
@@ -402,40 +403,53 @@ class PostController extends MainController
 
     public function actionAdd(){
 
-		$categories = UnderCategory::find()->select('id , name')->orderBy('name')->asArray()->all();
-		$cities = City::find()->select('id, name')->orderBy('name')->asArray()->all();
-		$params = ['categories' => $categories,
-				   'cities'     => $cities,
-		];
-		return $this->render('add', ['params' => $params]);
+    	if(!Yii::$app->user->isGuest){
+			$categories = UnderCategory::find()->select('id , name')->orderBy('name')->asArray()->all();
+			$cities = City::find()->select('id, name')->orderBy('name')->asArray()->all();
+			$params = ['categories' => $categories,
+				'cities'     => $cities,
+			];
+			return $this->render('add', ['params' => $params]);
+		}else{
+			throw new NotFoundHttpException();
+		}
 
     }
 
-    public function actionEdit(int $id){
+    public function actionEdit(int $id,$moderation = null){
 
-		$categories = UnderCategory::find()->select('id , name')->orderBy('name')->asArray()->all();
-		$cities = City::find()->select('id, name')->orderBy('name')->asArray()->all();
-		$photos = Gallery::find()->where(['post_id' => $id, 'user_status' => 1])->all();
-		if($photos==null){
+    	if(!Yii::$app->user->isGuest){
+			$categories = UnderCategory::find()->select('id , name')->orderBy('name')->asArray()->all();
+			$cities = City::find()->select('id, name')->orderBy('name')->asArray()->all();
 			$photos = [];
-		}
+			$post = null;
 
-		$post = Posts::find()
-			->where(['id'=>$id])
-			->with(['city', 'info',
-				'workingHours' => function ($query) {
+			if($moderation === null){
+				$photos = Gallery::find()->where(['post_id' => $id, 'user_status' => 1])->all();
+				if($photos==null){
+					$photos = [];
+				}
+				$post = Posts::find()->where(['id'=>$id])->with(['city', 'info','workingHours' => function ($query) {
+							$query->orderBy(['day_type' => SORT_ASC]);
+						}])->one();
+			}else{
+				$post = PostsModeration::find()->where(['id'=>$id])->with(['city', 'info','workingHours' => function ($query) {
 					$query->orderBy(['day_type' => SORT_ASC]);
-				}])
-			->one();
+				}])->one();
+			}
 
-		$params = ['categories' => $categories,
-			'cities' => $cities,
-			'post' => $post,
-			'photos' => $photos,
-		];
 
-		return $this->render('edit', ['params' => $params]);
+			$params = ['categories' => $categories,
+				'cities' => $cities,
+				'post' => $post,
+				'photos' => $photos,
+				'moderation' => $moderation
+			];
 
+			return $this->render('edit', ['params' => $params]);
+		}else{
+			throw new NotFoundHttpException();
+		}
 	}
 
     public function actionSavePost(){
