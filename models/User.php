@@ -20,6 +20,7 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $password
  * @property string $password_reset_token
+ * @property integer $last_visit
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -43,7 +44,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['name', 'surname'], 'string', 'max' => 25],
             [['email', 'password'], 'string'],
             [['role', 'city_id', 'has_social_creation', 'has_changing_password',
-                'photo_hash', 'timezone_offset_in_hour'], 'integer'],
+                'photo_hash', 'timezone_offset_in_hour', 'last_visit'], 'integer'],
             [['password_reset_token'], 'string', 'max' => 100],
         ];
     }
@@ -202,6 +203,17 @@ class User extends ActiveRecord implements IdentityInterface
         } else {
             return '/img/default-profile-icon.png';
         }
+    }
+
+    public function isPhotoDefined()
+    {
+        $userPhotoDir = '/user_photo/' . $this->id;
+        $pathToPhoto = Yii::getAlias('@webroot' . $userPhotoDir);
+        if (is_dir($pathToPhoto)) {
+            return is_file($pathToPhoto . '/' . Yii::$app->params['user.photoName']);
+        }
+
+        return false;
     }
 
     /**

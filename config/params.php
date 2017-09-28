@@ -7,6 +7,7 @@ return [
     'user.loginDuration' => 3600*24*30,
     'user.passwordResetTokenExpire' => 3600,
     'user.photoName' => 'photo.jpg',
+    'user.lastVisitUpdatePeriod' => 1800,
     'user.socialAuthGeneratePasswordLength' => 15,
     'security.encryptionKey' => 'mc2447382@',
     'post.perPage' => 16,

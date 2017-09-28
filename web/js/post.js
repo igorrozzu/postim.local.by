@@ -270,7 +270,7 @@ var Post = (function (window, document, undefined,$) {
                             $('.photo-popup-item').attr('src', that.methods.createPhotoUrl(photo));
 
                             that.methods.resizePopupPhoto();
-                            $('#mCSB_1_container').css('left', 0);
+                            $('.photo-info .mCSB_container').css('left', 0);
                             _container.state.galleryIsOpen = true;
                         },
                         changePopupPhoto: function (photo) {

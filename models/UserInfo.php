@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\behaviors\notification\handlers\FillingProfile;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "tbl_users_info".
@@ -21,6 +22,7 @@ use Yii;
  * @property integer $answers_to_comments_sub
  * @property integer $reviews_and_comments_to_places_sub
  * @property integer $places_and_discounts_sub
+ * @property integer $has_reward_for_filling_profile
  */
 class UserInfo extends \yii\db\ActiveRecord
 {
@@ -90,9 +92,17 @@ class UserInfo extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return int
+     */
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
@@ -106,6 +116,7 @@ class UserInfo extends \yii\db\ActiveRecord
 
         return null;
     }
+
     public static function getUserChoice($choice)
     {
         switch ((int)$choice) {
@@ -116,24 +127,28 @@ class UserInfo extends \yii\db\ActiveRecord
         return null;
     }
 
-    public function isGenderDefined()
+    public function isGenderDefined(): bool
     {
         return in_array($this->gender, self::ALLOW_GENDER_VALUES, true);
     }
 
-    public function isGenderNotSelected()
+    public function isGenderNotSelected(): bool
     {
         return $this->gender === self::NOT_SELECTED_GENDER_VALUE;
     }
 
-    public function isUserMan()
+    public function isUserMan(): bool
     {
         return $this->gender === self::MAN_GENDER_VALUE;
     }
 
-    public function isUserWoman()
+    public function isUserWoman(): bool
     {
         return $this->gender === self::WOMAN_GENDER_VALUE;
     }
 
+    public function hasRewardForFillingProfile(): bool
+    {
+        return (bool) $this->has_reward_for_filling_profile;
+    }
 }
