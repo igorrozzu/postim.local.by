@@ -31,7 +31,7 @@ Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => true,
     'id' => 'post-feeds',
-    'linkSelector' => '.menu-btns-card a',
+    'linkSelector' => '#post-feeds .menu-btns-card a',
     'formSelector' => false,
 ])
 ?>
@@ -197,8 +197,8 @@ Pjax::begin([
                 <div class="block-inside user-editor">
                     <div class="container-user-editor">
                         <ul>
-							<?php if ($post->info && is_array($post->info->editors)): ?>
-								<?php foreach ($post->info->editors as $editor): ?>
+							<?php if ($post->info && is_array($post->info->editors_users)): ?>
+								<?php foreach ($post->info->editors_users as $editor): ?>
                                     <li>
                                         <a href="/id<?= $editor->id ?>">
                                             <img src="<?= $editor->getPhoto() ?>">

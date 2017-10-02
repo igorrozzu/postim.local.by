@@ -216,18 +216,28 @@ var Map = (function (window, document, undefined,$) {
             },
 
             setMarkerOnMap:function (latlng,fCallBack) {
-                if(__marker_place!= null){
-					that.map_block.clearLayer(__marker_place);
+				console.log('21212');
+				if(that.map_block != null){
+					if(__marker_place!= null){
+						that.map_block.clearLayer(__marker_place);
+					}
+
+					__marker_place = that.marker.createMarkerPlace(latlng.lat,latlng.lng);
+					__marker_place.addTo(that.map_block);
+
+					that.map_block.off('move');
+					fCallBack(latlng);
+					__marker_place.on('drag',function (e) {
+						fCallBack(e.latlng);
+					})
+                }
+				else {
+				    setTimeout(function () {
+						that.setMarkerOnMap(latlng,fCallBack);
+						},20);
                 }
 
-                __marker_place = that.marker.createMarkerPlace(latlng.lat,latlng.lng);
-                __marker_place.addTo(that.map_block);
 
-				that.map_block.off('move');
-                fCallBack(latlng);
-				__marker_place.on('drag',function (e) {
-					fCallBack(e.latlng);
-				})
 			},
 
             marker:{

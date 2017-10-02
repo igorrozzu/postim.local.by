@@ -24,6 +24,10 @@ class PostModerationInfo extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public $editors_users = [];
+
+
     public static function tableName()
     {
         return 'tbl_post_moderation_info';
@@ -87,10 +91,19 @@ class PostModerationInfo extends \yii\db\ActiveRecord
         if($this->phones){
             $this->phones=Json::decode($this->phones);
         }
-        if($this->editors){
-        	$idsUsers = Json::decode($this->editors);
-        	$users = User::find()->where(['id'=>$idsUsers])->all();
-			$this->editors = $users;
+		if($this->editors){
+			$idsUsers = $this->editors = Json::decode($this->editors);
+			$users = [];
+			$usersFromDb = User::find()->where(['id'=>$idsUsers])->all();
+
+			foreach ($idsUsers as $item){
+				foreach ($usersFromDb as $user){
+					if($item == $user->id){
+						array_push($users,$user);
+					}
+				}
+			}
+			$this->editors_users = $users;
 		}
         if($this->social_networks){
             $this->social_networks=Json::decode($this->social_networks);

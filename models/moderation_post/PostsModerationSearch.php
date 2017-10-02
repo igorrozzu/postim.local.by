@@ -50,31 +50,34 @@ class PostsModerationSearch extends PostsModeration
      */
     public function search($params, Pagination $pagination, Array $sort, $loadTime = null)
     {
-        $query = PostsModeration::find()->orderBy(['priority'=>SORT_DESC]);
-		$query->addOrderBy($sort);
+
+		$query1 = (new \yii\db\Query())
+			->select("tbl_posts.id, tbl_posts.city_id, tbl_posts.url_name, tbl_posts.cover, tbl_posts.rating, tbl_posts.data, tbl_posts.address, tbl_posts.date, tbl_posts.main_id")
+			->from('tbl_posts')
+			->innerJoin('tbl_city','tbl_city.id = tbl_posts.city_id')
+			->innerJoin('tbl_region','tbl_region.id = tbl_city.region_id')
+			->where(['=', 'status', 0])
+			->andwhere(['=', 'user_id', \Yii::$app->user->getId()])
+			->andWhere(['<=', 'tbl_posts.date', $params['loadTime'] ?? $loadTime]);
+
+		$query2 = (new \yii\db\Query())
+			->select("tbl_posts_moderation.id, tbl_posts_moderation.city_id, tbl_posts_moderation.url_name, tbl_posts_moderation.cover, tbl_posts_moderation.rating, tbl_posts_moderation.data, tbl_posts_moderation.address, tbl_posts_moderation.date, tbl_posts_moderation.main_id")
+			->from('tbl_posts_moderation')
+			->innerJoin('tbl_city','tbl_city.id = tbl_posts_moderation.city_id')
+			->innerJoin('tbl_region','tbl_region.id = tbl_city.region_id')
+			->where(['=', 'status', 0])
+			->andwhere(['=', 'user_id', \Yii::$app->user->getId()])
+			->andWhere(['<=', 'tbl_posts_moderation.date', $params['loadTime'] ?? $loadTime]);
+
+		$unionQuery = (new \yii\db\Query())
+			->from(['dummy_name' => $query1->union($query2)])
+			->orderBy(['date' => SORT_DESC]);
+
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $unionQuery,
             'pagination' => $pagination
         ]);
-
-
-        if (!$this->load($params,'') && !$this->validate()) {
-            return $dataProvider;
-        }
-
-        $relations = ['city.region'];
-
-        $query->innerJoinWith($relations);
-        $query->joinWith('categories.category');
-        $query->With('workingHours');
-
-        if(isset($params['loadTime']) || isset($loadTime) ){
-            $query->andWhere(['<=', 'tbl_posts_moderation.date', $params['loadTime'] ?? $loadTime]);
-        }
-
-		$query->andWhere([PostsModeration::tableName().'.status' => 0]);
-        $query->groupBy(['tbl_posts_moderation.id']);
 
         return $dataProvider;
     }

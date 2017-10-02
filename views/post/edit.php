@@ -1,9 +1,10 @@
 <div class="margin-top60"></div>
 <div class="block-content">
 	<form action="/post/save-edit-post" id="post-form" method="post">
-        <input type="hidden" name="id" value="<?=$params['post']->id?>">
-        <?php if($params['moderation']):?>
-            <input type="hidden" name="moderation" value="true">
+        <?php if(isset($params['post']['main_id'])):?>
+            <input type="hidden" name="id" value="<?=$params['post']->main_id?>">
+        <?php else:?>
+            <input type="hidden" name="id" value="<?=$params['post']->id?>">
         <?php endif;?>
 		<div class="container-add-place">
 			<div class="block-field-setting">
@@ -103,7 +104,7 @@
 		</div>
 
 		<div class="container-add-place block-features">
-
+            <?=$this->render('__edit_features',['features' => $params['features']])?>
 		</div>
 
 
@@ -133,7 +134,11 @@
 			});
 		</script>
 
-		<?php if(Yii::$app->user->identity->role > 1):?>
+		<?php if(Yii::$app->user->identity->role > 1 ||
+            ($params['post']['status']==0 &&
+                !isset($params['post']['main_id']) &&
+                $params['post']['user_id'] == Yii::$app->user->getId())
+        ):?>
 			<div class="container-add-place">
 				<div class="container-gallery">
 					<div class="gallery-header">Галерея</div>
@@ -162,7 +167,7 @@
                     <div class="large-wide-button"><p>Редактировать</p></div>
                 </div>
 				<?php else:?>
-                    <div class="btn-setting-save">
+                    <div class="btn-setting-save" style="margin-top: -20px">
                         <div class="large-wide-button"><p>На модерацию</p></div>
                     </div>
                 <?php endif;?>
@@ -194,18 +199,12 @@
 		};
 
 		$('.container-time .time-period input').mask(maskBehavior, spOptions);
+		map.map_block = null;
 		map.init({lat:<?=$params['post']->lat?>, lon:<?=$params['post']->lon?>},16);
 
-		function setMarker() {
-			if(map.map_block != null){
-				map.setMarkerOnMap({lat:<?=$params['post']->lat?>,lng:<?=$params['post']->lon?>},post_add.setPlace);
-			}else {
-				setTimeout(function () {
-					setMarker();
-				},20)
-			}
-		}
-		setMarker();
+		post_add.validation.check_change(true);
+
+		map.setMarkerOnMap({lat:<?=$params['post']->lat?>,lng:<?=$params['post']->lon?>},post_add.setPlace);
 
 	})
 </script>

@@ -3,20 +3,17 @@
     use yii\helpers\Html;
     use app\components\cardsPlaceWidget\CardsPlaceWidget;
     use app\components\Helper;
-    $data = $dataprovider->getModels();
 ?>
 <?php foreach ($data as $item):?>
 
     <div class="card-block" data-item-id="<?=$item['id']?>" data-type="post">
         <div class="main-pjax">
-
-                <a href="/<?=$item['url_name']?>-p<?=$item['id']?>/moderation">
-
+                <a href="/<?=$item['url_name']?>-p<?=$item['main_id']!==null?$item['main_id'].'/moderation':$item['id']?>">
                 <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
                     <div class="glass">
                         <div class="reviews-btn-icn">
                             <div class="rating bg-r<?=$item["rating"]?>"><?=$item["rating"]?></div>
-                            <div class="total-reviews"><?=$item["count_reviews"]?> отзывов</div>
+                            <div class="total-reviews">0 отзывов</div>
                         </div>
                     </div>
                 </div>
@@ -24,18 +21,18 @@
         </div>
 
         <div class="card-block-info">
-            <p class="info-head"><?=CardsPlaceWidget::renderCategories($item->categories,$item->city)?></p>
+            <p class="info-head"><?=CardsPlaceWidget::renderCategories($item['categories'],$item['city'])?></p>
             <p class="card-info"><?=Html::encode($item['data'])?></p>
         </div>
         <div class="time-work">
-            <?=$item->is_open?'<p class="open">Открыто '.$item->timeOpenOrClosed.'</p>':
-                '<p class="close">Закрыто '.$item->timeOpenOrClosed.'</p>'?>
+            <?=$item['is_open']?'<p class="open">Открыто</p>':
+                '<p class="close">Закрыто</p>'?>
         </div>
         <hr class="hr-c">
         <div class="info-address">
             <div class="address-icon"></div>
             <div class="address-block">
-                <div class="address-text"><?=$item->city['name'].', '.$item["address"]?></div>
+                <div class="address-text"><?=$item['city']['name'].', '.$item["address"]?></div>
             </div>
         </div>
     </div>

@@ -42,7 +42,7 @@ echo "<script>$js</script>";
     <div class="block-content-between">
         <h2 class="h2-v">Информация</h2>
         <p class="text p-text main-pjax">
-            Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/edit/<?=$post['id']?>?moderation=now">исправьте&nbsp;или&nbsp;дополните&nbsp;информацию.</a>
+            Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/edit/<?=$post['main_id']?>?moderation=now">исправьте&nbsp;или&nbsp;дополните&nbsp;информацию.</a>
         </p>
     </div>
     <div class="block-info-card">
@@ -156,8 +156,8 @@ echo "<script>$js</script>";
                 <div class="block-inside user-editor">
                     <div class="container-user-editor">
                         <ul>
-							<?php if ($post->info && is_array($post->info->editors)): ?>
-								<?php foreach ($post->info->editors as $editor): ?>
+							<?php if ($post->info && is_array($post->info->editors_users)): ?>
+								<?php foreach ($post->info->editors_users as $editor): ?>
                                     <li>
                                         <a href="/id<?= $editor->id ?>">
                                             <img src="<?= $editor->getPhoto() ?>">

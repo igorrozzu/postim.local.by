@@ -55,7 +55,11 @@ class PostsSearch extends Posts
      */
     public function search($params, Pagination $pagination, Array $sort, $loadTime = null , array $self_filters =[],$loadGeolocation=[])
     {
-        $query = Posts::find()->orderBy(['priority'=>SORT_DESC]);
+		$query = Posts::find();
+		if(!isset($params['id'])){
+			$query->orderBy(['priority'=>SORT_DESC]);
+		}
+
 		$query->addOrderBy($sort);
         // add conditions that should always apply here
         if(Yii::$app->request->get('sort',false)=='nigh' && $loadGeolocation){
@@ -92,8 +96,12 @@ class PostsSearch extends Posts
             $this->queryForPlaceOnMap->andWhere(['<=', 'tbl_posts.date', $params['loadTime'] ?? $loadTime]);
         }
         if(isset($params['id'])){
-            $query->andWhere(['tbl_posts.user_id' => $params['id']]);
-            $this->queryForPlaceOnMap->andWhere(['tbl_posts.user_id' => $params['id']]);
+
+			$query->joinWith(['info'=>function ($query) {
+				$query->select('editors');
+			}]);
+			$query->andWhere("editors @> '[".$params['id']."]'");
+
         } else if(isset($this->favorite_id)) {
             $query->andWhere(['tbl_favorites_post.user_id' => $this->favorite_id]);
             $this->queryForPlaceOnMap->andWhere(['tbl_favorites_post.user_id' => $this->favorite_id]);

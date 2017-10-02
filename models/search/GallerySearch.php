@@ -95,7 +95,7 @@ class GallerySearch extends Gallery
             return $dataProvider;
         }
 
-        $query->andWhere([Gallery::tableName().'.user_id' => $this->userId]);
+		$query->andWhere(['tbl_gallery.user_id' => $this->userId,'tbl_posts.status'=>1]);
         return $dataProvider;
     }
 

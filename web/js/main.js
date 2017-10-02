@@ -33,7 +33,16 @@ var Main = (function (window, document, undefined,$) {
                     $(document).off('click','.close-complaint-btn')
                         .on('click','.close-complaint-btn',function () {
                             main.closeFormComplaint();
-                        })
+                        });
+					$(document).off('click', '.btn_add_place,.btn_br')
+						.on('click', '.btn_add_place,.btn_br', function (e) {
+							if (that.User.is_guest) {
+								that.showErrorAut('Незарегистрированные пользователи не могут добоавлять места');
+								e.preventDefault();
+
+								return false;
+							}
+						})
                 });
 
                 $(document).on('pjax:end', function(data, status, xhr, options) {
@@ -66,8 +75,8 @@ var Main = (function (window, document, undefined,$) {
                 $(document).pjax("#pjax-container-settings a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-settings"});
                 $(document).on("submit", "#pjax-container-settings form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-settings"});});
 
-                $(document).off("click", ".menu-btns-card a");
-                $(document).pjax(".menu-btns-card a", {"push":true,"replace":false,"timeout":60000,"scrollTo":false,"container":"#post-feeds"});
+                $(document).off("click", "#post-feeds .menu-btns-card a");
+                $(document).pjax("#post-feeds .menu-btns-card a", {"push":true,"replace":false,"timeout":60000,"scrollTo":false,"container":"#post-feeds"});
 
             },
             User:{

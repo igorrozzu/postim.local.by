@@ -6,6 +6,15 @@ var Post = (function (window, document, undefined,$) {
 
             init:function () {
                 that.transitionToPostHandler();
+
+                $(document).off('click','.href-edit')
+                    .on('click','.href-edit',function (e) {
+						if (main.User.is_guest) {
+							main.showErrorAut('Незарегистрированные пользователи не могут редактировать место');
+							e.preventDefault();
+							return false;
+						}
+					})
             },
             transitionToPostHandler: function () {
                 $(document).off('click','.card-block').on('click','.card-block', function (e) {
@@ -349,11 +358,7 @@ var Post = (function (window, document, undefined,$) {
                     sendComplaintHandler: function () {
                         $(document).on('click', '.complain-gallery-text', function () {
                             if (main.User.is_guest) {
-                                $().toastmessage('showToast', {
-                                    text: 'Незарегистрированные пользователи не могут жаловаться на фото',
-                                    stayTime:8000,
-                                    type: 'error'
-                                });
+								main.showErrorAut('Незарегистрированные пользователи не могут жаловаться на фото');
                                 return;
                             }
                             var html = main.getFormComplaint();

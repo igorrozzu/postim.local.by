@@ -67,7 +67,8 @@ class CountCategoryPlace extends \yii\base\Behavior{
 
             $query = Posts::find()
                 ->joinWith('categories.category')
-                ->joinWith('city.region');
+                ->joinWith('city.region')
+				->where(['status'=>1]);
             if(\Yii::$app->category->getCategoryByName($category_name)){
                 $query->andWhere(['tbl_category.url_name'=>$category_name]);
             }else{

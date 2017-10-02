@@ -246,7 +246,7 @@ class UserController extends MainController
 				$searchModel = new PostsModerationSearch();
 			}
             $pagination = new Pagination([
-                'pageSize' => Yii::$app->request->get('per-page', 4),
+                'pageSize' => Yii::$app->request->get('per-page', 8),
                 'page' => Yii::$app->request->get('page', 1) - 1,
 				'selfParams'=>[
 					'id'=>true,

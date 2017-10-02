@@ -10,6 +10,8 @@
 	use app\models\moderation_post\WorkingHoursModeration;
 	use Yii;
 	use yii\base\Model;
+	use yii\db\Exception;
+	use yii\helpers\ArrayHelper;
 	use yii\helpers\FileHelper;
 
 
@@ -20,15 +22,14 @@
 			$comments_to_address,$coords_address,$id;
 
 		public $categories, $city, $contacts,
-			$time_work, $features, $photos, $engine ,
-			$moderation;
+			$time_work, $features, $photos, $engine;
 
 		private $cover = null;
 
-		public static $SCENARIO_ADD_MODERATOR = 'add-moderator';
+		public static $SCENARIO_ADD = 'add';
 		public static $SCENARIO_EDIT_MODERATOR = 'edit-moderator';
-		public static $SCENARIO_ADD_USER = 'add-user';
 		public static $SCENARIO_EDIT_USER = 'edit-user';
+		public static $SCENARIO_EDIT_USER_SELF_POST = 'edit-user-self-post';
 
 		private $PostUnderCategory;
 		private $PostFeatures;
@@ -36,18 +37,22 @@
 		private $WorkingHours;
 		private $Posts;
 
+		public $customError = false;
 
-		public function init()
-		{
-			parent::init();
 
-			if(Yii::$app->user->identity->role > 1){
+		private function initScenario(){
+			$mainScenario = [self::$SCENARIO_EDIT_MODERATOR,
+				self::$SCENARIO_EDIT_USER_SELF_POST,
+				self::$SCENARIO_ADD,
+			];
+
+			if (in_array($this->getScenario(), $mainScenario)) {
 				$this->PostUnderCategory = PostUnderCategory::className();
 				$this->PostFeatures = PostFeatures::className();
 				$this->PostInfo = PostInfo::className();
 				$this->WorkingHours = WorkingHours::className();
 				$this->Posts = Posts::className();
-			}else{
+			} else {
 				$this->PostUnderCategory = PostModerationUnderCategory::className();
 				$this->PostFeatures = PostModerationFeatures::className();
 				$this->PostInfo = PostModerationInfo::className();
@@ -56,22 +61,28 @@
 			}
 		}
 
+		public function setScenario($value)
+		{
+			parent::setScenario($value);
+			$this->initScenario();
+		}
+
 		public function rules()
 		{
 			return [
 				[['name','coords_address', 'address_text','categories','time_work','city','id'], 'required','message'=> 'Поле обязательно для заполнения'],
 				[['name','address_text'], 'match', 'pattern'=>'/^\S.{3,}/i'],
-				[['article','comments_to_address','contacts','features','photos','engine','moderation'],'safe']
+				[['article','comments_to_address','contacts','features','photos','engine'],'safe']
 			];
 		}
 
 		public function scenarios()
 		{
 			return [
-				self::$SCENARIO_ADD_USER => ['name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
-				self::$SCENARIO_EDIT_USER => ['id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features','moderation'],
+				self::$SCENARIO_ADD => ['name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
+				self::$SCENARIO_EDIT_USER => ['id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
 				self::$SCENARIO_EDIT_MODERATOR => ['id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
-				self::$SCENARIO_ADD_MODERATOR => ['name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
+				self::$SCENARIO_EDIT_USER_SELF_POST=> ['id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
 			];
 		}
 
@@ -80,9 +91,9 @@
 			if ($this->validate()) {
 
 				switch ($this->getScenario()){
-					case self::$SCENARIO_ADD_MODERATOR:$this->addPost();break;
-					case self::$SCENARIO_ADD_USER:$this->addPost();break;
+					case self::$SCENARIO_ADD:$this->addPost();break;
 					case self::$SCENARIO_EDIT_MODERATOR:$this->editPost();break;
+					case self::$SCENARIO_EDIT_USER_SELF_POST:$this->editPost();break;
 					case self::$SCENARIO_EDIT_USER:$this->editPostUser();break;
 				}
 
@@ -93,40 +104,120 @@
 		}
 
 		public function addPost(int $main_id = 0){
-			$total_view = new TotalView(['count' => 0]);
-			if ($total_view->save()) {
+			$transaction = Yii::$app->db->beginTransaction();
 
-				$post = new $this->Posts();
+			try {
+				$total_view = new TotalView(['count' => 0]);
+				if ($total_view->save()) {
+
+					$post = new $this->Posts();
+					$post->city_id = $this->city;
+
+					$latLng = explode(',', $this->coords_address);
+					$post->lat = $latLng[0];
+					$post->lon = $latLng[1];
+
+					$post->rating = 0;
+					$post->data = $this->name;
+					$post->address = $this->address_text;
+					$post->additional_address = $this->comments_to_address;
+					$post->user_id = Yii::$app->user->getId();
+					$post->status = Yii::$app->user->identity->role > 1 ? 1 : 0;
+					$post->date = time();
+					$post->total_view_id = $total_view->id;
+					$post->count_favorites = 0;
+					$post->count_reviews = 0;
+					$post->priority = 0;
+
+					$oldPost = null;
+					$oldPostInfo = null;
+					if ($main_id != 0) {
+						$post->main_id = $main_id;
+						$oldPost = Posts::find()->with('info')->where(['id' => $main_id])->one();
+						$oldPostInfo = $oldPost->info;
+					}
+
+					if (Yii::$app->user->identity->role > 1) {
+						$post->title = $this->engine['title'];
+						$post->description = $this->engine['description'];
+						$post->key_word = $this->engine['key_word'];
+					}
+
+
+					for ($i = 1; $i < 8; $i++) {
+						if ($this->time_work[ $i ]['finish'] > 0) {
+							$post->priority = 1;
+							break;
+						}
+					}
+
+					if ($post->save()) {
+
+						$this->addCategories($post->id);
+						$this->addFeatures($post->id);
+						$this->addPostInfo($post->id, $oldPostInfo);
+						$this->addWorkTime($post->id);
+
+						if ($this->getScenario() != self::$SCENARIO_EDIT_USER) {
+							$this->addPhotos($post->id);
+						}
+
+						if ($this->cover) {
+							$post->cover = '/post_photo/' . $post->id . '/' . $this->cover;
+							$post->update();
+						} elseif ($oldPost != null) {
+							$post->cover = $oldPost->cover;
+							$post->update();
+						}
+					} else {
+						$this->customError = true;
+					}
+
+				} else {
+					$this->customError = true;
+				}
+			} catch (Exception $exception) {
+				$this->customError = true;
+			}
+
+			if($this->customError){
+				$transaction->rollBack();
+			}else{
+				$transaction->commit();
+			}
+		}
+
+		public function editPost($post = null){
+			$transaction = Yii::$app->db->beginTransaction();
+
+			try{
+
+				$old_post_info =null;
+
+				if($post == null){
+					$post = Posts::find()
+						->with(['postCategory','info'])
+						->where(['id'=>$this->id])->one();
+					$old_post_info = $post->info;			}
+
+				$this->removeRelations($post);
+
 				$post->city_id = $this->city;
 
 				$latLng = explode(',', $this->coords_address);
 				$post->lat = $latLng[0];
 				$post->lon = $latLng[1];
 
-				$post->rating = 0;
 				$post->data = $this->name;
 				$post->address = $this->address_text;
 				$post->additional_address = $this->comments_to_address;
-				$post->user_id = Yii::$app->user->getId();
-				$post->status = Yii::$app->user->identity->role > 1 ? 1 : 0;
-				$post->date = time();
-				$post->total_view_id = $total_view->id;
-				$post->count_favorites = 0;
-				$post->count_reviews = 0;
 				$post->priority = 0;
-
-				$oldPost = null;
-				if ($main_id != 0) {
-					$post->main_id = $main_id;
-					$oldPost = Posts::find()->where(['id'=>$main_id])->one();
-				}
 
 				if(Yii::$app->user->identity->role > 1){
 					$post->title = $this->engine['title'];
 					$post->description = $this->engine['description'];
 					$post->key_word = $this->engine['key_word'];
 				}
-
 
 				for ($i = 1; $i < 8; $i++) {
 					if ($this->time_work[ $i ]['finish'] > 0) {
@@ -135,96 +226,43 @@
 					}
 				}
 
-				if ($post->save()) {
-
+				if ($post->update()) {
 					$this->addCategories($post->id);
 					$this->addFeatures($post->id);
-					$this->addPostInfo($post->id);
+					$this->addPostInfo($post->id,$old_post_info);
 					$this->addWorkTime($post->id);
 
-					if(Yii::$app->user->identity->role > 1){
+					if($this->getScenario() != self::$SCENARIO_EDIT_USER){
 						$this->addPhotos($post->id);
+						$this->editPhotos($post->id);
 					}
 
-					if($this->cover){
-						$post->cover = '/post_photo/'.$post->id.'/'. $this->cover;
-						$post->update();
-					}elseif($oldPost != null){
-						$post->cover = $oldPost->cover;
+					if ($this->cover) {
+						$post->cover = '/post_photo/' . $post->id . '/' . $this->cover;
 						$post->update();
 					}
-
+				}else{
+					$this->customError = true;
 				}
 
-			}
-		}
-
-		public function editPost($post = null){
-
-			if($post == null){
-				$post = Posts::find()
-					->with(['postCategory','info'])
-					->where(['id'=>$this->id])->one();
+			}catch (Exception $exception){
+				$this->customError = true;
 			}
 
-			$this->removeRelations($post);
-
-			$post->city_id = $this->city;
-
-			$latLng = explode(',', $this->coords_address);
-			$post->lat = $latLng[0];
-			$post->lon = $latLng[1];
-
-			$post->data = $this->name;
-			$post->address = $this->address_text;
-			$post->additional_address = $this->comments_to_address;
-			$post->status = $this->getScenario()==self::$SCENARIO_EDIT_MODERATOR?1:0;
-			$post->priority = 0;
-
-			if($this->getScenario()==self::$SCENARIO_EDIT_MODERATOR){
-				$post->title = $this->engine['title'];
-				$post->description = $this->engine['description'];
-				$post->key_word = $this->engine['key_word'];
-			}
-
-			for ($i = 1; $i < 8; $i++) {
-				if ($this->time_work[ $i ]['finish'] > 0) {
-					$post->priority = 1;
-					break;
-				}
-			}
-
-			if ($post->update()) {
-				$this->addCategories($post->id);
-				$this->addFeatures($post->id);
-				$this->addPostInfo($post->id);
-				$this->addWorkTime($post->id);
-
-				if($this->getScenario()==self::$SCENARIO_EDIT_MODERATOR){
-					$this->addPhotos($post->id);
-					$this->editPhotos($post->id);
-				}
-
-				if ($this->cover) {
-					$post->cover = '/post_photo/' . $post->id . '/' . $this->cover;
-					$post->update();
-				}
+			if($this->customError){
+				$transaction->rollBack();
+			}else{
+				$transaction->commit();
 			}
 
 		}
 
 		public function editPostUser(){
-			if ($this->moderation != null) {
-				$post = PostsModeration::find()->with(['postCategory','info'])->where(['id' => $this->id])->one();
-				$this->editPost($post);
-
-			} else {
-				$oldPost = PostsModeration::find()->with(['postCategory','info'])->where(['main_id'=>$this->id,'user_id'=>Yii::$app->user->getId()])->one();
-				if($oldPost!= null){
-					$this->editPost($oldPost);
-				}else{
-					$this->addPost($this->id);
-				}
+			$oldPost = PostsModeration::find()->with(['postCategory','info'])->where(['main_id'=>$this->id,'user_id'=>Yii::$app->user->getId()])->one();
+			if($oldPost!= null){
+				$this->editPost($oldPost);
+			}else{
+				$this->addPost($this->id);
 			}
 
 		}
@@ -308,7 +346,9 @@
 						'priority' => $priority===1?$priority++:0
 					]
 				);
-				$post_under_category->save();
+				if(!$post_under_category->save()){
+					$this->customError = true;
+				}
 			}
 		}
 
@@ -322,14 +362,18 @@
 							'post_id' => $post_id,
 							'value' => $feature,
 						]);
-						$post_feature->save();
+						if(!$post_feature->save()){
+							$this->customError = true;
+						}
 					} elseif ($idFeature == 'additionally') {
 						foreach ($feature as $additionally) {
 							$post_feature = new $this->PostFeatures(['features_id' => $additionally,
 								'post_id' => $post_id,
 								'value' => 1,
 							]);
-							$post_feature->save();
+							if(!$post_feature->save()){
+								$this->customError = true;
+							}
 						}
 					} else {
 						$post_main_feature = new $this->PostFeatures([
@@ -337,7 +381,9 @@
 							'post_id'     => $post_id,
 							'value'       => 1,
 						]);
-						$post_main_feature->save();
+						if(!$post_main_feature->save()){
+							$this->customError = true;
+						}
 						foreach ($feature as $item) {
 							$post_feature = new $this->PostFeatures([
 								'features_id'      => $item,
@@ -345,14 +391,16 @@
 								'value'            => 1,
 								'features_main_id' => $idFeature,
 							]);
-							$post_feature->save();
+							if($post_feature->save()){
+								$this->customError = true;
+							}
 						}
 					}
 				}
 			}
 		}
 
-		private function addPostInfo(int $post_id){
+		private function addPostInfo(int $post_id, $old_post_info = null){
 			$postInfo = new $this->PostInfo();
 
 			if($this->contacts && is_array($this->contacts)){
@@ -372,9 +420,30 @@
 			}
 
 			$postInfo->article = $this->article?$this->article:null;
-			$postInfo->editors =  [0=>Yii::$app->user->getId()];
+			if ($postInfo->editors && !in_array(Yii::$app->user->getId(), $postInfo->editors)) {
+
+				$arr = $postInfo->editors;
+				array_push($arr, Yii::$app->user->getId());
+				$postInfo->editors = $arr;
+
+			} elseif ($old_post_info) {
+				$postInfo->editors = $old_post_info->editors;
+				if (!in_array(Yii::$app->user->getId(), $old_post_info->editors)) {
+
+					$arr = $postInfo->editors;
+					array_push($arr, Yii::$app->user->getId());
+					$postInfo->editors = $arr;
+
+				}
+
+			}else{
+				$postInfo->editors =  [0=>Yii::$app->user->getId()];
+			}
 			$postInfo->post_id = $post_id;
-			$postInfo->save();
+
+			if(!$postInfo->save()){
+				$this->customError = true;
+			}
 
 		}
 
@@ -387,7 +456,9 @@
 					$workingHours->time_start = $item['start'];
 					$workingHours->time_finish = $item['finish'];
 					$workingHours->post_id = $post_id;
-					$workingHours->save();
+					if(!$workingHours->save()){
+						$this->customError = true;
+					}
 				}
 			}
 		}
@@ -413,7 +484,9 @@
 									'date' => time(),
 									'source' => $photo['src'],
 								]);
-								$gallery->save();
+								if(!$gallery->save()){
+									$this->customError = true;
+								}
 								unlink($tmpLink);
 							}
 						}
@@ -457,8 +530,10 @@
 			}
 			($this->WorkingHours)::deleteAll(['post_id'=>$post->id]);
 			($this->PostFeatures)::deleteAll(['post_id'=>$post->id]);
+			if($post->info){
+				$post->info->delete();
+			}
 
-			$post->info->delete();
 		}
 
 		private function getTimeByTextTime($textTime){
@@ -470,11 +545,17 @@
 		private function updateCountUserPlace(){
 			$user  = UserInfo::find()->where(['user_id' => Yii::$app->user->getId()])->one();
 
-			$count = Posts::find()->where(['user_id'=>Yii::$app->user->getId(),'status'=>1])->count();
+			$count = Posts::find()
+				->joinWith('info')
+				->where("editors @> '[".Yii::$app->user->getId()."]'")
+				->andWhere(['status'=>1])
+				->count();
+
 			$countModeration = PostsModeration::find()->where(['user_id'=>Yii::$app->user->getId(),'status'=>0])->count();
+			$countModeration2 = Posts::find()->where(['user_id'=>Yii::$app->user->getId(),'status'=>0])->count();
 
 			$user->count_places_added = $count;
-			$user->count_place_moderation = $countModeration;
+			$user->count_place_moderation = $countModeration + $countModeration2;
 			$user->update();
 
 		}

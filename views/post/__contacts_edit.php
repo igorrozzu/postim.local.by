@@ -3,7 +3,7 @@
 		<div class="block-input-contact"><span class="container-img"><img src="/img/icon-phone-min.png"></span><input
 				value="<?= $phone ?>" class="validator" data-error-parents="block-input-contact"
 				data-message="Некоректные данные для контактов" placeholder="Номер телефона" name="contacts[phones][]"
-				data-regex="^[0-9 +]{3,20}$">
+				data-regex="^[0-9 +-]{3,20}$">
 			<div class="close-input-contact"></div>
 		</div>
 	<?php endforeach; ?>
@@ -39,7 +39,7 @@
 			}
 				break;
 			case 'inst': {
-				return '<div class="block-input-contact"><span class="container-img"><img src="/img/icon-instagram-min.png"></span><input value="'.$value.'" class="validator" data-error-parents="block-input-contact" data-message="Некоректные данные для контактов" placeholder="https://www.instagram.com/..." name="contacts[social_networks][][inst]" data-regex="^https:\/\/www\.instagram\.com\/.+$"><div class="close-input-contact"></div></div>';
+				return '<div class="block-input-contact"><span class="container-img"><img src="/img/icon-instagram-min.png"></span><input value="'.$value.'" class="validator" data-error-parents="block-input-contact" data-message="Некоректные данные для контактов" placeholder="https://www.instagram.com/..." name="contacts[social_networks][][inst]" data-regex="^https?:\/\/(www\.)?instagram\.com\/.+$"><div class="close-input-contact"></div></div>';
 			}
 				break;
 			case 'tw': {

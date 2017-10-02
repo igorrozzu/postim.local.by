@@ -393,39 +393,39 @@ var Post_add = (function (window, document, undefined, $) {
 					}
 					switch (caseField){
 						case 'Телефон':{
-							createBlock('img/icon-phone-min.png','Номер телефона','contacts[phones][]','^[0-9 +]{3,20}$')
+							createBlock('/img/icon-phone-min.png','Номер телефона','contacts[phones][]','^[0-9 +-]{3,20}$')
 						}break;
 						case 'Веб-сайт':{
-							createBlock('img/icon-link-min.png',
+							createBlock('/img/icon-link-min.png',
 								'Ссылка на сайт', 'contacts[web_site]',
 								'^(https?:\\/\\/)?([\\da-z\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$'
 							);
 						}break;
 						case 'Вконтакте':{
-							createBlock('img/icon-vk-min.png','https://vk.com/...','contacts[social_networks][][vk]','^https:\\/\\/vk.com\\/.+$','')
+							createBlock('/img/icon-vk-min.png','https://vk.com/...','contacts[social_networks][][vk]','^https:\\/\\/vk.com\\/.+$','')
 						}break;
 						case 'Одноклассники':{
-							createBlock('img/icon-ok-min.png',
+							createBlock('/img/icon-ok-min.png',
 								'https://www.ok.ru/...', 'contacts[social_networks][][ok]',
 								'^https:\\/\\/(www\\.)?ok\\.ru\\/.+$'
 							);
 						}break;
 						case 'Twitter':{
-							createBlock('img/icon-tw-min.png',
+							createBlock('/img/icon-tw-min.png',
 								'https://twitter.com/...', 'contacts[social_networks][][tw]',
 								'^https:\\/\\/twitter.com\\/.+$'
 							);
 						}break;
 						case 'Facebook':{
-							createBlock('img/icon-fb-min.png',
+							createBlock('/img/icon-fb-min.png',
 								'https://www.facebook.com/...', 'contacts[social_networks][][fb]',
 								'^https:\\/\\/(www\\.)?facebook\\.com\\/.+$'
 							);
 						}break;
 						case 'Instagram':{
-							createBlock('img/icon-instagram-min.png',
+							createBlock('/img/icon-instagram-min.png',
 								'https://www.instagram.com/...', 'contacts[social_networks][][inst]',
-								'^https:\\/\\/www\\.instagram\\.com\\/.+$'
+								'^https?:\\/\\/(www\\.)?instagram\\.com\\/.+$'
 							);
 						}break;
 
@@ -545,7 +545,7 @@ var Post_add = (function (window, document, undefined, $) {
 
 					var $typeBlock2 = $('<div class="block-field-setting" id="">' +
 							'<label class="label-field-setting"> Текст</label> ' +
-							'<input  name="features[id]" class="input-field-setting validator" data-error-parents="block-field-setting" data-regex="^[0-9]*[.,]?[0-9]+$" data-message="Некорректно введены данные" placeholder="Текст" value=""> ' +
+							'<input  name="features[id]" class="input-field-setting validator" data-error-parents="block-field-setting" data-regex="^[0-9]*[.,]?[0-9]{0,}$" data-message="Некорректно введены данные" placeholder="Текст" value=""> ' +
 						'</div>');
 
 					var $typeBlock3 = $('<div class="block-field-setting" id="">' +
@@ -759,6 +759,27 @@ var Post_add = (function (window, document, undefined, $) {
 				errors: [],
 				dopErrors: [],
 				is_valid: true,
+				is_change:false,
+				hash_form: null,
+
+				check_change:function (start) {
+					var textInputs =  '';
+
+					$('#post-form').find('input').each(function () {
+						textInputs += $(this).val();
+					});
+
+					if(start){
+
+						that.validation.hash_form = that.photos.getHashCode(textInputs);
+						that.validation.is_change = true;
+
+					}else {
+						var new_hash_form = that.photos.getHashCode(textInputs);
+						return new_hash_form !== that.validation.hash_form;
+					}
+
+				},
 				addError: function (error) {
 					var id = +new Date();
 					var err = error;
@@ -781,6 +802,7 @@ var Post_add = (function (window, document, undefined, $) {
 				},
 				validate:function () {
 					var is_valid = true;
+					that.validation.checkValidate();
 					if(that.validation.errors.length !== 0) {
 						var number = that.validation.errors.length;
 						for (var i = 0; i < number; i++) {
@@ -795,52 +817,80 @@ var Post_add = (function (window, document, undefined, $) {
 						}
 					}
 
+					that.validation.dopErrors = [];
+
+					if(that.validation.is_change){
+						if(!that.validation.check_change(false)){
+							that.validation.dopErrors.push({message:'Нашли неточность или ошибку, исправьте или дополните информацию'});
+							is_valid = false;
+						}
+					}
+
 					if(!$('.input-time-work-btn input').val()){
-						is_valid = false;
+						var is_valid_w = false;
 
 						$('.container-row-time-work input').each(function () {
 							if($(this).val()){
-								is_valid = true;
+								is_valid_w = true;
 							}
 						});
 
-						if(!is_valid){
+						if(!is_valid_w){
+							is_valid = false;
 							that.validation.dopErrors.push({message:'Режим работы, обязательно для заполнения'});
 						}
 
 					}
+
+					$('.block-field-setting .block-input-contact input').each(function () {
+						var value = $(this).val();
+						var message = $(this).attr('data-message');
+						var regexp = new RegExp($(this).attr('data-regex'));
+						if(!regexp.test(value)){
+							is_valid = false;
+							that.validation.dopErrors.push({message: message});
+						}
+					});
+
 					if (!$('#coords_address').val()) {
 						is_valid = false;
-						that.validation.dopErrors.push({message: 'Отметьте место на карте'});
+						that.validation.dopErrors.push({message: 'Отметьте место на карте, перетащите и кликните по значку'});
 					}
 
 					if ($('input[name="city[]"]', '.btn-selected-option').length == 0) {
 						is_valid = false;
 						that.validation.dopErrors.push({message: 'Выберите город'});
 					}
-					if (!$('input[name="address_text"].validator').val()) {
-						is_valid = false;
-						that.validation.dopErrors.push({message: 'Введите адрес'});
-					}
+
 					if ($('input[name="categories[]"]', '.btn-selected-option').length == 0) {
 						is_valid = false;
 						that.validation.dopErrors.push({message: 'Выберите категорию'});
-					}
-
-					if (!$('input[name="name"].validator').val()) {
-						is_valid = false;
-						that.validation.dopErrors.push({message: 'Введите название'});
 					}
 
 
 					return is_valid;
 
 				},
+				checkValidate:function () {
+					$('input.validator').each(function () {
+						var $input = $(this);
+						var regexp = new RegExp($input.attr('data-regex'));
+						if(!regexp.test($input.val())){
+							$input.parents('.'+$input.attr('data-error-parents')).addClass('error');
+							that.validation.addError({$elem:$input,message:$input.attr('data-message')});
+						}else {
+							if($input.parents('.'+$input.attr('data-error-parents')).hasClass('error')){
+								$input.parents('.'+$input.attr('data-error-parents')).removeClass('error');
+								that.validation.removeError($input);
+							}
+						}
+					});
+				},
 				getLastMessage: function () {
 					var number = that.validation.errors.length;
 					var dopNumber = that.validation.dopErrors.length;
 					if(number > 0){
-						return that.validation.errors[number - 1].message;
+						return that.validation.errors[0].message;
 					}else if(dopNumber > 0){
 						return that.validation.dopErrors[dopNumber - 1].message;
 					}

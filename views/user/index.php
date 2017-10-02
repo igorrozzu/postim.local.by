@@ -119,3 +119,27 @@ Pjax::end();
     <div class="gallery-counter"><span>1</span> из <?=$profilePhotoCount?></div>
 </div>
 <div style="margin-bottom:30px;"></div>
+
+<?php
+	$redirectMessage = Yii::$app->session->getFlash('redirect_after_add'.Yii::$app->user->getId());
+	if($redirectMessage){
+		$js = <<<js
+    $(document).ready(function() {
+        switch ('$redirectMessage'){
+        	case 'place':{
+        		var btn$ = $(".menu-btns-card.feeds-btn-bar a:eq(1)"),click = btn$.click.bind(btn$);
+                setTimeout(click, 100);
+        		
+        	}break;
+        	case 'moderation':{
+        		var btn$ = $(".menu-btns-card.feeds-btn-bar a:eq(2)"),click = btn$.click.bind(btn$);
+                setTimeout(click, 100);
+        		//$().toastmessage('showToast', {text: 'Ваше место отправлено на модерацию',stayTime:5000,type:'success'});
+        		
+        	}break;
+        }
+    })
+js;
+		echo '<script>'.$js.'</script>';
+	}
+?>

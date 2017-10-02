@@ -197,7 +197,6 @@
 			});
         </script>
 
-		<?php if(Yii::$app->user->identity->role > 1):?>
             <div class="container-add-place">
                 <div class="container-gallery">
                     <div class="gallery-header">Галерея</div>
@@ -209,9 +208,9 @@
                     </div>
                     <div class="btn-add-photos-gallery">Добавить фотографии</div>
                 </div>
-                <input style="display: none" class="photo-add" name="photo-add" type="file" multiple accept="image/*,image/jpeg,image/gif,image/png">
+                <input style="display: none" class="photo-add" name="photo-add" type="file" multiple
+                       accept="image/*,image/jpeg,image/gif,image/png">
             </div>
-        <?php endif;?>
 
             <div class="container-add-place">
 				<?php if(Yii::$app->user->identity->role > 1):?>
@@ -231,7 +230,7 @@
                     <div class="large-wide-button"><p>Опубликовать</p></div>
                 </div>
 				<?php else:?>
-                    <div class="btn-setting-save">
+                    <div class="btn-setting-save" style="margin-top: -20px">
                         <div class="large-wide-button"><p>На модерацию</p></div>
                     </div>
                 <?php endif;?>

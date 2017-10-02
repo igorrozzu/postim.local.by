@@ -89,7 +89,10 @@ class Gallery extends \yii\db\ActiveRecord
     public static function getProfilePhotoCount(int $userId): int
     {
         return static::find()
-            ->where(['user_id' => $userId])
+			->joinWith(['post'=>function($query){
+				$query->select('status, id, ');
+			}])
+			->where(['tbl_gallery.user_id' => $userId,'tbl_posts.status'=>1])
             ->count();
     }
 
@@ -121,7 +124,11 @@ class Gallery extends \yii\db\ActiveRecord
     public static function getProfilePreviewPhoto(int $userId, int $limit): array
     {
         return static::find()
-            ->where(['user_id' => $userId])
+			->joinWith(['post'=>function($query){
+				$query->select('status, id, ');
+			}])
+            ->where(['tbl_gallery.user_id' => $userId,'tbl_posts.status'=>1])
+
             ->orderBy(['id' => SORT_DESC])
             ->limit($limit)
             ->all();

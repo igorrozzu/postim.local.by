@@ -20,6 +20,7 @@ use app\models\uploads\UploadPostPhotosTmp;
 use linslin\yii2\curl\Curl;
 use Yii;
 use yii\db\Exception;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -40,7 +41,9 @@ class PostController extends MainController
             ->where(['id'=>$id])
             ->one();
 
-        if($post){
+		$user_id = Yii::$app->user->isGuest?null:Yii::$app->user->getId();
+
+        if($post && ($post['status']!=0?true:$post['user_id']==$user_id)){
             Helper::addViews($post->totalView);
             $breadcrumbParams = $this->getParamsForBreadcrumb($post);
 
@@ -70,7 +73,8 @@ class PostController extends MainController
 				$query->orderBy(['day_type'=>SORT_ASC]);
 			},
 			])
-			->where(['id'=>$id])
+			->where(['main_id'=>$id])
+			->andWhere(['user_id'=>Yii::$app->user->getId()])
 			->one();
 
 		if($post){
@@ -421,6 +425,7 @@ class PostController extends MainController
     	if(!Yii::$app->user->isGuest){
 			$categories = UnderCategory::find()->select('id , name')->orderBy('name')->asArray()->all();
 			$cities = City::find()->select('id, name')->orderBy('name')->asArray()->all();
+			$features = [];
 			$photos = [];
 			$post = null;
 
@@ -429,21 +434,37 @@ class PostController extends MainController
 				if($photos==null){
 					$photos = [];
 				}
-				$post = Posts::find()->where(['id'=>$id])->with(['city', 'info','workingHours' => function ($query) {
-							$query->orderBy(['day_type' => SORT_ASC]);
-						}])->one();
+				$post = Posts::find()->where(['id'=>$id])->with(['city', 'info',
+					'workingHours' => function ($query) {
+						$query->orderBy(['day_type' => SORT_ASC]);
+					},
+					'postCategory',
+					'postFeatures'
+				])->one();
 			}else{
-				$post = PostsModeration::find()->where(['id'=>$id])->with(['city', 'info','workingHours' => function ($query) {
-					$query->orderBy(['day_type' => SORT_ASC]);
-				}])->one();
+				$post = PostsModeration::find()->where(['main_id'=>$id,'user_id'=>Yii::$app->user->getId()])
+					->with(['city', 'info',
+						'workingHours' => function ($query) {
+							$query->orderBy(['day_type' => SORT_ASC]);
+						},
+						'postCategory',
+						'postFeatures'
+				])->one();
 			}
 
+			$idsCategory = [];
+			foreach ($post->postCategory as $item){
+				$idsCategory[] = $item['under_category_id'];
+			}
+
+			$features = $this->getFeaturesForEdit($idsCategory,$post->postFeatures);
 
 			$params = ['categories' => $categories,
 				'cities' => $cities,
 				'post' => $post,
 				'photos' => $photos,
-				'moderation' => $moderation
+				'moderation' => $moderation,
+				'features' => $features
 			];
 
 			return $this->render('edit', ['params' => $params]);
@@ -452,11 +473,56 @@ class PostController extends MainController
 		}
 	}
 
+	private function getFeaturesForEdit(array $idsCategory,$featurePost){
+
+		$features = UnderCategoryFeatures::find()->select('features_id')->distinct('features_id')
+			->innerJoinWith('features')
+			->where(['under_category_id'=>$idsCategory])
+			->andWhere(['main_features'=>null])
+			->all();
+
+		$response = new \stdClass();
+		$response->rubrics=[];
+		$response->additionally=[];
+
+		$featurePost = ArrayHelper::index($featurePost,'features_id');
+
+		foreach ($features as $feature){
+			if($feature->features->type==1){
+				$feature->features['value'] = isset($featurePost[$feature->features['id']])?$featurePost[$feature->features['id']]['value']:null;
+				array_push($response->additionally,$feature->features);
+			}else{
+				if($feature->features->type==2){
+					$feature->features['value'] = isset($featurePost[$feature->features['id']])?$featurePost[$feature->features['id']]['value']:null;
+					array_unshift($response->rubrics,$feature->features);
+				}else{
+					$featureStd = new \stdClass();
+					foreach ($feature->features->underFeatures as &$underFeature){
+						$underFeature['value'] = isset($featurePost[$underFeature['id']])?$featurePost[$underFeature['id']]['value']:null;
+					}
+					$featureStd->underFeatures = $feature->features->underFeatures;
+					$featureStd->id = $feature->features->id;
+					$featureStd->name = $feature->features->name;
+					$featureStd->type = $feature->features->type;
+					$featureStd->filter_status = $feature->features->filter_status;
+					$featureStd->main_features = $feature->features->main_features;
+					array_push($response->rubrics,$featureStd);
+				}
+
+			}
+		}
+
+		return $response;
+
+	}
+
     public function actionSavePost(){
 		if(!Yii::$app->user->isGuest && Yii::$app->request->isPost){
 			$addPostModel = new AddPost();
-			$addPostModel->setScenario(Yii::$app->user->identity->role > 1 ? AddPost::$SCENARIO_ADD_MODERATOR : AddPost::$SCENARIO_ADD_USER);
+			$addPostModel->setScenario(AddPost::$SCENARIO_ADD);
 			if($addPostModel->load(Yii::$app->request->post(),'') && $addPostModel->save()){
+				$message = Yii::$app->user->identity->role >1?'place':'moderation';
+				Yii::$app->getSession()->setFlash('redirect_after_add'.Yii::$app->user->getId(),$message);
 				return $this->redirect('/id'.Yii::$app->user->getId());
 			}
 		}
@@ -465,8 +531,31 @@ class PostController extends MainController
 	public function actionSaveEditPost(){
 		if(!Yii::$app->user->isGuest && Yii::$app->request->isPost){
 			$addPostModel = new AddPost();
-			$addPostModel->setScenario(Yii::$app->user->identity->role > 1 ? AddPost::$SCENARIO_EDIT_MODERATOR : AddPost::$SCENARIO_EDIT_USER);
+
+			$scenario = '';
+			if(Yii::$app->user->identity->role > 1){
+				$scenario = AddPost::$SCENARIO_EDIT_MODERATOR;
+			}else{
+
+				$post = Posts::find()
+					->where(['id'=>Yii::$app->request->post('id'),
+						'user_id'=>Yii::$app->user->getId(),
+						'status' => 0
+					])
+					->one();
+
+				if($post){
+					$scenario = AddPost::$SCENARIO_EDIT_USER_SELF_POST;
+				}else{
+					$scenario = AddPost::$SCENARIO_EDIT_USER;
+				}
+
+			}
+			$addPostModel->setScenario($scenario);
+
 			if($addPostModel->load(Yii::$app->request->post(),'') && $addPostModel->save()){
+				$message = Yii::$app->user->identity->role >1?'place':'moderation';
+				Yii::$app->getSession()->setFlash('redirect_after_add'.Yii::$app->user->getId(),$message);
 				return $this->redirect('/id'.Yii::$app->user->getId());
 			}
 		}
@@ -507,7 +596,6 @@ class PostController extends MainController
 		}
 
 		return $response;
-
 
 	}
 

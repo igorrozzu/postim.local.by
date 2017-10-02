@@ -30,7 +30,7 @@ Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => true,
     'id' => 'post-feeds',
-    'linkSelector' => '.menu-btns-card a',
+    'linkSelector' => '#post-feeds .menu-btns-card a',
     'formSelector' => false,
 ])
 ?>

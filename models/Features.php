@@ -22,6 +22,7 @@ class Features extends \yii\db\ActiveRecord
     public $underFeatures=null;
     public $max = null;
     public $min = null;
+    public $value = null;
 
     /**
      * @inheritdoc

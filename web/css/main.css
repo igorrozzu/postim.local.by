@@ -1722,8 +1722,8 @@ a.btn-show-more{
 }
 .container-user-editor li::before{
     display: flex;
-    margin-right: 6px;
-    margin-left: -12px;
+    margin-right: 12px;
+    margin-left: -18px;
     content: '•';
     color: #838da1;
     height: 1px;
@@ -4132,9 +4132,9 @@ input.search-selected-field{
     background-position: 23px 0px;
 }
 .option-text:first-letter,
-.option-select-field:first-letter{
+.option-select-field:first-letter,
+.block-features .label-field-setting:first-letter{
     text-transform: capitalize;
-
 }
 
 

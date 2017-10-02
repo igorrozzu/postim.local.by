@@ -20,6 +20,8 @@ use yii\helpers\Json;
  */
 class PostInfo extends \yii\db\ActiveRecord
 {
+	public $editors_users = [];
+
     /**
      * @inheritdoc
      */
@@ -87,9 +89,18 @@ class PostInfo extends \yii\db\ActiveRecord
             $this->phones=Json::decode($this->phones);
         }
         if($this->editors){
-        	$idsUsers = Json::decode($this->editors);
-        	$users = User::find()->where(['id'=>$idsUsers])->all();
-			$this->editors = $users;
+			$idsUsers = $this->editors = Json::decode($this->editors);
+			$users = [];
+			$usersFromDb = User::find()->where(['id'=>$idsUsers])->all();
+
+			foreach ($idsUsers as $item){
+				foreach ($usersFromDb as $user){
+					if($item == $user->id){
+						array_push($users,$user);
+					}
+				}
+			}
+			$this->editors_users = $users;
 		}
         if($this->social_networks){
             $this->social_networks=Json::decode($this->social_networks);
