@@ -3023,9 +3023,7 @@ a.btn-show-more{
     display: flex;
 }
 .progress-complete{
-
     background-color: #a7c9ff;
-    width: 70%;
 }
 .progress-level-text{
     margin-top: 10px;

@@ -151,4 +151,54 @@ class UserInfo extends \yii\db\ActiveRecord
     {
         return (bool) $this->has_reward_for_filling_profile;
     }
+
+    //d*x^2 + (2*a1 - d)*x - 2*exp = 0
+
+    public function getLevelByExperience(): int
+    {
+        if ($this->exp_points === 0) {
+            return 0;
+        }
+
+        $increment = Yii::$app->params['user.incrementExperience'];
+        $a = $increment;
+        $b = 2 * Yii::$app->params['user.experienceForFirstLevel'] - $increment;
+        $c = -2 * $this->exp_points;
+
+        $d = (pow($b,2)) - (4 * $a * $c);
+
+        if ($d <= 0) {
+            $d = (-1) * $d;
+        }
+
+        $x1 = (-2 * $c) / ($b + (sqrt($d)));
+        $x2 = (-2 * $c) / ($b - (sqrt($d)));
+        $maxRoot = $x1 > $x2 ? $x1 : $x2;
+
+        return (int) abs($maxRoot);
+    }
+
+    //d*x^2 + (2*a1 - d)*x - 2*exp = 0
+    //exp = (d*x + (2*a1 - d)) * x / 2
+    public function getMinExperienceByLevel(int $level): int
+    {
+        if ($level === 0) {
+            return 0;
+        }
+
+        $increment = Yii::$app->params['user.incrementExperience'];
+        return (int) ($increment * $level + (2 * Yii::$app->params['user.experienceForFirstLevel'] -
+                    $increment)) * $level / 2;
+    }
+
+    public function getExperienceInfo(): \stdClass
+    {
+        $expForNextLevel = $this->getMinExperienceByLevel($this->level + 1);
+
+        $result = new \stdClass();
+        $result->persent = (int) ($this->exp_points / $expForNextLevel * 100);
+        $result->needExpForNextLevel = $expForNextLevel - $this->exp_points;
+
+        return $result;
+    }
 }
