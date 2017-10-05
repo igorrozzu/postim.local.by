@@ -134,6 +134,13 @@
     top: calc(100% - 90px);
     left: 0px;
     width: 100%;
+    z-index: 1;
+}
+.block-write-reviews.active{
+    position: inherit;
+}
+.block-write-reviews.active .profile-user-reviews{
+    display: flex;
 }
 .fx-bottom{
     position: fixed;

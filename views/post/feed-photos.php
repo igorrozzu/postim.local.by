@@ -53,11 +53,8 @@ Pjax::begin([
             <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                 <div class="btn2-menu active">Фотографии <?=$photoCount?></div>
             </a>
-            <a href="">
+            <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                 <div class="btn2-menu">Отзывы</div>
-            </a>
-            <a href="">
-                <div class="btn2-menu">Скидки</div>
             </a>
         </div>
     </div>

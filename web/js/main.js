@@ -58,8 +58,11 @@ var Main = (function (window, document, undefined,$) {
 
             },
             getDomainName:function () {
-              return 'postim.local.by';
+              return window.location.host;
             },
+			getHashCode:function (s) {
+				return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+			},
             reloadViewPjaxEvents:function () {
                 // init pjax ленты категорий
                 $(document).off('click','#feed-category .block-sort a');

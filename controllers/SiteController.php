@@ -6,6 +6,7 @@ use app\components\MailSender;
 use app\models\LoginModel;
 use app\models\News;
 use app\models\Posts;
+use app\models\Reviews;
 use app\models\TempUser;
 use app\models\User;
 use linslin\yii2\curl\Curl;
@@ -208,6 +209,36 @@ class SiteController extends MainController
 
 		return $response;
 
+	}
+
+	public function actionSaveReviews(){
+
+		$response = new \stdClass();
+		$response->success = false;
+		$response->message = '';
+		Yii::$app->response->format = Response::FORMAT_JSON;
+
+		if(!Yii::$app->user->isGuest){
+			$reviews = new Reviews();
+
+			if($reviews->load( Yii::$app->request->post(),'reviews')){
+				$reviews->like = 0;
+				$reviews->date = time();
+				$reviews->user_id = Yii::$app->user->getId();
+				if($reviews->save()){
+					$response->success = true;
+					$response->message = 'Ваш отзыв успешно добавлен';
+				}else{
+					$name_attribute = key($reviews->getErrors());
+					$response->message = $reviews->getFirstError($name_attribute);
+				}
+
+			}
+		}else{
+			$response->message = 'Незарегистрированные пользователи не могут оставлять отзовы';
+		}
+
+		return $response;
 	}
 
 }

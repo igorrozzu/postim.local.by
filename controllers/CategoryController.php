@@ -41,7 +41,7 @@ class CategoryController extends MainController
             'selfParams'=>$selfParams
         ]);
 
-        $paramSort = Yii::$app->request->get('sort', 'rating');
+        $paramSort = Yii::$app->request->get('sort', '_rating');
         $sort = PostsSearch::getSortArray($paramSort);
 
         $loadTime = Yii::$app->request->get('loadTime', time());

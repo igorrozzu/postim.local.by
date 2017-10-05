@@ -12,6 +12,7 @@ use app\models\entities\Gallery;
 use app\models\entities\GalleryComplaint;
 use app\models\moderation_post\PostsModeration;
 use app\models\Posts;
+use app\models\ReviewsSearch;
 use app\models\search\GallerySearch;
 use app\models\UnderCategory;
 use app\models\UnderCategoryFeatures;
@@ -52,19 +53,58 @@ class PostController extends MainController
                 ->createCommand()->rawSql;
             $keyForMap = Helper::saveQueryForMap($queryPost);
 
+			$reviewsModel = new ReviewsSearch();
+			$pagination = new Pagination([
+				'pageSize' => 1,
+				'page' => 0,
+				'selfParams'=> [
+					'id' => true,
+				],
+			]);
+
+			$loadTime = time();
+			$dataProvider = $reviewsModel->search(
+				['post_id' => $id],
+				$pagination,
+				$loadTime
+			);
+
+
             return $this->render('index', [
                 'post'=>$post,
+				'reviewsDataProvider'=>$dataProvider,
                 'breadcrumbParams'=>$breadcrumbParams,
                 'photoCount' => Gallery::getPostPhotoCount($id),
                 'previewPhoto' => Gallery::getPreviewPostPhoto($id, 4),
                 'photoId' => $photo_id,
                 'keyForMap'=>$keyForMap
             ]);
+
         }else{
             throw new NotFoundHttpException();
         }
 
     }
+
+    public function actionUpdateReviews($id){
+		$reviewsModel = new ReviewsSearch();
+		$pagination = new Pagination([
+			'pageSize' => 1,
+			'page' => 0,
+			'selfParams'=> [
+				'id' => true,
+			],
+		]);
+
+		$loadTime = time();
+		$dataProvider = $reviewsModel->search(
+			['post_id' => $id],
+			$pagination,
+			$loadTime
+		);
+
+		return $this->renderAjax('__reviews',['reviewsDataProvider'=>$dataProvider,'post_id'=>$id]);
+	}
 
     public function actionPostModeration($id){
 		$post = PostsModeration::find()->with([
@@ -288,6 +328,68 @@ class PostController extends MainController
                 'sequence' => (int)$request->get('sequence', 0)
             ]);
         }
+    }
+
+    public function actionReviews(int $postId){
+		$post = Posts::find()->with([
+			'city', 'totalView',
+			'hasLike','onlyOnceCategories.category'])
+			->where(['id'=>$postId])
+			->one();
+
+		$user_id = Yii::$app->user->isGuest?null:Yii::$app->user->getId();
+
+		if ($post && ($post['status'] != 0 ? true : $post['user_id'] == $user_id)) {
+			Helper::addViews($post->totalView);
+			$breadcrumbParams = $this->getParamsForBreadcrumb($post);
+
+			$queryPost = Posts::find()->where(['tbl_posts.id' => $postId])
+				->prepare(Yii::$app->db->queryBuilder)
+				->createCommand()->rawSql;
+			$keyForMap = Helper::saveQueryForMap($queryPost);
+
+			$reviewsModel = new ReviewsSearch();
+			$pagination = new Pagination([
+				'pageSize' => 8,
+				'page' => 0,
+				'route' => 'post/reviews',
+				'selfParams' => [
+					'postId' => true,
+					'load'
+				],
+			]);
+
+			$loadTime = Yii::$app->request->get('loadTime', time());
+			$dataProvider = $reviewsModel->search(
+				['post_id' => $postId],
+				$pagination,
+				$loadTime
+			);
+			if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
+				echo  \app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
+					'dataProvider' => $dataProvider,
+					'settings'=>[
+						'show-more-btn' => true,
+						'replace-container-id' => 'feed-reviews',
+						'load-time' => $loadTime,
+						'without_header'=>true
+					]
+				]);
+			}else{
+				return $this->render('feed-reviews', [
+					'post' => $post,
+					'reviewsDataProvider' => $dataProvider,
+					'photoCount' => Gallery::getPostPhotoCount($postId),
+					'breadcrumbParams' => $breadcrumbParams,
+					'loadTime'=>$loadTime,
+					'keyForMap' => $keyForMap,
+				]);
+			}
+
+
+		}else{
+			throw new NotFoundHttpException();
+		}
     }
 
     public function actionGallery(int $postId, string $photo_id = null)

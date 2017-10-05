@@ -51,7 +51,7 @@ class Posts extends \yii\db\ActiveRecord
         return [
             [['url_name', 'city_id', 'rating', 'data', 'total_view_id'], 'required'],
             [['url_name', 'cover', 'data', 'address'], 'string'],
-            [['city_id', 'rating', 'count_favorites', 'count_reviews'], 'integer'],
+            [['city_id', 'count_favorites', 'count_reviews'], 'integer'],
         ];
     }
 

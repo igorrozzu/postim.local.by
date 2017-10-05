@@ -43,7 +43,7 @@ class ReviewsSearch extends Reviews
         $query = Reviews::find()
             ->joinWith(['user.userInfo'])
             ->innerJoinWith(['post'])
-			->with('post.categories')
+			->with(['post.categories'])
             ->where(['<=', 'tbl_reviews.date', $params['loadTime'] ?? $loadTime])
             ->orderBy(['tbl_reviews.date' => SORT_DESC]);
 
@@ -51,6 +51,10 @@ class ReviewsSearch extends Reviews
         if(isset($params['id'])) {
             $query->andWhere(['tbl_reviews.user_id' => $params['id']]);
         }
+
+        if(isset($params['post_id'])){
+			$query->andWhere(['tbl_posts.id' => $params['post_id']]);
+		}
 
         if(isset($params['region'])) {
             $query->innerJoinWith(['post.city'], false)

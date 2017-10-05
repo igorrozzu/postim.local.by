@@ -64,6 +64,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+				'Otzyvy-<name:.+>-p<postId:\d+>' => 'post/reviews',
                 'Fotografii-<name:.+>-p<postId:\d+>' => 'post/gallery',
 				'<url:.+>-p<id:\d+>/moderation'=>'post/post-moderation',//модерируемая информация о месте
                 '<url:.+>-p<id:\d+>'=>'post/index',//информация о месте

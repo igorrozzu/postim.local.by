@@ -237,7 +237,6 @@ class PostsSearch extends Posts
 
     public static function getSortArray($paramSort){
         switch ($paramSort){
-            case 'rating':{return ['rating'=>SORT_DESC];}break;
             case 'new':{return ['date'=>SORT_DESC];}break;
             default:{return ['rating'=>SORT_DESC];}break;
         }

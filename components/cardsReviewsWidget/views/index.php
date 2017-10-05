@@ -8,13 +8,15 @@ $reviews = $dataProvider->getModels();
 
 <?php foreach ($reviews as $review):?>
     <div class="block-reviews">
-        <div class="block-review-post" style="margin-top: 20px; border-bottom: solid 1px #D3E4FF; padding-bottom: 23px;">
-            <div class="rating-r bg-r4"><?=$review->post->rating?></div>
-            <div class="block-info-review">
-            <p class="user-name"><?=$review->post->data?></p>
-            <div class="date-time-review"><?=implode(', ',ArrayHelper::getColumn($review['post']['categories'],'name')) ?></div>
+        <?php if(!($settings['without_header']??false)):?>
+            <div class="block-review-post" style="margin-top: 20px; border-bottom: solid 1px #D3E4FF; padding-bottom: 23px;">
+                <div class="rating-r bg-r<?=$review->post->rating?>"><?=$review->post->rating?></div>
+                <div class="block-info-review">
+                    <p class="user-name"><?=$review->post->data?></p>
+                    <div class="date-time-review"><?=implode(', ',ArrayHelper::getColumn($review['post']['categories'],'name')) ?></div>
+                </div>
             </div>
-        </div>
+        <?php endif;?>
         <div class="review-header">
             <img class="profile-icon40x40" src="<?=$review->user->getPhoto()?>">
             <div class="block-between">
@@ -40,7 +42,7 @@ $reviews = $dataProvider->getModels();
             </div>
         </div>
         <div class="block-review-content">
-            <div class="rating-r bg-r4"><?=$review->rating?></div>
+            <div class="rating-r bg-r<?=$review->rating?>"><?=$review->rating?></div>
             <div class="review-help-text">Оценка</div>
             <div class="block-btn-m-social-share" is-open="0" style="right: -160px;">
                 <div class="btn-circle-share"></div>
@@ -54,9 +56,15 @@ $reviews = $dataProvider->getModels();
 
             <div class="review-text"><?=$review->data?></div>
         </div>
-        <div class="review-photo" style="background-image: url('/testP.png')">
-            <div class="block-total-photo-review">12</div>
-        </div>
+        <?php if($review->count_photos):?>
+            <?php
+                $photo = $review->getLastPhoto();
+            ?>
+            <div class="review-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')">
+                <div class="block-total-photo-review"><?=$review->count_photos?></div>
+            </div>
+        <?php endif;?>
+
         <div class="review-footer">
             <div class="review-footer-btn btn-like"><?=$review->like?></div>
             <div class="review-footer-btn btn-comm">Ответить</div>

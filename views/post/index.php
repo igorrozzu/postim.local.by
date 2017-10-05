@@ -54,11 +54,8 @@ Pjax::begin([
             <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                 <div class="btn2-menu ">Фотографии <?=$photoCount?></div>
             </a>
-            <a href="">
+            <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                 <div class="btn2-menu">Отзывы</div>
-            </a>
-            <a href="">
-                <div class="btn2-menu">Скидки</div>
             </a>
         </div>
     </div>
@@ -234,85 +231,15 @@ Pjax::begin([
         </div>
     </div>
 
+    <!--TODO отзовы-->
 
-    <h2 class="h2-c">
-        Отзывы <span>38</span>
-    </h2>
-    <div class="block-write-reviews">
-        <div class="profile-user-reviews">
-            <img class="profile-icon60x60" src="img/default-profile-icon.png">
-            Гость
-        </div>
-        <div class="large-wide-button"><p>Написать новый отзыв</p></div>
+    <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post_id'=>$post->id])?>
+
+    <div class="block-info-for-owner">
+        <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и отвечайте на отзывы от имени компании.<br>
+            Рекламируйтесь бесплатно размещая свои скидки и акции на сайте Postim.by</p>
     </div>
-    <div class="block-reviews">
-        <div class="review-header">
-            <img class="profile-icon60x60" src="img/default-profile-icon.png">
-            <div class="block-between">
-                <div class="block-info-review">
-                    <div class="block-info-review-user">
-                        <p class="user-name">Василий Утконосов</p>
-                        <span class="user-points">123</span>
-                    </div>
-                    <div class="date-time-review">21 февраля в 10:45</div>
-                </div>
-                <div class="block-btn-circle-share">
-                    <div class="btn-circle-share"></div>
-                    <div class="btn-circle-share"></div>
-                    <div class="btn-circle-share"></div>
-                    <div class="btn-circle-share"></div>
-                    <div class="btn-circle-share open-share"></div>
-                </div>
-            </div>
-        </div>
-        <div class="block-review-content">
-            <div class="rating-r bg-r4">4</div>
-            <div class="review-text">Все очень вкусно, пришли, заказали роллы. (Очень вкусные, свежие, сочные) Принесли минут за 10, вежливый
-                персонал. Может потому что будний день, все очень быстро... не знаю. Напитки мгновенно. Нас ничего не
-                смутило. Попробуйте "жареное молоко" из десертов. Вкусно, ням-нам-ням были первый раз. По возможности
-                заглянем ещё.</div>
-        </div>
-        <div class="review-photo" style="background-image: url('testP.png')">
-            <div class="block-total-photo-review">12</div>
-        </div>
-        <div class="review-footer">
-            <div class="review-footer-btn btn-like">2</div>
-            <div class="review-footer-btn btn-comm">Ответить</div>
-            <div class="review-footer-btn">Пожаловаться</div>
-        </div>
-    </div>
-    <div class="review-show-more">
-        <div class="btn-show-more">Показать больше отзывов</div>
-    </div>
-    <div class="block-info-for-owner"><p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и отвечайте на отзывы от имени компании.<br>
-            Рекламируйтесь бесплатно размещая свои скидки и акции на сайте Posim.by</p>
-    </div>
-    <div class="block-add-review">
-        <div class="add-review-profile">
-            <img class="profile-icon60x60" src="img/default-profile-icon.png">
-            <p class="profile-name">Гость</p>
-        </div>
-        <div class="add-review-label">Поставте вашу оценку</div>
-        <div class="container-evaluations">
-            <div class="evaluation">1</div>
-            <div class="evaluation">2</div>
-            <div class="evaluation">3</div>
-            <div class="evaluation">4</div>
-            <div class="evaluation">5</div>
-        </div>
-        <div class="add-review-label">Напишите отзыв</div>
-        <div class="block-textarea-review">
-            <textarea placeholder="Пожалуйста, аргументируйте свою оценку. Напишите не менее 100 символов." class="textarea-review"></textarea>
-            <div class="container-add-photo" style="background-image: url('testP.png')">
-                <div class="close-add-photo"></div>
-            </div>
-            <div class="block-btns-textarea-review">
-                <div class="btn-add-photo-review"><p>Добавить фото</p></div>
-                <div class="btn-rule"><a href="#">Правила размещения отзывов</a></div>
-            </div>
-        </div>
-        <div class="large-wide-button"><p>Опубликовать</p></div>
-    </div>
+    <div class="margin-top60"></div>
 </div>
 
 <script>
@@ -357,6 +284,9 @@ Pjax::begin([
     </ul>
     <div class="gallery-counter"><span>1</span> из <?=$photoCount?></div>
 </div>
+
+<input style="display: none" class="photo-add-review" name="photo-add-review" type="file" multiple
+accept="image/*,image/jpeg,image/gif,image/png">
 
 <?php
 Pjax::end();
