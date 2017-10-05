@@ -112,6 +112,7 @@ class LoginModel extends Model
             'email' => $tempUser->email,
             'password' => $tempUser->password,
             'city_id' => -1,
+            'last_visit' => time(),
         ]);
         $transaction = $user->getDb()->beginTransaction();
         if($user->save()) {

@@ -2,34 +2,37 @@
 
 namespace app\behaviors\notification\handlers;
 
+use app\models\User;
 use Yii;
+use yii\db\ActiveRecord;
+
 class FillingProfile extends Reward
 {
+    const MAX_SOCIAL_BINDING = 1;
+
     public function run()
     {
-        /*$user = $this->model::find()
-            ->innerJoinWith('userInfo')
-            ->where([$this->model::tableName().'.id' => $this->model->id]);*/
-        $user = $this->model;
+        $user = User::find()
+            ->innerJoinWith(['userInfo', 'socialBindings'])
+            ->where([User::tableName() . '.id' => $this->model->user_id])
+            ->one();
 
-        /*$notif = new Notification([]);
-        $notif->user_id = $receiveComment->user_id;
-        $notif->sender_id = $this->model->user_id;
-        $notif->message = json_encode([
-            'type' => '',
-            'data' => sprintf(
-                Yii::$app->params['notificationTemplates']['common.newComment'],
-                $receiveComment->news->url_name . '-n' . $receiveComment->news->id . '?comment_id='.
-                $this->model->receiver_comment_id . '#comment-' . $this->model->receiver_comment_id
-            )
-        ]);
-        $notif->date = time();
-        $notif->save();*/
+        if (!$this->validateFillingData($user)) {
+            return false;
+        }
+
+        if (parent::run()) {
+            $user->userInfo->has_reward_for_filling_profile = 1;
+            return $user->userInfo->save();
+        }
+
+        return false;
     }
 
-    private function validateFillingData()
+    private function validateFillingData(ActiveRecord $user)
     {
-
+        return !$user->userInfo->hasRewardForFillingProfile() && $user->name !== '' &&
+            $user->surname !== '' && $user->isCityDefined() && $user->userInfo->isGenderDefined() &&
+            $user->isPhotoDefined() && count($user->socialBindings) >= self::MAX_SOCIAL_BINDING;
     }
-
 }

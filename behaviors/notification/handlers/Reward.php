@@ -20,7 +20,7 @@ class Reward extends NotificationHandler
             )
         ]);
         $notif->date = time();
-        $notif->save();
+        return $notif->save();
     }
 
     protected function chargePoints()

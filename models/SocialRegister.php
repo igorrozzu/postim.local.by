@@ -39,6 +39,7 @@ class SocialRegister extends Model
             'email' => $attrClient->getEmail(),
             'city_id' => -1,
             'has_social_creation' => 1,
+            'last_visit' => time(),
         ]);
         $user->trimNames(self::MAX_NAME_LENGTH);
         $user->generatePassword(Yii::$app->params['user.socialAuthGeneratePasswordLength']);

@@ -1,6 +1,8 @@
 <?php
 use yii\web\View;
 use yii\widgets\Pjax;
+
+$experience = $user->userInfo->getExperienceInfo();
 ?>
 
 <div class="margin-top60"></div>
@@ -24,9 +26,12 @@ use yii\widgets\Pjax;
                     <?php endif;?>
                 </div>
                 <div class="container-progress-level">
-                    <div class="progress-level-bar"><div class="progress-complete"></div></div>
+                    <div class="progress-level-bar">
+                        <div class="progress-complete" style="width: <?=$experience->persent?>%;"></div>
+                    </div>
                 </div>
-                <div class="progress-level-text">36 опыта, до следующего уровня нужно ещё 4</div>
+                <div class="progress-level-text"><?=$user->userInfo->exp_points;?> опыта,
+                    до следующего уровня нужно ещё <?=$experience->needExpForNextLevel?></div>
                 <div class="info-city">
                     <?php if (isset($user->city)):?>
                         <?=$user->city->name?>

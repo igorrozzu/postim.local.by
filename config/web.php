@@ -113,6 +113,16 @@ $config = [
 
     ],
     'params' => $params,
+    'on afterAction' => function () {
+        if (!Yii::$app->user->isGuest) {
+           $user = Yii::$app->user->identity;
+           $now = time();
+           if ($user->last_visit + Yii::$app->params['user.lastVisitUpdatePeriod'] < $now) {
+               $user->last_visit = $now;
+               $user->save();
+           }
+        }
+    },
 ];
 
 if (YII_ENV_DEV) {

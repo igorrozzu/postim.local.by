@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\behaviors\notification\handlers\FillingProfile;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "tbl_users_info".
@@ -21,6 +22,7 @@ use Yii;
  * @property integer $answers_to_comments_sub
  * @property integer $reviews_and_comments_to_places_sub
  * @property integer $places_and_discounts_sub
+ * @property integer $has_reward_for_filling_profile
  */
 class UserInfo extends \yii\db\ActiveRecord
 {
@@ -90,9 +92,17 @@ class UserInfo extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return int
+     */
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
@@ -106,6 +116,7 @@ class UserInfo extends \yii\db\ActiveRecord
 
         return null;
     }
+
     public static function getUserChoice($choice)
     {
         switch ((int)$choice) {
@@ -116,24 +127,89 @@ class UserInfo extends \yii\db\ActiveRecord
         return null;
     }
 
-    public function isGenderDefined()
+    public function isGenderDefined(): bool
     {
         return in_array($this->gender, self::ALLOW_GENDER_VALUES, true);
     }
 
-    public function isGenderNotSelected()
+    public function isGenderNotSelected(): bool
     {
         return $this->gender === self::NOT_SELECTED_GENDER_VALUE;
     }
 
-    public function isUserMan()
+    public function isUserMan(): bool
     {
         return $this->gender === self::MAN_GENDER_VALUE;
     }
 
-    public function isUserWoman()
+    public function isUserWoman(): bool
     {
         return $this->gender === self::WOMAN_GENDER_VALUE;
     }
 
+    public function hasRewardForFillingProfile(): bool
+    {
+        return (bool) $this->has_reward_for_filling_profile;
+    }
+
+    /**
+     * Formula: d*x^2 + (2*a1 - d)*x - 2*exp = 0
+     *
+     * @return int
+     */
+    public function getLevelByExperience(): int
+    {
+        if ($this->exp_points === 0) {
+            return 0;
+        }
+
+        $increment = Yii::$app->params['user.incrementExperience'];
+        $a = $increment;
+        $b = 2 * Yii::$app->params['user.experienceForFirstLevel'] - $increment;
+        $c = -2 * $this->exp_points;
+
+        $d = (pow($b,2)) - (4 * $a * $c);
+
+        if ($d <= 0) {
+            $d = (-1) * $d;
+        }
+
+        $x1 = (-2 * $c) / ($b + (sqrt($d)));
+        $x2 = (-2 * $c) / ($b - (sqrt($d)));
+        $maxRoot = $x1 > $x2 ? $x1 : $x2;
+
+        return (int) abs($maxRoot);
+    }
+
+    /**
+     * Formula: d*x^2 + (2*a1 - d)*x - 2*exp = 0
+     * Experience: (d*x + (2*a1 - d)) * x / 2
+     *
+     * @param int $level
+     * @return int
+     */
+    public function getMinExperienceByLevel(int $level): int
+    {
+        if ($level === 0) {
+            return 0;
+        }
+
+        $increment = Yii::$app->params['user.incrementExperience'];
+        return (int) ($increment * $level + (2 * Yii::$app->params['user.experienceForFirstLevel'] -
+                    $increment)) * $level / 2;
+    }
+
+    /**
+     * @return \stdClass
+     */
+    public function getExperienceInfo(): \stdClass
+    {
+        $expForNextLevel = $this->getMinExperienceByLevel($this->level + 1);
+
+        $result = new \stdClass();
+        $result->persent = (int) ($this->exp_points / $expForNextLevel * 100);
+        $result->needExpForNextLevel = $expForNextLevel - $this->exp_points;
+
+        return $result;
+    }
 }
