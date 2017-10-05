@@ -152,8 +152,11 @@ class UserInfo extends \yii\db\ActiveRecord
         return (bool) $this->has_reward_for_filling_profile;
     }
 
-    //d*x^2 + (2*a1 - d)*x - 2*exp = 0
-
+    /**
+     * Formula: d*x^2 + (2*a1 - d)*x - 2*exp = 0
+     *
+     * @return int
+     */
     public function getLevelByExperience(): int
     {
         if ($this->exp_points === 0) {
@@ -178,8 +181,13 @@ class UserInfo extends \yii\db\ActiveRecord
         return (int) abs($maxRoot);
     }
 
-    //d*x^2 + (2*a1 - d)*x - 2*exp = 0
-    //exp = (d*x + (2*a1 - d)) * x / 2
+    /**
+     * Formula: d*x^2 + (2*a1 - d)*x - 2*exp = 0
+     * Experience: (d*x + (2*a1 - d)) * x / 2
+     *
+     * @param int $level
+     * @return int
+     */
     public function getMinExperienceByLevel(int $level): int
     {
         if ($level === 0) {
@@ -191,6 +199,9 @@ class UserInfo extends \yii\db\ActiveRecord
                     $increment)) * $level / 2;
     }
 
+    /**
+     * @return \stdClass
+     */
     public function getExperienceInfo(): \stdClass
     {
         $expForNextLevel = $this->getMinExperienceByLevel($this->level + 1);
