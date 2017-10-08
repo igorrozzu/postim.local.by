@@ -167,7 +167,7 @@
                     <div class="large-wide-button"><p>Редактировать</p></div>
                 </div>
 				<?php else:?>
-                    <div class="btn-setting-save" style="margin-top: -20px">
+                    <div class="btn-place-save" style="margin-top: -20px">
                         <div class="large-wide-button"><p>На модерацию</p></div>
                     </div>
                 <?php endif;?>

@@ -129,8 +129,8 @@ var Post_add = (function (window, document, undefined, $) {
 						$('.btn-confirm-photo-gallery').removeClass('active');
 						$(this).addClass('active');
 					});
-				$(document).off('click','.btn-setting-save')
-					.on('click','.btn-setting-save',function () {
+				$(document).off('click','.btn-place-save')
+					.on('click','.btn-place-save',function () {
 						if(editable.parserEditable()){
 							if(that.validation.validate()){
 								$('#post-form').submit();
