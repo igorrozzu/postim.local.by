@@ -8,20 +8,20 @@ use yii\bootstrap\Html;
 use yii\helpers\HtmlPurifier;
 
 /**
- * This is the model class for table "tbl_comments_news".
+ * This is the model class for table "tbl_comments".
  *
  * @property integer $id
- * @property integer $news_id
+ * @property integer $entity_id
  * @property integer $user_id
  * @property integer $main_comment_id
  * @property string $date
  * @property string $data
  * @property integer $like
  *
- * @property CommentsNews $mainComment
- * @property CommentsNews[] $commentsNews
+ * @property Comments $mainComment
+ * @property Comments[] $comments
  */
-class CommentsNews extends \yii\db\ActiveRecord
+class Comments extends \yii\db\ActiveRecord
 {
     public $add_scenarios =[
         'add_main_comment',
@@ -40,13 +40,16 @@ class CommentsNews extends \yii\db\ActiveRecord
     public $comment_id = null;
     public $is_like=false;
     public $is_complaint=false;
+    public $is_official_answer = false;
+
+    public $official_answer = null;
 
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'tbl_comments_news';
+        return 'tbl_comments';
     }
 
     /**
@@ -55,15 +58,14 @@ class CommentsNews extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['news_id', 'user_id', 'date', 'like'], 'required','on'=>self::$ADD_MAIN_COMMENT],
-            [['news_id', 'user_id', 'date', 'data', 'like','main_comment_id'], 'required','on'=>self::$ADD_UNDER_COMMENT],
+            [['entity_id','type_entity', 'user_id', 'date', 'like'], 'required','on'=>self::$ADD_MAIN_COMMENT],
+            [['entity_id','type_entity', 'user_id', 'date', 'data', 'like','main_comment_id'], 'required','on'=>self::$ADD_UNDER_COMMENT],
             [['comment_id'], 'safe','on'=>self::$ADD_UNDER_COMMENT],
             [['data'], 'required','message'=>'Введите текст комментария'],
-            [['news_id', 'user_id', 'main_comment_id', 'like'], 'integer'],
-            [['date'], 'safe'],
+            [['entity_id', 'user_id', 'main_comment_id', 'like'], 'integer'],
+            [['date','entity_id','official_answer'], 'safe'],
             [['data'], 'string'],
-            [['main_comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => CommentsNews::className(), 'targetAttribute' => ['main_comment_id' => 'id']],
-            [['news_id'], 'exist', 'skipOnError' => true, 'targetClass' => News::className(), 'targetAttribute' => ['news_id' => 'id']],
+            [['main_comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comments::className(), 'targetAttribute' => ['main_comment_id' => 'id']],
         ];
     }
 
@@ -86,7 +88,7 @@ class CommentsNews extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'news_id' => 'News ID',
+            'entity_id' => 'entity ID',
             'user_id' => 'User ID',
             'main_comment_id' => 'Main Comment ID',
             'date' => 'Date',
@@ -101,6 +103,7 @@ class CommentsNews extends \yii\db\ActiveRecord
             if(Yii::$app->user->isGuest){
                 $this->addError('user_id','Не авторизованые пользователи не могут добавлять комментарии');
             }
+
 
             $this->user_id=Yii::$app->user->id;
             $this->date=time();
@@ -146,14 +149,35 @@ class CommentsNews extends \yii\db\ActiveRecord
                 $this->is_complaint=true;
             }
         }
+
+        if($this->isRelationPopulated('hasOfficialAnswer')){
+        	if($this->hasOfficialAnswer != null){
+        		$this->is_official_answer = true;
+			}
+		}
     }
 
-    /**
+    public function afterSave($insert, $changedAttributes)
+	{
+		parent::afterSave($insert, $changedAttributes);
+
+		if($this->getScenario() == self::$ADD_MAIN_COMMENT && $this->official_answer){
+			OfficialAnswer::deleteAll(['user_id'=>Yii::$app->user->getId(),
+				'entity_id'=>$this->entity_id
+			]);
+			$newOfficialAnswer = new OfficialAnswer(['comment_id'=>$this->id,
+				'user_id'=>Yii::$app->user->getId(),
+				'entity_id'=>$this->entity_id]);
+			$newOfficialAnswer->save();
+		}
+	}
+
+	/**
      * @return \yii\db\ActiveQuery
      */
     public function getMainComment()
     {
-        return $this->hasOne(CommentsNews::className(), ['id' => 'main_comment_id']);
+        return $this->hasOne(Comments::className(), ['id' => 'main_comment_id']);
     }
 
     /**
@@ -161,7 +185,7 @@ class CommentsNews extends \yii\db\ActiveRecord
      */
     public function getReceiverComment()
     {
-        return $this->hasOne(CommentsNews::className(), ['receiver_comment_id' => 'id']);
+        return $this->hasOne(Comments::className(), ['receiver_comment_id' => 'id']);
     }
 
     /**
@@ -169,23 +193,29 @@ class CommentsNews extends \yii\db\ActiveRecord
      */
     public function getUnderComments()
     {
-        return $this->hasMany(CommentsNews::className(), ['main_comment_id' => 'id']);
+        return $this->hasMany(Comments::className(), ['main_comment_id' => 'id'])->orderBy(['date'=>4]);
     }
+
+
 
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getNews()
     {
-        return $this->hasOne(News::className(), ['id' => 'news_id']);
+        return $this->hasOne(News::className(), ['id' => 'entity_id']);
     }
 
     public function getUser(){
         return $this->hasOne(User::className(),['id'=>'user_id']);
     }
 
+    public function getHasOfficialAnswer(){
+		return $this->hasOne(OfficialAnswer::className(),['comment_id'=>'id','user_id'=>'user_id']);
+	}
+
     public function getLikeUser(){
-        return $this->hasOne(CommentsNewsLike::className(),['comment_id'=>'id'])
+        return $this->hasOne(CommentsLike::className(),['comment_id'=>'id'])
             ->where(['user_id'=>Yii::$app->user->id]);
     }
 

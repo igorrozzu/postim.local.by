@@ -57,6 +57,9 @@
 .container-message{
     width: calc(100% - 315px);
 }
+.block-сomments-post._reviews{
+    width: 100%;
+}
 .block-info-for-owner{
     width: calc(100% - 345px);
 }

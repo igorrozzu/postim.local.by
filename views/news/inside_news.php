@@ -30,8 +30,8 @@ $this->title = $news['header'];
             <div class="elem-count-views"><?=$news->totalView['count']?></div>
         </div>
     </div>
-    <div id="comments_news_container" data-news_id="<?=$news['id']?>">
-        <?=$this->render('comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$news->totalComments])?>
+    <div class="comments_entity_container" data-entity_id="<?=$news['id']?>">
+        <?=$this->render('/comments/comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$news->totalComments])?>
     </div>
     <h2 class="h2-c">Последнии новости</h2>
     <div class="block-news-container">
@@ -45,7 +45,8 @@ $this->title = $news['header'];
 <?php
 $js = <<<js
     $(document).ready(function() {
-        newsComments.setAutoResize('.textarea-main-comment');
+    	comments.init(1);
+        comments.setAutoResize('.textarea-main-comment');
         menu_control.fireMethodClose();
     })
 js;

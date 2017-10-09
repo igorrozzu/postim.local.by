@@ -19,7 +19,7 @@ use Yii;
  * @property integer $total_view_id
  * @property integer $count_favorites
  *
- * @property TblCommentsNews[] $tblCommentsNews
+ * @property Comments[] $Comments
  */
 class News extends \yii\db\ActiveRecord
 {
@@ -71,13 +71,13 @@ class News extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCommentsNews()
+    public function getComments()
     {
-        return $this->hasMany(CommentsNews::className(), ['news_id' => 'id']);
+        return $this->hasMany(Comments::className(), ['entity_id' => 'id']);
     }
 
     public function getTotalComments(){
-        return $this->hasMany(CommentsNews::className(), ['news_id' => 'id'])->count();
+        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->count();
     }
 
     public function getTotalView(){

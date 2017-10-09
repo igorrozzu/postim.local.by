@@ -5,21 +5,22 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "tbl_comments_complaint".
+ * This is the model class for table "tbl_official_answer".
  *
- * @property integer $id
- * @property integer $comment_id
+ * @property integer $comments_id
  * @property integer $user_id
- * @property string $message
+ *
+ * @property Comments $comments
+ * @property User $user
  */
-class CommentsComplaint extends \yii\db\ActiveRecord
+class OfficialAnswer extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'tbl_comments_complaint';
+        return 'tbl_official_answer';
     }
 
     /**
@@ -28,10 +29,9 @@ class CommentsComplaint extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['comment_id', 'user_id'], 'required'],
-            [['message'], 'required','message'=>'Необходимо заполнить текст жалобы'],
+            [['comment_id', 'user_id','entity_id'], 'required'],
             [['comment_id', 'user_id'], 'integer'],
-            [['message'], 'string', 'max' => 500],
+            [['comment_id', 'user_id'], 'unique', 'targetAttribute' => ['comment_id', 'user_id'], 'message' => 'The combination of Comments ID and User ID has already been taken.'],
             [['comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comments::className(), 'targetAttribute' => ['comment_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -43,17 +43,16 @@ class CommentsComplaint extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'comment_id' => 'Comment ID',
+            'comment_id' => 'Comments ID',
             'user_id' => 'User ID',
-            'message' => 'Message',
+            'entity_id' => 'Entity ID',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getComment()
+    public function getComments()
     {
         return $this->hasOne(Comments::className(), ['id' => 'comment_id']);
     }

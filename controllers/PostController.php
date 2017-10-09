@@ -7,12 +7,16 @@ use app\components\MainController;
 use app\components\Pagination;
 use app\models\AddPost;
 use app\models\City;
+use app\models\Comments;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
 use app\models\entities\GalleryComplaint;
+use app\models\entities\OwnerPost;
 use app\models\moderation_post\PostsModeration;
 use app\models\Posts;
+use app\models\Reviews;
 use app\models\ReviewsSearch;
+use app\models\search\CommentsSearch;
 use app\models\search\GallerySearch;
 use app\models\UnderCategory;
 use app\models\UnderCategoryFeatures;
@@ -330,6 +334,48 @@ class PostController extends MainController
         }
     }
 
+    public function actionGetReviewsComments(int $id){
+
+		$commentsSearch = new CommentsSearch();
+
+		$defaultLimit = isset($comment_id) ? 1000 : 16;
+		$_GET['type_entity']=2;
+		$paginationComments= new Pagination([
+			'pageSize' => Yii::$app->request->get('per-page', $defaultLimit),
+			'page' => Yii::$app->request->get('page', 1) - 1,
+			'route' => '/comments/get-comments',
+			'selfParams'=>[
+				'id'=>true,
+				'type_entity'=>true
+			]
+		]);
+
+		$dataProviderComments = $commentsSearch->search( Yii::$app->request->queryParams,
+			$paginationComments,
+			$id,
+			CommentsSearch::getSortArray('old')
+		);
+
+		$is_official_user = OwnerPost::find()
+			->innerJoin(Posts::tableName(),Posts::tableName().'.id = '.OwnerPost::tableName().'.post_id')
+			->innerJoin(Reviews::tableName(),Reviews::tableName().'.post_id = '.Posts::tableName().'.id')
+			->where(['owner_id'=>Yii::$app->user->getId(),
+				Reviews::tableName().'.id'=>$id
+			])->one();
+
+
+		$totalComments = Comments::find()->where(['entity_id'=>$id])->count();
+
+		return $this->renderAjax('/comments/reviews_comments', [
+				'dataProviderComments' => $dataProviderComments,
+				'totalComments' => $totalComments,
+				'id' => $id,
+				'is_official_user'=>$is_official_user
+			]
+		);
+
+	}
+
     public function actionReviews(int $postId){
 		$post = Posts::find()->with([
 			'city', 'totalView',
@@ -342,6 +388,11 @@ class PostController extends MainController
 		if ($post && ($post['status'] != 0 ? true : $post['user_id'] == $user_id)) {
 			Helper::addViews($post->totalView);
 			$breadcrumbParams = $this->getParamsForBreadcrumb($post);
+			$breadcrumbParams[] = [
+				'name' => 'Отзовы',
+				'url_name' => Yii::$app->getRequest()->getUrl(),
+				'pjax'=>'class="main-pjax a"'
+			];
 
 			$queryPost = Posts::find()->where(['tbl_posts.id' => $postId])
 				->prepare(Yii::$app->db->queryBuilder)
@@ -351,19 +402,22 @@ class PostController extends MainController
 			$reviewsModel = new ReviewsSearch();
 			$pagination = new Pagination([
 				'pageSize' => 8,
-				'page' => 0,
+				'page' => Yii::$app->request->get('page', 1)-1,
 				'route' => 'post/reviews',
 				'selfParams' => [
 					'postId' => true,
-					'load'
+					'type' => true
 				],
 			]);
 
+			$type = Yii::$app->request->get('type', 'all');
+
 			$loadTime = Yii::$app->request->get('loadTime', time());
 			$dataProvider = $reviewsModel->search(
-				['post_id' => $postId],
+				['post_id' => $postId,'type'=>$type],
 				$pagination,
-				$loadTime
+				$loadTime,
+				true
 			);
 			if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
 				echo  \app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
@@ -383,6 +437,7 @@ class PostController extends MainController
 					'breadcrumbParams' => $breadcrumbParams,
 					'loadTime'=>$loadTime,
 					'keyForMap' => $keyForMap,
+					'type'=>$type
 				]);
 			}
 

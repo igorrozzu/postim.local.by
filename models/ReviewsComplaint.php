@@ -5,21 +5,23 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "tbl_comments_complaint".
+ * This is the model class for table "tbl_reviews_complaint".
  *
- * @property integer $id
- * @property integer $comment_id
+ * @property integer $reviews_id
  * @property integer $user_id
  * @property string $message
+ *
+ * @property Reviews $reviews
+ * @property Users $user
  */
-class CommentsComplaint extends \yii\db\ActiveRecord
+class ReviewsComplaint extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'tbl_comments_complaint';
+        return 'tbl_reviews_complaint';
     }
 
     /**
@@ -28,11 +30,11 @@ class CommentsComplaint extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['comment_id', 'user_id'], 'required'],
-            [['message'], 'required','message'=>'Необходимо заполнить текст жалобы'],
-            [['comment_id', 'user_id'], 'integer'],
-            [['message'], 'string', 'max' => 500],
-            [['comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comments::className(), 'targetAttribute' => ['comment_id' => 'id']],
+            [['reviews_id', 'user_id'], 'required'],
+            [['message'], 'required','message'=>'Опишите суть жалобы'],
+            [['reviews_id', 'user_id'], 'integer'],
+            [['message'], 'string'],
+            [['reviews_id'], 'exist', 'skipOnError' => true, 'targetClass' => Reviews::className(), 'targetAttribute' => ['reviews_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -43,8 +45,7 @@ class CommentsComplaint extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'comment_id' => 'Comment ID',
+            'reviews_id' => 'Reviews ID',
             'user_id' => 'User ID',
             'message' => 'Message',
         ];
@@ -53,9 +54,9 @@ class CommentsComplaint extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getComment()
+    public function getReviews()
     {
-        return $this->hasOne(Comments::className(), ['id' => 'comment_id']);
+        return $this->hasOne(Reviews::className(), ['id' => 'reviews_id']);
     }
 
     /**

@@ -54,7 +54,7 @@ Pjax::begin([
                 <div class="btn2-menu">Фотографии <?=$photoCount?></div>
             </a>
             <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu active">Отзывы</div>
+                <div class="btn2-menu active">Отзывы <?=$post['count_reviews']?></div>
             </a>
         </div>
     </div>
@@ -62,17 +62,25 @@ Pjax::begin([
 <div class="block-content">
 
     <div class="main_container_reviews">
-        <h2 class="h2-c">Отзывы <span><?=$reviewsDataProvider->totalCount?></span></h2>
 
         <div class="block-write-reviews" data-post_id="<?=$post->id?>">
             <div class="profile-user-reviews">
                 <img class="profile-icon60x60" src="<?=Yii::$app->user->getPhoto()?>">
 				<?=Yii::$app->user->getName()?>
             </div>
-            <div class="container-write-reviews">
-
-            </div>
+            <div class="container-write-reviews"></div>
             <div class="large-wide-button open-container"><p>Написать новый отзыв</p></div>
+        </div>
+        <div class="block-sort-reviews menu-btns-card">
+            <a href="<?=Url::to(['post/reviews','name' => $post['url_name'], 'postId' => $post['id']])?>">
+                <div class="btn-sort-reviews <?=$type=='all'?'active':''?>">Все отзывы</div>
+            </a>
+            <a href="<?=Url::to(['post/reviews', 'type' => 'positive','name' => $post['url_name'], 'postId' => $post['id']])?>">
+                <div class="btn-sort-reviews <?=$type=='positive'?'active':''?>" >Положительные</div>
+            </a>
+            <a href="<?=Url::to(['post/reviews', 'type' => 'negative','name' => $post['url_name'], 'postId' => $post['id']])?>">
+                <div class="btn-sort-reviews <?=$type=='negative'?'active':''?>" >Отрицательные</div>
+            </a>
         </div>
 
 		<?php
@@ -84,7 +92,8 @@ Pjax::begin([
 						'show-more-btn' => true,
 						'replace-container-id' => 'feed-reviews',
 						'load-time' => $loadTime,
-						'without_header'=>true
+						'without_header'=>true,
+                        'btn_sort'=>true
 					]
 				]);
 			}

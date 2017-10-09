@@ -38,14 +38,18 @@ class ReviewsSearch extends Reviews
      *
      * @return ActiveDataProvider
      */
-    public function search($params, Pagination $pagination, $loadTime = null)
+    public function search($params, Pagination $pagination, $loadTime = null, $without_header = false)
     {
         $query = Reviews::find()
             ->joinWith(['user.userInfo'])
             ->innerJoinWith(['post'])
-			->with(['post.categories'])
             ->where(['<=', 'tbl_reviews.date', $params['loadTime'] ?? $loadTime])
             ->orderBy(['tbl_reviews.date' => SORT_DESC]);
+
+        if(!$without_header){
+			$query->with(['post.categories']);
+		}
+		$query->with('officialAnswer');
 
         // add conditions that should always apply here
         if(isset($params['id'])) {
@@ -56,9 +60,12 @@ class ReviewsSearch extends Reviews
 			$query->andWhere(['tbl_posts.id' => $params['post_id']]);
 		}
 
-        if(isset($params['region'])) {
-            $query->innerJoinWith(['post.city'], false)
-                ->where(['tbl_city.name' => $params['region']]);
+        if(isset($params['region']) && !empty($params['region'])) {
+            $query->innerJoinWith(['post.city.region'], false)
+				 ->andWhere(['or',
+					 ['tbl_region.name'=>$params['region']],
+					 ['tbl_city.name'=>$params['region']]
+				 ]);
         }
         if(isset($params['type']) && $params['type'] !== 'all') {
             if($params['type'] === 'positive') {
@@ -67,6 +74,10 @@ class ReviewsSearch extends Reviews
                 $query->andWhere(['<', 'tbl_reviews.rating', self::BORDER_DIVIDED_REVIEWS]);
             }
         }
+
+        if(!Yii::$app->user->isGuest){
+        	$query->with(['hasLike','hasComplaint']);
+		}
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

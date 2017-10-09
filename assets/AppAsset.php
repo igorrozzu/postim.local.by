@@ -44,6 +44,8 @@ class AppAsset extends AssetBundle
         'js/category.js',
         'js/post.js',
         'js/news.js',
+		'js/reviews.js',
+        'js/comments.js',
         'js/libs/jquery.autosize.js',
         'js/goodShare.js',
         'js/libs/debounce.js',

@@ -237,7 +237,7 @@ class HelloController extends Controller
                 if($is_under){
                     $model_under= new CommentsNews([
                         'user_id'=>$id_user,
-                        'news_id'=>$id_news,
+                        'entity_id'=>$id_news,
                         'like'=>rand(1,1210),
                         'date'=>time(),
                         'data'=>'Текст ответа на главный комментарий',

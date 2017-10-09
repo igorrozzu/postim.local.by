@@ -178,3 +178,19 @@
     margin-top: 20px;
     margin-left: 0px;
 }
+
+.without_header .review-footer{
+    margin-left: 0px;
+}
+.without_header .block-review-content{
+    margin: 0 20px 0 20px;
+}
+.without_header .review-photo{
+    margin-left: 79px;
+}
+.official_answer .comment-text{
+    margin-left: -60px;
+}
+.official_answer .profile-commentator{
+    margin-left: 0px;
+}

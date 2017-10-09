@@ -21,6 +21,8 @@ class Reviews extends \yii\db\ActiveRecord
 {
 
 	public $photos = [];
+	public $is_like = false;
+	public $is_complaint = false;
     /**
      * @inheritdoc
      */
@@ -101,6 +103,30 @@ class Reviews extends \yii\db\ActiveRecord
         return $this->hasOne(Posts::className(), ['id' => 'post_id']);
     }
 
+    public function getHasLike(){
+		return $this->hasOne(ReviewsLike::className(), ['reviews_id' => 'id'])
+			->onCondition([ReviewsLike::tableName() . '.user_id' => Yii::$app->user->getId()]);
+	}
+
+	public function getReviewsOfficial(){
+    	return $this->hasOne(OfficialAnswer::className(),['entity_id'=>'id']);
+	}
+
+	public function getOfficialAnswer(){
+    	return $this->hasOne(Comments::className(),['id'=>'comment_id'])
+			->via('reviewsOfficial');
+	}
+
+	public function getHasComplaint(){
+		return $this->hasOne(ReviewsComplaint::className(), ['reviews_id' => 'id'])
+			->onCondition([ReviewsComplaint::tableName() . '.user_id' => Yii::$app->user->getId()]);
+	}
+
+	public function getTotalComments(){
+		return $this->hasMany(Comments::className(), ['entity_id' => 'id'])
+			->onCondition(['type_entity'=>2])->count();
+	}
+
     public function load($data, $formName = null)
 	{
 		$result = parent::load($data, $formName);
@@ -114,7 +140,35 @@ class Reviews extends \yii\db\ActiveRecord
 
 		$this->savePhotos();
 		$this->reCalcRatingPlace();
-		//сделать пересчет рейтинга заведения
+		$this->reCalcCountReviews();
+
+	}
+
+	public function afterFind()
+	{
+		parent::afterFind();
+
+		if($this->isRelationPopulated('hasLike') && !empty($this->hasLike)){
+			$this->is_like = true;
+		}
+
+		if($this->isRelationPopulated('hasComplaint') && !empty($this->hasComplaint)){
+			$this->is_complaint = true;
+		}
+	}
+
+	private function reCalcCountReviews(){
+
+		$countReviewsUser = Reviews::find()
+			->where(['user_id'=>Yii::$app->user->getId()])
+			->count();
+
+		$countReviewsPost = Reviews::find()
+			->where(['post_id'=>$this->post_id])
+			->count();
+
+		Posts::updateAll(['count_reviews'=>$countReviewsPost],['id'=>$this->post_id]);
+		UserInfo::updateAll(['count_reviews'=>$countReviewsUser],['user_id'=>Yii::$app->user->getId()]);
 
 	}
 

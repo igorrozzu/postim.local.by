@@ -7,6 +7,8 @@ use app\models\LoginModel;
 use app\models\News;
 use app\models\Posts;
 use app\models\Reviews;
+use app\models\ReviewsComplaint;
+use app\models\ReviewsLike;
 use app\models\TempUser;
 use app\models\User;
 use linslin\yii2\curl\Curl;
@@ -239,6 +241,62 @@ class SiteController extends MainController
 		}
 
 		return $response;
+	}
+
+	public function actionAddRemoveLikeReviews(int $id){
+
+		$response = new \stdClass();
+		$response->status='OK';
+		Yii::$app->response->format = Response::FORMAT_JSON;
+
+		if(!Yii::$app->user->isGuest){
+			$reviews = Reviews::find()->with('hasLike')->where(['id'=>$id])->one();
+			if($reviews && !$reviews->is_like){
+				if($reviews->updateCounters(['like' => 1])){
+					$reviewsLike = new ReviewsLike(['reviews_id'=>$id,'user_id'=>Yii::$app->user->getId()]);
+					$reviewsLike->save();
+					$response->status='add';
+				}
+			}else{
+				if($reviews->updateCounters(['like' => -1])){
+					$reviews->hasLike->delete();
+					$response->status='remove';
+				}
+			}
+
+			$response->count=$reviews->like;
+		}else{
+			$response->status='error';
+			$response->message = 'Незарегистрированные пользователи не могут оценивать отзовы';
+		}
+
+		return $response;
+	}
+
+	public function actionComplainReviews(){
+		$response = new \stdClass();
+		$response->status='OK';
+		$response->message='Спасибо, что помогаете!<br>Ваша жалоба будет рассмотрена модераторами';
+		Yii::$app->response->format = Response::FORMAT_JSON;
+
+		if(!Yii::$app->user->isGuest){
+			$reviews_id =Yii::$app->request->post('id',null);
+			$message = Yii::$app->request->post('message',null);
+
+			$reviewsComplaint = new ReviewsComplaint(['reviews_id' => $reviews_id,
+				'message'=>$message,
+				'user_id'=>Yii::$app->user->getId()
+			]);
+
+			if ($reviewsComplaint->validate() && $reviewsComplaint->save()) {
+				return $response;
+			} else {
+				$name_attribute = key($reviewsComplaint->getErrors());
+				$response->status = 'error';
+				$response->message = $reviewsComplaint->getFirstError($name_attribute);
+			}
+			return $response;
+		}
 	}
 
 }

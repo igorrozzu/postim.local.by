@@ -50,6 +50,9 @@
 .container-comment{
     border-top: 1px solid #a7c9ff;
 }
+.official_answer .container-comment{
+    border-top: 0px;
+}
 .block-issues .container-comment:first-child,
 .block-сomments-post .container-comment:first-child{
     border-top: 0px solid;
@@ -159,6 +162,11 @@
 }
 .card-text-notice{
     font-size: 14px;
+}
+
+.h2-cr{
+    font-size: 20px;
+    margin-left: 0px;
 }
 
 /*Cтили toastMessage*/

@@ -18,7 +18,7 @@ var Reviews = (function (window, document, undefined,$) {
 				'</div> ' +
 				'<div class="add-review-label">Напишите отзыв</div> ' +
 				'<div class="block-textarea-review"> ' +
-					'<textarea name="reviews[data]" placeholder="Пожалуйста, аргументируйте свою оценку. Напишите не менее 100 символов." class="textarea-review"></textarea> ' +
+					'<textarea name="reviews[data]" placeholder="Пожалуйста, аргументируйте свою оценку. Напишите не менее 100 символов. Расскажите в деталях о своем опыте. Что заслуживает отдельного внимания? Рекомендуете или нет?" class="textarea-review"></textarea> ' +
 					'<div class="container-insert-photos">' +
 						'<div class="container-photos-inputs"></div>'+
 						'<div class="block-tmp-photos"></div>'+
@@ -39,7 +39,11 @@ var Reviews = (function (window, document, undefined,$) {
 
 				$(document).off('click','.open-container')
 					.on('click','.open-container',function () {
-						that.openWriteContainer.apply(this);
+						if(!main.User.is_guest){
+							that.openWriteContainer.apply(this);
+						}else {
+							main.showErrorAut('Неавторизованные пользователи не могут оставлять отзывы');
+						}
 					});
 
 				$(document).off('click','.container-evaluations .evaluation')
@@ -76,7 +80,37 @@ var Reviews = (function (window, document, undefined,$) {
 							replace: true,
 							scrollTo:0
 						});
-					})
+					});
+
+				$(document).off('click','.review-footer-btn.btn-like')
+					.on('click','.review-footer-btn.btn-like',function () {
+						if(!main.User.is_guest){
+							that.setLike.apply(this);
+						}else {
+							main.showErrorAut('Неавторизованные пользователи не могут оценивать отзывы');
+						}
+
+					});
+
+				$(document).off('click','.review-footer-btn.btn-complaint')
+					.on('click','.review-footer-btn.btn-complaint',function () {
+						if(!main.User.is_guest){
+							that.showFormComplaint.apply(this);
+						}else {
+							main.showErrorAut('Неавторизованные пользователи не могут оставлять жалобы');
+						}
+
+					});
+
+				$(document).off('click','.review-footer-btn.btn-comm')
+					.on('click','.review-footer-btn.btn-comm',function () {
+						that.openCommentsReviews.apply(this);
+					});
+
+				$(document).off('click','.review-footer-btn.hide-comm')
+					.on('click','.review-footer-btn.hide-comm',function () {
+						that.closeCommentsReviews.apply(this);
+					});
 			},
 
 			sendReviews:function () {
@@ -112,6 +146,41 @@ var Reviews = (function (window, document, undefined,$) {
 				$('#input_reviews_post_id').attr('value',post_id).val(post_id);
 				//TODO проскролить до написания отзыва
 				$('.block-textarea-review textarea').autosize();
+			},
+
+			setLike:function () {
+
+				var $btn_like = $(this);
+
+				var object_send={
+					id:null
+				};
+
+				object_send.id=$btn_like.parents('.block-reviews').attr('data-reviews_id');
+
+
+				$.ajax({
+					url: '/site/add-remove-like-reviews',
+					type: "GET",
+					dataType: "json",
+					data:object_send,
+					success: function (response) {
+						if(response.status=='error'){
+							$().toastmessage('showToast', {
+								text: response.message,
+								stayTime:5000,
+								type:'error'
+							});
+
+						}else {
+							if(response.status=='add'){
+								$btn_like.addClass('active').text(response.count);
+							}else {
+								$btn_like.removeClass('active').text(response.count);
+							}
+						}
+					}
+				});
 			},
 
 			setMark:function () {
@@ -179,6 +248,71 @@ var Reviews = (function (window, document, undefined,$) {
 			deletePhoto: function (id) {
 				$('#'+id).remove();
 				$('#inputs_'+id).remove();
+			},
+
+			showFormComplaint:function () {
+				var $btn_complaint = $(this);
+				var html = main.getFormComplaint();
+				var id_reviews = $btn_complaint.parents('.block-reviews').attr('data-reviews_id');
+
+				$('.container-blackout-popup-window').html(html).show();
+				$('.container-blackout-popup-window .form-complaint .complain-btn').off('click')
+					.on('click',function () {
+						var message = $('.container-blackout-popup-window .form-complaint input[name="complain"]').val();
+						$.ajax({
+							url: '/site/complain-reviews',
+							type: "POST",
+							dataType: "json",
+							data:{id:id_reviews,message:message},
+							success: function (response) {
+								if(response.status=='error'){
+									$().toastmessage('showToast', {
+										text: response.message,
+										stayTime:5000,
+										type:'error'
+									});
+
+								}else {
+									main.closeFormComplaint();
+
+									$().toastmessage('showToast', {
+										text: response.message,
+										stayTime:8000,
+										type:'success'
+									});
+									$btn_complaint.remove();
+								}
+							}
+						});
+					})
+
+			},
+
+			openCommentsReviews:function () {
+
+				var $btn_comment = $(this);
+				$btn_comment.addClass('hide-comm').removeClass('btn-comm').text('Скрыть');
+
+				var id_reviews = $btn_comment.parents('.block-reviews').attr('data-reviews_id');
+				var $containerForComments = $btn_comment.parents('.block-reviews').find('.container-reviews-comments');
+
+				$.get('/post/get-reviews-comments',{id:id_reviews},function (html) {
+					$containerForComments.html(html);
+					comments.init(2);
+					comments.setAutoResize('.textarea-main-comment');
+				});
+
+			},
+
+			closeCommentsReviews:function () {
+				var $btn_comment = $(this);
+				$btn_comment.removeClass('hide-comm')
+					.addClass('btn-comm')
+					.text($btn_comment.data('text')==0?'Ответить':$btn_comment.data('text'));
+
+				var $containerForComments = $btn_comment.parents('.block-reviews').find('.container-reviews-comments');
+				$containerForComments.html('');
+
 			}
 
 		}

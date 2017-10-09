@@ -446,7 +446,7 @@ class UserController extends MainController
     public function actionVseOtzyvy()
     {
         $request = Yii::$app->request;
-        $_GET['region'] = $request->get('region', Yii::$app->city->getSelected_city()['name']);
+        $_GET['region'] = $request->get('region', Yii::$app->city->getSelected_city()['url_name']);
         $_GET['type'] = $request->get('type', 'all');
         $searchModel = new ReviewsSearch();
         $pagination = new Pagination([
@@ -478,7 +478,7 @@ class UserController extends MainController
             return $this->render('feed-all-reviews', [
                 'dataProvider' => $dataProvider,
                 'loadTime' => $loadTime,
-                'region' => Yii::t('app/locativus', $request->queryParams['region']),
+                'region' => Yii::t('app/locativus', Yii::$app->city->getSelected_city()['name']),
                 'type' => $request->queryParams['type'],
             ]);
         }

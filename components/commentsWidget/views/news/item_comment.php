@@ -19,7 +19,7 @@ foreach ($model as $item):
             if ($item->status == 0) {
                 echo \yii\helpers\Html::encode($item->data);
             } else {
-                echo '<p class="comment-status">'.\app\models\CommentsNews::$status_map[$item->status].'</p>';
+                echo '<p class="comment-status">'.\app\models\Comments::$status_map[$item->status].'</p>';
             }
             ?>
         </div>

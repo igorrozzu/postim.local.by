@@ -2,7 +2,7 @@
 
 namespace app\behaviors\notification\handlers;
 
-use app\models\CommentsNews;
+use app\models\Comments;
 use app\models\News;
 use app\models\Notification;
 use Yii;
@@ -10,12 +10,12 @@ class NewComment extends NotificationHandler
 {
     public function run()
     {
-        if ($this->isValidScenario()) {
+        /*if ($this->isValidScenario()) {
 
             $receiveComment = $this->model::find()
                 ->select([
                     $this->model::tableName() . '.user_id',
-                    $this->model::tableName() . '.news_id',
+                    $this->model::tableName() . '.entity_id',
                     News::tableName() . '.url_name',
                     News::tableName() . '.id',
                 ])
@@ -36,11 +36,11 @@ class NewComment extends NotificationHandler
             ]);
             $notif->date = time();
             $notif->save();
-        }
+        }*/
     }
 
     private function isValidScenario()
     {
-        return $this->model->getScenario() === CommentsNews::$ADD_UNDER_COMMENT;
+        return $this->model->getScenario() === Comments::$ADD_UNDER_COMMENT;
     }
 }

@@ -12,14 +12,14 @@ use Yii;
  * @property integer $comment_id
 
  */
-class CommentsNewsLike extends \yii\db\ActiveRecord
+class CommentsLike extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'tbl_comments_news_like';
+        return 'tbl_comments_like';
     }
 
     /**
@@ -30,7 +30,7 @@ class CommentsNewsLike extends \yii\db\ActiveRecord
         return [
             [['user_id', 'comment_id'], 'required'],
             [['user_id', 'comment_id'], 'integer'],
-            [['comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => CommentsNews::className(), 'targetAttribute' => ['comment_id' => 'id']],
+            [['comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comments::className(), 'targetAttribute' => ['comment_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -52,7 +52,7 @@ class CommentsNewsLike extends \yii\db\ActiveRecord
      */
     public function getComment()
     {
-        return $this->hasOne(CommentsNews::className(), ['id' => 'comment_id']);
+        return $this->hasOne(Comments::className(), ['id' => 'comment_id']);
     }
 
     /**
