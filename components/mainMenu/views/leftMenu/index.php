@@ -19,6 +19,13 @@ use yii\web\View;
                     <a>Новости</a>
                 </div>
             </li>
+
+            <li class="menu-category-list" id="btn-all-reviews">
+                <div class="news-list-title">
+                    <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:''?>/otzyvy">Все отзывы</a>
+                </div>
+            </li>
+
         </ul>
     </div>
 </div>

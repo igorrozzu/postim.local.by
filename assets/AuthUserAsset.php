@@ -23,6 +23,7 @@ class AuthUserAsset extends AssetBundle
     public $js = [
         'js/auth-user-menu.js',
         'js/user-settings.js',
+		'js/keyword-app.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

@@ -334,6 +334,25 @@ class PostController extends MainController
         }
     }
 
+    public function actionGetReviewsEdit(int $id){
+
+		$response = new \stdClass();
+		$response->success = true;
+
+		$reviews = Reviews::find()
+			->with('gallery')
+			->where([Reviews::tableName().'.id'=>$id,'user_id'=>Yii::$app->user->getId()])
+			->one();
+
+		if($reviews != null){
+			$response->html = $this->renderPartial('__edit_reviews',['reviews'=>$reviews]);
+		}else{
+			$response->success = false;
+		}
+
+		return $this->asJson($response);
+	}
+
     public function actionGetReviewsComments(int $id){
 
 		$commentsSearch = new CommentsSearch();
@@ -389,7 +408,7 @@ class PostController extends MainController
 			Helper::addViews($post->totalView);
 			$breadcrumbParams = $this->getParamsForBreadcrumb($post);
 			$breadcrumbParams[] = [
-				'name' => 'Отзовы',
+				'name' => 'Отзывы',
 				'url_name' => Yii::$app->getRequest()->getUrl(),
 				'pjax'=>'class="main-pjax a"'
 			];

@@ -90,6 +90,15 @@ var Menu = (function (window, document, undefined,$) {
                         }
                     });
 
+					$(document).on('click', '.news-list-title', function (e) {
+					    if(!$(e.target).is('a')){
+							$(this).find('a').trigger('click');
+                        }
+						__mainMenu.isOpen=false;
+						$mainMenu.animate({left:'-300px',top:'0px'},200);
+					});
+
+
                     function closeOpenCategoryItem(){
                         var $item = $('.menu-category').find('.menu-category-open');
                         $item.removeClass('menu-category-open');
@@ -111,6 +120,10 @@ var Menu = (function (window, document, undefined,$) {
                 })
 
             },
+			openPageInLeftMenu:function ($elem) {
+				menu_control.fireMethodClose();
+				$elem.addClass('menu-category-open');
+			},
             openCategoryInLeftMenu:function (category,under_category) {
                 menu_control.fireMethodClose();
 

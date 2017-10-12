@@ -2,18 +2,24 @@
 
 namespace app\controllers;
 
+use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use app\components\MailSender;
+use app\components\Pagination;
 use app\models\LoginModel;
 use app\models\News;
 use app\models\Posts;
 use app\models\Reviews;
 use app\models\ReviewsComplaint;
 use app\models\ReviewsLike;
+use app\models\ReviewsSearch;
 use app\models\TempUser;
 use app\models\User;
 use linslin\yii2\curl\Curl;
 use Yii;
 use yii\base\Exception;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
+use yii\data\SqlDataProvider;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
@@ -221,20 +227,46 @@ class SiteController extends MainController
 		Yii::$app->response->format = Response::FORMAT_JSON;
 
 		if(!Yii::$app->user->isGuest){
-			$reviews = new Reviews();
+
+
+			if(Yii::$app->request->post('id',false)){
+				$reviews = Reviews::find()
+					->where(['id'=>Yii::$app->request->post('id',false)])
+					->one();
+				$reviews->setScenario(Reviews::$SCENARIO_EDIT);
+			}else{
+				$reviews = new Reviews();
+				$reviews->setScenario(Reviews::$SCENARIO_ADD);
+			}
 
 			if($reviews->load( Yii::$app->request->post(),'reviews')){
-				$reviews->like = 0;
-				$reviews->date = time();
-				$reviews->user_id = Yii::$app->user->getId();
 				if($reviews->save()){
 					$response->success = true;
 					$response->message = 'Ваш отзыв успешно добавлен';
+
+					if($reviews->getScenario()==Reviews::$SCENARIO_EDIT){
+
+						$query = Reviews::find()
+							->joinWith(['user.userInfo'])
+							->innerJoinWith(['post'])
+							->with('officialAnswer')
+							->where([Reviews::tableName().'.id'=>$reviews->id]);
+
+						$dataProvider =  new ActiveDataProvider(['query'=>$query]);
+						$response->html =  \app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
+							'dataProvider' => $dataProvider,
+							'settings'=>[
+								'show-more-btn' => false,
+								'without_header'=>true
+							]
+						]);
+						$response->message = 'Ваш отзыв успешно обновлен';
+					}
+
 				}else{
 					$name_attribute = key($reviews->getErrors());
 					$response->message = $reviews->getFirstError($name_attribute);
 				}
-
 			}
 		}else{
 			$response->message = 'Незарегистрированные пользователи не могут оставлять отзовы';
@@ -297,6 +329,89 @@ class SiteController extends MainController
 			}
 			return $response;
 		}
+	}
+
+	public function actionVseOtzyvy()
+	{
+		$request = Yii::$app->request;
+		$_GET['type'] = $request->get('type', 'all');
+		$searchModel = new ReviewsSearch();
+		$pagination = new Pagination([
+			'pageSize' => $request->get('per-page', 8),
+			'page' => $request->get('page', 1) - 1,
+			'route'=>Yii::$app->request->getPathInfo(),
+			'selfParams'=> [
+				'region' => true,
+				'type' => true,
+			],
+		]);
+		$loadTime = $request->get('loadTime', time());
+
+		$dataProvider = $searchModel->search(
+			$request->queryParams,
+			$pagination,
+			$loadTime
+		);
+
+		$h1 = '';
+		$breadcrumbParams = $this->getParamsForBreadcrumbReviews($h1);
+
+		if($request->isAjax && !$request->get('_pjax',false)) {
+			return CardsReviewsWidget::widget([
+				'dataProvider' => $dataProvider,
+				'settings' => [
+					'show-more-btn' => true,
+					'replace-container-id' => 'feed-all-reviews',
+					'load-time' => $loadTime,
+				]
+			]);
+		} else {
+			return $this->render('feed-all-reviews', [
+				'dataProvider' => $dataProvider,
+				'loadTime' => $loadTime,
+				'h1'=>$h1,
+				'breadcrumbParams'=>$breadcrumbParams,
+				'type' => $request->queryParams['type'],
+			]);
+		}
+	}
+
+	private function getParamsForBreadcrumbReviews(&$h1){
+		$breadcrumbParams=[];
+
+		$currentUrl = Yii::$app->getRequest()->getHostInfo();
+		$breadcrumbParams[] = [
+			'name' => ucfirst(Yii::$app->getRequest()->serverName),
+			'url_name' => $currentUrl,
+			'pjax' => 'class="main-header-pjax a"'
+		];
+
+		if($city = Yii::$app->request->get('city')){
+			$currentUrl=$currentUrl.'/'.$city['url_name'];
+			$breadcrumbParams[]=[
+				'name'=>$city['name'],
+				'url_name'=>$currentUrl,
+				'pjax'=>'class="main-pjax a"'
+			];
+		}
+
+		$currentUrl=$currentUrl.'/'.'otzyvy';
+		$name='Все отзывы';
+		if($city = Yii::$app->request->get('city')){
+			$name ='Все отзывы';
+		}
+		$h1 = $name;
+
+		$breadcrumbParams[]=[
+			'name'=>$name,
+			'url_name'=>$currentUrl,
+			'pjax'=>'class="main-pjax a"'
+		];
+
+
+
+
+		return $breadcrumbParams;
 	}
 
 }

@@ -38,7 +38,13 @@ Pjax::begin([
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v"><?=$post->data?></h1>
     <div class="block-info-reviewsAndfavorites" data-item-id="<?=$post->id?>" data-type="post">
-        <div class="rating-b bg-r<?=$post['rating']?>"><?=$post['rating']?></div>
+        <div class="rating-b bg-r<?=$post['rating']?>" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+			<?=$post['rating']?>
+            <meta itemprop="ratingCount" content="<?=$post->count_reviews?>">
+            <meta itemprop="ratingValue" content="<?=$post['rating']?>">
+            <meta itemprop="worstRating" content="1">
+            <meta itemprop="bestRating" content="5">
+        </div>
         <div class="count-reviews-text"><?=$post->count_reviews?> отзывов</div>
         <div class="add-favorite <?=$post['is_like']?'active':''?>"><?=$post->count_favorites?></div>
     </div>
@@ -71,16 +77,26 @@ Pjax::begin([
             <div class="container-write-reviews"></div>
             <div class="large-wide-button open-container"><p>Написать новый отзыв</p></div>
         </div>
-        <div class="block-sort-reviews menu-btns-card">
-            <a href="<?=Url::to(['post/reviews','name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn-sort-reviews <?=$type=='all'?'active':''?>">Все отзывы</div>
-            </a>
-            <a href="<?=Url::to(['post/reviews', 'type' => 'positive','name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn-sort-reviews <?=$type=='positive'?'active':''?>" >Положительные</div>
-            </a>
-            <a href="<?=Url::to(['post/reviews', 'type' => 'negative','name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn-sort-reviews <?=$type=='negative'?'active':''?>" >Отрицательные</div>
-            </a>
+        <div class="block-flex-white inside">
+            <div class="block-content">
+                <div class="menu-btns-card feeds-btn-bar">
+                    <a href="<?=Url::to(['post/reviews','name' => $post['url_name'], 'postId' => $post['id']])?>">
+                        <div class="btn2-menu <?=($type === 'all') ? 'active' : ''?>">
+                            Все
+                        </div>
+                    </a>
+                    <a href="<?=Url::to(['post/reviews', 'type' => 'positive','name' => $post['url_name'], 'postId' => $post['id']])?>">
+                        <div class="btn2-menu <?=($type === 'positive') ? 'active' : ''?>">
+                            Положительные
+                        </div>
+                    </a>
+                    <a href="<?=Url::to(['post/reviews', 'type' => 'negative','name' => $post['url_name'], 'postId' => $post['id']])?>">
+                        <div class="btn2-menu <?=($type === 'negative') ? 'active' : ''?>">
+                            Отрицательные
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
 
 		<?php
@@ -102,8 +118,13 @@ Pjax::begin([
     </div>
 </div>
 <div style="margin-top: 30px"></div>
-
-
+<input style="display: none" class="photo-add-review" name="photo-add-review" type="file" multiple
+       accept="image/*,image/jpeg,image/gif,image/png">
+<script>
+	$(document).ready(function() {
+		menu_control.fireMethodClose();
+	})
+</script>
 <?php
 Pjax::end();
 ?>

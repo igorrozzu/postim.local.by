@@ -3,15 +3,14 @@ use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+use \app\components\breadCrumb\BreadCrumb;
+
+$this->title = $h1;
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
-    <div class="bread-crumb">
-        <a class="pre" href="#">Главная</a>
-        <span class="separator"></span>
-        <p>Все отзывы в <?=$region?></p>
-    </div>
-    <h1 class="h1-v">Все отзывы в <?=$region?></h1>
+	<?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
+    <h1 class="h1-v"><?=$h1?></h1>
 </div>
 <?php
 Pjax::begin([
@@ -25,17 +24,17 @@ Pjax::begin([
 <div class="block-flex-white">
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
-            <a href="<?=Url::to(['user/vse-otzyvy'])?>">
+            <a href="/<?=Yii::$app->request->getPathInfo()?>">
                 <div class="btn2-menu <?=($type === 'all') ? 'active' : ''?>">
                     Все
                 </div>
             </a>
-            <a href="<?=Url::to(['user/vse-otzyvy', 'type' => 'positive'])?>">
+            <a href="/<?=Yii::$app->request->getPathInfo().'?type=positive'?>">
                 <div class="btn2-menu <?=($type === 'positive') ? 'active' : ''?>">
                     Положительные
                 </div>
             </a>
-            <a href="<?=Url::to(['user/vse-otzyvy', 'type' => 'negative'])?>">
+            <a href="/<?=Yii::$app->request->getPathInfo().'?type=negative'?>">
                 <div class="btn2-menu <?=($type === 'negative') ? 'active' : ''?>">
                     Отрицательные
                 </div>
@@ -66,5 +65,12 @@ Pjax::begin([
 <div class="clear-fix"></div>
 <div class="mg-btm-30"></div>
 <?php
+	$js = <<<js
+        $(document).ready(function() {
+          menu.openPageInLeftMenu($('#btn-all-reviews'));
+        });
+js;
+	echo "<script>$js</script>";
+
 Pjax::end();
 ?>

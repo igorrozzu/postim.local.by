@@ -229,4 +229,27 @@ class Helper{
         return $containerEditor->html();
     }
 
+    public  static function getTextMarkReviews(int $mark):string {
+        switch ($mark){
+			case 1:
+				return 'Очень плохо';
+				break;
+			case 2:
+				return 'Не понравилось';
+				break;
+			case 3:
+				return 'Нормально';
+				break;
+			case 4:
+				return 'Хорошо';
+				break;
+			case 5:
+				return 'Отлично';
+				break;
+			default :
+				return 'Поставьте вашу оценку';
+				break;
+        }
+    }
+
 }

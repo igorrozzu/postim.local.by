@@ -136,10 +136,13 @@
     width: 100%;
     z-index: 1;
 }
-.block-write-reviews.active{
+.block-write-reviews.active,
+.keyboard-open .block-write-reviews{
     position: inherit;
 }
-.block-write-reviews.active .profile-user-reviews{
+.block-write-reviews.active .profile-user-reviews,
+.keyboard-open .block-write-reviews .profile-user-reviews
+{
     display: flex;
 }
 .fx-bottom{

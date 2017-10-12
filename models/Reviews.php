@@ -23,6 +23,10 @@ class Reviews extends \yii\db\ActiveRecord
 	public $photos = [];
 	public $is_like = false;
 	public $is_complaint = false;
+
+	public static $SCENARIO_ADD = 'add';
+	public static $SCENARIO_EDIT = 'edit';
+
     /**
      * @inheritdoc
      */
@@ -37,14 +41,22 @@ class Reviews extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['post_id', 'like', 'user_id', 'date'], 'required'],
-            [['rating'], 'required','message'=>'Поставте вашу оценку'],
+            [['id','post_id', 'like', 'user_id', 'date'], 'required'],
+            [['rating'], 'required','message'=>'Поставьте вашу оценку'],
             [['data'], 'required','message'=>'Пожалуйста, аргументируйте свою оценку. Напишите не менее 100 символов.'],
             [['post_id', 'rating', 'like', 'user_id'], 'integer'],
-            [['date','photos'], 'safe'],
+            [['date','photos','city'], 'safe'],
             [['data'], 'string','min'=>100,'tooShort'=>'Пожалуйста, аргументируйте свою оценку. Напишите не менее 100 символов.'],
         ];
     }
+
+	public function scenarios()
+	{
+		return [
+			self::$SCENARIO_ADD => ['post_id', 'like', 'user_id', 'date','rating','data','photos'],
+			self::$SCENARIO_EDIT => ['id','post_id', 'like', 'user_id', 'date','rating','data','photos'],
+		];
+	}
 
     /**
      * @inheritdoc
@@ -139,6 +151,7 @@ class Reviews extends \yii\db\ActiveRecord
 		parent::afterSave($insert, $changedAttributes);
 
 		$this->savePhotos();
+		$this->removeSomePhoto();
 		$this->reCalcRatingPlace();
 		$this->reCalcCountReviews();
 
@@ -155,6 +168,17 @@ class Reviews extends \yii\db\ActiveRecord
 		if($this->isRelationPopulated('hasComplaint') && !empty($this->hasComplaint)){
 			$this->is_complaint = true;
 		}
+	}
+
+	public function beforeValidate()
+	{
+		if($this->getScenario()==self::$SCENARIO_ADD){
+			$this->like = 0;
+			$this->date = time();
+			$this->user_id = Yii::$app->user->getId();
+		}
+
+		return parent::beforeValidate();
 	}
 
 	private function reCalcCountReviews(){
@@ -197,6 +221,34 @@ class Reviews extends \yii\db\ActiveRecord
 			$this->count_photos = count($this->photos);
 		}
 	}
+
+	private function removeSomePhoto(){
+
+		$galleries = $this->gallery;
+
+		if($galleries && is_array($galleries)){
+			foreach ($galleries as $gallery){
+				$is_isset = false;
+				if($this->photos && is_array($this->photos)){
+					foreach ($this->photos as $photo){
+						if($photo == $gallery['link']){
+							$is_isset = true;
+						}
+					}
+				}
+
+				if(!$is_isset){
+					$tmpLink = Yii::getAlias('@webroot/post_photo/'.$this->post_id.'/' . $gallery['link']);
+					if(file_exists($tmpLink)){
+						unlink($tmpLink);
+					}
+					$gallery->delete();
+				}
+
+			}
+		}
+	}
+
 	private function savePhotos(){
 
 		if ($this->photos && is_array($this->photos)) {

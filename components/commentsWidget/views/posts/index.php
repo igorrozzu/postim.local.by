@@ -7,13 +7,13 @@
         <textarea placeholder="Что скажете по этому поводу?" class="textarea-comment textarea-main-comment"></textarea>
     </div>
     <?php if($is_official_user):?>
-        <div class="sign-official-answer">Закрепить как оффициальный ответ</div>
+        <div class="sign-official-answer">Закрепить как офиц. ответ</div>
     <?php endif;?>
     <div class="large-wide-button main"><p>Написать комментарий</p></div>
 </div>
 <?php if($dataprovider->getTotalCount()):?>
 <div class="container-comments">
-    <h2 class="h2-cr"><?=$totalComments?> комментария</h2>
+    <h2 class="h2-cr">Комментарии <span class="total"><?=$totalComments?></span></h2>
     <?php
         echo $this->render('item_comment', [
             'dataprovider' => $dataprovider,

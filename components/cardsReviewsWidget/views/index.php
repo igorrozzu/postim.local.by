@@ -11,8 +11,10 @@ $reviews = $dataProvider->getModels();
         <?php if(!($settings['without_header']??false)):?>
             <div class="block-review-post" style="margin-top: 20px; border-bottom: solid 1px #D3E4FF; padding-bottom: 23px;">
                 <div class="rating-r bg-r<?=$review->post->rating?>"><?=$review->post->rating?></div>
-                <div class="block-info-review">
-                    <p class="user-name"><?=$review->post->data?></p>
+                <div class="block-info-review main-pjax">
+                    <a href="<?=Url::to(['post/index', 'url' => $review->post['url_name'], 'id' => $review->post['id']])?>">
+                        <p class="user-name"><?=$review->post->data?></p>
+                    </a>
                     <div class="date-time-review"><?=implode(', ',ArrayHelper::getColumn($review['post']['categories'],'name')) ?></div>
                 </div>
             </div>
@@ -39,10 +41,10 @@ $reviews = $dataProvider->getModels();
             <div class="review-help-text">Оценка</div>
             <div class="review-text"><?=$review->data?></div>
         </div>
-        <?php if($review->count_photos):?>
-            <?php
-                $photo = $review->getLastPhoto();
-            ?>
+        <?php
+			$photo = $review->getLastPhoto();
+        ?>
+        <?php if($photo && $review->count_photos):?>
             <div class="review-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')">
                 <div class="block-total-photo-review"><?=$review->count_photos?></div>
             </div>
@@ -56,8 +58,12 @@ $reviews = $dataProvider->getModels();
                 $textComm=$review->totalComments?$review->totalComments:'Ответить';
             ?>
             <div class="review-footer-btn btn-comm" data-text="<?=$review->totalComments?>"><?=$textComm?></div>
-            <?php if(Yii::$app->user->getId()!=$review['user_id'] && !$review->is_complaint):?>
-                <div class="review-footer-btn btn-complaint">Пожаловаться</div>
+            <?php if(Yii::$app->user->getId()!=$review['user_id']):?>
+                <?php if(!$review->is_complaint):?>
+                    <div class="review-footer-btn btn-complaint">Пожаловаться</div>
+                <?php endif;?>
+            <?php elseif($settings['without_header']??false):?>
+                <div class="review-footer-btn btn-edit-reviews">Редактировать</div>
             <?php endif;?>
         </div>
         <div class="container-reviews-comments"></div>

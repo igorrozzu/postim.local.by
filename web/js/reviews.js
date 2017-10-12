@@ -5,9 +5,9 @@ var Reviews = (function (window, document, undefined,$) {
 
 		var __$container_write_review = $(
 			'<div class="container-write-reviews"> ' +
-			'<form id="form-write-reviews">' +
+			'<form class="form-write-reviews">' +
 				'<input type="hidden" id="input_reviews_post_id" name="reviews[post_id]">'+
-				'<div class="add-review-label">Поставте вашу оценку</div> ' +
+				'<div class="add-review-label mark">Поставьте вашу оценку</div> ' +
 				'<div class="container-evaluations"> ' +
 					'<input type="hidden" id="input-evaluation" name="reviews[rating]">'+
 					'<div class="evaluation">1</div> ' +
@@ -68,7 +68,7 @@ var Reviews = (function (window, document, undefined,$) {
 
 				$(document).off('click','.btn-send-reviews')
 					.on('click','.btn-send-reviews',function () {
-						that.sendReviews();
+						that.sendReviews.call(this);
 					});
 
 				$(document).off('click','.switch-reviews')
@@ -111,17 +111,31 @@ var Reviews = (function (window, document, undefined,$) {
 					.on('click','.review-footer-btn.hide-comm',function () {
 						that.closeCommentsReviews.apply(this);
 					});
+
+				$(document).off('click','.review-footer-btn.btn-edit-reviews')
+					.on('click','.review-footer-btn.btn-edit-reviews',function () {
+						that.getEditFormReviews.apply(this);
+					});
+
+
 			},
 
 			sendReviews:function () {
-				var formData = $('#form-write-reviews').serialize();
+				var formData = $(this).parents('.block-write-reviews')
+					.find('.form-write-reviews')
+					.serialize();
 
 				$.post('/site/save-reviews', formData, function (response) {
 					if(response.success){
-						$().toastmessage('showToast', {text: response.message, stayTime:5000, type: 'success'});
 
-						var post_id = $('.block-write-reviews').attr('data-post_id');
-						$('.menu-btns-card .btn2-menu.active').parents('a').trigger('click');
+						if(!!!response.html){
+							$('.menu-btns-card .btn2-menu.active').parents('a').trigger('click');
+						}else {
+							$('.block-write-reviews.active.edit_reviews').replaceWith(response.html);
+							$('.block-reviews.without_header.hide').remove();
+							that.closeFormReviews();
+						}
+						$().toastmessage('showToast', {text: response.message, stayTime:5000, type: 'success'});
 
 					}else {
 						$().toastmessage('showToast', {
@@ -134,6 +148,7 @@ var Reviews = (function (window, document, undefined,$) {
 			},
 
 			openWriteContainer:function () {
+				that.closeFormReviews();
 				$(this).parents('.block-write-reviews').addClass('active')
 					.find('.container-write-reviews')
 					.html(__$container_write_review.html());
@@ -144,7 +159,8 @@ var Reviews = (function (window, document, undefined,$) {
 				var post_id = $(this).parents('.block-write-reviews').attr('data-post_id');
 
 				$('#input_reviews_post_id').attr('value',post_id).val(post_id);
-				//TODO проскролить до написания отзыва
+				var scrollTop = $('.block-write-reviews').offset().top;
+				$(document).scrollTop(scrollTop);
 				$('.block-textarea-review textarea').autosize();
 			},
 
@@ -184,11 +200,22 @@ var Reviews = (function (window, document, undefined,$) {
 			},
 
 			setMark:function () {
-				var value = $(this).text();
+				var value = Number($(this).text());
+				var valueText = '';
 
 				$('.container-evaluations .evaluation.active').removeClass('active');
 				$(this).addClass('active');
 				$('#input-evaluation').attr('value',value).val(value);
+
+				switch (value){
+					case 1:{valueText = 'Очень плохо';}break;
+					case 2:{valueText = 'Не понравилось';}break;
+					case 3:{valueText = 'Нормально';}break;
+					case 4:{valueText = 'Хорошо';}break;
+					case 5:{valueText = 'Отлично';}break;
+				}
+
+				$('.add-review-label.mark').text(valueText);
 			},
 
 			addPhoto:function (e) {
@@ -300,7 +327,11 @@ var Reviews = (function (window, document, undefined,$) {
 					$containerForComments.html(html);
 					comments.init(2);
 					comments.setAutoResize('.textarea-main-comment');
+					var scrollTop = $containerForComments.offset().top-100;
+					$(document).scrollTop(scrollTop);
 				});
+
+
 
 			},
 
@@ -313,6 +344,39 @@ var Reviews = (function (window, document, undefined,$) {
 				var $containerForComments = $btn_comment.parents('.block-reviews').find('.container-reviews-comments');
 				$containerForComments.html('');
 
+			},
+
+			getEditFormReviews:function () {
+				var $container = $(this).parents('.block-reviews');
+				var id_reviews = $container.attr('data-reviews_id');
+
+				$.ajax({
+					url:'/post/get-reviews-edit',
+					type: "GET",
+					data: {id:id_reviews},
+					dataType: 'json',
+					success: function (response) {
+						if(!!response.success){
+							that.closeFormReviews();
+							$container.addClass('hide');
+							$container.before(response.html);
+						}
+					}
+				});
+			},
+
+
+			closeFormReviews:function () {
+				$('.block-write-reviews')
+					.find('.container-write-reviews')
+					.html('');
+
+				$('.btn-send-reviews').removeClass('btn-send-reviews')
+					.addClass('open-container')
+					.find('p').text('Написать новый отзыв');
+
+				$('.block-write-reviews.active.edit_reviews').remove();
+				$('.block-reviews.hide').removeClass('hide');
 			}
 
 		}

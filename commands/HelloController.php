@@ -9,7 +9,7 @@ namespace app\commands;
 
 use app\models\Category;
 use app\models\City;
-use app\models\CommentsNews;
+use app\models\Comments;
 use app\models\News;
 use app\models\Notification;
 use app\models\PostCategoryCount;

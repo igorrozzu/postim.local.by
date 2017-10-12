@@ -33,7 +33,8 @@
 .block-сomments-post,
 .block-news-container,
 .container-cards-promo,
-.container-promo-statistic{
+.container-promo-statistic,
+.block-flex-white.inside{
     width: 100%
 }
 .block-info-for-owner{

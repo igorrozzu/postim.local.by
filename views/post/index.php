@@ -39,7 +39,13 @@ Pjax::begin([
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v"><?=$post->data?></h1>
     <div class="block-info-reviewsAndfavorites" data-item-id="<?=$post->id?>" data-type="post">
-        <div class="rating-b bg-r<?=$post['rating']?>"><?=$post['rating']?></div>
+        <div class="rating-b bg-r<?=$post['rating']?>" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+            <?=$post['rating']?>
+            <meta itemprop="ratingCount" content="<?=$post->count_reviews?>">
+            <meta itemprop="ratingValue" content="<?=$post['rating']?>">
+            <meta itemprop="worstRating" content="1">
+            <meta itemprop="bestRating" content="5">
+        </div>
         <div class="count-reviews-text"><?=$post->count_reviews?> отзывов</div>
         <div class="add-favorite <?=$post['is_like']?'active':''?>"><?=$post->count_favorites?></div>
     </div>
@@ -231,8 +237,6 @@ Pjax::begin([
         </div>
     </div>
 
-    <!--TODO отзовы-->
-
     <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post_id'=>$post->id])?>
 
     <div class="block-info-for-owner">
@@ -259,6 +263,7 @@ Pjax::begin([
                 post.photos.nextPhoto();
             }
         });
+		menu_control.fireMethodClose();
     })
 </script>
 <div class="container-blackout-photo-popup"></div>

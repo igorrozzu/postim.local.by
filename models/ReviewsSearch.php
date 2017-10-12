@@ -14,12 +14,17 @@ use yii\data\Pagination;
 class ReviewsSearch extends Reviews
 {
     const BORDER_DIVIDED_REVIEWS = 3;
+
+	public $city;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
-        return array_merge(parent::rules(), []);
+		return [
+			[['city'], 'safe'],
+		];
     }
 
     /**
@@ -46,6 +51,15 @@ class ReviewsSearch extends Reviews
             ->where(['<=', 'tbl_reviews.date', $params['loadTime'] ?? $loadTime])
             ->orderBy(['tbl_reviews.date' => SORT_DESC]);
 
+		$dataProvider = new ActiveDataProvider([
+			'query' => $query,
+			'pagination' => $pagination,
+		]);
+
+		if (!$this->load($params,'') && !$this->validate()) {
+			return $dataProvider;
+		}
+
         if(!$without_header){
 			$query->with(['post.categories']);
 		}
@@ -60,11 +74,11 @@ class ReviewsSearch extends Reviews
 			$query->andWhere(['tbl_posts.id' => $params['post_id']]);
 		}
 
-        if(isset($params['region']) && !empty($params['region'])) {
+        if(!empty($this->city)) {
             $query->innerJoinWith(['post.city.region'], false)
 				 ->andWhere(['or',
-					 ['tbl_region.name'=>$params['region']],
-					 ['tbl_city.name'=>$params['region']]
+					 ['tbl_region.url_name'=>$this->city['url_name']],
+					 ['tbl_city.url_name'=>$this->city['url_name']]
 				 ]);
         }
         if(isset($params['type']) && $params['type'] !== 'all') {
@@ -79,10 +93,6 @@ class ReviewsSearch extends Reviews
         	$query->with(['hasLike','hasComplaint']);
 		}
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => $pagination,
-        ]);
         $query->groupBy(['tbl_reviews.id']);
 
         return $dataProvider;

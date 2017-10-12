@@ -9,7 +9,7 @@ use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use app\models\City;
 
-class NewsUrlRule extends CityUrlRule {
+class ReviewsUrlRule extends CityUrlRule {
 
     public function createUrl($manager, $route, $params)
     {
@@ -23,9 +23,9 @@ class NewsUrlRule extends CityUrlRule {
 
         $queryParams= explode('/',$pathInfo);
 
-        $route='/news/index';
+        $route='/site/vse-otzyvy';
 
-        if(count($queryParams)==1 && $queryParams[0]=='novosti'){
+        if(count($queryParams)==1 && $queryParams[0]=='otzyvy'){
             $params=[];
 			\Yii::$app->city->setDefault();
             return [$route,$params];
@@ -33,7 +33,7 @@ class NewsUrlRule extends CityUrlRule {
 
         $arrIndex = $this->getIndexArray();
 
-        if(count($queryParams)==2 && isset($arrIndex['indexCities'][$queryParams[0]]) && $queryParams[1]=='novosti' ){
+        if(count($queryParams)==2 && isset($arrIndex['indexCities'][$queryParams[0]]) && $queryParams[1]=='otzyvy' ){
             $params['city']['name']=$arrIndex['indexCities'][$queryParams[0]]['name'];
             $params['city']['url_name']=$arrIndex['indexCities'][$queryParams[0]]['url_name'];
 

@@ -75,6 +75,9 @@ $config = [
                 [
                     'class' => 'app\components\customUrlManager\NewsUrlRule', //лента новостей
                 ],
+				[
+					'class' => 'app\components\customUrlManager\ReviewsUrlRule', //лента отзывов
+				],
                 '<url:.+>-n<id:\d+>'=>'news/news',//статья новости
                 '<url:^add$>'=>'post/add',
                 '<url:^edit>/<id:\d+>'=>'post/edit',

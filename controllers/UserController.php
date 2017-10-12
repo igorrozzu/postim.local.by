@@ -14,6 +14,7 @@ use app\models\entities\Gallery;
 use app\models\moderation_post\PostsModeration;
 use app\models\moderation_post\PostsModerationSearch;
 use app\models\PostsSearch;
+use app\models\Region;
 use app\models\ReviewsSearch;
 use app\models\search\DiscountOrderSearch;
 use app\models\search\GallerySearch;
@@ -441,47 +442,6 @@ class UserController extends MainController
             'pjax'=>'class="main-pjax a"'
         ];
         return $breadcrumbParams;
-    }
-
-    public function actionVseOtzyvy()
-    {
-        $request = Yii::$app->request;
-        $_GET['region'] = $request->get('region', Yii::$app->city->getSelected_city()['url_name']);
-        $_GET['type'] = $request->get('type', 'all');
-        $searchModel = new ReviewsSearch();
-        $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 8),
-            'page' => $request->get('page', 1) - 1,
-            'selfParams'=> [
-                'region' => true,
-                'type' => true,
-            ],
-        ]);
-        $loadTime = $request->get('loadTime', time());
-
-        $dataProvider = $searchModel->search(
-            $request->queryParams,
-            $pagination,
-            $loadTime
-        );
-
-        if($request->isAjax && !$request->get('_pjax',false)) {
-            return CardsReviewsWidget::widget([
-                'dataProvider' => $dataProvider,
-                'settings' => [
-                    'show-more-btn' => true,
-                    'replace-container-id' => 'feed-all-reviews',
-                    'load-time' => $loadTime,
-                ]
-            ]);
-        } else {
-            return $this->render('feed-all-reviews', [
-                'dataProvider' => $dataProvider,
-                'loadTime' => $loadTime,
-                'region' => Yii::t('app/locativus', Yii::$app->city->getSelected_city()['name']),
-                'type' => $request->queryParams['type'],
-            ]);
-        }
     }
 
     public function actionZakazyPromokodov()

@@ -40,6 +40,10 @@
     width: calc(100% - 60px);
     margin: 0 30px;
 }
+.block-flex-white.inside .block-content{
+    margin: 0 0;
+}
+
 .nav-bar1,
 .block-content-between,
 .block-info-card,
@@ -54,7 +58,8 @@
 .block-news-container,
 .container-cards-promo,
 .container-promo-statistic,
-.container-message{
+.container-message,
+.block-flex-white.inside{
     width: calc(100% - 315px);
 }
 .block-сomments-post._reviews{
