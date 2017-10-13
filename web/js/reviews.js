@@ -360,6 +360,8 @@ var Reviews = (function (window, document, undefined,$) {
 							that.closeFormReviews();
 							$container.addClass('hide');
 							$container.before(response.html);
+							var scrollTop = $container.prev().offset().top-100;
+							$(document).scrollTop(scrollTop);
 						}
 					}
 				});

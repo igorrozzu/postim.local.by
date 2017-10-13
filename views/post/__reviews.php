@@ -1,7 +1,7 @@
 <div class="main_container_reviews">
 	<h2 class="h2-c">Отзывы <span><?=$reviewsDataProvider->totalCount?></span></h2>
 
-	<div class="block-write-reviews" data-post_id="<?=$post_id?>">
+	<div class="block-write-reviews main-write" data-post_id="<?=$post_id?>">
 		<div class="profile-user-reviews">
 			<img class="profile-icon60x60" src="<?=Yii::$app->user->getPhoto()?>">
 			<?=Yii::$app->user->getName()?>

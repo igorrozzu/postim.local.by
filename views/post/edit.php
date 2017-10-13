@@ -163,7 +163,7 @@
 					<label class="label-field-setting">Ключевые слова</label>
 					<input name="engine[key_word]" class="input-field-setting" placeholder="Введите текст" value="<?=$params['post']['key_word']?$params['post']['key_word']:''?>">
 				</div>
-                <div class="btn-setting-save">
+                <div class="btn-place-save">
                     <div class="large-wide-button"><p>Редактировать</p></div>
                 </div>
 				<?php else:?>

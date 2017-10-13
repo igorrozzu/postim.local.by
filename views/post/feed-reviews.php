@@ -69,7 +69,7 @@ Pjax::begin([
 
     <div class="main_container_reviews">
 
-        <div class="block-write-reviews" data-post_id="<?=$post->id?>">
+        <div class="block-write-reviews main-write" data-post_id="<?=$post->id?>">
             <div class="profile-user-reviews">
                 <img class="profile-icon60x60" src="<?=Yii::$app->user->getPhoto()?>">
 				<?=Yii::$app->user->getName()?>

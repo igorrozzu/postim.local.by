@@ -397,10 +397,11 @@ class SiteController extends MainController
 
 		$currentUrl=$currentUrl.'/'.'otzyvy';
 		$name='Все отзывы';
+		$h1 = 'Все отзывы в '.Yii::t('app/locativus','Беларусь');
 		if($city = Yii::$app->request->get('city')){
 			$name ='Все отзывы';
+			$h1 = 'Все отзывы в '.Yii::t('app/locativus',$city['name']);
 		}
-		$h1 = $name;
 
 		$breadcrumbParams[]=[
 			'name'=>$name,

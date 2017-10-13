@@ -226,7 +226,7 @@
                     <label class="label-field-setting">Ключевые слова</label>
                     <input name="engine[key_word]" class="input-field-setting" placeholder="Введите текст" value="">
                 </div>
-                <div class="btn-setting-save">
+                <div class="btn-place-save">
                     <div class="large-wide-button"><p>Опубликовать</p></div>
                 </div>
 				<?php else:?>
