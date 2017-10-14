@@ -727,7 +727,7 @@ class PostController extends MainController
 					$message = 'moderation';
 				}else{
 					$scenario = AddPost::$SCENARIO_EDIT_USER;
-					$message = 'moderation';
+					$message = 'moderation_edit';
 				}
 
 			}

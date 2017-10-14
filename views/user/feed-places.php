@@ -12,7 +12,7 @@ use yii\helpers\Url;
             <a href="<?=Url::to(['user/places', 'id' => $user->id])?>">
                 <div class="btn2-menu <?php if($moderation === null) echo 'active'?>">
                     Места <?=$user->userInfo->count_places_added?$user->userInfo->count_places_added:'';?></div></a>
-            <?php if($user->id == Yii::$app->user->getId() && Yii::$app->user->identity->role < 1):?>
+            <?php if($user->id == Yii::$app->user->getId() && Yii::$app->user->identity->role <= 1):?>
                 <a href="<?=Url::to(['user/places', 'id' => $user->id, 'moderation' => 1])?>" >
                     <div class="btn2-menu <?php if($moderation !== null) echo 'active'?>">
                         На модерации <?=$user->userInfo->count_place_moderation?$user->userInfo->count_place_moderation:'';?></div></a>
@@ -47,7 +47,7 @@ use yii\helpers\Url;
         <div style="margin-top: 10px; display: flex"></div>
         <div class="card-promo">
             <?php if($user->id == Yii::$app->user->getId()):?>
-                <p class="card-text-notice">Вы не добавили / редактировали ни одного места</p>
+                <p class="card-text-notice">Вы не добавляли и не редактировали места</p>
             <?php else:?>
                 <p class="card-text-notice">Пользователь не добавлял и не редактировал места</p>
             <?php endif;?>

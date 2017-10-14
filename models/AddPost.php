@@ -441,13 +441,22 @@
 			}else{
 				if($this->editors){
 					$postInfo->editors = $this->editors;
-				}
+					if(is_array($postInfo->editors) ){
+						$arr = $postInfo->editors;
+					}else{
+						$arr = [];
+					}
+					if(!in_array(Yii::$app->user->getId(), $postInfo->editors)){
+						array_push($arr, Yii::$app->user->getId());
+						$postInfo->editors = $arr;
+					}
 
-				if (!in_array(Yii::$app->user->getId(), $postInfo->editors)) {
-					$arr = $postInfo->editors;
+				}else{
+					$arr = [];
 					array_push($arr, Yii::$app->user->getId());
 					$postInfo->editors = $arr;
 				}
+
 
 			}
 			$postInfo->post_id = $post_id;

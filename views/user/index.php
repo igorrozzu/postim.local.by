@@ -149,6 +149,12 @@ Pjax::end();
         		$().toastmessage('showToast', {text: 'Спасибо, что помогаете! Ваше место будет рассмотрена модераторами и добавлено на сайт. Или нет',stayTime:5000,type:'success'});
         		
         	}break;
+        	case 'moderation_edit':{
+        		var btn$ = $(".menu-btns-card.feeds-btn-bar a:eq(2)"),click = btn$.click.bind(btn$);
+                setTimeout(click, 100);
+        		$().toastmessage('showToast', {text: 'Спасибо, что помогаете! Ваша редакция будет рассмотрена модераторами и добавлена на сайт. Или нет',stayTime:5000,type:'success'});
+        		
+        	}break;
         }
     })
 js;
