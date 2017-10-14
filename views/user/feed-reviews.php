@@ -11,7 +11,7 @@ use yii\widgets\Pjax;
                 <div class="btn2-menu active">Отзывы <?=$user->userInfo->count_reviews?$user->userInfo->count_reviews:'';?></div></a>
             <a href="<?=Url::to(['user/places', 'id' => $user->id])?>">
                 <div class="btn2-menu">Места <?=$user->userInfo->count_places_added?$user->userInfo->count_places_added:'';?></div></a>
-			<?php if($user->id == Yii::$app->user->getId()):?>
+			<?php if($user->id == Yii::$app->user->getId() && Yii::$app->user->identity->role < 1):?>
                 <a href="<?=Url::to(['user/places', 'id' => $user->id, 'moderation' => 1])?>" >
                     <div class="btn2-menu">
                         На модерации <?=$user->userInfo->count_place_moderation?$user->userInfo->count_place_moderation:'';?></div></a>

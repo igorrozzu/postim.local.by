@@ -291,7 +291,9 @@ var Editable = (function (window, document, undefined,$) {
 						var $tmpInsert = $('<div class="insert-item"></div>');
 
 						if($(this).hasClass('container-editor')){
-							if($(this).find('.editable').html().length > 5){
+							var str = $(this).find('.editable').html();
+							str = str.replace(/<[^>]+>/g,'');
+							if(str.length > 5){
 								$tmpInsert.html($(this).find('.editable').html());
 								$tmpBlock.append($tmpInsert.clone());
 								is_insert = true;

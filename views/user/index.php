@@ -134,12 +134,19 @@ Pjax::end();
         	case 'place':{
         		var btn$ = $(".menu-btns-card.feeds-btn-bar a:eq(1)"),click = btn$.click.bind(btn$);
                 setTimeout(click, 100);
+                $().toastmessage('showToast', {text: 'Место добавлено',stayTime:5000,type:'success'});
+        		
+        	}break;
+        	case 'place_edit':{
+        		var btn$ = $(".menu-btns-card.feeds-btn-bar a:eq(1)"),click = btn$.click.bind(btn$);
+                setTimeout(click, 100);
+                $().toastmessage('showToast', {text: 'Место отредактировано',stayTime:5000,type:'success'});
         		
         	}break;
         	case 'moderation':{
         		var btn$ = $(".menu-btns-card.feeds-btn-bar a:eq(2)"),click = btn$.click.bind(btn$);
                 setTimeout(click, 100);
-        		//$().toastmessage('showToast', {text: 'Ваше место отправлено на модерацию',stayTime:5000,type:'success'});
+        		$().toastmessage('showToast', {text: 'Спасибо, что помогаете! Ваше место будет рассмотрена модераторами и добавлено на сайт. Или нет',stayTime:5000,type:'success'});
         		
         	}break;
         }

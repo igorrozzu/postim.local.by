@@ -37,7 +37,7 @@ var Main = (function (window, document, undefined,$) {
 					$(document).off('click', '.btn_add_place,.btn_br')
 						.on('click', '.btn_add_place,.btn_br', function (e) {
 							if (that.User.is_guest) {
-								that.showErrorAut('Незарегистрированные пользователи не могут добоавлять места');
+								that.showErrorAut('Незарегистрированные пользователи не могут добавить место');
 								e.preventDefault();
 
 								return false;

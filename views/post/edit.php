@@ -6,6 +6,11 @@
         <?php else:?>
             <input type="hidden" name="id" value="<?=$params['post']->id?>">
         <?php endif;?>
+		<?php if ($params['post']->info->editors??false): ?>
+            <?php foreach ($params['post']->info->editors as $editor):?>
+                <input type="hidden" name="editors[]" value="<?=$editor?>">
+            <?php endforeach;?>
+		<?php endif; ?>
 		<div class="container-add-place">
 			<div class="block-field-setting">
 				<label class="label-field-setting">Название места</label>
@@ -112,9 +117,9 @@
 			<div class="container-description">
 				<div class="description-header">Описание места</div>
 				<div class="block-write-editors">
-					<input id="article" name="article" type="text" style="display: none">
+					<input id="article" name="article" value="<?=$params['post']->info->article?\yii\helpers\Html::encode($params['post']->info->article):''?>" type="text" style="display: none">
                     <?php if($params['post']->info->article):?>
-						<?=\app\components\Helper::parserForEditor($params['post']->info->article);?>
+						<?=\app\components\Helper::parserForEditor($params['post']->info->article,true);?>
                     <?php else:?>
                         <div class="item item-editor-default container-editor"><div class="editable"></div></div>
                     <?php endif;?>

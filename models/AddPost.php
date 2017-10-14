@@ -22,7 +22,7 @@
 			$comments_to_address,$coords_address,$id;
 
 		public $categories, $city, $contacts,
-			$time_work, $features, $photos, $engine;
+			$time_work, $features, $photos, $engine,$editors;
 
 		private $cover = null;
 
@@ -80,9 +80,9 @@
 		{
 			return [
 				self::$SCENARIO_ADD => ['name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
-				self::$SCENARIO_EDIT_USER => ['id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
-				self::$SCENARIO_EDIT_MODERATOR => ['id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
-				self::$SCENARIO_EDIT_USER_SELF_POST=> ['id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
+				self::$SCENARIO_EDIT_USER => ['editors','id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
+				self::$SCENARIO_EDIT_MODERATOR => ['editors','id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
+				self::$SCENARIO_EDIT_USER_SELF_POST=> ['editors','id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
 			];
 		}
 
@@ -134,6 +134,7 @@
 					if ($main_id != 0) {
 						$post->main_id = $main_id;
 						$oldPost = Posts::find()->with('info')->where(['id' => $main_id])->one();
+						$post->url_name = $oldPost->url_name;
 						$oldPostInfo = $oldPost->info;
 					}
 
@@ -391,7 +392,7 @@
 								'value'            => 1,
 								'features_main_id' => $idFeature,
 							]);
-							if($post_feature->save()){
+							if(!$post_feature->save()){
 								$this->customError = true;
 							}
 						}
@@ -420,6 +421,7 @@
 			}
 
 			$postInfo->article = $this->article?$this->article:null;
+
 			if ($postInfo->editors && !in_array(Yii::$app->user->getId(), $postInfo->editors)) {
 
 				$arr = $postInfo->editors;
@@ -437,7 +439,16 @@
 				}
 
 			}else{
-				$postInfo->editors =  [0=>Yii::$app->user->getId()];
+				if($this->editors){
+					$postInfo->editors = $this->editors;
+				}
+
+				if (!in_array(Yii::$app->user->getId(), $postInfo->editors)) {
+					$arr = $postInfo->editors;
+					array_push($arr, Yii::$app->user->getId());
+					$postInfo->editors = $arr;
+				}
+
 			}
 			$postInfo->post_id = $post_id;
 

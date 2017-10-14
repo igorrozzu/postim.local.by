@@ -709,8 +709,10 @@ class PostController extends MainController
 			$addPostModel = new AddPost();
 
 			$scenario = '';
+			$message = '';
 			if(Yii::$app->user->identity->role > 1){
 				$scenario = AddPost::$SCENARIO_EDIT_MODERATOR;
+				$message = 'place_edit';
 			}else{
 
 				$post = Posts::find()
@@ -722,16 +724,18 @@ class PostController extends MainController
 
 				if($post){
 					$scenario = AddPost::$SCENARIO_EDIT_USER_SELF_POST;
+					$message = 'moderation';
 				}else{
 					$scenario = AddPost::$SCENARIO_EDIT_USER;
+					$message = 'moderation';
 				}
 
 			}
 			$addPostModel->setScenario($scenario);
 
+			Yii::$app->getSession()->setFlash('redirect_after_add'.Yii::$app->user->getId(),$message);
+
 			if($addPostModel->load(Yii::$app->request->post(),'') && $addPostModel->save()){
-				$message = Yii::$app->user->identity->role >1?'place':'moderation';
-				Yii::$app->getSession()->setFlash('redirect_after_add'.Yii::$app->user->getId(),$message);
 				return $this->redirect('/id'.Yii::$app->user->getId());
 			}
 		}
