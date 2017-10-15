@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\behaviors\notification\handlers\FillingProfile;
+use app\behaviors\notification\handlers\Register;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -13,6 +14,7 @@ use yii\db\ActiveQuery;
  * @property integer $level
  * @property integer $exp_points
  * @property double $virtual_money
+ * @property double $mega_money
  * @property integer $total_comments
  * @property integer $count_places_added
  * @property integer $count_place_moderation
@@ -50,7 +52,7 @@ class UserInfo extends \yii\db\ActiveRecord
             [['user_id', 'level', 'exp_points', 'total_comments', 'count_places_added', 'count_place_moderation',
                 'gender', 'email_alert_subscription', 'answers_to_reviews_sub', 'answers_to_comments_sub',
                 'reviews_and_comments_to_places_sub', 'places_and_discounts_sub', 'has_reward_for_filling_profile'], 'integer'],
-            [['virtual_money'], 'number'],
+            [['virtual_money', 'mega_money'], 'number'],
         ];
     }
 
@@ -79,15 +81,8 @@ class UserInfo extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            'notification' => [
-                'class' => 'app\behaviors\notification\Notification',
-                'handlers' => [
-                    'afterUpdate' => FillingProfile::className()
-                ],
-                'params' => [
-                    'afterUpdate' => ['exp' => 100, 'money' => 1, 'template' => 'reward.profile'],
-                ],
-            ],
+            FillingProfile::className(),
+            Register::className(),
         ];
     }
 
@@ -105,6 +100,14 @@ class UserInfo extends \yii\db\ActiveRecord
     public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPost(): ActiveQuery
+    {
+        return $this->hasOne(Posts::className(), ['user_id' => 'user_id']);
     }
 
     public static function getUserGender($gender)
@@ -150,6 +153,21 @@ class UserInfo extends \yii\db\ActiveRecord
     public function hasRewardForFillingProfile(): bool
     {
         return (bool) $this->has_reward_for_filling_profile;
+    }
+
+    public function hasReviewsAndCommentsToPlacesSub(): bool
+    {
+        return (bool) $this->reviews_and_comments_to_places_sub;
+    }
+
+    public function hasAnswersToReviewsSub(): bool
+    {
+        return (bool) $this->answers_to_reviews_sub;
+    }
+
+    public function hasAnswersToCommentsSub(): bool
+    {
+        return (bool) $this->answers_to_comments_sub;
     }
 
     /**

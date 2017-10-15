@@ -6,7 +6,7 @@
 use app\assets\AuthUserAsset;
 use app\assets\BusinessAccountAsset;
 use app\assets\LoginFormsAsset;
-use app\models\Notification;
+use app\models\entities\NotificationUser;
 use yii\helpers\Html;
 use app\assets\AppAsset;
 use app\assets\CustomScrollbarAsset;
@@ -23,7 +23,7 @@ AuthUserAsset::register($this);
 BusinessAccountAsset::register($this);
 //конец условия
 $user = Yii::$app->user->identity;
-$countNotif = Notification::getCountNotifications();
+$countNotif = NotificationUser::getCountNotifications();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

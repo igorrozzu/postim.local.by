@@ -2,16 +2,16 @@
 
 namespace app\models;
 
+use app\models\entities\NotificationUser;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Notification;
 use yii\data\Pagination;
 
 /**
- * NotificationSearch represents the model behind the search form about `app\models\Notification`.
+ * NotificationSearch represents the model behind the search form about `app\models\entities\NotificationUser`.
  */
-class NotificationSearch extends Notification
+class NotificationSearch extends NotificationUser
 {
     /**
      * @inheritdoc
@@ -19,8 +19,7 @@ class NotificationSearch extends Notification
     public function rules()
     {
         return [
-            [['id', 'user_id', 'sender_id'], 'integer'],
-            [['date', 'message'], 'safe'],
+            [['notification_id', 'user_id', 'is_showed'], 'integer']
         ];
     }
 
@@ -42,11 +41,11 @@ class NotificationSearch extends Notification
      */
     public function search($params, Pagination $pagination)
     {
-        $query = Notification::find()
-            ->with(['sender', 'recipient'])
+        $query = NotificationUser::find()
+            ->joinWith(['notification.sender'])
             ->where(['user_id' => Yii::$app->user->id])
             ->andWhere(['<=', 'date', $params['time']])
-            ->orderBy(['date' => SORT_DESC]);
+            ->orderBy(['date' => SORT_DESC, 'notification_id' => SORT_DESC]);
 
         // add conditions that should always apply here
 

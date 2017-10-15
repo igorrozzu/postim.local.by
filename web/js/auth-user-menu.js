@@ -109,13 +109,13 @@ var authUserMenu = (function (window, document, undefined,$) {
                     isOpen:false, width: '-484px', openTime: 200, pointTime: null
                 };
                 $(document).ready(function () {
-                    $(document).on('click','.btn-notice,.right-arrow',function () {
-                        if(!notifMenu.isOpen){
-                            notifMenu.isOpen=true;
+                    $(document).on('click','.btn-notice,.right-arrow', function () {
+                        if (!notifMenu.isOpen){
+                            notifMenu.isOpen = true;
                             notifMenu.pointTime = Math.floor(Date.now() / 1000);
                             $('.notif-menu').animate({right:'0px', top:'0px'}, notifMenu.openTime);
-                        }else {
-                            notifMenu.isOpen=false;
+                        } else {
+                            notifMenu.isOpen = false;
                             $('.notif-menu').animate({right:notifMenu.width, top:'0px'}, {
                                 duration: notifMenu.openTime,
                                 complete: methods.resetNotifMenu

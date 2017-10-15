@@ -21,7 +21,7 @@ $hostName = Yii::$app->request->getHostInfo();
 </head>
 <body style="margin: 0; padding: 0; background-color: #f1f2f4">
 <?php $this->beginBody() ?>
-<table border="0" cellpadding="0" cellspacing="0" style="margin:20px auto; padding: 20px 0px; max-width: 600px;
+<table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto; padding: 20px 0px; max-width: 600px;
         font-family: Tahoma, Verdana, Helvetica, sans-serif; color: #444444; font-size: 15px;" >
     <tr>
         <td style="background-color: #3c5994; height: 60px;">
@@ -34,7 +34,6 @@ $hostName = Yii::$app->request->getHostInfo();
 
     <tr>
         <td style="padding: 23px 20px 30px 20px; background-color: #FFFFFF">
-            <span style="display: block; margin-bottom: 1px;">Ecли вы получили это письмо по ошибке, просто проигнорируйте его.</span>
             <span style="display: block; margin: 0px;">С наилучшими пожеланиями, Postim.by</span>
         </td>
     </tr>
@@ -87,7 +86,14 @@ $hostName = Yii::$app->request->getHostInfo();
                 </span>
             </span>
         </td>
-
+    </tr>
+    <tr style="display: block; padding: 20px;">
+        <td>
+            <span style="-webkit-text-size-adjust:none; font-size: 11px;">
+                Вы можете ограничить или отменить уведомления по эл. почте в
+                <a href="<?= $hostName ?>/user/settings" target="_blank" style="color: #3C5994;">настройках профиля</a>
+            </span>
+        </td>
     </tr>
 </table>
 <?php $this->endBody() ?>

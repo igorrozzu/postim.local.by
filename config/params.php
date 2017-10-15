@@ -11,7 +11,7 @@ return [
     'user.lastVisitUpdatePeriod' => 1800,
     'user.socialAuthGeneratePasswordLength' => 15,
     'user.incrementExperience' => 10,
-    'user.experienceForFirstLevel' => 10,
+    'user.experienceForFirstLevel' => 100,
 
     'security.encryptionKey' => 'mc2447382@',
     'post.perPage' => 16,

@@ -101,10 +101,9 @@ class HelloController extends Controller
         }
     }
 
-    public function actionInsertNotif($idFrom, $idTo, $count){
+    public function actionInsertNotif($idFrom, $count){
         for ($i = 0; $i < $count; $i++) {
             $notif = new Notification();
-            $notif->user_id = $idTo;
             $notif->sender_id = $idFrom;
             $notif->message = json_encode([
                 'type' => 'xz',

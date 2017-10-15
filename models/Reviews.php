@@ -2,7 +2,10 @@
 
 namespace app\models;
 
+use app\behaviors\notification\handlers\NewReview;
+use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
+use app\models\entities\OwnerPost;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -33,6 +36,13 @@ class Reviews extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'tbl_reviews';
+    }
+
+    public function behaviors()
+    {
+        return [
+            NewReview::className(),
+        ];
     }
 
     /**
@@ -72,6 +82,22 @@ class Reviews extends \yii\db\ActiveRecord
             'date' => 'Date',
             'data' => 'Data',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFavoritesPost()
+    {
+        return $this->hasMany(FavoritesPost::className(), ['post_id' => 'post_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOwnersPost()
+    {
+        return $this->hasMany(OwnerPost::className(), ['post_id' => 'post_id']);
     }
 
     /**

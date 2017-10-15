@@ -23,7 +23,7 @@ class BusinessAccountController extends AuthController
         $id = $request->post('id');
         $code = $request->post('code');
         $condition = ['id' => $id, 'status_promo' => 1];
-        if(isset($code)) {
+        if (isset($code)) {
             $condition['pin_code'] = (int)$code;
         }
         $response = new \stdClass();

@@ -19,10 +19,12 @@ $experience = $user->userInfo->getExperienceInfo();
                 <div class="info-achievement">
                     <div class="user-level-profile"><?=$user->userInfo->level;?> <span class="user-profile-points-text">уровень</span></div>
                     <?php if(Yii::$app->user->id === $user->id): ?>
-                    <div class="user-profile-points">
-                        <?=$user->userInfo->virtual_money;?> <span class="user-profile-points-text" style="margin-right: 5px;">руб</span>
-                        и 15.30<span class="user-profile-points-text">мега-руб</span>
-                    </div>
+                        <div class="user-profile-points">
+                            <?=$user->userInfo->virtual_money;?>
+                            <span class="user-profile-points-text" style="margin-right: 5px;">руб</span>
+                            и <?=$user->userInfo->mega_money?>
+                            <span class="user-profile-points-text">мега-руб</span>
+                        </div>
                     <?php endif;?>
                 </div>
                 <div class="container-progress-level">
@@ -30,8 +32,14 @@ $experience = $user->userInfo->getExperienceInfo();
                         <div class="progress-complete" style="width: <?=$experience->persent?>%;"></div>
                     </div>
                 </div>
-                <div class="progress-level-text"><?=$user->userInfo->exp_points;?> опыта,
-                    до следующего уровня нужно ещё <?=$experience->needExpForNextLevel?></div>
+
+                <?php if(Yii::$app->user->id === $user->id): ?>
+                    <div class="progress-level-text">
+                        <?=$user->userInfo->exp_points;?> опыта,
+                        до следующего уровня нужно ещё <?=$experience->needExpForNextLevel?>
+                    </div>
+                <?php endif;?>
+
                 <div class="info-city">
                     <?php if (isset($user->city)):?>
                         <?=$user->city->name?>

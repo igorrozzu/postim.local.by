@@ -20,7 +20,7 @@ class CommentsSearch extends Comments
     {
         return [
             [['id', 'entity_id', 'user_id', 'main_comment_id', 'like', 'date'], 'integer'],
-            [['data','type_entity'], 'safe'],
+            [['data', 'type_entity'], 'safe'],
         ];
     }
 
@@ -40,15 +40,15 @@ class CommentsSearch extends Comments
      *
      * @return ActiveDataProvider
      */
-    public function search($params,Pagination $pagination,int $entity_id,array $sort)
+    public function search($params, Pagination $pagination, int $entity_id, array $sort)
     {
         $query = Comments::find()
             ->with('underComments.user.userInfo')
             ->with('user.userInfo')
             ->where([
-                'tbl_comments.entity_id'=>$entity_id,
-				'type_entity'=>$params['type_entity']??null,
-                'main_comment_id'=>null
+                'tbl_comments.entity_id' => $entity_id,
+                'type_entity' => $params['type_entity']??null,
+                'main_comment_id' => null
             ])
             ->orderBy($sort);
 
@@ -57,16 +57,16 @@ class CommentsSearch extends Comments
             'pagination' => $pagination
         ]);
 
-        if(!Yii::$app->user->isGuest){
+        if (!Yii::$app->user->isGuest) {
             $query->with('likeUser');
             $query->with('underComments.likeUser');
             $query->with('complaintUser');
             $query->with('underComments.complaintUser');
         }
 
-        if(($params['type_entity']??false)==2){
-        	$query->joinWith('hasOfficialAnswer');
-		}
+        if (($params['type_entity'] ?? false) == 2) {
+            $query->joinWith('hasOfficialAnswer');
+        }
 
         $this->load($params);
 
@@ -77,11 +77,21 @@ class CommentsSearch extends Comments
         return $dataProvider;
     }
 
-    public static function getSortArray(string $paramSort):array {
-        switch ($paramSort){
-            case 'new':{return ['date'=>SORT_DESC];}break;
-            case 'old':{return ['date'=>SORT_ASC];}break;
-            default:{return ['date'=>SORT_DESC];}break;
+    public static function getSortArray(string $paramSort): array
+    {
+        switch ($paramSort) {
+            case 'new': {
+                return ['date' => SORT_DESC];
+            }
+                break;
+            case 'old': {
+                return ['date' => SORT_ASC];
+            }
+                break;
+            default: {
+                return ['date' => SORT_DESC];
+            }
+                break;
         }
     }
 }

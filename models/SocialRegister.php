@@ -97,6 +97,4 @@ class SocialRegister extends Model
         $tempUser->is_mail_sent = 1;
         return $tempUser->save() ? $tempUser : null;
     }
-
-
 }

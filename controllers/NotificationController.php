@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\components\AuthController;
-use app\models\Notification;
+use app\models\entities\NotificationUser;
 use app\models\NotificationSearch;
 use Yii;
 use yii\data\Pagination;
@@ -30,11 +30,11 @@ class NotificationController extends AuthController
 
     public function actionGetCountNotifications()
     {
-        return Notification::getCountNotifications();
+        return NotificationUser::getCountNotifications();
     }
 
     public function actionMarkAsRead()
     {
-        return Notification::markAsRead();
+        return NotificationUser::markAsShowed();
     }
 }

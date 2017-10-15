@@ -31,33 +31,34 @@ class UserSettings extends Model
     {
         return [
             self::SCENARIO_DEFAULT => [
-                'name', 'surname', 'cityId', 'gender', 'email', 'oldPassword', 'newPassword','newPasswordRepeat',
+                'name', 'surname', 'cityId', 'gender', 'email', 'oldPassword', 'newPassword', 'newPasswordRepeat',
                 'answersToReviews', 'answersToComments', 'reviewsAndCommentsToPlaces', 'placesAndDiscounts',
             ],
             self::SCENARIO_PASSWORD_RESET => [
-                'oldPassword', 'newPassword','newPasswordRepeat'
+                'oldPassword', 'newPassword', 'newPasswordRepeat'
             ],
             self::SCENARIO_EMAIL_RESET => [
                 'email',
             ],
         ];
     }
+
     /**
      * @return array the validation rules.
      */
     public function rules()
     {
         return [
-            [['name'], 'required', 'message'=> 'Поле обязательно для заполнения'],
-            [['name', 'surname'], 'string', 'max' => 25, 'tooLong'=> 'Не более {max} символов'],
+            [['name'], 'required', 'message' => 'Поле обязательно для заполнения'],
+            [['name', 'surname'], 'string', 'max' => 25, 'tooLong' => 'Не более {max} символов'],
             [['cityId', 'gender', 'answersToReviews', 'answersToComments', 'reviewsAndCommentsToPlaces',
                 'placesAndDiscounts'], 'integer'],
-            [['oldPassword', 'newPassword','newPasswordRepeat'], 'required', 'message'=> 'Поле обязательно для заполнения',
+            [['oldPassword', 'newPassword', 'newPasswordRepeat'], 'required', 'message' => 'Поле обязательно для заполнения',
                 'on' => self::SCENARIO_PASSWORD_RESET],
             ['oldPassword', 'validateOldPassword', 'on' => self::SCENARIO_PASSWORD_RESET],
             ['newPasswordRepeat', 'compare', 'compareAttribute' => 'newPassword', 'message' => 'Пароли не совпадают',
                 'on' => self::SCENARIO_PASSWORD_RESET],
-            [['email'], 'required', 'message'=> 'Поле обязательно для заполнения', 'on' => self::SCENARIO_EMAIL_RESET],
+            [['email'], 'required', 'message' => 'Поле обязательно для заполнения', 'on' => self::SCENARIO_EMAIL_RESET],
             ['email', 'email', 'message' => 'Некорректный email-адрес.', 'on' => self::SCENARIO_EMAIL_RESET],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'on' => self::SCENARIO_EMAIL_RESET,
                 'message' => 'Пользователь с таким email-адресом уже существует'],
@@ -76,13 +77,13 @@ class UserSettings extends Model
     {
         $this->oldPassword = $this->oldPassword ?? '';
         $attributeNames = ['newPassword', 'newPasswordRepeat'];
-        if(!$this->user->hasSocialCreation() || $this->user->hasChangingPassword()) {
+        if (!$this->user->hasSocialCreation() || $this->user->hasChangingPassword()) {
             $attributeNames[] = 'oldPassword';
         }
 
-        if($this->oldPassword !== '' || $this->newPassword !== '' || $this->newPasswordRepeat !== '') {
+        if ($this->oldPassword !== '' || $this->newPassword !== '' || $this->newPasswordRepeat !== '') {
             $this->scenario = self::SCENARIO_PASSWORD_RESET;
-            if($this->validate($attributeNames, false)) {
+            if ($this->validate($attributeNames, false)) {
                 $this->user->setPassword($this->newPassword);
                 $this->user->has_changing_password = 1;
 
@@ -103,6 +104,7 @@ class UserSettings extends Model
         ]);
         return $tempData->save() ? $tempData : null;
     }
+
     public function saveSettings(): bool
     {
         $transaction = $this->user->getDb()->beginTransaction();
@@ -111,7 +113,7 @@ class UserSettings extends Model
             'surname' => $this->surname,
             'city_id' => (int)$this->cityId,
         ], false);
-        if($this->user->save()) {
+        if ($this->user->save()) {
             $userInfo = $this->user->userInfo;
             $userInfo->setAttributes([
                 'gender' => (int)$this->gender,
@@ -120,7 +122,7 @@ class UserSettings extends Model
                 'reviews_and_comments_to_places_sub' => (int)$this->reviewsAndCommentsToPlaces,
                 'places_and_discounts_sub' => (int)$this->placesAndDiscounts,
             ], false);
-            if($userInfo->save()) {
+            if ($userInfo->save()) {
                 $transaction->commit();
                 return true;
             }
@@ -138,7 +140,7 @@ class UserSettings extends Model
 
     public function isCityDefined()
     {
-        if(isset($this->cityId)) {
+        if (isset($this->cityId)) {
             $city = (int)$this->cityId;
             return ($city > 0 && $city !== User::CITY_NOT_DEFINED);
         }
@@ -147,7 +149,7 @@ class UserSettings extends Model
 
     public function isGenderDefined()
     {
-        if(isset($this->gender)) {
+        if (isset($this->gender)) {
             return in_array((int)$this->gender, UserInfo::ALLOW_GENDER_VALUES, true);
         }
         return false;
@@ -161,7 +163,7 @@ class UserSettings extends Model
 
     public function isUserMan()
     {
-        if(isset($this->gender)) {
+        if (isset($this->gender)) {
             return (int)$this->gender === UserInfo::MAN_GENDER_VALUE;
         }
         return false;
@@ -169,7 +171,7 @@ class UserSettings extends Model
 
     public function isUserWoman()
     {
-        if(isset($this->gender)) {
+        if (isset($this->gender)) {
             return (int)$this->gender === UserInfo::WOMAN_GENDER_VALUE;
         }
         return false;

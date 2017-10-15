@@ -49,21 +49,6 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
-    public function behaviors()
-    {
-        return [
-            'notification' => [
-                'class' => 'app\behaviors\notification\Notification',
-                'handlers' => [
-                    'afterInsert' => Reward::className(),
-                ],
-                'params' => [
-                    'afterInsert' => ['exp' => 100, 'money' => 1, 'template' => 'reward.register'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * @inheritdoc
      */

@@ -6,50 +6,43 @@ use app\models\User;
 use Yii;
 use yii\db\ActiveRecord;
 
-class FillingProfile extends NotificationHandler
+class Register extends NotificationHandler
 {
-    const MAX_SOCIAL_BINDING = 1;
-
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_UPDATE => 'run'
+            ActiveRecord::EVENT_AFTER_INSERT => 'run'
         ];
     }
 
     public function run()
     {
         $user = User::find()
-            ->joinWith(['userInfo', 'socialBindings'])
-            ->where([User::tableName() . '.id' => $this->owner->getUserId()])
+            ->select(['name', 'email'])
+            ->where(['id' => $this->owner->getUserId()])
             ->one();
 
-        if ($user === null || !$this->validateFillingData($user)) {
-            return false;
-        }
+        $template = Yii::$app->params['notificationTemplates']['reward.register'];
 
-        $template = Yii::$app->params['notificationTemplates']['reward.profile'];
+        $this->owner->exp_points += $template['exp'];
+        $this->owner->mega_money += $template['money'];
 
-        $user->userInfo->exp_points += $template['exp'];
-        $user->userInfo->mega_money += $template['money'];
-        $user->userInfo->has_reward_for_filling_profile = 1;
-
-        $oldLevel = $user->userInfo->level;
-        $user->userInfo->level = $user->userInfo->getLevelByExperience();
+        $oldLevel = $this->owner->level;
+        $this->owner->level = $this->owner->getLevelByExperience();
 
         $message = sprintf($template['text'], $template['exp'], $template['money']);
-        if ($user->userInfo->save()) {
+        if ($this->owner->save()) {
             parent::sendNotification($this->owner->getUserId(), [
                 'type' => '',
                 'data' => $message,
             ]);
 
-            if ($oldLevel !== $user->userInfo->level) {
+            if ($oldLevel !== $this->owner->level) {
                 parent::sendNotification($this->owner->getUserId(), [
                     'type' => '',
                     'data' => sprintf(
                         Yii::$app->params['notificationTemplates']['common.newUserLevel'],
-                        $user->userInfo->level
+                        $this->owner->level
                     ),
                 ]);
             }
@@ -66,12 +59,5 @@ class FillingProfile extends NotificationHandler
         }
 
         return false;
-    }
-
-    private function validateFillingData(ActiveRecord $user)
-    {
-        return !$user->userInfo->hasRewardForFillingProfile() && $user->name !== '' &&
-            $user->surname !== '' && $user->isCityDefined() && $user->userInfo->isGenderDefined() &&
-            $user->isPhotoDefined() && count($user->socialBindings) >= self::MAX_SOCIAL_BINDING;
     }
 }

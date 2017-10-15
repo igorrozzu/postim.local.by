@@ -5,6 +5,7 @@ namespace app\models;
 use app\components\Helper;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
+use app\models\entities\OwnerPost;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -32,7 +33,7 @@ class Posts extends \yii\db\ActiveRecord
 
     public $lat;
     public $lon;
-    public $distance=null;
+    public $distance = null;
     public $distanceText = null;
 
     /**
@@ -89,36 +90,41 @@ class Posts extends \yii\db\ActiveRecord
         ];
     }
 
-	public function getPostUnderCategory(){
-		return $this->hasMany(PostUnderCategory::className(), ['post_id' => 'id']);
-	}
+    public function getPostUnderCategory()
+    {
+        return $this->hasMany(PostUnderCategory::className(), ['post_id' => 'id']);
+    }
+
     public function getCategories()
     {
         return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
             ->via('postUnderCategory');
     }
-	public function getOnlyOnceCategories()
-	{
-		return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
-			->via('postUnderCategory',function ($query) {
-				$query->orderBy(['priority' => SORT_DESC])
-					->limit(1);
-			});
-	}
 
-	public function getCategoriesPriority(){
-		$postUnderCategory = UnderCategory::find()
-			->where(['post_id'=> $this->id])
-			->innerJoin(PostUnderCategory::tableName(),'under_category_id = tbl_under_category.id')
-			->orderBy(['priority'=> SORT_DESC])
-			->asArray()
-			->all();
-		return $postUnderCategory;
-	}
+    public function getOnlyOnceCategories()
+    {
+        return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
+            ->via('postUnderCategory', function ($query) {
+                $query->orderBy(['priority' => SORT_DESC])
+                    ->limit(1);
+            });
+    }
 
-	public function getPostCategory(){
-		return $this->hasMany(PostUnderCategory::className(), ['post_id' => 'id']);
-	}
+    public function getCategoriesPriority()
+    {
+        $postUnderCategory = UnderCategory::find()
+            ->where(['post_id' => $this->id])
+            ->innerJoin(PostUnderCategory::tableName(), 'under_category_id = tbl_under_category.id')
+            ->orderBy(['priority' => SORT_DESC])
+            ->asArray()
+            ->all();
+        return $postUnderCategory;
+    }
+
+    public function getPostCategory()
+    {
+        return $this->hasMany(PostUnderCategory::className(), ['post_id' => 'id']);
+    }
 
     public function getPostFeatures()
     {
@@ -144,11 +150,44 @@ class Posts extends \yii\db\ActiveRecord
         return $this->hasMany(FavoritesPost::className(), ['post_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsersWhoAddPostToFavorite()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+            ->viaTable(FavoritesPost::tableName(), ['post_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOwnersPost()
+    {
+        return $this->hasMany(OwnerPost::className(), ['post_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOwners()
+    {
+        return $this->hasMany(User::className(), ['id' => 'owner_id'])
+            ->viaTable(OwnerPost::tableName(), ['post_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
     public function getHasLike()
     {
         return $this->hasOne(FavoritesPost::className(), ['post_id' => 'id'])
             ->onCondition([FavoritesPost::tableName() . '.user_id' => Yii::$app->user->id]);
-
     }
 
     public function getInfo()
@@ -169,11 +208,11 @@ class Posts extends \yii\db\ActiveRecord
     public function getLastPhoto()
     {
         return $this->hasOne(Gallery::className(), ['post_id' => 'id'])
-            ->select([Gallery::tableName().'.link', Gallery::tableName().'.post_id'])
+            ->select([Gallery::tableName() . '.link', Gallery::tableName() . '.post_id'])
             ->innerJoin('(SELECT tbl_c.post_id,MAX(tbl_c.id) as max_id
               FROM tbl_gallery tbl_c
-              GROUP BY tbl_c.post_id) as max_record', 'max_record.post_id = '.Gallery::tableName().'.post_id')
-            ->andWhere(Gallery::tableName().'.id = max_record.max_id');
+              GROUP BY tbl_c.post_id) as max_record', 'max_record.post_id = ' . Gallery::tableName() . '.post_id')
+            ->andWhere(Gallery::tableName() . '.id = max_record.max_id');
     }
 
     public function afterFind()
@@ -190,21 +229,21 @@ class Posts extends \yii\db\ActiveRecord
             $this->is_like = true;
         }
 
-        if($this->coordinates){
-            $latLng = explode(',',$this->coordinates);
-            $this->lat = str_replace('(','',$latLng[0]);
-            $this->lon = str_replace(')','',$latLng[1]);
+        if ($this->coordinates) {
+            $latLng = explode(',', $this->coordinates);
+            $this->lat = str_replace('(', '', $latLng[0]);
+            $this->lon = str_replace(')', '', $latLng[1]);
         }
-        if(isset(Yii::$app->request->cookies)){
-            if($this->distance == null && $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation')?\yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')):false){
-                if($this->lat && $this->lon){
-                    $this->distanceText = Yii::$app->oldFormatter->asShortLength(Helper::getDistanceBP($this->lat,$this->lon,
-                        $CurrentMePosition['lat'],$CurrentMePosition['lon']));
+        if (isset(Yii::$app->request->cookies)) {
+            if ($this->distance == null && $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation') ? \yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')) : false) {
+                if ($this->lat && $this->lon) {
+                    $this->distanceText = Yii::$app->oldFormatter->asShortLength(Helper::getDistanceBP($this->lat, $this->lon,
+                        $CurrentMePosition['lat'], $CurrentMePosition['lon']));
                 }
             }
         }
 
-        if($this->distance){
+        if ($this->distance) {
             $this->distanceText = Yii::$app->oldFormatter->asShortLength((int)$this->distance);
         }
 
@@ -212,7 +251,7 @@ class Posts extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        $this->coordinates = '('.$this->lat.','.$this->lon.')';
+        $this->coordinates = '(' . $this->lat . ',' . $this->lon . ')';
         return parent::beforeValidate();
     }
 
