@@ -60,15 +60,17 @@ class PostsSearch extends Posts
 			$query->orderBy(['priority'=>SORT_DESC]);
 		}
 
-		$query->addOrderBy($sort);
         // add conditions that should always apply here
         if(Yii::$app->request->get('sort',false)=='nigh' && $loadGeolocation){
            $coordinates='POINT('.$loadGeolocation["lat"].' '.$loadGeolocation["lon"].')';
            $query->select('tbl_posts.*,ST_distance_sphere(st_point("coordinates"[0],"coordinates"[1]),ST_GeomFromText(\''.$coordinates.'\')) as distance');
            $query->addOrderBy(['distance'=>SORT_ASC]);
         }else{
+            $query->addOrderBy($sort);
             $query->addOrderBy(['data'=>SORT_ASC]);
         }
+
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

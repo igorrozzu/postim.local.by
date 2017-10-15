@@ -2,3 +2,5 @@ vendor
 idea
 .idea/
 web/user_photo/
+runtime
+web/assets/
