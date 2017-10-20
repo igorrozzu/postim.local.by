@@ -1,8 +1,8 @@
 <?php
-use yii\web\View;
+use app\components\user\ExperienceCalc;
 use yii\widgets\Pjax;
 
-$experience = $user->userInfo->getExperienceInfo();
+$experience = ExperienceCalc::getExperienceInfo($user->userInfo->level, $user->userInfo->exp_points);
 ?>
 
 <div class="margin-top60"></div>

@@ -24,6 +24,7 @@ $config = [
             'class' => 'app\components\Category',
         ],
         'db' => $db,
+        'mailer' => require(__DIR__ . '/mailer.php'),
     ],
     'params' => $params,
     /*

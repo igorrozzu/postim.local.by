@@ -3,26 +3,12 @@
 namespace app\behaviors\notification\handlers;
 
 use app\models\Comments;
-use app\models\News;
-use app\models\Notification;
-use Yii;
+use app\models\entities\Task;
+use yii\base\Behavior;
 use yii\db\ActiveRecord;
 
-class NewUnderComment extends NotificationHandler
+class NewUnderComment extends Behavior
 {
-    private $mailer;
-
-    /**
-     * NewReview constructor.
-     */
-    public function __construct()
-    {
-        $this->mailer = Yii::$app->getMailer();
-        $this->mailer->htmlLayout = 'layouts/notification';
-
-        parent::__construct();
-    }
-
     public function events()
     {
         return [
@@ -47,75 +33,34 @@ class NewUnderComment extends NotificationHandler
 
     public function handleNewsUnderComment()
     {
-        $comment = Comments::find()
-            ->select([
-                Comments::tableName() . '.user_id',
-                Comments::tableName() . '.entity_id',
-                News::tableName() . '.url_name',
-                News::tableName() . '.id',
-            ])
-            ->innerJoinWith(['news', 'user.userInfo'])
-            ->where([Comments::tableName() . '.id' => $this->owner->receiver_comment_id])
-            ->one();
+        $task = new Task([
+            'data' => json_encode([
+                'class' => 'NewsUnderComment',
+                'params' => [
+                    'receiver_comment_id' => $this->owner->receiver_comment_id,
+                    'user_id' => $this->owner->user_id,
+                ],
+            ]),
+            'type' => Task::TYPE['notification'],
+        ]);
 
-        $redirectLink = $comment->news->url_name . '-n' . $comment->news->id . '?comment_id='.
-            $this->owner->receiver_comment_id . '#comment-' . $this->owner->receiver_comment_id;
-
-        parent::sendNotification($comment->user_id, [
-            'type' => '',
-            'data' => sprintf(
-                Yii::$app->params['notificationTemplates']['common.newUnderComment'],
-                $redirectLink
-            )
-        ], $this->owner->user_id);
-
-        if (!$comment->user->userInfo->hasAnswersToCommentsSub()) {
-            return true;
-        }
-
-        return $this->mailer->compose(['html' => 'newUnderComment'], [
-            'user' => $comment->user,
-            'redirectLink' => Yii::$app->request->getHostInfo() . '/' . $redirectLink,
-        ])->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])
-            ->setTo($comment->user->email)
-            ->setSubject('Уведомление Postim.by')
-            ->send();
+        return $task->save();
     }
 
     public function handleReviewUnderComment()
     {
-        $comment = Comments::find()
-            ->select([
-                Comments::tableName() . '.id',
-                Comments::tableName() . '.user_id',
-                Comments::tableName() . '.entity_id',
-            ])
-            ->innerJoinWith(['review.post', 'user.userInfo'])
-            ->where([Comments::tableName() . '.id' => $this->owner->receiver_comment_id])
-            ->one();
+        $task = new Task([
+            'data' => json_encode([
+                'class' => 'ReviewUnderComment',
+                'params' => [
+                    'receiver_comment_id' => $this->owner->receiver_comment_id,
+                    'user_id' => $this->owner->user_id,
+                ],
+            ]),
+            'type' => Task::TYPE['notification'],
+        ]);
 
-        $redirectLink = 'Otzyvy-' . $comment->review->post->url_name . '-p' . $comment->review->post->id .
-            '?review_id=' . $comment->review->id . '&comment_id='. $comment->id;
-
-        parent::sendNotification($comment->user_id, [
-            'type' => '',
-            'data' => sprintf(
-                Yii::$app->params['notificationTemplates']['common.newUnderComment'],
-                $redirectLink
-            )
-        ], $this->owner->user_id);
-
-        if (!$comment->user->userInfo->hasAnswersToCommentsSub()) {
-            return true;
-        }
-
-        return $this->mailer->compose(['html' => 'newUnderComment'], [
-            'user' => $comment->user,
-            'redirectLink' => Yii::$app->request->getHostInfo() . '/' . $redirectLink,
-        ])->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])
-            ->setTo($comment->user->email)
-            ->setSubject('Уведомление Postim.by')
-            ->send();
+        return $task->save();
     }
 
     private function isValid()
