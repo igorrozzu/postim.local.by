@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\Helper;
+use dosamigos\transliterator\TransliteratorHelper;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -221,6 +222,10 @@ class PostsSearch extends Posts
             $this->queryForPlaceOnMap->andWhere(['tbl_category.url_name'=>$this->category['url_name']]);
         }
 
+        if(isset($params['text'])){
+            $query->andWhere(['like','upper(data)','%'.mb_strtoupper($params['text']).'%',false]);
+        }
+
         $query->groupBy(['tbl_posts.id']);
         $this->queryForPlaceOnMap->groupBy(['tbl_posts.id']);
 
@@ -231,6 +236,34 @@ class PostsSearch extends Posts
 
 
         return $dataProvider;
+    }
+
+    public function getAutoComplete(string $text){
+        $query = Posts::find()->select(['tbl_posts.id','tbl_posts.data','tbl_posts.url_name','tbl_posts.city_id'])
+            ->where(['like','upper(data)','%'.mb_strtoupper($text).'%',false]);
+
+        if($city = Yii::$app->city->getSelected_city()['url_name']){
+            $query->innerJoinWith(['city.region'])
+                ->andWhere(['or',
+                     ['tbl_region.url_name'=>$city],
+                     ['tbl_city.url_name'=>$city]
+                 ]);
+        }
+
+        $query->orderBy(['priority'=>SORT_DESC]);
+        $query->addOrderBy(['data'=>SORT_ASC]);
+        $query->limit(5);
+
+        $data = $query->asArray()->all();
+
+        if(!$data){
+            $transliteText = TransliteratorHelper::process( $text );
+            $query->where(['like','upper(data)','%'.mb_strtoupper($transliteText).'%',false]);
+            $data = $query->asArray()->all();
+        }
+
+        return $data;
+
     }
 
     public function getKeyForPlacesOnMap(){

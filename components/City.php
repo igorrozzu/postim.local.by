@@ -77,6 +77,19 @@ class City extends  yii\base\Model {
         $this->setCity($this->selected_city);
     }
 
+    public function getAllIndexCities(){
+        if(!$indexCities = \Yii::$app->cache->get('list_citi_from_bd')){
+            $indexCities = yii\helpers\ArrayHelper::index(\app\models\City::find()
+                ->select(['name','url_name'])
+                ->orderBy(['name'=>SORT_ASC])
+                ->all(),'url_name');
+
+            \Yii::$app->cache->add('list_citi_from_bd',$indexCities,600);
+        }
+
+        return $indexCities;
+    }
+
 
 
 }

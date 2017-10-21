@@ -47,7 +47,7 @@ $countNotif = NotificationUser::getCountNotifications();
 <div class="container-header">
     <div class="header authorized">
         <div class="menu-btn"></div>
-        <div class="logo"></div>
+        <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:'/'?>" class="logo"></a>
         <div class="select-city btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
         <div class="main-pjax">
             <a href="/add" class="btn_br">Добавить место</a>
@@ -64,11 +64,13 @@ $countNotif = NotificationUser::getCountNotifications();
             <a href="/add" class="btn_add_place"></a>
         </div>
         <div class="search_block">
-            <input class="search" type="text" placeholder="Поиск">
+            <div class="cancel"></div>
+            <input class="search" type="text" placeholder="Поиск" value="<?=Yii::$app->request->get('text','')?>">
             <span class="btn-search"></span>
         </div>
     </div>
 </div>
+<div class="block-auto-complete-search"></div>
 <!--верхнее меню end-->
 <!--уведомления-->
 <div class="notif-menu">

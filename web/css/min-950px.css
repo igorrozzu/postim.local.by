@@ -8,12 +8,13 @@
 
 .header-menu-title.btn-select-city{
     display: block;
+    margin-left: 0px;
 }
 .search_block{
-    width: calc(100% - 295px);
+    width: calc(100% - 315px);
 }
 .authorized .search_block{
-    width: calc(100% - 355px);
+    width: calc(100% - 375px);
 }
 
 .select-city{

@@ -7,6 +7,7 @@ use app\models\UnderCategory;
 use app\models\WorkingHours;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\web\Controller;
 use yii\web\Request;
 
 class Helper{
@@ -250,6 +251,16 @@ class Helper{
 				return 'Поставьте вашу оценку';
 				break;
         }
+    }
+
+    public static function checkValidUrl(string $currentUrl, string $validUrl){
+
+        if($currentUrl == $validUrl){
+            return true;
+        }else{
+            return Yii::$app->getResponse()->redirect(array($validUrl));
+        }
+
     }
 
 }

@@ -11,7 +11,7 @@
 
 .a-auto-complete,
 .block-auto-complete-header{
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -138,6 +138,9 @@
 .container-discount-info{
     padding-bottom: 20px;
 }
+.open-now{
+    display: none;
+}
 .container-discount-info .blue-btn-40{
     left: 0px;
     width: 100%;
@@ -150,7 +153,7 @@
 }
 .open-search .search{
     display: inherit;
-    width: calc(100% - 82px);
+    width: calc(100% - 77px);
 }
 .container-info-btn{
     flex-direction: column;
@@ -167,6 +170,17 @@
 .h2-cr{
     font-size: 20px;
     margin-left: 0px;
+}
+.block-photos-container{
+    padding: 0px;
+}
+.block-photos-container .block-photos-bottom{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+.block-photos-container .block-photos .photo{
+    margin-top: 0px;
 }
 
 /*Cтили toastMessage*/

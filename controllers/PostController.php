@@ -49,6 +49,11 @@ class PostController extends MainController
 		$user_id = Yii::$app->user->isGuest?null:Yii::$app->user->getId();
 
         if($post && ($post['status']!=0?true:$post['user_id']==$user_id)){
+
+            Helper::checkValidUrl('/'.Yii::$app->request->pathInfo,
+                Url::to(['post/index', 'url' => $post['url_name'], 'id' => $post['id']])
+            );
+
             Helper::addViews($post->totalView);
             $breadcrumbParams = $this->getParamsForBreadcrumb($post);
 
@@ -68,7 +73,10 @@ class PostController extends MainController
 
 			$loadTime = time();
 			$dataProvider = $reviewsModel->search(
-				['post_id' => $id],
+				[
+				    'post_id' => $id,
+                    'review_id'=>Yii::$app->request->get('review_id',0)
+                ],
 				$pagination,
 				$loadTime
 			);
@@ -733,10 +741,14 @@ class PostController extends MainController
 			}
 			$addPostModel->setScenario($scenario);
 
-			Yii::$app->getSession()->setFlash('redirect_after_add'.Yii::$app->user->getId(),$message);
-
 			if($addPostModel->load(Yii::$app->request->post(),'') && $addPostModel->save()){
-				return $this->redirect('/id'.Yii::$app->user->getId());
+			    if($scenario !== AddPost::$SCENARIO_EDIT_MODERATOR){
+                    Yii::$app->getSession()->setFlash('redirect_after_add'.Yii::$app->user->getId(),$message);
+                    return $this->redirect('/id'.Yii::$app->user->getId());
+                }else{
+                    return $this->redirect(Url::to(['post/index', 'url' => 'redirect', 'id' => Yii::$app->request->post('id')]));
+                }
+
 			}
 		}
 	}

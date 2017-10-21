@@ -21,7 +21,7 @@ var Category = (function (window, document, undefined,$) {
 
             },
             refreshTotalCount: function (totalCount) {
-                $('.total-count','.menu-info-cards').html('Места '+' '+totalCount);
+                $('.total-count','.menu-info-cards').html('<span class="under-line">Места '+totalCount+'</span>');
             },
 
 

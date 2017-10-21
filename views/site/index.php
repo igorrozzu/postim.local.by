@@ -18,8 +18,7 @@ use \app\components\ListCityWidget\ListCityWidget;
 </div>
 
 <div class="block-content">
-    <h1 class="h1-c center-mx">Сервис поиска и добовления интересных мест,
-        карта достопримечательностей Беларуси</h1>
+    <h1 class="h1-c center-mx">Карта лучших мест в <?=Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name'])?> по отзывам посетителей</h1>
     <?= MainMenuWidget::widget(['typeMenu' => MainMenuWidget::$catalogMenu]) ?>
     <?php if ($spotlight->totalCount): ?>
         <h2 class="h2-c">В центре внимания</h2>
@@ -35,6 +34,25 @@ use \app\components\ListCityWidget\ListCityWidget;
             <?= CardsNewsWidget::widget(['dataprovider' => $news, 'settings' => ['last-news' => true]]) ?>
         </div>
     </div>
+    <?php endif;?>
+    <?php if($reviews->totalCount):?>
+        <div class="clear-fix"></div>
+        <h2 class="h2-c">Последние отзывы</h2>
+        <div class="container-news">
+            <div class="block-news">
+                <?= \app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
+                    'dataProvider' => $reviews,
+                    'settings'=>[
+                        'show-more-btn' => false,
+                    ]
+                ]); ?>
+                <div class="review-show-more main-pjax">
+                    <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:''?>/otzyvy">
+                        <div class="btn-show-more switch-all-reviews">Показать больше отзывов</div>
+                    </a>
+                </div>
+            </div>
+        </div>
     <?php endif;?>
 
 </div>

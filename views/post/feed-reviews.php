@@ -54,13 +54,13 @@ Pjax::begin([
     <div class="block-content">
         <div class="menu-btns-card">
             <a href="<?=Url::to(['post/index', 'url' => $post['url_name'], 'id' => $post['id']])?>" >
-                <div class="btn2-menu">Информация</div>
+                <div class="btn2-menu"><span class="under-line">Информация</span></div>
             </a>
             <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu">Фотографии <?=$photoCount?></div>
+                <div class="btn2-menu"><span class="under-line">Фотографии <?=$photoCount?></span></div>
             </a>
             <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu active">Отзывы <?=$post['count_reviews']?></div>
+                <div class="btn2-menu active"><span class="under-line">Отзывы <?=$post['count_reviews']?></span></div>
             </a>
         </div>
     </div>
@@ -77,44 +77,39 @@ Pjax::begin([
             <div class="container-write-reviews"></div>
             <div class="large-wide-button open-container"><p>Написать новый отзыв</p></div>
         </div>
-        <div class="block-flex-white inside">
+        <?php if($reviewsDataProvider->totalCount):?>
+        <div class="block-flex-white inside" style="margin-top: 30px">
             <div class="block-content">
                 <div class="menu-btns-card feeds-btn-bar">
                     <a href="<?=Url::to(['post/reviews','name' => $post['url_name'], 'postId' => $post['id']])?>">
                         <div class="btn2-menu <?=($type === 'all') ? 'active' : ''?>">
-                            Все
+                            <span class="under-line">Все</span>
                         </div>
                     </a>
                     <a href="<?=Url::to(['post/reviews', 'type' => 'positive','name' => $post['url_name'], 'postId' => $post['id']])?>">
                         <div class="btn2-menu <?=($type === 'positive') ? 'active' : ''?>">
-                            Положительные
+                            <span class="under-line">Положительные</span>
                         </div>
                     </a>
                     <a href="<?=Url::to(['post/reviews', 'type' => 'negative','name' => $post['url_name'], 'postId' => $post['id']])?>">
                         <div class="btn2-menu <?=($type === 'negative') ? 'active' : ''?>">
-                            Отрицательные
+                            <span class="under-line">Отрицательные</span>
                         </div>
                     </a>
                 </div>
             </div>
         </div>
-
-		<?php
-
-			if ($reviewsDataProvider->totalCount) {
-				echo \app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
-					'dataProvider' => $reviewsDataProvider,
-					'settings'=>[
-						'show-more-btn' => true,
-						'replace-container-id' => 'feed-reviews',
-						'load-time' => $loadTime,
-						'without_header'=>true,
-                        'btn_sort'=>true
-					]
-				]);
-			}
-		?>
-
+        <?=\app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
+                'dataProvider' => $reviewsDataProvider,
+                'settings'=>[
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-reviews',
+                    'load-time' => $loadTime,
+                    'without_header'=>true,
+                    'btn_sort'=>true
+                ]
+            ]);?>
+      <?php endif;?>
     </div>
 </div>
 <div style="margin-top: 30px"></div>

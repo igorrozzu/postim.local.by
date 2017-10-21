@@ -55,7 +55,7 @@ Keyboard = (function() {
 			bodyTag = document.getElementsByTagName('body')[0];
 			if (initWindowSize.height > window.innerHeight) {
 				if (bodyTag.className.indexOf(OPEN_KEYBOARD_CLASS) === -1) {
-					bodyTag.className += bodyTag.className + ' ' + OPEN_KEYBOARD_CLASS;
+					bodyTag.className = bodyTag.className + ' ' + OPEN_KEYBOARD_CLASS;
 					return keyboardOpen();
 				}
 			} else {
@@ -106,7 +106,7 @@ Keyboard = (function() {
 		bodyTag = document.getElementsByTagName('body')[0];
 		if (bodyTag.className.indexOf(OPEN_KEYBOARD_CLASS) === -1) {
 			if (this.type !== 'checkbox' && this.type !== 'radio' && this.type !== 'submit') {
-				bodyTag.className += bodyTag.className + ' ' + OPEN_KEYBOARD_CLASS;
+				bodyTag.className = bodyTag.className + ' ' + OPEN_KEYBOARD_CLASS;
 				keyboardOpen();
 			}
 		}

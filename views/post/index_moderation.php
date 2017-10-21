@@ -33,13 +33,13 @@ echo "<script>$js</script>";
     <div class="block-content">
         <div class="menu-btns-card">
             <a href="<?=Url::to(['post/index', 'url' => $post['url_name'], 'id' => $post['id']])?>" >
-                <div class="btn2-menu active">Информация</div>
+                <div class="btn2-menu active"><span class="under-line">Информация</span></div>
             </a>
         </div>
     </div>
 </div>
 <div class="block-content">
-    <div class="block-content-between">
+    <div class="block-content-between cust">
         <h2 class="h2-v">Информация</h2>
         <p class="text p-text main-pjax">
             Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/edit/<?=$post['main_id']?>?moderation=now">исправьте&nbsp;или&nbsp;дополните&nbsp;информацию.</a>

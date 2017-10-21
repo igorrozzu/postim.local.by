@@ -22,12 +22,12 @@ Pjax::begin([
         <div class="menu-btns-card feeds-btn-bar">
             <a href="<?=Url::to(['user/izbrannoe'])?>">
                 <div class="btn2-menu <?= !$isNewsFeed ? 'active' : ''?>">
-                    Места
+                    <span class="under-line">Места</span>
                 </div>
             </a>
             <a href="<?=Url::to(['user/izbrannoe', 'favorite' => 'news'])?>">
                 <div class="btn2-menu <?= $isNewsFeed ? 'active' : ''?>">
-                    Новости
+                    <span class="under-line">Новости</span>
                 </div>
             </a>
         </div>
@@ -47,13 +47,13 @@ Pjax::begin([
             ]); ?>
     <?php else:?>
         <div style="margin-top: 10px; display: flex"></div>
-        <div class="card-promo">
-            <?php if($isNewsFeed):?>
-                <p class="card-text-notice">Вы пока не добавили в избранное ни одной новости</p>
-             <?php else:?>
-                <p class="card-text-notice">Вы пока не добавили в избранное ни одного места</p>
-            <?php endif;?>
-        </div>
+            <div class="container-message">
+                <div class="message-filter">
+                    <div class="icon-favorite"></div>
+                    <p>Вы пока ничего не добавили в Избранное</p>
+                    <span>Добавляйте в Избранное, нажав на значок «сердечко», чтобы не потерять!</span>
+                </div>
+            </div>
     <?php endif;?>
 
     </div>

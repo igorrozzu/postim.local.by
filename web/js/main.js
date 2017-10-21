@@ -69,8 +69,8 @@ var Main = (function (window, document, undefined,$) {
                 $(document).pjax("#feed-category .block-sort a", "#feed-category", {"push":false,"replace":false,"timeout":60000,"scrollTo":false});
 
                 // init pjax лент юзера
-                $(document).off('click','.feeds-btn-bar a');
-                $(document).pjax(".feeds-btn-bar a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#feeds-of-user"});
+                $(document).off('click','#feeds-of-user .feeds-btn-bar a');
+                $(document).pjax("#feeds-of-user .feeds-btn-bar a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#feeds-of-user"});
 
                 // init pjax настроек
                 $(document).off('click','#pjax-container-settings a');

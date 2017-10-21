@@ -1,5 +1,5 @@
 @media (max-width: 660px) {
-    .authorized .search_block{
+    body:not(.open-search) .authorized .search_block{
         display: flex;
         float: right;
         margin-top: 10px;
@@ -8,17 +8,20 @@
         width: auto;
     }
 
-    .authorized .search{
+    body:not(.open-search) .authorized .search{
         display: none;
     }
 
-    .authorized .btn-search:after{
-        content: url("../img/magnifier-icon18x18.png");
+    body:not(.open-search) .authorized .btn-search:after{
+        width: 18px;
+        height: 18px;
+        background-image: url("../img/search.png");
+        background-position: 0px 0px;
     }
-    .authorized .btn-search:hover:after{
-        content: url("../img/magnifier-icon18x18-hover.png");
+    body:not(.open-search) .authorized .btn-search:hover:after{
+        background-position: 18px 0px;
     }
-    .authorized .btn-search{
+    body:not(.open-search) .authorized .btn-search{
         height: auto;
         display: flex;
         align-items: center;

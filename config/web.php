@@ -81,6 +81,8 @@ $config = [
                 '<url:.+>-n<id:\d+>'=>'news/news',//статья новости
                 '<url:^add$>'=>'post/add',
                 '<url:^edit>/<id:\d+>'=>'post/edit',
+                'search/<text:.+>'=>'site/search',
+                'feedback'=>'site/feedback',
             ],
         ],
         'i18n' => [

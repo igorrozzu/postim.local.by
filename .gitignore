@@ -2,5 +2,7 @@ vendor
 idea
 .idea/
 web/user_photo/
+web/post-img/
+web/post_photo/
 runtime
 web/assets/

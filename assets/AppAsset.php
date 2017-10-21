@@ -59,6 +59,7 @@ class AppAsset extends AssetBundle
         'js/libs/leaflet/markercluster/dist/leaflet.markercluster-src.js',
         'js/map.js',
         'js/add-post.js',
+        'js/search.js',
 
 
     ];

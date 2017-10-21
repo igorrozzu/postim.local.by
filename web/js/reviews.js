@@ -379,7 +379,15 @@ var Reviews = (function (window, document, undefined,$) {
 
 				$('.block-write-reviews.active.edit_reviews').remove();
 				$('.block-reviews.hide').removeClass('hide');
-			}
+			},
+
+			scrollToFirstReviews:function () {
+				setTimeout(function () {
+                    var scrollTop = $('.block-reviews').offset().top - 100;
+                    $(document).scrollTop(scrollTop);
+                },500);
+
+            }
 
 		}
 

@@ -1,14 +1,15 @@
 .btn-search{
-    padding: 3px 0px 3px 0px;
+    padding: 4px 1px 3px 0px;
 }
 .search{
-    width: calc(100% - 45px);
+    width: calc(100% - 52px);
 }
 .search_block{
     padding-right: 2px;
+    width: calc(100% - 317px);
 }
 .authorized .search_block{
-    width: calc(100% - 355px);
+    width: calc(100% - 377px);
 }
 .h1-c{
     font-size: 30px;
@@ -31,12 +32,17 @@
     display: none;
 }
 .open-search .search_block{
-    width: calc(100% - 20px);
+    width: calc(100% - 13px);
 }
 .open-search .search{
     display: inherit;
-    width: calc(100% - 77px);
+    width: calc(100% - 67px);
 }
+
+.open-search .authorized .search_block{
+    width: calc(100% - 138px);
+}
+
 .autocomplete-result-search ul li{
     width: 50%;
 }

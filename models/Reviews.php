@@ -8,6 +8,7 @@ use app\models\entities\Gallery;
 use app\models\entities\OwnerPost;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "tbl_reviews".
@@ -280,7 +281,9 @@ class Reviews extends \yii\db\ActiveRecord
 		if ($this->photos && is_array($this->photos)) {
 
 			$dir = Yii::getAlias('@webroot/post_photo/' . $this->post_id . '/');
-
+            if (!is_dir($dir)) {
+                FileHelper::createDirectory($dir);
+            }
 
 			foreach ($this->photos as $photoLink) {
 

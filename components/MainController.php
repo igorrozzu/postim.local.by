@@ -3,6 +3,7 @@
 namespace app\components;
 
 use app\models\News;
+use app\models\ReviewsSearch;
 use app\models\search\NewsSearch;
 use app\models\Posts;
 use app\models\PostsSearch;
@@ -57,9 +58,22 @@ class MainController extends Controller
        );
 
 
+       $reviewsModel = new ReviewsSearch();
+       $pagination = new Pagination([
+           'pageSize' => Yii::$app->request->get('per-page', 1),
+           'page' => Yii::$app->request->get('page', 1) - 1,
+       ]);
+
+       $reviewsDataProvider = $reviewsModel->search(Yii::$app->request->queryParams,
+           $pagination,
+           time()
+       );
+
+
        return [
            'spotlight' => $dataProvider,
            'news' => $newsDataProvider,
+           'reviews' => $reviewsDataProvider,
            'keyForMap'=>$searchModel->getKeyForPlacesOnMap()
        ];
    }

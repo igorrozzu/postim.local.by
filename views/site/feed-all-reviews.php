@@ -26,17 +26,17 @@ Pjax::begin([
         <div class="menu-btns-card feeds-btn-bar">
             <a href="/<?=Yii::$app->request->getPathInfo()?>">
                 <div class="btn2-menu <?=($type === 'all') ? 'active' : ''?>">
-                    Все
+                    <span class="under-line">Все</span>
                 </div>
             </a>
             <a href="/<?=Yii::$app->request->getPathInfo().'?type=positive'?>">
                 <div class="btn2-menu <?=($type === 'positive') ? 'active' : ''?>">
-                    Положительные
+                    <span class="under-line">Положительные</span>
                 </div>
             </a>
             <a href="/<?=Yii::$app->request->getPathInfo().'?type=negative'?>">
                 <div class="btn2-menu <?=($type === 'negative') ? 'active' : ''?>">
-                    Отрицательные
+                    <span class="under-line">Отрицательные</span>
                 </div>
             </a>
         </div>

@@ -14,8 +14,8 @@ $totalCount = $dataProvider->totalCount;
 <div class="menu-info-cards-contener">
     <div class="menu-info-cards">
         <div class="btns-filter">
-            <div class="btn-filter btn-bb active total-count">Места <?=$totalCount?></div>
-            <div class="btn-filter btn-bb" data-name_filter="open" data-value="now">Открыто сейчас</div>
+            <div class="btn-filter btn-bb active total-count"><span class="under-line">Места <?=$totalCount?></span></div>
+            <div class="btn-filter btn-bb open-now" data-name_filter="open" data-value="now"><span class="under-line">Открыто сейчас</span></div>
         </div>
         <div class="btn-filter icon-filter"><span>Все фильтры</span></div>
     </div>
@@ -53,13 +53,13 @@ Pjax::begin([
 <div class="block-flex-white">
     <div class="block-content">
         <div class="block-sort">
-            <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'_rating'])?>" class="btn-sort <?=$sort=='_rating'?'active':''?>">По рейтингу</a>
-            <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'new'])?>" class="btn-sort <?=$sort=='new'?'active':''?>">Новые</a>
+            <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'_rating'])?>" class="btn-sort <?=$sort=='_rating'?'active':''?>"><span class="under-line">По рейтингу</span></a>
+            <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'new'])?>" class="btn-sort <?=$sort=='new'?'active':''?>"><span class="under-line">Новые</span></a>
             <?php if(Yii::$app->request->cookies->getValue('geolocation')):?>
-                <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'nigh'])?>" class="btn-sort <?=$sort=='nigh'?'active':''?>">Рядом</a>
+                <a href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'nigh'])?>" class="btn-sort <?=$sort=='nigh'?'active':''?>"><span class="under-line">Рядом</span></a>
             <?php else:?>
-                <a style="display: none" href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'nigh'])?>" class="btn-nigh btn-sort <?=$sort=='nigh'?'active':''?>">Рядом</a>
-                <a class="btn-sort no-geolocation">Рядом</a>
+                <a style="display: none" href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'nigh'])?>" class="btn-nigh btn-sort <?=$sort=='nigh'?'active':''?>"><span class="under-line">Рядом</span></a>
+                <a class="btn-sort no-geolocation"><span class="under-line">Рядом</span></a>
             <?php endif;?>
         </div>
     </div>

@@ -158,7 +158,7 @@ var authUserMenu = (function (window, document, undefined,$) {
                 });
             },
             updatingNotificationOn: function() {
-                //this.intervalId = setInterval(methods.sendRequestOfGettingCountNotification, this.intervalTime);
+                this.intervalId = setInterval(methods.sendRequestOfGettingCountNotification, this.intervalTime);
             },
             updatingNotificationOff: function() {
                 clearInterval(this.intervalId);

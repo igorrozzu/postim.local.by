@@ -45,7 +45,7 @@ class Comments extends \yii\db\ActiveRecord
 
     public $official_answer = null;
 
-    public const TYPE = [
+    const TYPE = [
         'news' => 1,
         'reviews' => 2,
     ];

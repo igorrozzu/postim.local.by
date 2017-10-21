@@ -84,6 +84,29 @@ class NewsSearch extends News
             $query->andWhere(['tbl_favorites_news.user_id' => $this->favorite_id]);
         }
 
+        if(isset($params['text'])){
+            $query->andWhere(['like','upper(header)','%'.mb_strtoupper($params['text']).'%',false]);
+        }
+
         return $dataProvider;
+    }
+
+    public function getAutoComplete(string $text){
+        $query = News::find()->select(['tbl_news.id','tbl_news.header','tbl_news.url_name','tbl_news.city_id'])
+            ->where(['like','upper(header)','%'.mb_strtoupper($text).'%',false]);
+
+        if($city = Yii::$app->city->getSelected_city()['url_name']){
+            $query->innerJoinWith(['city.region'])
+                ->andWhere(['or',
+                    ['tbl_region.url_name'=>$city],
+                    ['tbl_city.url_name'=>$city]
+                ]);
+        }
+
+        $query->addOrderBy(['date'=>SORT_DESC]);
+        $query->addOrderBy(['header'=>SORT_ASC]);
+        $query->limit(5);
+        return $query->asArray()->all();
+
     }
 }

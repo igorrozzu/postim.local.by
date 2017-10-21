@@ -55,13 +55,13 @@ Pjax::begin([
         <div class="menu-btns-card">
 
             <a href="<?=Url::to(['post/index', 'url' => $post['url_name'], 'id' => $post['id']])?>" >
-                <div class="btn2-menu active">Информация</div>
+                <div class="btn2-menu active"><span class="under-line">Информация</span></div>
             </a>
             <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu ">Фотографии <?=$photoCount?></div>
+                <div class="btn2-menu "><span class="under-line">Фотографии <?=$photoCount?></span></div>
             </a>
             <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu">Отзывы <?=$post['count_reviews']?></div>
+                <div class="btn2-menu"><span class="under-line">Отзывы <?=$post['count_reviews']?></span></div>
             </a>
         </div>
     </div>
@@ -83,7 +83,7 @@ Pjax::begin([
                    accept="image/*,image/jpeg,image/gif,image/png" data-id="<?=$post->id?>">
         </div>
     </div>
-    <div class="block-content-between">
+    <div class="block-content-between cust">
         <h2 class="h2-v">Информация</h2>
         <p class="text p-text main-pjax">
             Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/edit/<?=$post['id']?>">исправьте&nbsp;или&nbsp;дополните&nbsp;информацию</a>
@@ -241,11 +241,17 @@ Pjax::begin([
 
     <div class="block-info-for-owner">
         <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и отвечайте на отзывы от имени компании.<br>
-            Рекламируйтесь бесплатно размещая свои скидки и акции на сайте Postim.by</p>
+            Рекламируйтесь бесплатно размещая свои скидки для пользователей Postim.by</p>
     </div>
     <div class="margin-top60"></div>
 </div>
-
+<?php if(Yii::$app->request->get('review_id',false)):?>
+    <script>
+        $(document).ready(function() {
+            reviews.scrollToFirstReviews();
+        });
+    </script>
+<?php endif;?>
 <script>
     $(document).ready(function() {
         post.info.init();
@@ -264,6 +270,7 @@ Pjax::begin([
             }
         });
 		menu_control.fireMethodClose();
+        search.clear();
     })
 </script>
 <div class="container-blackout-photo-popup"></div>

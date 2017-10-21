@@ -48,6 +48,7 @@ $js = <<<js
     	comments.init(1);
         comments.setAutoResize('.textarea-main-comment');
         menu_control.fireMethodClose();
+        search.clear();
     })
 js;
 

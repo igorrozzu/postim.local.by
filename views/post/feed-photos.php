@@ -54,19 +54,19 @@ Pjax::begin([
     <div class="block-content">
         <div class="menu-btns-card">
             <a href="<?=Url::to(['post/index', 'url' => $post['url_name'], 'id' => $post['id']])?>" >
-                <div class="btn2-menu">Информация</div>
+                <div class="btn2-menu"><span class="under-line">Информация</span></div>
             </a>
             <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu active">Фотографии <?=$photoCount?></div>
+                <div class="btn2-menu active"><span class="under-line">Фотографии <?=$photoCount?></span></div>
             </a>
             <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu">Отзывы <?=$post['count_reviews']?></div>
+                <div class="btn2-menu"><span class="under-line">Отзывы <?=$post['count_reviews']?></span></div>
             </a>
         </div>
     </div>
 </div>
 <div class="block-content">
-    <div class="block-photos-owner" data-type="user">
+    <div class="block-photos-owner <?=!$ownerPhotos?'empty-photo':''?>" data-type="user">
         <?php foreach ($ownerPhotos as $index => $photo):?>
             <div class="container-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>" data-source="<?=$photo->source ?? ''?>"
                  data-id="<?=$photo->id?>" data-status="<?=$photo->user_status?>">
