@@ -2,6 +2,7 @@
 
 namespace app\behaviors\notification\handlers;
 
+use app\components\user\ExperienceCalc;
 use app\models\User;
 use Yii;
 use yii\db\ActiveRecord;
@@ -30,33 +31,38 @@ class FillingProfile extends NotificationHandler
 
         $template = Yii::$app->params['notificationTemplates']['reward.profile'];
 
-        $user->userInfo->exp_points += $template['exp'];
-        $user->userInfo->mega_money += $template['money'];
-        $user->userInfo->has_reward_for_filling_profile = 1;
-
         $oldLevel = $user->userInfo->level;
-        $user->userInfo->level = $user->userInfo->getLevelByExperience();
+        $newLevel = ExperienceCalc::getLevelByExperience($user->userInfo->exp_points + $template['exp']);
+
+        $updateResult = $user->userInfo->updateCounters([
+            'exp_points' => $template['exp'],
+            'mega_money' => $template['money'],
+            'level' => $newLevel - $oldLevel,
+            'has_reward_for_filling_profile' => 1,
+        ]);
 
         $message = sprintf($template['text'], $template['exp'], $template['money']);
-        if ($user->userInfo->save()) {
+        if ($updateResult) {
             parent::sendNotification($this->owner->getUserId(), [
                 'type' => '',
                 'data' => $message,
             ]);
 
-            if ($oldLevel !== $user->userInfo->level) {
+            if ($oldLevel !== $newLevel) {
                 parent::sendNotification($this->owner->getUserId(), [
                     'type' => '',
                     'data' => sprintf(
                         Yii::$app->params['notificationTemplates']['common.newUserLevel'],
-                        $user->userInfo->level
+                        $newLevel
                     ),
                 ]);
             }
 
-            $mailer = Yii::$app->getMailer();
-            $mailer->htmlLayout = 'layouts/notification';
-            return $mailer->compose(['html' => 'reward'], [
+            if (!$user->userInfo->hasExperienceAndBonusSub()) {
+                return true;
+            }
+
+            return $this->mailer->compose(['html' => 'reward'], [
                 'user' => $user,
                 'message' => $message,
             ])->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])

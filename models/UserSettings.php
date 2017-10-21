@@ -20,7 +20,9 @@ class UserSettings extends Model
 
     public $answersToReviews;
     public $answersToComments;
-    public $reviewsAndCommentsToPlaces;
+    public $reviewsToMyPlaces;
+    public $reviewsToFavoritePlaces;
+    public $experienceAndBonus;
     public $placesAndDiscounts;
 
     private $user;
@@ -32,7 +34,8 @@ class UserSettings extends Model
         return [
             self::SCENARIO_DEFAULT => [
                 'name', 'surname', 'cityId', 'gender', 'email', 'oldPassword', 'newPassword', 'newPasswordRepeat',
-                'answersToReviews', 'answersToComments', 'reviewsAndCommentsToPlaces', 'placesAndDiscounts',
+                'answersToReviews', 'answersToComments', 'reviewsToMyPlaces', 'reviewsToFavoritePlaces',
+                'experienceAndBonus', 'placesAndDiscounts'
             ],
             self::SCENARIO_PASSWORD_RESET => [
                 'oldPassword', 'newPassword', 'newPasswordRepeat'
@@ -51,8 +54,8 @@ class UserSettings extends Model
         return [
             [['name'], 'required', 'message' => 'Поле обязательно для заполнения'],
             [['name', 'surname'], 'string', 'max' => 25, 'tooLong' => 'Не более {max} символов'],
-            [['cityId', 'gender', 'answersToReviews', 'answersToComments', 'reviewsAndCommentsToPlaces',
-                'placesAndDiscounts'], 'integer'],
+            [['cityId', 'gender', 'answersToReviews', 'answersToComments', 'reviewsToMyPlaces',
+                'reviewsToFavoritePlaces', 'experienceAndBonus', 'placesAndDiscounts'], 'integer'],
             [['oldPassword', 'newPassword', 'newPasswordRepeat'], 'required', 'message' => 'Поле обязательно для заполнения',
                 'on' => self::SCENARIO_PASSWORD_RESET],
             ['oldPassword', 'validateOldPassword', 'on' => self::SCENARIO_PASSWORD_RESET],
@@ -77,6 +80,7 @@ class UserSettings extends Model
     {
         $this->oldPassword = $this->oldPassword ?? '';
         $attributeNames = ['newPassword', 'newPasswordRepeat'];
+
         if (!$this->user->hasSocialCreation() || $this->user->hasChangingPassword()) {
             $attributeNames[] = 'oldPassword';
         }
@@ -119,7 +123,9 @@ class UserSettings extends Model
                 'gender' => (int)$this->gender,
                 'answers_to_reviews_sub' => (int)$this->answersToReviews,
                 'answers_to_comments_sub' => (int)$this->answersToComments,
-                'reviews_and_comments_to_places_sub' => (int)$this->reviewsAndCommentsToPlaces,
+                'reviews_to_my_places_sub' => (int)$this->reviewsToMyPlaces,
+                'reviews_to_favorite_places_sub' => (int)$this->reviewsToFavoritePlaces,
+                'experience_and_bonus_sub' => (int)$this->experienceAndBonus,
                 'places_and_discounts_sub' => (int)$this->placesAndDiscounts,
             ], false);
             if ($userInfo->save()) {

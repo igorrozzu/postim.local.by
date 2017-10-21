@@ -4,7 +4,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-$hostName = Yii::$app->request->getHostInfo();
+$hostName = Yii::$app->params['site.hostName'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -21,7 +21,7 @@ $hostName = Yii::$app->request->getHostInfo();
 </head>
 <body style="margin: 0; padding: 0; background-color: #f1f2f4">
 <?php $this->beginBody() ?>
-<table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto; padding: 20px 0px; max-width: 600px;
+<table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto; padding-top: 20px; max-width: 600px;
         font-family: Tahoma, Verdana, Helvetica, sans-serif; color: #444444; font-size: 15px;" >
     <tr>
         <td style="background-color: #3c5994; height: 60px;">
@@ -87,9 +87,10 @@ $hostName = Yii::$app->request->getHostInfo();
             </span>
         </td>
     </tr>
-    <tr style="display: block; padding: 20px;">
-        <td>
-            <span style="-webkit-text-size-adjust:none; font-size: 11px;">
+    <tr style="display: block; padding: 15px 0 20px 0;">
+        <td style="display: block;">
+            <span style="-webkit-text-size-adjust:none; font-size: 11px; display: block;
+    text-align: center;">
                 Вы можете ограничить или отменить уведомления по эл. почте в
                 <a href="<?= $hostName ?>/user/settings" target="_blank" style="color: #3C5994;">настройках профиля</a>
             </span>

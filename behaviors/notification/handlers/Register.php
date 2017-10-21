@@ -2,6 +2,7 @@
 
 namespace app\behaviors\notification\handlers;
 
+use app\components\user\ExperienceCalc;
 use app\models\User;
 use Yii;
 use yii\db\ActiveRecord;
@@ -24,32 +25,33 @@ class Register extends NotificationHandler
 
         $template = Yii::$app->params['notificationTemplates']['reward.register'];
 
-        $this->owner->exp_points += $template['exp'];
-        $this->owner->mega_money += $template['money'];
+        $oldLevel = $this->owner->level ?? 0;
+        $newLevel = ExperienceCalc::getLevelByExperience($this->owner->exp_points + $template['exp']);
 
-        $oldLevel = $this->owner->level;
-        $this->owner->level = $this->owner->getLevelByExperience();
+        $updateResult = $this->owner->updateCounters([
+            'exp_points' => $template['exp'],
+            'mega_money' => $template['money'],
+            'level' => $newLevel - $oldLevel,
+        ]);
 
         $message = sprintf($template['text'], $template['exp'], $template['money']);
-        if ($this->owner->save()) {
+        if ($updateResult) {
             parent::sendNotification($this->owner->getUserId(), [
                 'type' => '',
                 'data' => $message,
             ]);
 
-            if ($oldLevel !== $this->owner->level) {
+            if ($oldLevel !== $newLevel) {
                 parent::sendNotification($this->owner->getUserId(), [
                     'type' => '',
                     'data' => sprintf(
                         Yii::$app->params['notificationTemplates']['common.newUserLevel'],
-                        $this->owner->level
+                        $newLevel
                     ),
                 ]);
             }
 
-            $mailer = Yii::$app->getMailer();
-            $mailer->htmlLayout = 'layouts/notification';
-            return $mailer->compose(['html' => 'reward'], [
+            return $this->mailer->compose(['html' => 'reward'], [
                 'user' => $user,
                 'message' => $message,
             ])->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])

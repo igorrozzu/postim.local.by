@@ -4,6 +4,7 @@ return [
     'notificationTemplates' => require 'notifications.php',
     'adminEmail' => 'admin@example.com',
     'mail.supportEmail' => 'info@postim.by',
+    'site.hostName' => 'https://postim.local.by',
 
     'user.loginDuration' => 3600*24*30,
     'user.passwordResetTokenExpire' => 3600,

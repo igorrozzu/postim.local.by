@@ -165,8 +165,9 @@ Pjax::begin([
 
     <h1 class="h1-c center-mx" style="margin-top: 35px;">Уведомления по эл.почте</h1>
     <div class="container-settings" style="padding: 0px 20px;">
+
         <div class="block-field-setting">
-            <label class="label-field-setting">Ответы к моим отзывам</label>
+            <label class="label-field-setting">Комментарии к моим отзывам</label>
             <div class="selected-field">
                 <div id="answers-to-reviews-value" data-value="<?=$model->answersToReviews ??
                 $userInfo->answers_to_reviews_sub?>" class="select-value">
@@ -188,6 +189,7 @@ Pjax::begin([
                 ->hiddenInput(['id' => 'answers-to-reviews-hidden', 'value' => $model->answersToReviews ??
                     $userInfo->answers_to_reviews_sub])->label(false) ?>
         </div>
+
         <div class="block-field-setting">
             <label class="label-field-setting">Ответы к моим комментариям</label>
             <div class="selected-field">
@@ -211,31 +213,85 @@ Pjax::begin([
                 ->hiddenInput(['id' => 'answers-to-comments-hidden', 'value' => $model->answersToComments ??
                     $userInfo->answers_to_comments_sub])->label(false) ?>
         </div>
+
         <div class="block-field-setting">
-            <label class="label-field-setting">Отзывы и комментарии к моим местам</label>
+            <label class="label-field-setting">Отзывы к моим местам</label>
             <div class="selected-field">
-                <div id="reviews-and-comments-to-places-value" data-value="<?=$model->reviewsAndCommentsToPlaces ??
-                $userInfo->reviews_and_comments_to_places_sub?>" class="select-value">
-                    <?=UserInfo::getUserChoice($model->reviewsAndCommentsToPlaces ??
-                        $userInfo->reviews_and_comments_to_places_sub)?>
+                <div id="reviews-to-my-places-value" data-value="<?=$model->reviewsToMyPlaces ??
+                $userInfo->reviews_to_my_places_sub?>" class="select-value">
+                    <?=UserInfo::getUserChoice($model->reviewsToMyPlaces ??
+                        $userInfo->reviews_to_my_places_sub)?>
                 </div>
-                <div data-open-id="reviews-and-comments-to-places" class="open-select-field"></div>
+                <div data-open-id="reviews-to-my-places" class="open-select-field"></div>
             </div>
-            <div id="reviews-and-comments-to-places" class="container-scroll auto-height">
+            <div id="reviews-to-my-places" class="container-scroll auto-height">
                 <div class="container-option-select option-active">
-                    <?php if((bool)($model->reviewsAndCommentsToPlaces ??
-                        $userInfo->reviews_and_comments_to_places_sub)):?>
+                    <?php if((bool)($model->reviewsToMyPlaces ??
+                        $userInfo->reviews_to_my_places_sub)):?>
                         <div data-value="0" class="option-select-field">Нет</div>
                     <?php else:?>
                         <div data-value="1" class="option-select-field">Да</div>
                     <?php endif;?>
                 </div>
             </div>
-            <?= $form->field($model, 'reviewsAndCommentsToPlaces')
-                ->hiddenInput(['id' => 'reviews-and-comments-to-places-hidden',
-                    'value' => $model->reviewsAndCommentsToPlaces ?? $userInfo->reviews_and_comments_to_places_sub])
+            <?= $form->field($model, 'reviewsToMyPlaces')
+                ->hiddenInput(['id' => 'reviews-to-my-places-hidden',
+                    'value' => $model->reviewsToMyPlaces ?? $userInfo->reviews_to_my_places_sub])
                 ->label(false) ?>
         </div>
+
+        <div class="block-field-setting">
+            <label class="label-field-setting">Отзывы к местам в Избранном</label>
+            <div class="selected-field">
+                <div id="reviews-to-favorite-places-value" data-value="<?=$model->reviewsToFavoritePlaces ??
+                $userInfo->reviews_to_favorite_places_sub?>" class="select-value">
+                    <?=UserInfo::getUserChoice($model->reviewsToFavoritePlaces ??
+                        $userInfo->reviews_to_favorite_places_sub)?>
+                </div>
+                <div data-open-id="reviews-to-favorite-places" class="open-select-field"></div>
+            </div>
+            <div id="reviews-to-favorite-places" class="container-scroll auto-height">
+                <div class="container-option-select option-active">
+                    <?php if((bool)($model->reviewsToFavoritePlaces ??
+                        $userInfo->reviews_to_favorite_places_sub)):?>
+                        <div data-value="0" class="option-select-field">Нет</div>
+                    <?php else:?>
+                        <div data-value="1" class="option-select-field">Да</div>
+                    <?php endif;?>
+                </div>
+            </div>
+            <?= $form->field($model, 'reviewsToFavoritePlaces')
+                ->hiddenInput(['id' => 'reviews-to-favorite-places-hidden',
+                    'value' => $model->reviewsToFavoritePlaces ?? $userInfo->reviews_to_favorite_places_sub])
+                ->label(false) ?>
+        </div>
+
+        <div class="block-field-setting">
+            <label class="label-field-setting">Начисление опыта и бонусов</label>
+            <div class="selected-field">
+                <div id="experience-and-bonus-value" data-value="<?=$model->experienceAndBonus ??
+                $userInfo->experience_and_bonus_sub?>" class="select-value">
+                    <?=UserInfo::getUserChoice($model->experienceAndBonus ??
+                        $userInfo->experience_and_bonus_sub)?>
+                </div>
+                <div data-open-id="experience-and-bonus" class="open-select-field"></div>
+            </div>
+            <div id="experience-and-bonus" class="container-scroll auto-height">
+                <div class="container-option-select option-active">
+                    <?php if((bool)($model->experienceAndBonus ??
+                        $userInfo->experience_and_bonus_sub)):?>
+                        <div data-value="0" class="option-select-field">Нет</div>
+                    <?php else:?>
+                        <div data-value="1" class="option-select-field">Да</div>
+                    <?php endif;?>
+                </div>
+            </div>
+            <?= $form->field($model, 'experienceAndBonus')
+                ->hiddenInput(['id' => 'experience-and-bonus-hidden',
+                    'value' => $model->experienceAndBonus ?? $userInfo->experience_and_bonus_sub])
+                ->label(false) ?>
+        </div>
+
         <div class="block-field-setting">
             <div class="block-field-setting">
                 <label class="label-field-setting">Интересные подборки мест и скидок</label>
@@ -262,6 +318,7 @@ Pjax::begin([
                     ->label(false) ?>
             </div>
         </div>
+
         <div class="btn-setting-save">
             <button class="large-wide-button" style="border: none;" type="submit"><p>Сохранить</p></button>
         </div>

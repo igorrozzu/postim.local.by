@@ -20,11 +20,14 @@ use yii\db\ActiveQuery;
  * @property integer $count_place_moderation
  * @property integer $gender
  * @property integer $email_alert_subscription
+ * @property integer $has_reward_for_filling_profile
+ *
  * @property integer $answers_to_reviews_sub
  * @property integer $answers_to_comments_sub
- * @property integer $reviews_and_comments_to_places_sub
+ * @property integer $reviews_to_my_places_sub
  * @property integer $places_and_discounts_sub
- * @property integer $has_reward_for_filling_profile
+ * @property integer $reviews_to_favorite_places_sub
+ * @property integer $experience_and_bonus_sub
  */
 class UserInfo extends \yii\db\ActiveRecord
 {
@@ -51,7 +54,8 @@ class UserInfo extends \yii\db\ActiveRecord
             ['user_id', 'required'],
             [['user_id', 'level', 'exp_points', 'total_comments', 'count_places_added', 'count_place_moderation',
                 'gender', 'email_alert_subscription', 'answers_to_reviews_sub', 'answers_to_comments_sub',
-                'reviews_and_comments_to_places_sub', 'places_and_discounts_sub', 'has_reward_for_filling_profile'], 'integer'],
+                'reviews_to_my_places_sub', 'places_and_discounts_sub', 'has_reward_for_filling_profile',
+                'reviews_to_favorite_places_sub', 'experience_and_bonus_sub'], 'integer'],
             [['virtual_money', 'mega_money'], 'number'],
         ];
     }
@@ -73,7 +77,7 @@ class UserInfo extends \yii\db\ActiveRecord
             'email_alert_subscription' => 'Email Alert Subscription',
             'answers_to_reviews_sub' => 'Answers To Reviews Sub',
             'answers_to_comments_sub' => 'Answers To Comments Sub',
-            'reviews_and_comments_to_places_sub' => 'Reviews And Comments To Places Sub',
+            'reviews_to_my_places_sub' => 'reviews_to_my_places_sub',
             'places_and_discounts_sub' => 'Places And Discounts Sub',
         ];
     }
@@ -155,9 +159,14 @@ class UserInfo extends \yii\db\ActiveRecord
         return (bool) $this->has_reward_for_filling_profile;
     }
 
-    public function hasReviewsAndCommentsToPlacesSub(): bool
+    public function hasReviewsToMyPlacesSub(): bool
     {
-        return (bool) $this->reviews_and_comments_to_places_sub;
+        return (bool) $this->reviews_to_my_places_sub;
+    }
+
+    public function hasExperienceAndBonusSub(): bool
+    {
+        return (bool) $this->experience_and_bonus_sub;
     }
 
     public function hasAnswersToReviewsSub(): bool
@@ -168,66 +177,5 @@ class UserInfo extends \yii\db\ActiveRecord
     public function hasAnswersToCommentsSub(): bool
     {
         return (bool) $this->answers_to_comments_sub;
-    }
-
-    /**
-     * Formula: d*x^2 + (2*a1 - d)*x - 2*exp = 0
-     *
-     * @return int
-     */
-    public function getLevelByExperience(): int
-    {
-        if ($this->exp_points === 0) {
-            return 0;
-        }
-
-        $increment = Yii::$app->params['user.incrementExperience'];
-        $a = $increment;
-        $b = 2 * Yii::$app->params['user.experienceForFirstLevel'] - $increment;
-        $c = -2 * $this->exp_points;
-
-        $d = (pow($b,2)) - (4 * $a * $c);
-
-        if ($d <= 0) {
-            $d = (-1) * $d;
-        }
-
-        $x1 = (-2 * $c) / ($b + (sqrt($d)));
-        $x2 = (-2 * $c) / ($b - (sqrt($d)));
-        $maxRoot = $x1 > $x2 ? $x1 : $x2;
-
-        return (int) abs($maxRoot);
-    }
-
-    /**
-     * Formula: d*x^2 + (2*a1 - d)*x - 2*exp = 0
-     * Experience: (d*x + (2*a1 - d)) * x / 2
-     *
-     * @param int $level
-     * @return int
-     */
-    public function getMinExperienceByLevel(int $level): int
-    {
-        if ($level === 0) {
-            return 0;
-        }
-
-        $increment = Yii::$app->params['user.incrementExperience'];
-        return (int) ($increment * $level + (2 * Yii::$app->params['user.experienceForFirstLevel'] -
-                    $increment)) * $level / 2;
-    }
-
-    /**
-     * @return \stdClass
-     */
-    public function getExperienceInfo(): \stdClass
-    {
-        $expForNextLevel = $this->getMinExperienceByLevel($this->level + 1);
-
-        $result = new \stdClass();
-        $result->persent = (int) ($this->exp_points / $expForNextLevel * 100);
-        $result->needExpForNextLevel = $expForNextLevel - $this->exp_points;
-
-        return $result;
     }
 }
