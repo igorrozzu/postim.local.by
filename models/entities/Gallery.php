@@ -3,6 +3,7 @@
 namespace app\models\entities;
 
 use app\models\Posts;
+use app\models\ReviewsGallery;
 use app\models\User;
 use Yii;
 
@@ -76,6 +77,14 @@ class Gallery extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReviewsGallery()
+    {
+        return $this->hasMany(ReviewsGallery::className(), ['gallery_id' => 'id']);
+    }
+
     public function getPhotoPath()
     {
         return self::PHOTO_FOLDER . $this->post_id . DIRECTORY_SEPARATOR . $this->link;
@@ -128,7 +137,6 @@ class Gallery extends \yii\db\ActiveRecord
 				$query->select('status, id, ');
 			}])
             ->where(['tbl_gallery.user_id' => $userId,'tbl_posts.status'=>1])
-
             ->orderBy(['id' => SORT_DESC])
             ->limit($limit)
             ->all();

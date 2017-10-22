@@ -129,8 +129,9 @@ class Reviews extends \yii\db\ActiveRecord
 
 	public function getLastPhoto(){
 		return  Gallery::find()
-			->innerJoin('tbl_reviews_gallery','tbl_reviews_gallery.review_id = '.$this->id.' AND tbl_reviews_gallery.gallery_id = tbl_gallery.id')
-			->orderBy(['date'=>SORT_DESC])
+			->innerJoin('tbl_reviews_gallery','tbl_reviews_gallery.review_id = '.$this->id.
+                ' AND tbl_reviews_gallery.gallery_id = tbl_gallery.id')
+			->orderBy(['id' => SORT_DESC])
 			->one();
 	}
 

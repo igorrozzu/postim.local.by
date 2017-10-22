@@ -98,11 +98,12 @@ var Post = (function (window, document, undefined,$) {
                     loadTime: null,
                     postId: null,
                     userId: null,
-                    host: location.pathname,
+                    reviewId: null,
                     data: [],
                     postInfo: [],
                     type: null,
                     imgSize: {height: null, width: null},
+                    allPhotoCount: null,
                     state: {
                         $photoBox: null,
                         $wrapPhotoBox: null,
@@ -110,7 +111,10 @@ var Post = (function (window, document, undefined,$) {
                         $titleBox: null,
                         $leftSliderButton: null,
                         $rightSliderButton: null,
-                        $photoCounter: null,
+                        $photoCounter: {
+                            start: null,
+                            end: null,
+                        },
                         left: true,
                         right: true,
                         isAnimationRun: false,
@@ -133,6 +137,7 @@ var Post = (function (window, document, undefined,$) {
                         return _container.data[this.currentItem];
 
                     },
+
                     prev: function () {
                         _container.currentItem--;
                         if (_container.currentItem === 0) {
@@ -145,6 +150,7 @@ var Post = (function (window, document, undefined,$) {
                         }
                         return _container.data[this.currentItem];
                     },
+
                     current: function () {
                         that.methods.initContainer();
 
@@ -163,6 +169,16 @@ var Post = (function (window, document, undefined,$) {
 
                     },
 
+                    getPhotoSequenceById: function (id) {
+                        for (var i = 0; i < _container.data.length; i++) {
+                            if (_container.data[i].id === id) {
+                                return i;
+                            }
+                        }
+
+                        return null;
+                    },
+
                     loadPhotosFromPage: function () {
                         if(_container.data.length === 0) {
                             $('.block-photos-owner .container-photo').each(function (index) {
@@ -177,6 +193,7 @@ var Post = (function (window, document, undefined,$) {
                             })
                         }
                     },
+
                     loadPhotosFromServer: function () {
                         if(_container.url !== null) {
                             $.ajax({
@@ -193,6 +210,7 @@ var Post = (function (window, document, undefined,$) {
                             });
                         }
                     },
+
                     resetState: function () {
                         _container.state.left = true;
                         _container.state.right = true;
@@ -205,30 +223,42 @@ var Post = (function (window, document, undefined,$) {
 
 
                 var that = {
+                    resetContainer: function () {
+                        _container.userId = null;
+                    },
+
+                    setAllPhotoCount: function (count) {
+                        _container.allPhotoCount = count;
+                    },
+
                     setLoadTime: function (loadTime) {
                         _container.loadTime = loadTime;
                     },
+
                     setPostId: function (postId) {
                         _container.postId = postId;
-                        _container.host = location.pathname;
                         that.methods.resetContainerData();
                     },
+
                     setUserId: function (userId) {
                         _container.userId = userId;
                         that.methods.resetContainerData();
                     },
 
-                    initSliderByPhotoId: function (photoId, type) {
-                        _container.type = type || 'all';
+                    initPhotoSlider: function (params) {
+                        _container.type = params.type || 'all';
+                        _container.reviewId = params.reviewId;
 
                         if (_container.type === 'profile') {
                             _container.url = '/user/get-photos?type=' + _container.type +
-                                '&userId=' + _container.userId;
+                                '&userId=' + _container.userId + '&photo_id=' + params.photoId;
+                        } else if (_container.type === 'review') {
+                            _container.url = '/photo/get-for-review?review_id=' + _container.reviewId;
                         } else {
                             _container.url = '/post/get-photos?type=' + _container.type +
-                                '&postId=' + _container.postId;
+                                '&postId=' + _container.postId + '&photo_id=' + params.photoId;
                         }
-                        _container.url += '&photo_id=' + photoId;
+
                         $.ajax({
                             url: _container.url,
                             dataType: 'json',
@@ -236,8 +266,11 @@ var Post = (function (window, document, undefined,$) {
                             success: function (response) {
                                 _container.url = response.url;
                                 _container.data = _container.data.concat(response.data);
-                                _container.currentItem = response.sequence;
-                                if(response.postInfo !== undefined) {
+
+                                _container.currentItem = response.sequence ||
+                                    _container.getPhotoSequenceById(parseInt(params.photoId));
+
+                                if (response.postInfo !== undefined) {
                                     _container.postInfo = _container.postInfo.concat(response.postInfo);
                                 }
                             }
@@ -260,7 +293,7 @@ var Post = (function (window, document, undefined,$) {
 
                         resizePopupPhoto: function () {
                             var $photoPopup = $('.photo-popup');
-                            if ($photoPopup.length != 0 && $photoPopup.css('display') !== 'none') {
+                            if ($photoPopup.length !== 0 && $photoPopup.css('display') !== 'none') {
                                 var wrapHeight = _container.state.$wrapPhotoBox.height();
                                 var wrapWidth = _container.state.$wrapPhotoBox.width();
                                 var $img = $(".photo-wrap img");
@@ -282,17 +315,20 @@ var Post = (function (window, document, undefined,$) {
                             $('.photo-info .mCSB_container').css('left', 0);
                             _container.state.galleryIsOpen = true;
                         },
+
                         changePopupPhoto: function (photo) {
                             $('.photo-popup-item').attr('src', that.methods.createPhotoUrl(photo));
                             that.methods.resizePopupPhoto();
                         },
+
                         createPhotoUrl: function (photo) {
-                            if(_container.type === 'profile') {
+                            if(_container.type === 'profile' || _container.type === 'review') {
                                 return '/post_photo/' + photo.post_id + '/' + photo.link;
                             } else {
                                 return '/post_photo/' + _container.postId + '/' + photo.link;
                             }
                         },
+
                         showErrorMessage: function (text) {
                             $().toastmessage('showToast', {
                                 text     : text,
@@ -300,6 +336,7 @@ var Post = (function (window, document, undefined,$) {
                                 type     : 'error'
                             });
                         },
+
                         initContainer: function () {
                             if(_container.state.$photoBox === null) {
                                 _container.state.$photoBox = $('.photo-popup');
@@ -308,9 +345,11 @@ var Post = (function (window, document, undefined,$) {
                                 _container.state.$titleBox = $('.photo-popup .photo-header a');
                                 _container.state.$leftSliderButton = $('.photo-left-arrow div');
                                 _container.state.$rightSliderButton = $('.photo-right-arrow div');
-                                _container.state.$photoCounter = $('.gallery-counter span');
+                                _container.state.$photoCounter.start = $('.gallery-counter #start-photo-counter');
+                                _container.state.$photoCounter.end = $('.gallery-counter #end-photo-counter');
                             }
                         },
+
                         setSourceInPhoto: function () {
                             var source = _container.data[_container.currentItem].source;
                             if (source !== null && source !== '') {
@@ -320,8 +359,9 @@ var Post = (function (window, document, undefined,$) {
                                 _container.state.$sourceBox.hide();
                             }
                         },
+
                         setTitleInPhoto: function () {
-                            if(_container.type === 'profile') {
+                            if(_container.userId !== null) {
                                 var url = _container.postInfo[_container.currentItem].url;
                                 var title = _container.postInfo[_container.currentItem].title;
                                 var postId = _container.data[_container.currentItem].post_id;
@@ -329,18 +369,30 @@ var Post = (function (window, document, undefined,$) {
                                 _container.state.$titleBox.text(title);
                             }
                         },
+
                         setCounterInPhoto: function () {
-                            _container.state.$photoCounter.text(_container.currentItem + 1);
+                            _container.state.$photoCounter.start.text(_container.currentItem + 1);
+                            if (_container.type === 'review') {
+                                _container.state.$photoCounter.end.text(_container.data.length);
+                            } else {
+                                _container.state.$photoCounter.end.text(_container.allPhotoCount);
+                            }
                         },
+
                         changeUrlOfPhoto: function () {
                             var url;
                             var item = _container.data[_container.currentItem];
-                            if (_container.postInfo.length === 0) {
-                                url = _container.host + '?photo_id=' + item.id + '-' + item.user_status;
-                            } else {
+
+                            if (_container.type === 'profile') {
                                 url = '/id' + item.user_id + '?photo_id=' + item.id;
+                            } else if (_container.type === 'review') {
+                                url = location.pathname + '?review_id=' + _container.reviewId +
+                                    '&photo_id=' + item.id
+                            } else {
+                                url = location.pathname + '?photo_id=' + item.id + '-' + item.user_status;
                             }
-                            if(history.state !== null) {
+
+                            if (history.state !== null) {
                                 history.replaceState({}, url, url);
                             } else {
                                 history.pushState({}, url, url);
@@ -441,18 +493,26 @@ var Post = (function (window, document, undefined,$) {
 
                     photoPopupWindowInit: function () {
                         $(document).ready(function () {
-                            $(document).on('click','.block-photos .photo, .container-photo', function (e) {
+                            $(document).on('click','.block-photos .photo, .container-photo, .review-photo', function (e) {
                                 if ($(e.target).hasClass('avatar-user')) {
                                     return;
                                 }
+
                                 _container.currentItem = $(this).data('sequence');
                                 _container.type = $(this).parent().data('type');
+
+                                if(_container.type === 'review') {
+                                    _container.reviewId = $(this).parent().data('reviews_id');
+                                }
+
                                 _container.loadPhotosFromPage();
 
                                 if (_container.url === false) {
                                     if (_container.type === 'profile') {
                                         _container.url = '/user/get-photos?type=' + _container.type +
                                             '&userId=' + _container.userId;
+                                    } else if (_container.type === 'review') {
+                                        _container.url = '/photo/get-for-review?review_id=' + _container.reviewId;
                                     } else {
                                         _container.url = '/post/get-photos?type=' + _container.type +
                                             '&postId=' + _container.postId;
@@ -526,10 +586,12 @@ var Post = (function (window, document, undefined,$) {
                         $(window).bind('resize', $.debounce(250, that.methods.resizePopupPhoto));
                         $(document).on('click','.close-photo-popup', function () {
                             _container.resetState();
+                            that.methods.resetContainerData();
                             $('.container-blackout-photo-popup').css('display', 'none');
                             $('.photo-popup').css('display', 'none');
                             $('body').css('overflow', 'auto');
-                            history.replaceState(null, _container.host, _container.host);
+
+                            history.replaceState({}, location.pathname, location.pathname);
                         });
 
                         $(window).on('popstate', function (e) {

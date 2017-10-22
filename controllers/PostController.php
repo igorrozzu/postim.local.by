@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use app\components\Helper;
 use app\components\MainController;
 use app\components\Pagination;
@@ -34,7 +35,7 @@ use yii\web\UploadedFile;
 class PostController extends MainController
 {
 
-    public function actionIndex(int $id, string $photo_id = null){
+    public function actionIndex(int $id, string $photo_id = null, string $review_id = null){
 
          $post = Posts::find()->with([
                 'info',
@@ -88,8 +89,11 @@ class PostController extends MainController
                 'breadcrumbParams'=>$breadcrumbParams,
                 'photoCount' => Gallery::getPostPhotoCount($id),
                 'previewPhoto' => Gallery::getPreviewPostPhoto($id, 4),
-                'photoId' => $photo_id,
-                'keyForMap'=>$keyForMap
+                'keyForMap'=>$keyForMap,
+                'initPhotoSliderParams' => [
+                    'photoId' => $photo_id,
+                    'reviewId' => $review_id,
+                ]
             ]);
 
         }else{
@@ -403,7 +407,7 @@ class PostController extends MainController
 
 	}
 
-    public function actionReviews(int $postId){
+    public function actionReviews(int $postId, int $photo_id = null, int $review_id = null){
 		$post = Posts::find()->with([
 			'city', 'totalView',
 			'hasLike','onlyOnceCategories.category'])
@@ -447,7 +451,7 @@ class PostController extends MainController
 				true
 			);
 			if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
-				echo  \app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
+				echo CardsReviewsWidget::widget([
 					'dataProvider' => $dataProvider,
 					'settings'=>[
 						'show-more-btn' => true,
@@ -464,7 +468,11 @@ class PostController extends MainController
 					'breadcrumbParams' => $breadcrumbParams,
 					'loadTime'=>$loadTime,
 					'keyForMap' => $keyForMap,
-					'type'=>$type
+					'type'=>$type,
+                    'initPhotoSliderParams' => [
+                        'photoId' => $photo_id,
+                        'reviewId' => $review_id,
+                    ]
 				]);
 			}
 
@@ -526,7 +534,9 @@ class PostController extends MainController
             'photoCount' => $photoCount,
             'loadTime' => $loadTime,
             'keyForMap'=>$keyForMap,
-            'photoId' => $photo_id
+            'initPhotoSliderParams' => [
+                'photoId' => $photo_id
+            ]
         ]);
     }
 

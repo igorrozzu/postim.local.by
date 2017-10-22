@@ -87,8 +87,13 @@ echo $feedReviews;
 <script>
     $(document).ready(function() {
         post.photos.setUserId(<?=$user->id?>);
-        <?php if (isset($photoId)) :?>
-        post.photos.initSliderByPhotoId('<?=$photoId?>', 'profile');
+        post.photos.setAllPhotoCount(<?=$profilePhotoCount?>);
+        <?php if (isset($initPhotoSliderParams['photoId'])) :?>
+        post.photos.initPhotoSlider({
+            photoId: '<?=$initPhotoSliderParams['photoId']?>',
+            reviewId: <?=$initPhotoSliderParams['reviewId'] ?? 'null'?>,
+            type: '<?=$initPhotoSliderParams['reviewId'] ? 'review' : 'profile'?>'
+        });
         <?php endif;?>
         $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
         $(".photo-wrap").swipe({
@@ -128,8 +133,10 @@ Pjax::end();
             <a href="#" target="_blank"><span>Источник</span></a>
         </li>
     </ul>
-
-    <div class="gallery-counter"><span>1</span> из <?=$profilePhotoCount?></div>
+    <div class="gallery-counter">
+        <span id="start-photo-counter">1</span> из
+        <span id="end-photo-counter"><?=$profilePhotoCount?></span>
+    </div>
 </div>
 <div style="margin-bottom:30px;"></div>
 
