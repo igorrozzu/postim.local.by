@@ -74,8 +74,8 @@ class ReviewsSearch extends Reviews
 			$query->andWhere(['tbl_posts.id' => $params['post_id']]);
 		}
 
-		if(isset($params['review_id']) && $params['review_id']){
-            $query->andWhere(['tbl_reviews.id'=>$params['review_id']]);
+		if (isset($params['review_id']) && $params['review_id'] && !isset($params['photo_id'])) {
+            $query->andWhere(['tbl_reviews.id' => $params['review_id']]);
         }
 
         if(!empty($this->city)) {

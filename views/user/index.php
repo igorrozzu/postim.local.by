@@ -88,12 +88,13 @@ echo $feedReviews;
     $(document).ready(function() {
         post.photos.setUserId(<?=$user->id?>);
         post.photos.setAllPhotoCount(<?=$profilePhotoCount?>);
+        post.photos.isChangeTitleInSlider(true);
         <?php if (isset($initPhotoSliderParams['photoId'])) :?>
-        post.photos.initPhotoSlider({
-            photoId: '<?=$initPhotoSliderParams['photoId']?>',
-            reviewId: <?=$initPhotoSliderParams['reviewId'] ?? 'null'?>,
-            type: '<?=$initPhotoSliderParams['reviewId'] ? 'review' : 'profile'?>'
-        });
+            post.photos.initPhotoSlider({
+                photoId: '<?=$initPhotoSliderParams['photoId']?>',
+                reviewId: <?=$initPhotoSliderParams['reviewId'] ?? 'null'?>,
+                type: '<?=$initPhotoSliderParams['reviewId'] ? 'review' : 'profile'?>'
+            });
         <?php endif;?>
         $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
         $(".photo-wrap").swipe({

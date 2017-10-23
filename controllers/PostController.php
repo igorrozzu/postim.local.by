@@ -35,17 +35,16 @@ use yii\web\UploadedFile;
 class PostController extends MainController
 {
 
-    public function actionIndex(int $id, string $photo_id = null, string $review_id = null){
-
-         $post = Posts::find()->with([
-                'info',
-                'workingHours'=>function ($query) {
-                    $query->orderBy(['day_type'=>SORT_ASC]);
-                },
-                'city', 'totalView',
-                'hasLike','onlyOnceCategories.category'])
-            ->where(['id'=>$id])
-            ->one();
+    public function actionIndex(int $id, string $photo_id = null, int $review_id = null)
+    {
+        $post = Posts::find()->with(['info',
+            'workingHours'=>function ($query) {
+                $query->orderBy(['day_type'=>SORT_ASC]);
+            },
+            'city', 'totalView',
+            'hasLike','onlyOnceCategories.category'])
+        ->where(['id'=>$id])
+        ->one();
 
 		$user_id = Yii::$app->user->isGuest?null:Yii::$app->user->getId();
 

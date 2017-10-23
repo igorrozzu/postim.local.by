@@ -118,7 +118,8 @@ var Post = (function (window, document, undefined,$) {
                         left: true,
                         right: true,
                         isAnimationRun: false,
-                        galleryIsOpen: false
+                        galleryIsOpen: false,
+                        isChangeTitleInSlider: false,
                     },
 
                     next: function () {
@@ -221,10 +222,10 @@ var Post = (function (window, document, undefined,$) {
                     },
                 };
 
-
                 var that = {
                     resetContainer: function () {
-                        _container.userId = null;
+                        that.methods.resetContainerData();
+                        _container.state.isChangeTitleInSlider = false;
                     },
 
                     setAllPhotoCount: function (count) {
@@ -237,12 +238,14 @@ var Post = (function (window, document, undefined,$) {
 
                     setPostId: function (postId) {
                         _container.postId = postId;
-                        that.methods.resetContainerData();
+                    },
+
+                    isChangeTitleInSlider: function (value) {
+                        _container.state.isChangeTitleInSlider = value;
                     },
 
                     setUserId: function (userId) {
                         _container.userId = userId;
-                        that.methods.resetContainerData();
                     },
 
                     initPhotoSlider: function (params) {
@@ -361,7 +364,7 @@ var Post = (function (window, document, undefined,$) {
                         },
 
                         setTitleInPhoto: function () {
-                            if(_container.userId !== null) {
+                            if (_container.state.isChangeTitleInSlider) {
                                 var url = _container.postInfo[_container.currentItem].url;
                                 var title = _container.postInfo[_container.currentItem].title;
                                 var postId = _container.data[_container.currentItem].post_id;

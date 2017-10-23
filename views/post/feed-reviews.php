@@ -116,28 +116,6 @@ Pjax::begin([
 <div style="margin-top: 30px"></div>
 <input style="display: none" class="photo-add-review" name="photo-add-review" type="file" multiple
        accept="image/*,image/jpeg,image/gif,image/png">
-<script>
-	$(document).ready(function() {
-        post.photos.resetContainer();
-        <?php if (isset($initPhotoSliderParams['photoId'])) :?>
-            post.photos.initPhotoSlider({
-                photoId: '<?=$initPhotoSliderParams['photoId']?>',
-                reviewId: <?=$initPhotoSliderParams['reviewId']?>,
-                type: 'review'
-            });
-        <?php endif;?>
-        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
-        $(".photo-wrap").swipe({
-            swipeRight: function(event, direction) {
-                post.photos.prevPhoto();
-            },
-            swipeLeft: function(event, direction) {
-                post.photos.nextPhoto();
-            }
-        });
-		menu_control.fireMethodClose();
-	})
-</script>
 
 <div class="container-blackout-photo-popup"></div>
 <div class="photo-popup">
@@ -165,6 +143,29 @@ Pjax::begin([
         <span id="end-photo-counter"></span>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        post.photos.resetContainer();
+        <?php if (isset($initPhotoSliderParams['photoId'])) :?>
+            post.photos.initPhotoSlider({
+                photoId: '<?=$initPhotoSliderParams['photoId']?>',
+                reviewId: <?=$initPhotoSliderParams['reviewId']?>,
+                type: 'review'
+            });
+        <?php endif;?>
+        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
+        $(".photo-wrap").swipe({
+            swipeRight: function(event, direction) {
+                post.photos.prevPhoto();
+            },
+            swipeLeft: function(event, direction) {
+                post.photos.nextPhoto();
+            }
+        });
+        menu_control.fireMethodClose();
+    })
+</script>
 <?php
 Pjax::end();
 ?>

@@ -257,8 +257,8 @@ Pjax::begin([
         post.info.init();
         post.photos.setLoadTime(<?=time()?>);
         post.photos.setPostId(<?=$post->id?>);
-        post.photos.resetContainer();
         post.photos.setAllPhotoCount(<?=$photoCount?>);
+        post.photos.resetContainer();
         <?php if (isset($initPhotoSliderParams['photoId'])) :?>
             post.photos.initPhotoSlider({
                 photoId: '<?=$initPhotoSliderParams['photoId']?>',
