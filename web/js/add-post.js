@@ -268,6 +268,12 @@ var Post_add = (function (window, document, undefined, $) {
 
 							if(that.selectorFields.id == 'city'){
 								that.selectorFields.moveToMapByCity(that.selectorFields.$inputSearch.attr('data-value'));
+
+								if($(this).text() == 'Минск'){
+									that.selectorFields.openBlockMetro();
+								}else {
+                                    that.selectorFields.closeBlockMetro();
+								}
 							}
 
 							that.selectorFields.closeSelector();
@@ -299,7 +305,7 @@ var Post_add = (function (window, document, undefined, $) {
 
                 },
 				initScrollBar: function ($container) {
-					$container.mCustomScrollbar({scrollInertia: 50});
+                	main.initCustomScrollBar($container,{scrollInertia: 50});
 				},
 				destructScrollBar: function ($container) {
 					$container.mCustomScrollbar('destroy');
@@ -361,7 +367,18 @@ var Post_add = (function (window, document, undefined, $) {
 							}
 						}
 					});
-				}
+				},
+
+				openBlockMetro: function () {
+					$('.block-field-setting.metro').show();
+                },
+
+                closeBlockMetro: function () {
+                    $('.block-field-setting.metro').hide();
+                    $('.block-field-setting.metro').find('.block-inputs').html();
+
+                },
+
 
             },
             contacts: {

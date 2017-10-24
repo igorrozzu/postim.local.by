@@ -1,5 +1,7 @@
 <?php
 use \yii\widgets\Pjax;
+
+$this->title = 'Поиск на Postim.by';
 ?>
 <div class="margin-top60"></div>
 <?php

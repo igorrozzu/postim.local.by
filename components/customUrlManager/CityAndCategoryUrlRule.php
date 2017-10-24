@@ -26,7 +26,7 @@ class CityAndCategoryUrlRule extends CityUrlRule {
         $queryParams= explode('/',$pathInfo);
 
         if(count($queryParams)>2){
-            throw new NotFoundHttpException();
+            return false;
         }
 
         $arrIndex = $this->getIndexArray();

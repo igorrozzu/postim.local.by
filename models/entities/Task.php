@@ -14,7 +14,7 @@ use Yii;
  */
 class Task extends \yii\db\ActiveRecord
 {
-    public const TYPE = [
+    const TYPE = [
         'notification' => 1,
     ];
 

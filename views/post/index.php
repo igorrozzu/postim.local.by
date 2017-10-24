@@ -5,6 +5,36 @@ use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
 
+if(!$post->title){
+    $post->title = $post->data.', '.
+        mb_strtolower(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)).' в '.
+        Yii::t('app/locativus',$post->city->name).', '.
+        $post->address.': адрес, телефоны и карта проезда';
+}
+
+if(!$post->description){
+    $post->description = Yii::t('app/singular',$post->onlyOnceCategories[0]->name).' '.
+        $post->data.' в '.
+        Yii::t('app/locativus',$post->city->name).', '.
+        $post->address.'. Адрес, телефоны и время работы — удобный поиск на карте Postim.by!';
+}
+
+if(!$post->key_word){
+    $post->key_word = mb_strtolower(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)).' '.
+        $post->data.' '.
+        $post->city->name;
+}
+
+
+$this->title = $post['title'];
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => $post['description']
+]);
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content'=> $post['key_word']
+]);
 ?>
 <div class="margin-top60"></div>
 <div id="map_block" class="block-map preload-map">
@@ -106,6 +136,21 @@ Pjax::begin([
                 </div>
             </div>
         <?php endif;?>
+
+        <?php if($post->metro):?>
+            <div class="info-row">
+                <div class="left-block-f1">
+                    <div class="metro-card">Метро</div>
+                    <div class="block-inside">
+                        <p class="info-card-text"><?=$post->metro?></p>
+                    </div>
+                </div>
+                <div class="right-block-f">
+                    <div class="btn-info-card"></div>
+                </div>
+            </div>
+        <?php endif;?>
+
         <?php if($post->info['phones']):?>
 
             <div class="info-row">
@@ -194,6 +239,19 @@ Pjax::begin([
             </div>
         </div>
             <?php Helper::getFeature($post->getFeatures())?>
+        <?php if($post->requisites):?>
+        <div class="info-row">
+            <div class="left-block-f">
+                <div class="title-info-card">Реквизиты</div>
+                <div class="block-inside">
+                    <p class="info-card-text"><?=$post->requisites?></p>
+                </div>
+            </div>
+            <div class="right-block-f">
+                <div class="btn-info-card"></div>
+            </div>
+        </div>
+        <?php endif;?>
         <div class="info-row">
             <div class="left-block-f">
                 <div class="title-info-card">Редакторы</div>
@@ -260,7 +318,7 @@ Pjax::begin([
         <?php if (isset($photoId)) :?>
         post.photos.initSliderByPhotoId('<?=$photoId?>');
         <?php endif;?>
-        $('.photo-header').mCustomScrollbar({axis: "x", scrollInertia: 50, scrollbarPosition: "outside"});
+        main.initCustomScrollBar($('.photo-header'),{axis: "x",scrollInertia: 50, scrollbarPosition: "outside"})
         $(".photo-wrap").swipe({
             swipeRight: function(event, direction) {
                 post.photos.prevPhoto();

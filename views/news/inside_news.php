@@ -2,7 +2,15 @@
 use app\components\breadCrumb\BreadCrumb;
 use app\components\cardsNewsWidget\CardsNewsWidget;
 use app\components\commentsWidget\CommentsNewsWidget;
-$this->title = $news['header'];
+$this->title = $news['title_s'];
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => $news['description_s'],
+]);
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content'=> $news['key_word_s']
+]);
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">

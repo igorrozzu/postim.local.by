@@ -52,7 +52,7 @@ var userSettings = (function (window, document, undefined, $) {
 
             customScrollbarInit: function(){
                 $(document).ready(function () {
-                    $('.container-scroll-active').mCustomScrollbar({scrollInertia: 200});
+                    main.initCustomScrollBar($('.container-scroll-active'),{scrollInertia: 50});
                 });
             },
 

@@ -14,9 +14,9 @@ use yii\web\View;
                     echo  $this->render('list_category',['category'=>$item]);
                 }
             ?>
-            <li class="menu-category-list">
+            <li class="menu-category-list" id="btn-menu-news">
                 <div class="news-list-title">
-                    <a>Новости</a>
+                    <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:''?>/novosti">Новости</a>
                 </div>
             </li>
 

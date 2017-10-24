@@ -19,7 +19,7 @@
 	{
 		public $name,
 			$article, $address_text,
-			$comments_to_address,$coords_address,$id;
+			$comments_to_address,$coords_address,$requisites,$metro,$id;
 
 		public $categories, $city, $contacts,
 			$time_work, $features, $photos, $engine,$editors;
@@ -72,17 +72,17 @@
 			return [
 				[['name','coords_address', 'address_text','categories','time_work','city','id'], 'required','message'=> 'Поле обязательно для заполнения'],
 				[['name','address_text'], 'match', 'pattern'=>'/^\S.{3,}/i'],
-				[['article','comments_to_address','contacts','features','photos','engine'],'safe']
+				[['metro','requisites','article','comments_to_address','contacts','features','photos','engine'],'safe']
 			];
 		}
 
 		public function scenarios()
 		{
 			return [
-				self::$SCENARIO_ADD => ['name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
-				self::$SCENARIO_EDIT_USER => ['editors','id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
-				self::$SCENARIO_EDIT_MODERATOR => ['editors','id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
-				self::$SCENARIO_EDIT_USER_SELF_POST=> ['editors','id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
+				self::$SCENARIO_ADD => ['metro','requisites','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
+				self::$SCENARIO_EDIT_USER => ['metro','requisites','editors','id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
+				self::$SCENARIO_EDIT_MODERATOR => ['metro','requisites','editors','id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
+				self::$SCENARIO_EDIT_USER_SELF_POST=> ['metro','requisites','editors','id','name','photos','engine', 'coords_address','address_text','categories','time_work','city','article','comments_to_address','contacts','features'],
 			];
 		}
 
@@ -128,6 +128,8 @@
 					$post->count_favorites = 0;
 					$post->count_reviews = 0;
 					$post->priority = 0;
+					$post->metro = $this->metro;
+					$post->requisites = $this->requisites;
 
 					$oldPost = null;
 					$oldPostInfo = null;
@@ -213,6 +215,8 @@
 				$post->address = $this->address_text;
 				$post->additional_address = $this->comments_to_address;
 				$post->priority = 0;
+                $post->requisites = $this->requisites;
+                $post->metro = $this->metro;
 
 				if(Yii::$app->user->identity->role > 1){
 					$post->title = $this->engine['title'];
@@ -277,6 +281,12 @@
 					$this->city = $this->city[0];
 				}
 			}
+
+			if(is_array($this->metro)){
+                if (isset($this->metro[0])) {
+                    $this->metro = $this->metro[0];
+                }
+            }
 
 			if (is_array($this->time_work)) {
 				$newWorkTime = [];

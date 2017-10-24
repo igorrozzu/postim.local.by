@@ -47,7 +47,8 @@ class NewsController extends MainController
         );
 
         $h1='';
-        $breadcrumbParams = $this->getParamsForBreadcrumb($h1);
+        $title = '';
+        $breadcrumbParams = $this->getParamsForBreadcrumb($h1,$title);
 
 
         if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax', false)) {
@@ -57,6 +58,7 @@ class NewsController extends MainController
                 'dataProvider' => $dataProvider,
                 'breadcrumbParams'=>$breadcrumbParams,
                 'h1'=>$h1,
+                'title'=>$title,
                 'loadTime'=>$loadTime
             ]);
         }
@@ -125,7 +127,7 @@ class NewsController extends MainController
     }
 
 
-    private function getParamsForBreadcrumb(&$h1){
+    private function getParamsForBreadcrumb(&$h1,&$title){
         $breadcrumbParams=[];
 
         $currentUrl = Yii::$app->getRequest()->getHostInfo();
@@ -145,13 +147,16 @@ class NewsController extends MainController
         }
 
         $currentUrl=$currentUrl.'/'.'novosti';
-        $name='Новости в '.Yii::t('app/locativus','Беларусь');
+        $name='Новости '.Yii::t('app/parental_slope','Беларусь');
+        $title = 'Новости '.Yii::t('app/parental_slope','Беларусь').', последние новости - Postim.by';
         if($city = Yii::$app->request->get('city')){
             $is_region = Region::find()->select('url_name')->where(['url_name'=>$city['url_name']])->one();
             if($is_region){
-                $name ='Новости в '.Yii::t('app/locativus',$city['name']);
+                $name ='Новости '.Yii::t('app/parental_slope',$city['name']);
+                $title = 'Новости '.Yii::t('app/parental_slope',$city['name']).', последние новости области - Postim.by';
             }else{
-                $name ='Новости в '.Yii::t('app/locativus',$city['name']).' и области';
+                $name ='Новости '.Yii::t('app/parental_slope',$city['name']).' и области';
+                $title = 'Новости '.Yii::t('app/parental_slope',$city['name']).', последние новости района и области - Postim.by';
             }
         }
         $h1 = $name;

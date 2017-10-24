@@ -5,6 +5,7 @@ namespace app\models;
 use app\behaviors\notification\handlers\Reward;
 use app\models\entities\FavoritesNews;
 use app\models\entities\FavoritesPost;
+use app\models\entities\OwnerPost;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -312,5 +313,9 @@ class User extends ActiveRecord implements IdentityInterface
     public function getTimezoneInSeconds()
     {
         return $this->timezone_offset_in_hour * 3600;
+    }
+
+    public function hasOwner(){
+        return (bool) OwnerPost::find()->where(['owner_id'=>$this->id])->one();
     }
 }

@@ -201,7 +201,7 @@ var Category = (function (window, document, undefined,$) {
 
                     },
                     initCustomScrollBar:function (selector) {
-                        $(selector).mCustomScrollbar({scrollInertia: 50});
+                        main.initCustomScrollBar($(selector),{scrollInertia: 50});
                     },
                     openMenu:function () {
                         filters.refreshMainFilters();

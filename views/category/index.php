@@ -7,8 +7,53 @@ use \yii\widgets\Pjax;
 use \app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
 
-
 $totalCount = $dataProvider->totalCount;
+$categoryText = $this->context->under_category?$this->context->under_category['name']:$this->context->category['name'];
+$city_name = Yii::$app->city->getSelected_city()['name'];
+$h1_text=$categoryText.' в '.Yii::t('app/locativus',$city_name);
+$descriptionText = '';
+
+if(!$this->context->under_category){
+    $title = $h1_text.': адреса, фото, отзывы — лучшие места';
+
+    $description = $h1_text.' по отзывам посетителей. Места с адресами, фото и телефонами,
+     найдено '.$totalCount.' — удобный поиск на карте Postim.by!';
+
+    $keywords = $h1_text;
+
+    $descriptionText = $h1_text.' по отзывам посетителей. Места с адресами, фото и телефонами, найдено '.
+        $totalCount.' — удобный поиск на карте Postim.by!</br> 
+        Время работы и прочую информацию смотрите у нас на сайте.';
+
+}else{
+    $title = $categoryText.' '.Yii::t('app/parental_slope',$city_name).
+    ': адреса, фото, отзывы — лучшие '.mb_strtolower($categoryText);
+
+    $description = 'Лучшие '.mb_strtolower($categoryText).
+        ' '.Yii::t('app/parental_slope',$city_name).
+        ' по отзывам посетителей. '.$categoryText.
+        ' с адресами, фото и телефонами, найдено '.
+        $totalCount.' — удобный поиск на карте Postim.by!';
+    $keywords = mb_strtolower($categoryText).' '.Yii::t('app/parental_slope',$city_name);
+
+    $descriptionText = 'Лучшие '.mb_strtolower($categoryText).
+        ' '.Yii::t('app/parental_slope',$city_name).' по отзывам посетителей. '.
+        $categoryText
+        .' с адресами, фото и телефонами, найдено '.
+        $totalCount.' — удобный поиск на карте Postim.by!</br> Время работы 
+        и прочую информацию смотрите у нас на сайте.';
+}
+
+$this->title = $title;
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => $description
+]);
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content' => $keywords
+]);
+
 ?>
 <div class="margin-top60"></div>
 <div class="menu-info-cards-contener">
@@ -34,11 +79,6 @@ $totalCount = $dataProvider->totalCount;
 
 <div class="block-content">
     <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
-    <?php
-        $categoryText = $this->context->under_category?$this->context->under_category['name']:$this->context->category['name'];
-        $h1_text=$categoryText.' в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']);
-        $this->title = $h1_text;
-    ?>
     <h1 class="h1-v"><?=$h1_text?></h1>
 </div>
 <?php
@@ -86,9 +126,13 @@ Pjax::begin([
         </div>
     <?php else:?>
     <div class="container-message">
-        <p>К сожалению, в <?=Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name'])?> на сайте <?=ucfirst(Yii::$app->getRequest()->serverName)?> в категории <?=$categoryText?> пока нет ничего. Если вы знаете о подходящем месте, добавьте его через кнопку <a href="#">"Добавить место"</a>. За размещение новых мест на сайте мы начисляем бонусы пользователям.</p>
+        <p>К сожалению, в <?=Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name'])?> на сайте <?=ucfirst(Yii::$app->getRequest()->serverName)?> в категории <?=$categoryText?> пока нет ничего. Если вы знаете о подходящем месте, добавьте его через кнопку <a class="add-place-href">"Добавить место"</a>. За размещение новых мест на сайте мы начисляем бонусы пользователям.</p>
     </div>
     <?php endif;?>
+
+    <div class="description-text">
+        <?=$descriptionText?>
+    </div>
 
 </div>
 <?php

@@ -4,7 +4,12 @@ use \app\components\Helper;
 use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
-
+if(!$post->title){
+    $post->title = $post->data.', '.
+        mb_strtolower(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)).' в '.
+        Yii::t('app/locativus',$post->city->name).', '.
+        $post->address.': адрес, телефоны и карта проезда';
+}
 ?>
 <div class="margin-top60"></div>
 <div id="map_block" class="block-map preload-map">
@@ -55,6 +60,19 @@ echo "<script>$js</script>";
                         <?php if($post['additional_address']):?>
                             <div class="dop-info"><?=$post['additional_address']?></div>
                         <?php endif;?>
+                    </div>
+                </div>
+                <div class="right-block-f">
+                    <div class="btn-info-card"></div>
+                </div>
+            </div>
+        <?php endif;?>
+        <?php if($post->metro):?>
+            <div class="info-row">
+                <div class="left-block-f1">
+                    <div class="metro-card">Метро</div>
+                    <div class="block-inside">
+                        <p class="info-card-text"><?=$post->metro?></p>
                     </div>
                 </div>
                 <div class="right-block-f">
@@ -150,6 +168,19 @@ echo "<script>$js</script>";
             </div>
         </div>
             <?php Helper::getFeature($post->getFeatures())?>
+        <?php if($post->requisites):?>
+            <div class="info-row">
+                <div class="left-block-f">
+                    <div class="title-info-card">Реквизиты</div>
+                    <div class="block-inside">
+                        <p class="info-card-text"><?=$post->requisites?></p>
+                    </div>
+                </div>
+                <div class="right-block-f">
+                    <div class="btn-info-card"></div>
+                </div>
+            </div>
+        <?php endif;?>
         <div class="info-row">
             <div class="left-block-f">
                 <div class="title-info-card">Редакторы</div>

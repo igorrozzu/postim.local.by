@@ -72,6 +72,9 @@ body{
 .menu-content{
     height:calc(100% - 60px);
 }
+.menu-content.h_scroll{
+    overflow: auto;
+}
 .left-menu.under-filter{
     z-index: 102;
 }
@@ -82,13 +85,13 @@ body{
 
 .bottom-btn{
     position: absolute;
-    top:calc(100% - 50px);
+    top:calc(100% - 60px);
     background-color: #5f8dd8;
     color: white;
     font-size: 14px;
     display: flex;
     width: 100%;
-    height: 50px;
+    height: 60px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -667,7 +670,9 @@ body:not(.open-search) .search{
 .container-add-place .find-me{
     margin-top: 20px;
 }
-
+.container-add-place .input-field-setting{
+    max-width: 100%;
+}
 .place-icon-dit-start{
     opacity: 0.7;
 }
@@ -1187,6 +1192,12 @@ a.btn-show-more{
     cursor: pointer;
     margin-bottom: 20px;
 }
+.menu-inline li a{
+    color: #ffffff;
+}
+.menu-inline li a:hover{
+    text-decoration: none;
+}
 .menu-inline li:hover{
     text-decoration: none;
 }
@@ -1241,6 +1252,29 @@ a.btn-show-more{
 .social-btn-viber:after{
     content: url("../img/viber-icon30x30.png");
 }
+
+
+.block-footer .social-btn-vk:after
+{
+    content: url("../img/vk-icon.png");
+}
+.block-footer .social-btn-fb:after{
+    content: url("../img/fb-icon.png");
+}
+.block-footer .social-btn-tw:after{
+    content: url("../img/tw-icon.png");
+}
+.block-footer .social-btn-ok:after{
+    content: url("../img/ok-icon.png");
+}
+.block-footer .social-btn-inst:after{
+    content: url("../img/inst-icon.png");
+}
+.block-footer .social-btn-viber:after{
+    content: url("../img/viber-icon.png");
+}
+
+
 /*блок футера end*/
 
 /*категория карточек*/
@@ -1733,6 +1767,17 @@ a.btn-show-more{
     display: flex;
     margin-right: 10px;
     align-items: center;
+}
+.metro-card{
+    color: #838da1;
+    font-size: 16px;
+    display: flex;
+    margin-right: 10px;
+    align-items: center;
+}
+.metro-card:before{
+    margin-right: 15px;
+    content: url("../img/metro-icon.png");
 }
 .title-info-card{
     color: #838da1;
@@ -5438,6 +5483,7 @@ form .field-input:first-child{
 .container-message p a{
     color: #6b778f;
     text-decoration: underline;
+    cursor: pointer;
 }
 .container-message p a:hover{
     color: #4b98df;
@@ -5882,4 +5928,58 @@ form .field-input:first-child{
 }
 .under-line{
     height: 18px;
+}
+.description-text{
+    font-family: PT_Sans;
+    color: #788399;
+    font-size: 16px;
+    line-height: 21px;
+    margin-top: -4px;
+}
+#main-view-container{
+    min-height: 520px;
+}
+
+.not-found-block{
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+}
+.h1-nf{
+    font-family: PT_Sans;
+    font-size: 72px;
+    color: #788399;
+    margin-bottom: 15px;
+}
+.nf-desc{
+    font-family: PT_Sans;
+    font-size: 24px;
+    color: #788399;
+    margin-bottom: 20px;
+}
+.nf-rec{
+    color: #788399;
+    font-size: 16px;
+    font-family: PT_Sans;
+}
+.nf-rec a{
+    color: #788399;
+    text-decoration: underline;
+}
+.nf-rec a:hover{
+    text-decoration: none;
+}
+
+
+.container-scroll-fields.h_scroll{
+    overflow: auto;
+}
+.notif-content.h_scroll{
+    overflow: auto;
+}
+.container-scroll-active.h_scroll{
+    overflow: auto;
+}
+.photo-header.h_scroll{
+    overflow: auto;
 }

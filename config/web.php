@@ -80,7 +80,9 @@ $config = [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'fileMap' => [
                         'app'       => 'app.php',
-                        'app/locativus' =>'locativus.php'
+                        'app/locativus' =>'locativus.php',
+                        'app/parental_slope' =>'parental_slope.php',
+                        'app/singular' =>'singular.php',
                     ],
                 ],
             ],

@@ -42,7 +42,12 @@ var Main = (function (window, document, undefined,$) {
 
 								return false;
 							}
-						})
+						});
+
+                    $(document).off('click','.add-place-href')
+                        .on('click','.add-place-href',function () {
+                            $('.btn_add_place').trigger('click');
+                        })
                 });
 
                 $(document).on('pjax:end', function(data, status, xhr, options) {
@@ -77,6 +82,9 @@ var Main = (function (window, document, undefined,$) {
                 $(document).off("submit", "#pjax-container-settings form");
                 $(document).pjax("#pjax-container-settings a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-settings"});
                 $(document).on("submit", "#pjax-container-settings form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-settings"});});
+
+                $(document).off("submit", "#pjax-container-feedback form");
+                $(document).on("submit", "#pjax-container-feedback form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-feedback"});});
 
                 $(document).off("click", "#post-feeds .menu-btns-card a");
                 $(document).pjax("#post-feeds .menu-btns-card a", {"push":true,"replace":false,"timeout":60000,"scrollTo":false,"container":"#post-feeds"});
@@ -207,6 +215,20 @@ var Main = (function (window, document, undefined,$) {
                 };
 
                 return userGeolocation;
+
+            },
+            
+            isMobile:function () {
+                var md=new MobileDetect(window.navigator.userAgent); //get device type
+                return md.mobile();
+            },
+            initCustomScrollBar:function ($elem,settings) {
+
+                if(!main.isMobile()){
+                    $elem.mCustomScrollbar(settings);
+                }else {
+                    $elem.removeClass('h_scroll').addClass('h_scroll');
+                }
 
             }
         };

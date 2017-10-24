@@ -5,6 +5,9 @@ namespace app\controllers;
 use app\components\cardsNewsWidget\CardsNewsWidget;
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\cardsReviewsWidget\CardsReviewsWidget;
+use app\components\customUrlManager\CityAndCategoryUrlRule;
+use app\components\customUrlManager\NewsUrlRule;
+use app\components\customUrlManager\ReviewsUrlRule;
 use app\components\MailSender;
 use app\components\Pagination;
 use app\models\Feedback;
@@ -31,6 +34,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use app\components\MainController;
 use yii\web\NotFoundHttpException;
+use yii\web\Request;
 use yii\web\Response;
 
 class SiteController extends MainController
@@ -181,11 +185,46 @@ class SiteController extends MainController
     public function actionSetCity(){
 
         try{
+
+
+            $request = Yii::$app->request;
             $dataCity = Yii::$app->request->get('dataCity',['{"name": "Беларусь","url_name": "\'\'"}']);
             $dataCity = Json::decode($dataCity);
 
             Yii::$app->city->setCity($dataCity);
-            $this->redirect(Yii::$app->request->hostInfo.'/'.Yii::$app->city->Selected_city['url_name']);
+
+            $preUrl = $request->getReferrer();
+            $preRequest = new Request();
+            $preRequest->setUrl($preUrl);
+            $preRequest->setPathInfo(preg_replace('/https:?\/\/.+\//','',$preUrl));
+            $newUrl = Yii::$app->request->hostInfo.'/'.Yii::$app->city->Selected_city['url_name'];
+
+            $categoryUrlRuler = new CityAndCategoryUrlRule();
+            $newsUrlRule = new NewsUrlRule();
+            $reviewsUrlRule = new ReviewsUrlRule();
+
+            $isCategory = $categoryUrlRuler->parseRequest(Yii::$app->getUrlManager(),$preRequest);
+            if($isCategory && $isCategory[0] != '/site/index'){
+
+                $pathInfo = $preRequest->getPathInfo();
+                $queryParams= explode('/',$pathInfo);
+                $nameCategory = $queryParams[count($queryParams)-1];
+                $newUrl = ($dataCity['url_name']?'/'.$dataCity['url_name']:'').'/'.$nameCategory;
+                return $this->redirect($newUrl);
+            }
+
+            if($newsUrlRule->parseRequest(Yii::$app->getUrlManager(),$preRequest)){
+                $newUrl = ($dataCity['url_name']?'/'.$dataCity['url_name']:'').'/'.'novosti';
+                return $this->redirect($newUrl);
+            }
+
+            if($reviewsUrlRule->parseRequest(Yii::$app->getUrlManager(),$preRequest)){
+                $newUrl = ($dataCity['url_name']?'/'.$dataCity['url_name']:'').'/'.'otzyvy';
+                return $this->redirect($newUrl);
+            }
+
+
+            return $this->redirect($newUrl);
         }catch (\yii\base\InvalidParamException $exception){
             $this->goHome();
         }
@@ -533,6 +572,10 @@ class SiteController extends MainController
         }
 
         return $this->render('feedBack',['feedBack'=>$feedBack,'toastMessage'=>$toastMessage]);
+    }
+
+    public function actionError(){
+        return $this->render('404');
     }
 
 }

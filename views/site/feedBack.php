@@ -2,6 +2,8 @@
 use \yii\widgets\Pjax;
 use \yii\widgets\ActiveForm;
 
+$this->title = 'Обратная связь на Postim.by';
+
 Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => false,
@@ -70,6 +72,7 @@ JS;
 $js2 = <<<js2
     $(document).ready(function() {
       $('.container-feedback textarea').autosize();
+      menu_control.fireMethodClose();
     });
 js2;
 echo "<script>$js2</script>";

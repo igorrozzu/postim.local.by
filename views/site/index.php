@@ -4,6 +4,22 @@ use \app\components\cardsPlaceWidget\CardsPlaceWidget;
 use \app\components\cardsNewsWidget\CardsNewsWidget;
 use \app\components\ListCityWidget\ListCityWidget;
 
+
+$this->title = "Карта ".Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])." — лучшие места по отзывам посетителей - Postim.by";
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']).
+        ', лучшие места по отзывам посетителей. Найдено '.$spotlight->totalCount.' — удобный поиск на карте Postim.by!'
+]);
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content'=> 'карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
+]);
+
+$descriptionText = 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
+    .', лучшие места по отзывам посетителей. Найдено '.$spotlight->totalCount
+    .' — удобный поиск на карте Postim.by!</br> Время работы и прочую информацию смотрите у нас на сайте.';
+
 ?>
 
 <div class="margin-top60"></div>
@@ -63,6 +79,12 @@ use \app\components\ListCityWidget\ListCityWidget;
         'is_menu' => false
     ]
 ]); ?>
+
+<div class="block-content">
+    <div class="description-text">
+        <?=$descriptionText?>
+    </div>
+</div>
 
 <?php
 

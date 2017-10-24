@@ -1,3 +1,6 @@
+<?php
+$this->title = 'Добавить место на Postim.by';
+?>
 <div class="margin-top60"></div>
 <div class="block-content">
     <form action="/post/save-post" id="post-form" method="post">
@@ -44,6 +47,21 @@
                 <input name="comments_to_address" class="input-field-setting" placeholder="Расстояние до метро, этаж и т.д."
                        value="">
                 <input id="coords_address" style="display: none" name="coords_address" type="text">
+            </div>
+            <div class="block-field-setting metro" style="margin-bottom: -20px;border-bottom: 0px;display: none">
+                <label class="label-field-setting">Метро</label>
+                <div class="selectorFields" data-is-many="false" data-id="metro" data-max="1"
+                     data-info='<?= \yii\helpers\Json::encode($params['metro']) ?>'>
+                    <div class="block-inputs"></div>
+                    <div class="between-selected-field btn-open-field" data-open=false>
+                        <input class="search-selected-field" type="button" data-value="Выберите метро"
+                               value="Выберите метро" placeholder="Выберите метро">
+                        <div class="open-select-field2"></div>
+                    </div>
+                    <div class="container-scroll-fields">
+                        <div class="container-options"></div>
+                    </div>
+                </div>
             </div>
             <div id="map_block" class="block-map">
                 <div class="btns-map">
@@ -170,6 +188,12 @@
 
         </div>
 
+        <div class="container-add-place">
+            <div class="block-field-setting">
+                <label class="label-field-setting">Реквизиты</label>
+                <input name="requisites" class="input-field-setting validator" data-error-parents="block-field-setting"  placeholder="Введите реквизиты: ООО, УНП и т.д." value="">
+            </div>
+        </div>
         <!--TODO описание места-->
 
 

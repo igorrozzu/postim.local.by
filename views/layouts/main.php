@@ -70,16 +70,15 @@ Pjax::end();
 
 ?>
 
-<?=SocialWidget::widget();?>
 <div class="block-footer">
     <div class="block-footer-content">
         <div class="block-footer-btn">
-            <ul class="menu-inline">
+            <ul class="menu-inline main-pjax">
                 <li><a>О сайте</a></li>
                 <li><a>Правила</a></li>
                 <li><a>Соглашение</a></li>
                 <li><a>Реклама</a></li>
-                <li><a>Обратная связь</a></li>
+                <li><a href="/feedback">Обратная связь</a></li>
             </ul>
             <div class="block-social-icons">
                 <div class="block-social">

@@ -48,7 +48,7 @@
                         <div class="btn-selected-option"><span class="option-text"><?=$params['post']->city->name?></span> <span class="close-selected-option"></span> <input name="city[]" value="<?=$params['post']->city->id?>" style="display: none"> </div>
                     </div>
 					<div class="between-selected-field btn-open-field" data-open=false>
-						<input class="search-selected-field" type="button" data-value="<?=$params['post']->city->name?>"
+						<input style="color: rgb(68, 68, 68);" class="search-selected-field" type="button" data-value="<?=$params['post']->city->name?>"
 							   value="<?=$params['post']->city->name?>" placeholder="Выберите город">
 						<div class="open-select-field2"></div>
 					</div>
@@ -57,6 +57,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="block-field-setting" style="border-bottom: 0px">
 				<input style="margin-top: 0px" name="address_text"  class="input-field-setting validator" placeholder="Введите адрес" data-error-parents="block-field-setting" data-message="Введите адрес" data-regex="^\S.{3,}" value="<?=$params['post']->address?>">
 				<label class="label-field-setting">Комментарий к адресу</label>
@@ -64,6 +65,27 @@
 					   value="<?=$params['post']->additional_address?>">
 				<input id="coords_address" style="display: none" name="coords_address" type="text" value="<?=$params['post']->lat?>,<?=$params['post']->lon?>">
 			</div>
+
+            <div class="block-field-setting metro" style="margin-bottom: -20px;border-bottom: 0px;<?=$params['post']->city->name=='Минск'?'':'display:none'?>">
+                <label class="label-field-setting">Метро</label>
+                <div class="selectorFields" data-is-many="false" data-id="metro" data-max="1"
+                     data-info='<?= \yii\helpers\Json::encode($params['metro']) ?>'>
+                    <div class="block-inputs" style="display: none">
+                        <?php if($params['post']->metro):?>
+                            <div class="btn-selected-option"><span class="option-text"><?=$params['post']->metro?></span> <span class="close-selected-option"></span> <input name="metro[]" value="<?=$params['post']->metro?>" style="display: none"> </div>
+                        <?php endif;?>
+                    </div>
+                    <div class="between-selected-field btn-open-field" data-open=false>
+                        <input class="search-selected-field" type="button" data-value="Выберите метро"
+                               value="<?=$params['post']->metro?$params['post']->metro:'Выберите метро'?>" placeholder="Выберите метро" <?=$params['post']->metro?'style="color: rgb(68, 68, 68);"':$params['post']->metro?>>
+                        <div class="open-select-field2"></div>
+                    </div>
+                    <div class="container-scroll-fields">
+                        <div class="container-options"></div>
+                    </div>
+                </div>
+            </div>
+
 			<div id="map_block" class="block-map">
 				<div class="btns-map">
 					<div class="find-me" title="Найти меня"></div>
@@ -112,6 +134,13 @@
             <?=$this->render('__edit_features',['features' => $params['features']])?>
 		</div>
 
+        <div class="container-add-place">
+            <div class="block-field-setting">
+                <label class="label-field-setting">Реквизиты</label>
+                <input name="requisites" class="input-field-setting validator" data-error-parents="block-field-setting"  placeholder="Введите реквизиты: ООО, УНП и т.д." value="<?=$params['post']->requisites?>">
+            </div>
+        </div>
+
 
 		<div class="container-add-place">
 			<div class="container-description">
@@ -156,6 +185,29 @@
 
 			<div class="container-add-place">
 				<?php if(Yii::$app->user->identity->role > 1):?>
+                <?php
+
+                    if(!$params['post']->title){
+                        $params['post']->title = $params['post']->data.', '.
+                            mb_strtolower(Yii::t('app/singular',$params['post']->onlyOnceCategories[0]->name)).' в '.
+                            Yii::t('app/locativus',$params['post']->city->name).', '.
+                            $params['post']->address.': адрес, телефоны и карта проезда';
+                    }
+
+                    if(!$params['post']->description){
+                        $params['post']->description = Yii::t('app/singular',$params['post']->onlyOnceCategories[0]->name).' '.
+                            $params['post']->data.' в '.
+                            Yii::t('app/locativus',$params['post']->city->name).', '.
+                            $params['post']->address.'. Адрес, телефоны и время работы — удобный поиск на карте Postim.by!';
+                    }
+
+                    if(!$params['post']->key_word){
+                        $params['post']->key_word = mb_strtolower(Yii::t('app/singular',$params['post']->onlyOnceCategories[0]->name)).' '.
+                            $params['post']->data.' '.
+                            $params['post']->city->name;
+                    }
+
+                ?>
 				<div class="block-field-setting">
 					<label class="label-field-setting">Заголовок для поисковиков</label>
 					<input name="engine[title]" class="input-field-setting" placeholder="Введите текст" value="<?=$params['post']['title']?$params['post']['title']:''?>">

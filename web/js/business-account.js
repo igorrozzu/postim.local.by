@@ -49,7 +49,7 @@ var BusinessAccount = (function (window, document, undefined,$) {
             },
 
             statisticTableScrollInit: function () {
-                $('.horizontal-scroll12').mCustomScrollbar({axis: "x",scrollInertia: 50});
+                main.initCustomScrollBar($('.horizontal-scroll12'),{axis: "x",scrollInertia: 50})
             },
 
             confirmOrderHandler: function () {

@@ -2,6 +2,7 @@
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+$this->title = 'Избранное на Postim.by';
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">

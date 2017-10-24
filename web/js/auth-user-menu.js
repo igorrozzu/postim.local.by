@@ -148,7 +148,7 @@ var authUserMenu = (function (window, document, undefined,$) {
             },
             customScrollbarInit: function(){
                 $(document).ready(function () {
-                    $('.notif-content,.container-body-right-menu').mCustomScrollbar({scrollInertia: 300});
+                    main.initCustomScrollBar($('.notif-content,.container-body-right-menu'),{scrollInertia: 50});
                 });
             },
 

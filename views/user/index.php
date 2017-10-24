@@ -1,7 +1,7 @@
 <?php
 use app\components\user\ExperienceCalc;
 use yii\widgets\Pjax;
-
+$this->title = $user->name . ' ' . $user->surname.' на Postim.by';
 $experience = ExperienceCalc::getExperienceInfo($user->userInfo->level, $user->userInfo->exp_points);
 ?>
 
@@ -90,7 +90,7 @@ echo $feedReviews;
         <?php if (isset($photoId)) :?>
         post.photos.initSliderByPhotoId('<?=$photoId?>', 'profile');
         <?php endif;?>
-        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
+        main.initCustomScrollBar($('.photo-header'),{axis: "x",scrollInertia: 50, scrollbarPosition: "outside"})
         $(".photo-wrap").swipe({
             swipeRight: function(event, direction) {
                 post.photos.prevPhoto();

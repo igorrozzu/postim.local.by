@@ -54,7 +54,7 @@ var Menu = (function (window, document, undefined,$) {
             leftMenuInit:function () {
                 $(document).ready(function () {
 
-                    $('.menu-content').mCustomScrollbar({scrollInertia: 50});
+                    main.initCustomScrollBar($('.menu-content'),{scrollInertia: 50});
                     $('.left-menu .menu-content').mCustomScrollbar('destroy');
 
                     var $mainMenu=$('.main-menu');

@@ -4,6 +4,22 @@ use \app\components\Helper;
 use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
+
+$category_name = $post->onlyOnceCategories[0]->name;
+$this->title = $post->data.' - '.mb_strtolower(Yii::t('app/singular',$category_name))
+    .' в '.Yii::t('app/locativus',$post->city->name).
+    ', '.$post['address'].': фотографии';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Фотогалерея, '.mb_strtolower(Yii::t('app/singular',$category_name)).
+        ' '.$post->data.' в '.Yii::t('app/locativus',$post->city->name).
+        ', '.$post['address'].'. Фотографии посетителей на Postim.by.'
+]);
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content'=> $post->data.' фотографии'
+]);
 ?>
 <div class="margin-top60"></div>
 <div id="map_block" class="block-map preload-map">
@@ -36,7 +52,7 @@ Pjax::begin([
 ?>
 <div class="block-content">
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
-    <h1 class="h1-v"><?=$post->data?></h1>
+    <h1 class="h1-v"><?=$post->data.' - фотографии'?></h1>
     <div class="block-info-reviewsAndfavorites" data-item-id="<?=$post->id?>" data-type="post">
         <div class="rating-b bg-r<?=$post['rating']?>" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
 			<?=$post['rating']?>
@@ -125,7 +141,7 @@ Pjax::begin([
         <?php if (isset($photoId)) :?>
         post.photos.initSliderByPhotoId('<?=$photoId?>');
         <?php endif;?>
-        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
+        main.initCustomScrollBar($('.photo-header'),{axis: "x",scrollInertia: 50, scrollbarPosition: "outside"})
         $(".photo-wrap").swipe({
             swipeRight: function(event, direction) {
                 post.photos.prevPhoto();

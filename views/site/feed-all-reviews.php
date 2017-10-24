@@ -5,7 +5,19 @@ use yii\helpers\Url;
 use yii\widgets\Pjax;
 use \app\components\breadCrumb\BreadCrumb;
 
-$this->title = $h1;
+$this->title = 'Отзывы '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']).', сайт отзывов посетителей о местах - Postim.by';
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Отзывы и оценки посетителей различных мест в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).'. Оставь свое мнение на Postim.by.'
+]);
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content'=> 'Отзывы '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
+]);
+
+$descriptionText = 'Отзывы и оценки посетителей различных мест в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).
+    '. Оставь свое мнение на Postim.by. Рейтинг мест по популярности формируется по вашим отзывам.';
+
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
@@ -74,3 +86,8 @@ js;
 
 Pjax::end();
 ?>
+<div class="block-content">
+    <div class="description-text">
+        <?=$descriptionText?>
+    </div>
+</div>

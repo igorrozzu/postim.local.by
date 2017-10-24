@@ -9,6 +9,7 @@ use \yii\widgets\Pjax;
 
 $user = Yii::$app->user->identity;
 $userInfo = $user->userInfo;
+$this->title = 'Персональные данные на Postim.by';
 ?>
 <?php
 Pjax::begin([

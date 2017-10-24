@@ -149,7 +149,7 @@
     top: calc(100% - 60px);
 }
 .selected-city{
-    font-size: 22px;
+    font-size: 18px;
 }
 .open-search .search{
     display: inherit;
@@ -180,6 +180,9 @@
     margin-bottom: 20px;
 }
 .block-photos-container .block-photos .photo{
+    margin-top: 0px;
+}
+.photo-not-found:first-child {
     margin-top: 0px;
 }
 

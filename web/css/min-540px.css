@@ -286,9 +286,13 @@
     width: 280px;
     margin-right: 0px;
 }
+.nf-desc{
+    font-size: 18px;
+}
 
 /*loader start*/
 #loader-box{
     margin-top: calc((100% + 150px)/2);
 }
 /*loader finish*/
+

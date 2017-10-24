@@ -4,6 +4,23 @@ use \app\components\Helper;
 use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
+
+$category_name = $post->onlyOnceCategories[0]->name;
+$this->title = $post->data.' - '.mb_strtolower(Yii::t('app/singular',$category_name))
+    .' в '.Yii::t('app/locativus',$post->city->name).
+    ', '.$post['address'].': отзывы посетителей';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Отзывы и оценки посетителей на '.mb_strtolower(Yii::t('app/singular',$category_name)).
+        ' '.$post->data.' в '.Yii::t('app/locativus',$post->city->name).
+        ', '.$post['address'].'. Оставь свое мнение на Postim.by.'
+]);
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content'=> $post->data.' отзывы'
+]);
+
 ?>
 <div class="margin-top60"></div>
 <div id="map_block" class="block-map preload-map">
@@ -36,7 +53,7 @@ Pjax::begin([
 ?>
 <div class="block-content">
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
-    <h1 class="h1-v"><?=$post->data?></h1>
+    <h1 class="h1-v"><?=$post->data.' - отзывы'?></h1>
     <div class="block-info-reviewsAndfavorites" data-item-id="<?=$post->id?>" data-type="post">
         <div class="rating-b bg-r<?=$post['rating']?>" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
 			<?=$post['rating']?>
@@ -77,7 +94,7 @@ Pjax::begin([
             <div class="container-write-reviews"></div>
             <div class="large-wide-button open-container"><p>Написать новый отзыв</p></div>
         </div>
-        <?php if($reviewsDataProvider->totalCount):?>
+        <?php if($reviewsDataProvider->totalCount || Yii::$app->request->get('type',false)):?>
         <div class="block-flex-white inside" style="margin-top: 30px">
             <div class="block-content">
                 <div class="menu-btns-card feeds-btn-bar">
@@ -110,6 +127,7 @@ Pjax::begin([
                 ]
             ]);?>
       <?php endif;?>
+        <div class="margin-top60"></div>
     </div>
 </div>
 <div style="margin-top: 30px"></div>

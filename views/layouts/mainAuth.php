@@ -120,7 +120,7 @@ $countNotif = NotificationUser::getCountNotifications();
                 <span><img src="/img/icon-certificates.png"></span>Мои сертификаты
             </a>
         </div>-->
-
+        <?php if(Yii::$app->user->identity->hasOwner()):?>
         <div class="container-item-menu active closed">
             <a class="close-right-menu-list section" data-id-open="business"><span><img src="/img/icon-business.png"></span>Бизнес акаунт</a>
             <div class="menu-list open-list" id="business">
@@ -128,6 +128,8 @@ $countNotif = NotificationUser::getCountNotifications();
                 <a><span></span>Заказы сертификатов</a>
             </div>
         </div>
+        <?php endif;?>
+
         <div class="container-item-menu closed">
             <a class="section">
                 <span><img src="/img/icon-big-purse.png"></span>Пополнить счет
@@ -174,17 +176,16 @@ Pjax::end();
 
 ?>
 
-<?=SocialWidget::widget();?>
 
 <div class="block-footer">
     <div class="block-footer-content">
         <div class="block-footer-btn">
-            <ul class="menu-inline">
+            <ul class="menu-inline main-pjax">
                 <li><a>О сайте</a></li>
                 <li><a>Правила</a></li>
                 <li><a>Соглашение</a></li>
                 <li><a>Реклама</a></li>
-                <li><a>Обратная связь</a></li>
+                <li><a href="/feedback">Обратная связь</a></li>
             </ul>
             <div class="block-social-icons">
                 <div class="block-social">

@@ -36,6 +36,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/uploads.js',
+        'js/libs/Mobile-detect.js',
         'js/main.js',
         'js/menu.js',
         'js/list-city.js',
