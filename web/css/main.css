@@ -4396,7 +4396,9 @@ input.search-selected-field{
 .photo-popup-content{
     width: calc(100% - 150px);
 }
-
+.photo-popup-content .photo-info {
+    height: 60px;
+}
 .photo-wrap{
     height: calc(100% - 120px);
     display:flex;
