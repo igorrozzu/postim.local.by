@@ -76,14 +76,58 @@ Pjax::begin([
 </div>
 <div class="clear-fix"></div>
 <div class="mg-btm-30"></div>
-<?php
-	$js = <<<js
-        $(document).ready(function() {
-          menu.openPageInLeftMenu($('#btn-all-reviews'));
-        });
-js;
-	echo "<script>$js</script>";
 
+<div class="container-blackout-photo-popup"></div>
+<div class="photo-popup">
+    <div class="close-photo-popup"></div>
+    <div class="photo-left-arrow"><div></div></div>
+    <div class="photo-popup-content">
+        <div class="photo-info">
+            <div class="photo-header" >
+                <a href="#">12345</a>
+            </div>
+        </div>
+        <div class="photo-wrap">
+            <img class="photo-popup-item">
+        </div>
+    </div>
+    <div class="photo-right-arrow"><div></div></div>
+    <ul class="wrap-photo-info">
+        <li class="complain-gallery-text">Пожаловаться</li>
+        <li class="photo-source" style="display: none;">
+            <a href="#" target="_blank"><span>Источник</span></a>
+        </li>
+    </ul>
+    <div class="gallery-counter">
+        <span id="start-photo-counter">1</span> из
+        <span id="end-photo-counter"></span>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        post.photos.isChangeTitleInSlider(true);
+        <?php if (isset($initPhotoSliderParams['photoId'])) :?>
+            post.photos.initPhotoSlider({
+                photoId: '<?=$initPhotoSliderParams['photoId']?>',
+                reviewId: <?=$initPhotoSliderParams['reviewId']?>,
+                type: 'review'
+            });
+        <?php endif;?>
+        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
+        $(".photo-wrap").swipe({
+            swipeRight: function(event, direction) {
+                post.photos.prevPhoto();
+            },
+            swipeLeft: function(event, direction) {
+                post.photos.nextPhoto();
+            }
+        });
+        menu.openPageInLeftMenu($('#btn-all-reviews'));
+    });
+</script>
+
+<?php
 Pjax::end();
 ?>
 <div class="block-content">

@@ -315,8 +315,14 @@ Pjax::begin([
         post.info.init();
         post.photos.setLoadTime(<?=time()?>);
         post.photos.setPostId(<?=$post->id?>);
-        <?php if (isset($photoId)) :?>
-        post.photos.initSliderByPhotoId('<?=$photoId?>');
+        post.photos.setAllPhotoCount(<?=$photoCount?>);
+        post.photos.resetContainer();
+        <?php if (isset($initPhotoSliderParams['photoId'])) :?>
+            post.photos.initPhotoSlider({
+                photoId: '<?=$initPhotoSliderParams['photoId']?>',
+                reviewId: <?=$initPhotoSliderParams['reviewId'] ?? 'null'?>,
+                type: '<?=$initPhotoSliderParams['reviewId'] ? 'review' : 'all'?>'
+            });
         <?php endif;?>
         main.initCustomScrollBar($('.photo-header'),{axis: "x",scrollInertia: 50, scrollbarPosition: "outside"})
         $(".photo-wrap").swipe({
@@ -331,6 +337,10 @@ Pjax::begin([
         search.clear();
     })
 </script>
+
+<input style="display: none" class="photo-add-review" name="photo-add-review" type="file" multiple
+accept="image/*,image/jpeg,image/gif,image/png">
+
 <div class="container-blackout-photo-popup"></div>
 <div class="photo-popup">
     <div class="close-photo-popup"></div>
@@ -352,12 +362,11 @@ Pjax::begin([
             <a href="#" target="_blank"><span>Источник</span></a>
         </li>
     </ul>
-    <div class="gallery-counter"><span>1</span> из <?=$photoCount?></div>
+    <div class="gallery-counter">
+        <span id="start-photo-counter">1</span> из
+        <span id="end-photo-counter"><?=$photoCount?></span>
+    </div>
 </div>
-
-<input style="display: none" class="photo-add-review" name="photo-add-review" type="file" multiple
-accept="image/*,image/jpeg,image/gif,image/png">
-
 <?php
 Pjax::end();
 ?>

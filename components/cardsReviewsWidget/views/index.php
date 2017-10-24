@@ -7,7 +7,7 @@ $reviews = $dataProvider->getModels();
 ?>
 
 <?php foreach ($reviews as $review):?>
-    <div class="block-reviews <?=!($settings['without_header']??false)?'':'without_header'?>" data-reviews_id="<?=$review->id?>">
+    <div class="block-reviews <?=!($settings['without_header']??false)?'':'without_header'?>" data-reviews_id="<?=$review->id?>" data-type="review">
         <?php if(!($settings['without_header']??false)):?>
             <div class="block-review-post" style="margin-top: 20px; border-bottom: solid 1px #D3E4FF; padding-bottom: 23px;">
                 <div class="rating-r bg-r<?=$review->post->rating?>"><?=$review->post->rating?></div>
@@ -45,7 +45,7 @@ $reviews = $dataProvider->getModels();
 			$photo = $review->getLastPhoto();
         ?>
         <?php if($photo && $review->count_photos):?>
-            <div class="review-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')">
+            <div class="review-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="0">
                 <div class="block-total-photo-review"><?=$review->count_photos?></div>
             </div>
         <?php endif;?>

@@ -32,7 +32,7 @@ use yii\web\UploadedFile;
 class UserController extends MainController
 {
 
-    public function actionIndex(int $id, int $photo_id = null)
+    public function actionIndex(int $id, int $photo_id = null, int $review_id = null)
     {
         $user = User::find()
             ->with(['userInfo', 'city', 'socialBindings'])
@@ -66,7 +66,10 @@ class UserController extends MainController
             'feedReviews' => $feedReviews,
             'profilePhotoCount' => Gallery::getProfilePhotoCount($user->id),
             'profilePreviewPhoto' => Gallery::getProfilePreviewPhoto($user->id, 4),
-            'photoId' => $photo_id,
+            'initPhotoSliderParams' => [
+                'photoId' => $photo_id,
+                'reviewId' => $review_id,
+            ]
         ]);
     }
 

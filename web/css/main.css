@@ -4390,6 +4390,9 @@ input.search-selected-field{
 .photo-header a:hover{
     text-decoration: underline;
 }
+.photo-header .mCSB_scrollTools {
+    z-index: 101;
+}
 .photo-popup-content{
     width: calc(100% - 150px);
 }
@@ -4399,7 +4402,6 @@ input.search-selected-field{
     display:flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
     z-index: 100;
     position: relative;
 }
@@ -5063,7 +5065,7 @@ input.search-selected-field{
     margin: 12px auto;
 }
 .photo-info .mCustomScrollBox + .mCSB_scrollTools.mCSB_scrollTools_horizontal{
-    bottom: -10px;
+    bottom: -5px;
 }
 .block-sort-menu{
     margin-top: 20px;

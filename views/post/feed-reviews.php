@@ -1,5 +1,6 @@
 <?php
 use app\components\breadCrumb\BreadCrumb;
+use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use \app\components\Helper;
 use yii\helpers\Url;
 use yii\web\View;
@@ -133,10 +134,55 @@ Pjax::begin([
 <div style="margin-top: 30px"></div>
 <input style="display: none" class="photo-add-review" name="photo-add-review" type="file" multiple
        accept="image/*,image/jpeg,image/gif,image/png">
+
+<div class="container-blackout-photo-popup"></div>
+<div class="photo-popup">
+    <div class="close-photo-popup"></div>
+    <div class="photo-left-arrow"><div></div></div>
+    <div class="photo-popup-content">
+        <div class="photo-info">
+            <div class="photo-header" >
+                <a href="<?=$post['url_name']?>-p<?=$post['id']?>"><?=$post->data?></a>
+            </div>
+        </div>
+        <div class="photo-wrap">
+            <img class="photo-popup-item">
+        </div>
+    </div>
+    <div class="photo-right-arrow"><div></div></div>
+    <ul class="wrap-photo-info">
+        <li class="complain-gallery-text">Пожаловаться</li>
+        <li class="photo-source" style="display: none;">
+            <a href="#" target="_blank"><span>Источник</span></a>
+        </li>
+    </ul>
+    <div class="gallery-counter">
+        <span id="start-photo-counter">1</span> из
+        <span id="end-photo-counter"></span>
+    </div>
+</div>
+
 <script>
-	$(document).ready(function() {
-		menu_control.fireMethodClose();
-	})
+    $(document).ready(function() {
+        post.photos.resetContainer();
+        <?php if (isset($initPhotoSliderParams['photoId'])) :?>
+            post.photos.initPhotoSlider({
+                photoId: '<?=$initPhotoSliderParams['photoId']?>',
+                reviewId: <?=$initPhotoSliderParams['reviewId']?>,
+                type: 'review'
+            });
+        <?php endif;?>
+        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
+        $(".photo-wrap").swipe({
+            swipeRight: function(event, direction) {
+                post.photos.prevPhoto();
+            },
+            swipeLeft: function(event, direction) {
+                post.photos.nextPhoto();
+            }
+        });
+        menu_control.fireMethodClose();
+    })
 </script>
 <?php
 Pjax::end();

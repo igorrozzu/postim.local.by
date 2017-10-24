@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use app\components\Helper;
 use app\components\MainController;
 use app\components\Pagination;
@@ -34,18 +35,16 @@ use yii\web\UploadedFile;
 class PostController extends MainController
 {
 
-    public function actionIndex(int $id, string $photo_id = null)
+    public function actionIndex(int $id, string $photo_id = null, int $review_id = null)
     {
-
-        $post = Posts::find()->with([
-            'info',
-            'workingHours' => function ($query) {
-                $query->orderBy(['day_type' => SORT_ASC]);
+        $post = Posts::find()->with(['info',
+            'workingHours'=>function ($query) {
+                $query->orderBy(['day_type'=>SORT_ASC]);
             },
             'city', 'totalView',
-            'hasLike', 'onlyOnceCategories.category'])
-            ->where(['id' => $id])
-            ->one();
+            'hasLike','onlyOnceCategories.category'])
+        ->where(['id'=>$id])
+        ->one();
 
         $user_id = Yii::$app->user->isGuest ? null : Yii::$app->user->getId();
 
@@ -89,8 +88,11 @@ class PostController extends MainController
                 'breadcrumbParams' => $breadcrumbParams,
                 'photoCount' => Gallery::getPostPhotoCount($id),
                 'previewPhoto' => Gallery::getPreviewPostPhoto($id, 4),
-                'photoId' => $photo_id,
-                'keyForMap' => $keyForMap
+                'keyForMap'=>$keyForMap,
+                'initPhotoSliderParams' => [
+                    'photoId' => $photo_id,
+                    'reviewId' => $review_id,
+                ]
             ]);
 
         } else {
@@ -410,7 +412,7 @@ class PostController extends MainController
 
     }
 
-    public function actionReviews(int $postId)
+    public function actionReviews(int $postId, int $photo_id = null, int $review_id = null)
     {
         $post = Posts::find()->with([
             'city', 'totalView',
@@ -447,34 +449,38 @@ class PostController extends MainController
 
             $type = Yii::$app->request->get('type', 'all');
 
-            $loadTime = Yii::$app->request->get('loadTime', time());
-            $dataProvider = $reviewsModel->search(
-                ['post_id' => $postId, 'type' => $type],
-                $pagination,
-                $loadTime,
-                true
-            );
-            if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax', false)) {
-                echo \app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
-                    'dataProvider' => $dataProvider,
-                    'settings' => [
-                        'show-more-btn' => true,
-                        'replace-container-id' => 'feed-reviews',
-                        'load-time' => $loadTime,
-                        'without_header' => true
+			$loadTime = Yii::$app->request->get('loadTime', time());
+			$dataProvider = $reviewsModel->search(
+				['post_id' => $postId,'type'=>$type],
+				$pagination,
+				$loadTime,
+				true
+			);
+			if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
+				echo  CardsReviewsWidget::widget([
+					'dataProvider' => $dataProvider,
+					'settings'=>[
+						'show-more-btn' => true,
+						'replace-container-id' => 'feed-reviews',
+						'load-time' => $loadTime,
+						'without_header'=>true
+					]
+				]);
+			}else{
+				return $this->render('feed-reviews', [
+					'post' => $post,
+					'reviewsDataProvider' => $dataProvider,
+					'photoCount' => Gallery::getPostPhotoCount($postId),
+					'breadcrumbParams' => $breadcrumbParams,
+					'loadTime'=>$loadTime,
+					'keyForMap' => $keyForMap,
+					'type'=>$type,
+                    'initPhotoSliderParams' => [
+                        'photoId' => $photo_id,
+                        'reviewId' => $review_id,
                     ]
-                ]);
-            } else {
-                return $this->render('feed-reviews', [
-                    'post' => $post,
-                    'reviewsDataProvider' => $dataProvider,
-                    'photoCount' => Gallery::getPostPhotoCount($postId),
-                    'breadcrumbParams' => $breadcrumbParams,
-                    'loadTime' => $loadTime,
-                    'keyForMap' => $keyForMap,
-                    'type' => $type
-                ]);
-            }
+				]);
+			}
 
 
         } else {
@@ -534,7 +540,9 @@ class PostController extends MainController
             'photoCount' => $photoCount,
             'loadTime' => $loadTime,
             'keyForMap' => $keyForMap,
-            'photoId' => $photo_id
+            'initPhotoSliderParams' => [
+                'photoId' => $photo_id
+            ]
         ]);
     }
 

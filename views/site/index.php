@@ -1,4 +1,5 @@
 <?php
+use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use \app\components\mainMenu\MainMenuWidget;
 use \app\components\cardsPlaceWidget\CardsPlaceWidget;
 use \app\components\cardsNewsWidget\CardsNewsWidget;
@@ -56,7 +57,7 @@ $descriptionText = 'Подробная карта '.Yii::t('app/parental_slope',
         <h2 class="h2-c">Последние отзывы</h2>
         <div class="container-news">
             <div class="block-news">
-                <?= \app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
+                <?= CardsReviewsWidget::widget([
                     'dataProvider' => $reviews,
                     'settings'=>[
                         'show-more-btn' => false,
@@ -73,12 +74,10 @@ $descriptionText = 'Подробная карта '.Yii::t('app/parental_slope',
 
 </div>
 <div class="clear-fix"></div>
-<?= ListCityWidget::widget(['settings' =>
-    [
+<?= ListCityWidget::widget(['settings' => [
         'id' => 'content_list_city',
         'is_menu' => false
-    ]
-]); ?>
+]]);?>
 
 <div class="block-content">
     <div class="description-text">
@@ -86,15 +85,54 @@ $descriptionText = 'Подробная карта '.Yii::t('app/parental_slope',
     </div>
 </div>
 
-<?php
+<div class="container-blackout-photo-popup"></div>
+<div class="photo-popup">
+    <div class="close-photo-popup"></div>
+    <div class="photo-left-arrow"><div></div></div>
+    <div class="photo-popup-content">
+        <div class="photo-info">
+            <div class="photo-header">
+                <a href=""></a>
+            </div>
+        </div>
+        <div class="photo-wrap">
+            <img class="photo-popup-item">
+        </div>
+    </div>
+    <div class="photo-right-arrow"><div></div></div>
+    <ul class="wrap-photo-info">
+        <li class="complain-gallery-text">Пожаловаться</li>
+        <li class="photo-source" style="display: none;">
+            <a href="#" target="_blank"><span>Источник</span></a>
+        </li>
+    </ul>
+    <div class="gallery-counter">
+        <span id="start-photo-counter">1</span> из
+        <span id="end-photo-counter"></span>
+    </div>
+</div>
 
-$js = <<<js
-        $(document).ready(function() {
-          menu_control.fireMethodClose();
-          map.setIdPlacesOnMap("$keyForMap");
+<script>
+    $(document).ready(function() {
+        post.photos.resetContainer();
+        post.photos.isChangeTitleInSlider(true);
+        <?php if (isset($initPhotoSliderParams['photoId'])) :?>
+            post.photos.initPhotoSlider({
+                photoId: '<?=$initPhotoSliderParams['photoId']?>',
+                reviewId: <?=$initPhotoSliderParams['reviewId']?>,
+                type: 'review'
+            });
+        <?php endif;?>
+        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
+        $(".photo-wrap").swipe({
+            swipeRight: function(event, direction) {
+                post.photos.prevPhoto();
+            },
+            swipeLeft: function(event, direction) {
+                post.photos.nextPhoto();
+            }
         });
-js;
-
-echo "<script>$js</script>";
-
-?>
+        menu_control.fireMethodClose();
+        map.setIdPlacesOnMap("<?=$keyForMap?>");
+    });
+</script>

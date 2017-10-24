@@ -375,7 +375,7 @@ class SiteController extends MainController
 		}
 	}
 
-	public function actionVseOtzyvy()
+	public function actionVseOtzyvy(int $review_id = null, int $photo_id = null)
 	{
 		$request = Yii::$app->request;
 		$_GET['type'] = $request->get('type', 'all');
@@ -416,6 +416,10 @@ class SiteController extends MainController
 				'h1'=>$h1,
 				'breadcrumbParams'=>$breadcrumbParams,
 				'type' => $request->queryParams['type'],
+                'initPhotoSliderParams' => [
+                    'photoId' => $photo_id,
+                    'reviewId' => $review_id,
+                ]
 			]);
 		}
 	}

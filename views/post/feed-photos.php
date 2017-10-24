@@ -132,14 +132,22 @@ Pjax::begin([
             <a href="#" target="_blank"><span>Источник</span></a>
         </li>
     </ul>
-    <div class="gallery-counter"><span>1</span> из <?=$photoCount?></div>
+    <div class="gallery-counter">
+        <span id="start-photo-counter">1</span> из
+        <span id="end-photo-counter"><?=$photoCount?></span>
+    </div>
 </div>
 <script>
     $(document).ready(function() {
         post.photos.setLoadTime(<?=$loadTime?>);
         post.photos.setPostId(<?=$post->id?>);
-        <?php if (isset($photoId)) :?>
-        post.photos.initSliderByPhotoId('<?=$photoId?>');
+        post.photos.setAllPhotoCount(<?=$photoCount?>);
+        post.photos.resetContainer();
+
+        <?php if (isset($initPhotoSliderParams['photoId'])) :?>
+            post.photos.initPhotoSlider({
+                photoId: '<?=$initPhotoSliderParams['photoId']?>',
+            });
         <?php endif;?>
         main.initCustomScrollBar($('.photo-header'),{axis: "x",scrollInertia: 50, scrollbarPosition: "outside"})
         $(".photo-wrap").swipe({
