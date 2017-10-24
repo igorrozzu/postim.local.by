@@ -83,7 +83,7 @@ $hostName = Yii::$app->request->getHostInfo();
             <span style="display: inline-block; font-size: 11px;  width: 270px; margin-top: 20px;">
               <span style="-webkit-text-size-adjust:none">Есть вопрос? Мы с радостью на него ответим.</span><br>
                 <span style="-webkit-text-size-adjust:none">
-                    Воспользуйтесь функционалом &laquo;<a href="#" target="_blank" style="color: #3C5994;">Обратной связи</a>&raquo;
+                    Воспользуйтесь функционалом &laquo;<a href="<?= $hostName ?>/feedback" target="_blank" style="color: #3C5994;">Обратной связи</a>&raquo;
                 </span>
             </span>
         </td>

@@ -59,6 +59,8 @@ class NewReview extends BaseCronNotificationHandler
     private function iterateAllUsers(Model $post): \stdClass
     {
         $userIds = new \stdClass();
+        $userIds->owners = [];
+        $userIds->favorites = [];
 
         foreach ($post->owners as $user) {
             $userIds->owners[] = $user->id;
@@ -68,7 +70,7 @@ class NewReview extends BaseCronNotificationHandler
             $userIds->favorites[] = $user->id;
         }
 
-        if (!in_array($post->user->id, $userIds->owners, true)) {
+        if (isset($post->user) && !in_array($post->user->id, $userIds->owners, true)) {
             $userIds->owners[] = $post->user->id;
         }
 
@@ -78,19 +80,7 @@ class NewReview extends BaseCronNotificationHandler
     private function sendMessagesToUsersWithSub(\stdClass &$userIds, array &$dataToMessage): int
     {
         $messages = [];
-        $favoriteUsers = User::find()
-            ->select([
-                User::tableName() . '.name',
-                User::tableName() . '.id',
-                User::tableName() . '.email',
-            ])
-            ->innerJoinWith(['userInfo' => function(ActiveQuery $query) {
-                $query->where([UserInfo::tableName() .
-                '.reviews_to_favorite_places_sub' => UserInfo::ALLOW_USER_CHOICE['yes']]);
-            }], false)
-            ->where(['id' => $userIds->favorites]);
-
-        $ownerUsers = User::find()
+        $userForMailSending = User::find()
             ->select([
                 User::tableName() . '.name',
                 User::tableName() . '.id',
@@ -102,7 +92,23 @@ class NewReview extends BaseCronNotificationHandler
             }], false)
             ->where(['id' => $userIds->owners]);
 
-        $userForMailSending = $ownerUsers->union($favoriteUsers)->all();
+        if (count($userIds->favorites) > 0) {
+            $favoriteUsers = User::find()
+                ->select([
+                    User::tableName() . '.name',
+                    User::tableName() . '.id',
+                    User::tableName() . '.email',
+                ])
+                ->innerJoinWith(['userInfo' => function(ActiveQuery $query) {
+                    $query->where([UserInfo::tableName() .
+                    '.reviews_to_favorite_places_sub' => UserInfo::ALLOW_USER_CHOICE['yes']]);
+                }], false)
+                ->where(['id' => $userIds->favorites]);
+
+            $userForMailSending->union($favoriteUsers);
+        }
+
+        $userForMailSending = $userForMailSending->all();
 
         foreach ($userForMailSending as $user) {
             $dataToMessage['user'] = $user;

@@ -60,14 +60,14 @@ class TaskController extends Controller
 
     public function actionChargeEverydayBonus()
     {
-        $startDay = mktime(0, 0, 0);
+        $dayBefore = time() - 3600 * 24;
         $usersQuery = User::find()
             ->select([
                 User::tableName() . '.id',
                 User::tableName() . '.last_visit',
             ])
             ->innerJoinWith('userInfo')
-            ->where(['>=', User::tableName() . '.last_visit', $startDay]);
+            ->where(['>=', User::tableName() . '.last_visit', $dayBefore]);
 
         $template = Yii::$app->params['notificationTemplates']['reward.everyday'];
         $message = sprintf($template['text'], $template['exp'], $template['money']);

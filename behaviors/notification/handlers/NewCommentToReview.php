@@ -2,6 +2,7 @@
 
 namespace app\behaviors\notification\handlers;
 
+use app\models\Comments;
 use app\models\entities\Task;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
@@ -17,7 +18,7 @@ class NewCommentToReview extends Behavior
 
     public function run()
     {
-        if (!$this->owner->isRelatedWithReviews()) {
+        if (!$this->isValid() || !$this->owner->isRelatedWithReviews()) {
             return false;
         }
 
@@ -33,5 +34,10 @@ class NewCommentToReview extends Behavior
         ]);
 
         return $task->save();
+    }
+
+    private function isValid()
+    {
+        return $this->owner->getScenario() === Comments::$ADD_MAIN_COMMENT;
     }
 }
