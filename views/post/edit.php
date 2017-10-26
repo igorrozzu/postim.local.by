@@ -45,7 +45,7 @@
 				<div class="selectorFields" data-is-many="false" data-id="city" data-max="1"
 					 data-info='<?= \yii\helpers\Json::encode($params['cities']) ?>'>
 					<div class="block-inputs" style="display: none">
-                        <div class="btn-selected-option"><span class="option-text"><?=$params['post']->city->name?></span> <span class="close-selected-option"></span> <input name="city[]" value="<?=$params['post']->city->id?>" style="display: none"> </div>
+                        <div class="btn-selected-option"><span class="option-text"><?=$params['post']->city->name?></span> <span class="close-selected-option"></span> <input name="city" value="<?=$params['post']->city->id?>" style="display: none"> </div>
                     </div>
 					<div class="between-selected-field btn-open-field" data-open=false>
 						<input style="color: rgb(68, 68, 68);" class="search-selected-field" type="button" data-value="<?=$params['post']->city->name?>"
@@ -72,7 +72,7 @@
                      data-info='<?= \yii\helpers\Json::encode($params['metro']) ?>'>
                     <div class="block-inputs" style="display: none">
                         <?php if($params['post']->metro):?>
-                            <div class="btn-selected-option"><span class="option-text"><?=$params['post']->metro?></span> <span class="close-selected-option"></span> <input name="metro[]" value="<?=$params['post']->metro?>" style="display: none"> </div>
+                            <div class="btn-selected-option"><span class="option-text"><?=$params['post']->metro?></span> <span class="close-selected-option"></span> <input name="metro" value="<?=$params['post']->metro?>" style="display: none"> </div>
                         <?php endif;?>
                     </div>
                     <div class="between-selected-field btn-open-field" data-open=false>

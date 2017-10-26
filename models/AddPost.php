@@ -276,17 +276,6 @@
 		public function beforeValidate()
 		{
 
-			if (is_array($this->city)) {
-				if (isset($this->city[0])) {
-					$this->city = $this->city[0];
-				}
-			}
-
-			if(is_array($this->metro)){
-                if (isset($this->metro[0])) {
-                    $this->metro = $this->metro[0];
-                }
-            }
 
 			if (is_array($this->time_work)) {
 				$newWorkTime = [];

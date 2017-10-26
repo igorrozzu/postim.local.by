@@ -4742,7 +4742,8 @@ input.search-selected-field{
 }
 .btn-close-photo-gallery,
 .btn-confirm-photo-gallery,
-.btn-edit-photo-gallery{
+.btn-edit-photo-gallery,
+.btn-close-photo-preview{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -4766,7 +4767,8 @@ input.search-selected-field{
     background-image: url("../img/icon-pen-min.png");
     background-position: 0 0;
 }
-.btn-close-photo-gallery:before{
+.btn-close-photo-gallery:before,
+.btn-close-photo-preview:before{
     width: 13px;
     height: 13px;
     display: flex;
@@ -4774,7 +4776,8 @@ input.search-selected-field{
     background-image: url("../img/close-icon-btn.png");
     background-position: 13px 0;
 }
-.btn-add-photos-gallery{
+.btn-add-photos-gallery,
+.btn-add-photo-preview{
     display: flex;
     margin-top: 20px;
     display: flex;
@@ -4788,10 +4791,12 @@ input.search-selected-field{
     font-size: 16px;
     color: #ffffff;
 }
-.btn-add-photos-gallery:hover{
+.btn-add-photos-gallery:hover,
+.btn-add-photo-preview:hover{
     background-color: #456dad;
 }
-.btn-add-photos-gallery:before{
+.btn-add-photos-gallery:before,
+.btn-add-photo-preview:before{
     content: url("../img/icon-camera.png");
     margin-right: 30px;
     margin-left: 20px;
@@ -5984,4 +5989,19 @@ form .field-input:first-child{
 }
 .photo-header.h_scroll{
     overflow: auto;
+}
+
+.block-input-preview .help-block{
+    margin-top: 20px;
+}
+.block-input-preview .help-block:empty{
+    margin-top: 0px;
+}
+
+.container-description .help-block{
+    margin-bottom: 20px;
+}
+
+.container-description .help-block:empty{
+    margin-bottom: 0px;
 }

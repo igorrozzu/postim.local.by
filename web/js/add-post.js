@@ -262,7 +262,7 @@ var Post_add = (function (window, document, undefined, $) {
 							$content.find('.option-text').text($(this).text());
 							$content.find('input').val($(this).attr('data-value'));
 							$content.find('input').attr('value', $(this).attr('data-value'));
-							$content.find('input').attr('name',that.selectorFields.id+'[]');
+							$content.find('input').attr('name',that.selectorFields.id);
 							$block_inputs.html($content.clone());
 							that.selectorFields.$inputSearch.attr('data-value',$(this).text()).css('color','#444444');
 

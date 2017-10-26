@@ -108,6 +108,11 @@ $config = [
         'authClientCollection' => require ('authClientCollection.php'),
 
     ],
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+        ],
+    ],
     'params' => $params,
     'on afterAction' => function () {
         if (!Yii::$app->user->isGuest) {
