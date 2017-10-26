@@ -40,10 +40,20 @@ class AddNewsController extends AdminDefaultController
             }else{
                 $cities = City::find()->select('id, name')
                     ->orderBy('name')->asArray()->all();
+
+                $toastMessage = [
+                    'type' => 'error',
+                    'message' => 'Произошла ошибка при отправке',
+                ];
+
                 $params = [
                     'news' => $news,
-                    'cities' => $cities
+                    'cities' => $cities,
+                    'toastMessage' => $toastMessage
                 ];
+
+
+
                 return $this->render('edit_news',$params);
             }
         }

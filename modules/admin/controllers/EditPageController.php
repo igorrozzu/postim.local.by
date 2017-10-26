@@ -29,7 +29,13 @@ class EditPageController extends AdminDefaultController
 
                 return $this->render('__save_form',['editPage'=>$editPage]);
             }else{
-                return $this->render('index',['editPage'=>$editPage]);
+
+                $toastMessage = [
+                    'type' => 'error',
+                    'message' => 'Произошла ошибка',
+                ];
+
+                return $this->render('index',['editPage'=>$editPage,'toastMessage'=>$toastMessage]);
             }
 
         }else{
@@ -57,7 +63,13 @@ class EditPageController extends AdminDefaultController
                 }
 
                 $editPage = new DescriptionPage();
-                return $this->render('index',['editPage'=>$editPage]);
+
+                $toastMessage = [
+                    'type' => 'success',
+                    'message' => 'Страница изменена',
+                ];
+
+                return $this->render('index',['editPage'=>$editPage,'toastMessage'=>$toastMessage]);
             }
 
 

@@ -23,6 +23,10 @@ var AdminMain = (function (window, document, undefined,$) {
                 $(document).off("submit", "#pjax-container-edit-page form");
                 $(document).on("submit", "#pjax-container-edit-page form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-edit-page"});});
 
+                $(document).off("submit", "#pjax-container-add-news form");
+                $(document).on("submit", "#pjax-container-add-news form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-add-news"});});
+
+
             }
 
         }

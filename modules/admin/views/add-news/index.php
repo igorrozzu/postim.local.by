@@ -1,6 +1,16 @@
 <?php
 use \yii\widgets\ActiveForm;
 $this->title = 'Добавить новость на Postim.by';
+use yii\widgets\Pjax;
+
+Pjax::begin([
+    'timeout' => 60000,
+    'enablePushState' => false,
+    'id' => 'pjax-container-add-news',
+    'linkSelector' => false,
+    'formSelector' => '#pjax-container-add-news form',
+]);
+
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
@@ -142,3 +152,6 @@ $this->title = 'Добавить новость на Postim.by';
 
 </div>
 <div style="margin-bottom:30px;"></div>
+<?php
+    Pjax::end();
+?>

@@ -36,5 +36,21 @@ Pjax::begin([
 <div class="margin-top60"></div>
 </div>
 <?php
+
+if(isset($toastMessage)) {
+    $js = <<<JS
+    $(document).ready(function () {
+        $().toastmessage('showToast', {
+            text     : '$toastMessage[message]',
+            stayTime:         5000,
+            type     : '$toastMessage[type]'
+        });
+    });
+JS;
+    echo "<script>$js</script>";
+
+
+}
+
 Pjax::end();
 ?>

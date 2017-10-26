@@ -7,7 +7,7 @@ class Config{
         return [
             [
                 'name' => 'Добавить контент',
-                'icon' => '',
+                'icon' => 'icon-add-content',
                 'url' => '',
                 'under' => [
                     [
@@ -23,7 +23,7 @@ class Config{
             ],
             [
                 'name' => 'Модерация',
-                'icon' => '',
+                'icon' => 'icon-moderation-adm',
                 'url' => '',
                 'under' => [
                     [
@@ -47,23 +47,13 @@ class Config{
             ],
             [
                 'name' => 'Редактирование',
-                'icon' => '',
-                'url' => '',
-                'under' => [
-                    [
-                        'name' => 'Редактирование страниц',
-                        'url' => '/admin/edit-page'
-                    ],
-                    [
-                        'name' => 'Редактирование новостей',
-                        'url' => '/'
-                    ],
-
-                ],
+                'icon' => 'icon-edit-adm',
+                'url' => '/admin/edit-page',
+                'id' => 'edit-ac'
             ],
             [
                 'name' => 'Бизнес-аккаунты',
-                'icon' => '',
+                'icon' => 'icon-bz-ac-adm',
                 'url' => '',
                 'id' => 'bs-ac'
             ],
