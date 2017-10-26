@@ -1,10 +1,11 @@
 .search_block{
     display: flex;
     float: right;
-    margin-top: 10px;
     background-color: transparent;
     padding: 0;
+    margin: 0;
     width: auto;
+    height: 60px;
 }
 .search{
     display: none;
@@ -13,7 +14,7 @@
     display: flex;
     padding-left:10px;
     float: right;
-    margin-top: 10px;
+    margin: 10px 0 0 0;
     background-color: white;
     height: 40px;
     border-radius: 40px;
@@ -58,6 +59,7 @@
     height: auto;
     display: flex;
     align-items: center;
+    padding: 22px 15px;
 }
 
 .open-search .btn-search{
@@ -75,13 +77,6 @@
     background-position: 36px 0px;
 }
 
-.btn_add_place{
-    margin-left: 15px;
-}
-.profile-icon-menu,
-.btn-notice{
-    margin-left: 20px;
-}
 .btn_add_place:after{
     width: 26px;
     height: 26px;
@@ -95,9 +90,11 @@
     width: 20px;
     height: 20px;
 }
+
 .profile-icon-menu{
     width: 35px;
     height: 35px;
+    padding: 13px 0 12px 15px;
 }
 .profile-icon-menu img{
     width: 35px;
@@ -112,7 +109,6 @@
     margin-bottom: 10px;
 }
 .sign_in_btn{
-    margin-left: 15px;
     font-family: PT_Sans;
 }
 .bread-crumb a{
@@ -180,6 +176,10 @@
     padding-bottom: 5px;
     padding-top: 20px;
 }
+.btn-sort {
+    padding: 0 35px;
+}
+
 .btn-sort-reviews{
     height: 30px;
 }

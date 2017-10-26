@@ -2,10 +2,11 @@
     body:not(.open-search) .authorized .search_block{
         display: flex;
         float: right;
-        margin-top: 10px;
-        background-color: transparent;
         padding: 0;
+        margin: 0;
+        background-color: transparent;
         width: auto;
+        height: 60px;
     }
 
     body:not(.open-search) .authorized .search{
@@ -23,8 +24,8 @@
     }
     body:not(.open-search) .authorized .btn-search{
         height: auto;
-        display: flex;
         align-items: center;
+        padding: 20px 15px;
     }
 }
 @media (max-height: 480px) {
