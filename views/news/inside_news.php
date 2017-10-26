@@ -14,6 +14,13 @@ $this->registerMetaTag([
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
+    <?php if(Yii::$app->user->isModerator()):?>
+    <div class="block-content-between" style="margin-bottom: -10px">
+        <p class="text p-text">
+            Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/admin/news/edit-news?id=<?=$news['id']?>">исправьте&nbsp;или&nbsp;дополните&nbsp;информацию</a>
+        </p>
+    </div>
+    <?php endif;?>
     <div class="container-post">
         <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
         <h1 class="h1-v"><?=$news['header']?></h1>

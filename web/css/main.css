@@ -983,6 +983,9 @@ body:not(.open-search) .search{
     height: 95px;
     overflow: hidden;
 }
+.block-news .card-info{
+    height: 85px;
+}
 .time-work{
     margin: 25px 20px 20px 20px;
     font-size: 14px;
@@ -3450,6 +3453,14 @@ a .btn-sort-reviews.active
     display: flex;
     flex-direction: column;
 }
+
+.container-content-post .insert-item p{
+    font-size: 16px;
+    color: #444444;
+    margin-top: 20px;
+    line-height: 24px;
+}
+
 .block-photo-post{
     display: block;
     margin-top: 20px;
@@ -3465,12 +3476,7 @@ a .btn-sort-reviews.active
     color: #6b778f;
     font-size: 14px;
 }
-.post-text{
-    font-size: 16px;
-    color: #444444;
-    margin-top: 20px;
-    line-height: 24px;
-}
+
 .post-h2{
     font-size: 30px;
     color: #444444;

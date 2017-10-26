@@ -54,7 +54,7 @@ class News extends ParentNews
     public function beforeSave($insert)
     {
         if(!$this->total_view_id){
-            $totalView = new TotalView();
+            $totalView = new TotalView(['count'=>0]);
             $totalView->save();
             $this->total_view_id = $totalView->id;
 
@@ -93,19 +93,19 @@ class News extends ParentNews
     public function getPatchCover(){
         if($this->cover){
             if($this->id){
-                $dir = Yii::getAlias('@webroot/post-img/' . $this->id . '/');
-                if(file_exists($dir.$this->cover)){
-                    return $dir.$this->cover;
+                $dir = Yii::getAlias('@webroot/post-img/' . $this->id . '/'.$this->cover);
+                if(file_exists($dir)){
+                    return '/post-img/'. $this->id . '/'.$this->cover;
                 }else{
                     $photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $this->cover);
                     if(file_exists($photoPath)){
-                        return $photoPath;
+                        return '/tmp/'.$this->cover;
                     }
                 }
             }else{
                 $photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $this->cover);
                 if(file_exists($photoPath)){
-                    return $photoPath;
+                    return '/tmp/'.$this->cover;
                 }
             }
         }

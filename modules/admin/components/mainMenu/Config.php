@@ -12,7 +12,7 @@ class Config{
                 'under' => [
                     [
                         'name' => 'Добавить новость',
-                        'url' => '/admin/add-news'
+                        'url' => '/admin/news'
                     ],
                     [
                         'name' => 'Добавить место\\Категорию',

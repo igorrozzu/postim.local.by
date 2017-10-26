@@ -10,7 +10,7 @@ use yii\web\Controller;
 /**
  * Default controller for the `admin` module
  */
-class AddNewsController extends AdminDefaultController
+class NewsController extends AdminDefaultController
 {
     /**
      * Renders the index view for the module
@@ -52,11 +52,24 @@ class AddNewsController extends AdminDefaultController
                     'toastMessage' => $toastMessage
                 ];
 
-
-
                 return $this->render('edit_news',$params);
             }
         }
 
+    }
+
+    public function actionEditNews(int $id){
+
+        $news = News::find()->where(['id'=>$id])->one();
+
+        $cities = City::find()->select('id, name')
+            ->orderBy('name')->asArray()->all();
+
+        $params = [
+            'news' => $news,
+            'cities' => $cities,
+        ];
+
+        return $this->render('edit_news',$params);
     }
 }

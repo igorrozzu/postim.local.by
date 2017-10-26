@@ -38,4 +38,12 @@ class User extends \yii\web\User{
 		}
 	}
 
+	public function isModerator(){
+        if($this->isGuest){
+            return false;
+        }else{
+            return $this->identity->role >= 2 ?true :false;
+        }
+    }
+
 }

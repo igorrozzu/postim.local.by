@@ -110,4 +110,15 @@ class News extends \yii\db\ActiveRecord
             $this->is_like = true;
         }
     }
+
+    public function getPatchCover(){
+        if($this->cover){
+            $dir = Yii::getAlias('@webroot/post-img/' . $this->id . '/'.$this->cover);
+            if(file_exists($dir)){
+                return '/post-img/'. $this->id . '/'.$this->cover;
+            }
+        }
+
+        return '';
+    }
 }

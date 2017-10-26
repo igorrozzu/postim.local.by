@@ -15,7 +15,7 @@ Pjax::begin([
 <div class="margin-top60"></div>
 <div class="block-content">
     <h1 class="h1-c" style="margin-top: 35px">Добавить новость</h1>
-    <?php $form = ActiveForm::begin(['id' => 'form-add-news', 'enableClientScript' => false,'action'=>'/admin/add-news/save','options'=>['pjax-container-add-news'=>'true']]) ?>
+    <?php $form = ActiveForm::begin(['id' => 'form-add-news', 'enableClientScript' => false,'action'=>'/admin/news/save','options'=>['pjax-container-add-news'=>'true']]) ?>
 
     <div class="container-add-place container-feedback" style="margin-top: 30px">
 
