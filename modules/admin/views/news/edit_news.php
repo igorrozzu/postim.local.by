@@ -18,6 +18,13 @@ Pjax::begin([
     <h1 class="h1-c" style="margin-top: 35px">Добавить новость</h1>
     <?php $form = ActiveForm::begin(['id' => 'form-add-news', 'enableClientScript' => false,'action'=>'/admin/news/save','options'=>['pjax-container-add-news'=>'true']]) ?>
 
+    <div style="display: none">
+        <?= $form->field($news, 'id')
+            ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
+                'placeholder' => 'id', 'value' => $news['id']])
+            ->label(false) ?>
+    </div>
+
     <div class="container-add-place container-feedback" style="margin-top: 30px">
 
         <div class="block-field-setting">
@@ -58,9 +65,9 @@ Pjax::begin([
             <div class="block-write-editors">
 
                 <?php if($news['data']):?>
-                    <?=\app\components\Helper::parserForEditor($news['data'],true);?>
+                    <?=\app\components\Helper::parserForEditor($news['data'],false);?>
                 <?php else:?>
-                    <div class="item item-editor-default container-editor"><div class="editable"></div></div>
+                    <div class="item-editor item container-editor"><div class="editable"></div></div>
                 <?php endif;?>
             </div>
             <?= $form->field($news, 'data')
@@ -73,6 +80,7 @@ Pjax::begin([
             $(document).ready(function () {
                 editable.init('.editable', {
                     toolbar: {
+                        photo: true,
                         video: true,
                         text: true
                     }

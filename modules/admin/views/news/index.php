@@ -58,9 +58,9 @@ Pjax::begin([
                     ->label(false) ?>
 
                 <?php if($news['data']):?>
-                    <?=\app\components\Helper::parserForEditor($news['data'],true);?>
+                    <?=\app\components\Helper::parserForEditor($news['data'],false);?>
                 <?php else:?>
-                    <div class="item item-editor-default container-editor"><div class="editable"></div></div>
+                    <div class="item-editor item container-editor"><div class="container-toolbar"> <div class="title-toolbar">Текст</div> <div class="btns-toolbar-container"><div class="btn-toolbar-top"></div> <div class="btn-toolbar-down"></div> <div class="btn-toolbar-close"></div></div></div><div class="editable"></div></div>
                 <?php endif;?>
             </div>
         </div>
@@ -69,6 +69,7 @@ Pjax::begin([
             $(document).ready(function () {
                 editable.init('.editable', {
                     toolbar: {
+                        photo: true,
                         video: true,
                         text: true
                     }

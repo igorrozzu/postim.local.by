@@ -35,8 +35,12 @@ class NewsController extends AdminDefaultController
         $news = new News();
 
         if(\Yii::$app->request->isPost && $news->load(\Yii::$app->request->post())){
+            if($news->id){
+                $news = News::find()->where(['id'=>$news->id])->one();
+                $news->load(\Yii::$app->request->post());
+            }
             if($news->validate() && $news->save()){
-                $this->redirect($news->url_name.'-n'.$news->id);
+                $this->redirect('/'.$news->url_name.'-n'.$news->id);
             }else{
                 $cities = City::find()->select('id, name')
                     ->orderBy('name')->asArray()->all();

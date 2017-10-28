@@ -21,6 +21,7 @@ class News extends ParentNews
             [['city_id', 'total_view_id', 'count_favorites', 'date'], 'integer'],
             [['header', 'description', 'data',  'key_word_s'], 'string'],
             [['cover'], 'string', 'max' => 100],
+            [['id'], 'safe'],
         ];
     }
 

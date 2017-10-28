@@ -22,6 +22,16 @@ var Uploads = (function (window, document, undefined,$) {
                 return true
             },
 
+            uploadByURL: function (action, url, handler) {
+                $.ajax({
+                    url: action,
+                    type: "POST",
+                    data: {url:url},
+                    dataType: 'json',
+                    success: handler
+                });
+            },
+
             validatePhotos: function (files) {
                 if (files.length > that.photo.maxPhotoCount) {
                     return false;

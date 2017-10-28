@@ -8,6 +8,7 @@ var Editable = (function (window, document, undefined,$) {
 			$containerInsert : $('<div class="item-editor item"></div>'),
 			$blockInsert : $('<div class="block-insert"></div>'),
 			$blockAction : $('<div class="block-action"></div>'),
+
 			toolbar: {
 				video:false,
 				photo:false,
@@ -91,8 +92,6 @@ var Editable = (function (window, document, undefined,$) {
 						updateOnEmptySelection: false
 					},
 					anchor: {
-						/* These are the default options for anchor form,
-						 if nothing is passed this is what it used */
 						aria: 'Ссылка',
 						linkValidation: true,
 						placeholderText: 'Вставте или введите ссылку'
@@ -141,6 +140,21 @@ var Editable = (function (window, document, undefined,$) {
 						var $parent = $(this).parents('.item-editor');
 						$parent.remove();
 				});
+
+				$(document).off('click','.--mini-icon-photo')
+					.on('click','.--mini-icon-photo',function () {
+						that.photo.renderBlockForInsert.call(this);
+                    });
+
+                $(document).off('change','.photo-editable-add')
+					.on('change','.photo-editable-add',function (e) {
+                    that.photo.addPhotos.call(this, e);
+                });
+
+                $(document).off('click','.__block-action_btns_photo')
+					.on('click','.__block-action_btns_photo',function () {
+						that.photo.$containerReplace = $(this).parents('.container-insert');
+                    });
 
 				$(document).off('click','.btn-write-description.btn-play-min')
 					.on('click','.btn-write-description.btn-play-min',function () {
@@ -197,11 +211,22 @@ var Editable = (function (window, document, undefined,$) {
 						}, 10);
 				});
 
+				$(document).off('paste','.input-photo')
+					.on('paste','.input-photo',function () {
+						var $input = $(this);
+                        that.photo.$containerReplace = $(this).parents('.container-insert');
+						setTimeout(function () {
+							var linkToPhoto = $input.val();
+                            uploads.uploadByURL('/post/upload-new-photo-by-url', linkToPhoto, that.photo.renderPhotos);
+                        },10)
+                    })
+
 			},
 			renderButtons: function () {
 				var $btnsContainer = $('<div class="btns-write-description"> </div>');
 				var btns = {
 					video : $('<div class="btn-write-description btn-play-min">Видео</div>'),
+					photo : $('<div class="btn-write-description --mini-icon-photo">Фото</div>'),
 					text: $('<div class="btn-write-description btn-text">Текст</div>'),
 				};
 
@@ -216,6 +241,91 @@ var Editable = (function (window, document, undefined,$) {
 				if(foo){
 					that.$containerEditor.append($btnsContainer);
 				}
+			},
+			photo: {
+				$containerReplace : null,
+				$blockPhoto : $('<div class="photo-item"><img><input placeholder="Подпись к фото" class="img-source"></div>'),
+
+                renderBlockForInsert: function () {
+
+                    var $container = that.$containerInsert.clone();
+                    var $containerToolbar = that.$containerToolbar.clone();
+                    $containerToolbar.find('.title-toolbar').text('Фото');
+
+                    $container.addClass('container-insert');
+                    $container.append($containerToolbar.clone());
+
+                    var $blockInsert = that.$blockInsert.clone();
+                    var $blockAction = that.$blockAction.clone();
+
+                    $blockAction.append('<input class="input-photo" type="text" placeholder="Вставте ссылку на изображение">');
+                    $blockAction.append('<div class="__block-action_btns_photo">' +
+						'<label><span>Загрузить изображение</span>' +
+						'<input style="display: none" class="photo-editable-add" name="photo-editable-add" type="file" multiple' +
+                        '               accept="image/*,image/jpeg,image/gif,image/png">' +
+						'</label></div>');
+
+                    $blockInsert.append($blockAction);
+                    $container.append($blockInsert);
+                    $(this).parents('.btns-write-description').before($container);
+
+                },
+
+                addPhotos: function (e) {
+                    if (uploads.validatePhotos(e.target.files)) {
+                        var form = new FormData();
+                        $.each(e.target.files, function (key, value) {
+                            form.append('photos[]', value);
+                        });
+                        uploads.uploadFiles('/post/upload-new-photo', form, that.photo.renderPhotos);
+                        $(this).val('');
+
+                    }else {
+                        $().toastmessage('showToast', {
+                            text     : 'Изображение должно быть в формате JPG, GIF или PNG.' +
+                            ' Макс. размер файла: 15 МБ. Не более 10 файлов',
+                            stayTime:  5000,
+                            type     : 'error'
+                        });
+                    }
+                },
+
+                renderPhotos: function (response) {
+                    if(response.success){
+
+                        var number = response.data.length;
+                        console.log(response);
+
+                        for (var i = 0; i < number; i++) {
+
+                            var $container = that.$containerInsert.clone();
+                            var $containerToolbar = that.$containerToolbar.clone();
+                            $containerToolbar.find('.title-toolbar').text('Фото');
+
+                            $container.addClass('container-insert');
+                            $container.append($containerToolbar.clone());
+
+                            var $blockInsert = that.$blockInsert.clone();
+							var $blockPhoto = that.photo.$blockPhoto.clone();
+
+							$blockPhoto.find('img').attr('src',response.data[i].link);
+
+							$blockInsert.html($blockPhoto);
+							$blockInsert.addClass('js-photo');
+							$container.append($blockInsert);
+                            that.photo.$containerReplace.before($container);
+                        }
+                        that.photo.$containerReplace.remove();
+                        that.photo.$containerReplace = null;
+
+                    }else {
+                        $().toastmessage('showToast', {
+                            text     : response.message,
+                            stayTime:  5000,
+                            type     : 'error'
+                        });
+                    }
+                }
 			},
 			video: {
 				$containerInsert:null,
@@ -303,9 +413,20 @@ var Editable = (function (window, document, undefined,$) {
 							var $tmpBlockInsert = $($(this).find('.block-insert').html());
 							if(!$tmpBlockInsert.hasClass('block-action')){
 								$tmpInsert.html($(this).find('.block-insert').html());
+
 								if($(this).find('.block-insert').hasClass('video')){
 									$tmpInsert.addClass('video');
 								}
+
+								if($(this).find('.block-insert').hasClass('js-photo')){
+									var textFromInput = $(this).find('.block-insert').find('input').val();
+                                    $tmpInsert.find('input').remove();
+                                    if(textFromInput){
+                                        $tmpInsert.find('.photo-item').append('<div class="photo-desc">'+textFromInput+'</div>')
+									}
+                                    $tmpInsert.find('.photo-item').removeClass('photo-item').addClass('block-photo-post');
+								}
+
 								$tmpBlock.append($tmpInsert.clone());
 								is_insert = true;
 							}

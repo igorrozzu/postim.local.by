@@ -216,10 +216,44 @@ class Helper{
                 $insert->html(pq($insertItem)->html());
                 $containerEditor->append($tmpContainerItem);
 
-            }else{
+            }elseif (pq($insertItem)->find('.block-photo-post')->length()){
+
+                $tmpContainerItem = pq('<div class="item-editor item container-insert">
+                                            <div class="container-toolbar"> 
+                                                <div class="title-toolbar">Фото</div> 
+                                                <div class="btns-toolbar-container">
+                                                    <div class="btn-toolbar-top"></div> 
+                                                    <div class="btn-toolbar-down"></div> 
+                                                    <div class="btn-toolbar-close"></div>
+                                                </div>
+                                            </div>
+                                            <div class="block-insert js-photo" style="display: block;"></div>
+                                    </div>');
+                $insert = pq($tmpContainerItem->find('.block-insert.js-photo'));
+                $insert->html(pq($insertItem)->html());
+                $insert->find('.block-photo-post')
+                    ->removeClass('block-photo-post')
+                    ->addClass('photo-item');
+
+                $input = pq('<input placeholder="Подпись к фото" class="img-source">');
+
+                if($insert->find('.photo-desc')->length()){
+                    $input->val($insert->find('.photo-desc')->text());
+                    $insert->find('.photo-desc')->remove();
+                }
+
+                $insert->find('.photo-item')->append($input);
+
+                $containerEditor->append($tmpContainerItem);
+
+            }
+
+            else{
                 $tmpContainerItem = pq('<div class="item  container-editor"><div class="editable"></div></div>');
                 if($editorDefault && $numberItem++ == 0){
 					$tmpContainerItem->addClass('item-editor-default');
+                }else{
+                    $tmpContainerItem = pq('<div class="item-editor item container-editor"><div class="container-toolbar"> <div class="title-toolbar">Текст</div> <div class="btns-toolbar-container"><div class="btn-toolbar-top"></div> <div class="btn-toolbar-down"></div> <div class="btn-toolbar-close"></div></div></div> <div class="editable"></div></div>');
                 }
                 $editable = pq($tmpContainerItem->find('.editable'));
                 $editable->html(pq($insertItem)->html());

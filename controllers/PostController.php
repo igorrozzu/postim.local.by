@@ -21,6 +21,8 @@ use app\models\search\CommentsSearch;
 use app\models\search\GallerySearch;
 use app\models\UnderCategory;
 use app\models\UnderCategoryFeatures;
+use app\models\uploads\UploadPhotos;
+use app\models\uploads\UploadPhotosByUrl;
 use app\models\uploads\UploadPostPhotos;
 use app\models\uploads\UploadPostPhotosTmp;
 use linslin\yii2\curl\Curl;
@@ -278,6 +280,44 @@ class PostController extends MainController
             }
         }
 
+    }
+
+    public function actionUploadNewPhoto(){
+        if (Yii::$app->user->isGuest) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+            $model = new UploadPhotos();
+            $model->files = UploadedFile::getInstancesByName('photos');
+            if ($model->upload()) {
+                return $this->asJson(['success' => true, 'data' => $model->getSavedFiles()]);
+            } else {
+                return $this->asJson([
+                    'success' => false,
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+                ]);
+            }
+        }
+    }
+
+    public function actionUploadNewPhotoByUrl(){
+        if (Yii::$app->user->isGuest) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+            $model = new UploadPhotosByUrl();
+            $model->urlToImg = Yii::$app->request->post('url');
+            if ($model->upload()) {
+                return $this->asJson(['success' => true, 'data' => $model->getSavedFiles()]);
+            } else {
+                return $this->asJson([
+                    'success' => false,
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+                ]);
+            }
+        }
     }
 
     public function actionGetPhotos()
