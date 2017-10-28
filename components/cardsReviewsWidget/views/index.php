@@ -9,15 +9,15 @@ $reviews = $dataProvider->getModels();
 <?php foreach ($reviews as $review):?>
     <div class="block-reviews <?=!($settings['without_header']??false)?'':'without_header'?>" data-reviews_id="<?=$review->id?>" data-type="review">
         <?php if(!($settings['without_header']??false)):?>
-            <div class="block-review-post" style="margin-top: 20px; border-bottom: solid 1px #D3E4FF; padding-bottom: 23px;">
-                <div class="rating-r bg-r<?=$review->post->rating?>"><?=$review->post->rating?></div>
-                <div class="block-info-review main-pjax">
-                    <a href="<?=Url::to(['post/index', 'url' => $review->post['url_name'], 'id' => $review->post['id']])?>">
+            <a href="<?=Url::to(['post/index', 'url' => $review->post['url_name'], 'id' => $review->post['id']])?>">
+                <div class="block-review-post" style="border-bottom: solid 1px #D3E4FF; padding: 20px;">
+                    <div class="rating-r bg-r<?=$review->post->rating?>"><?=$review->post->rating?></div>
+                    <div class="block-info-review main-pjax">
                         <p class="user-name"><?=\yii\helpers\Html::encode($review->post->data)?></p>
-                    </a>
-                    <div class="date-time-review"><?=implode(', ',ArrayHelper::getColumn($review['post']['categories'],'name')) ?></div>
+                        <div class="date-time-review"><?=implode(', ',ArrayHelper::getColumn($review['post']['categories'],'name')) ?></div>
+                    </div>
                 </div>
-            </div>
+            </a>
         <?php endif;?>
         <div class="review-header">
             <a href="/id<?=$review->user->id?>"><img class="profile-icon" src="<?=$review->user->getPhoto()?>"></a>

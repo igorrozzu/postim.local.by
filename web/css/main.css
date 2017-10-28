@@ -52,9 +52,10 @@ body{
     background-color: #3c5994;
     align-items: center;
     justify-content: space-between;
-    padding-left: 40px;
+    padding-left: 20px;
 }
 .header-menu-title{
+    padding: 22px 0;
     font-size: 18px;
     color: #ffffff;
 }
@@ -218,7 +219,7 @@ body{
 }
 .menu-btn{
     float: left;
-    padding: 20px 10px 20px 0;
+    padding: 20px 10px;
     cursor: pointer;
     width: 25px;
     height: 20px;
@@ -273,7 +274,7 @@ body{
     float: right;
     align-content: center;
     cursor: pointer;
-    padding: 15px 10px 15px 15px;
+    padding: 15px;
 }
 .btn-notice-unactive:after{
     background-image: url("../img/icon-btn-notice.png");
@@ -307,7 +308,7 @@ body{
     float: right;
     height: 40px;
     width: 40px;
-    padding: 10px 0 10px 15px;
+    padding: 10px 15px;
     cursor: pointer;
 }
 .profile-icon-menu img{
@@ -324,7 +325,7 @@ body{
     color: #ffffff;
     height: 60px;
     cursor: pointer;
-    padding-left: 5px;
+    padding: 0 15px;
 }
 .sign_in_btn:hover{
     color: #a7c9ff;
@@ -401,7 +402,7 @@ body:not(.open-search) .search{
     width: calc(100% - 403px);
 }
 .open-search .authorized .search_block{
-    width: calc(100% - 462px);
+    width: calc(100% - 456px);
 }
 .block-auto-complete-search{
     max-height: calc(100% - 70px);
@@ -1398,7 +1399,7 @@ a.btn-show-more{
 }
 .btn-sort,
 .btn-sort a{
-    padding: 0 40px;
+    padding: 0 20px;
     font-family: PT_Sans;
     text-decoration: none;
     font-size: 16px;
@@ -2228,6 +2229,9 @@ a.btn-show-more{
     height: 40px;
     border-radius: 20px;
 }
+.block-reviews a {
+    text-decoration: none;
+}
 .without_header.block-reviews .review-header .profile-icon{
     width: 60px;
     height: 60px;
@@ -2276,7 +2280,7 @@ a.btn-show-more{
 .review-help-text{
     position: absolute;
     line-height: 20px;
-    left: 50px;
+    left: 70px;
     display: none;
 }
 .block-btn-circle-share, .block-btn-social-share{
@@ -2352,13 +2356,13 @@ a.btn-show-more{
     content: url("../img/open-share-icon.png");
 }
 .block-review-content,.block-review-post{
-    margin: 0 20px 0 20px;
+    padding: 0 20px;
     display: flex;
     position: relative;
     overflow: hidden;
 }
 .without_header .block-review-content{
-    margin: 0 20px 0 40px;
+    padding: 0 20px 0 40px;
 }
 .rating-r{
     height: 40px;
@@ -2378,6 +2382,7 @@ a.btn-show-more{
     line-height: 24px;
     color: #444444;
     width: calc(100% - 60px);
+    overflow: hidden;
 }
 .review-photo{
     margin-top: 20px;
@@ -3676,17 +3681,18 @@ a .btn-sort-reviews.active
     cursor: pointer;
 }
 .right-arrow{
-    background: url("../img/right-arrow-icon.png") no-repeat;
-    margin-right: 30px;
     height: 13px;
     width: 9px;
+    padding: 24px 30px;
+}
+.right-arrow:after {
+    content: url("../img/right-arrow-icon.png");;
 }
 .notif-header-menu{
     display: flex;
     height: 60px;
     background-color: #3c5994;
     align-items: center;
-    padding-left: 30px;
 }
 .notif-item{
     display: flex;

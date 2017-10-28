@@ -1,8 +1,8 @@
 .header,
 .header-selected-city,
 .btns-map{
-    width: calc(100% - 20px);
-    margin: 0 10px;
+    width: calc(100%);
+    margin: 0;
 }
 .block-content{
     width: calc(100% - 20px);
@@ -155,6 +155,9 @@
     display: inherit;
     width: calc(100% - 77px);
 }
+.open-search .authorized .search_block {
+    width: calc(100% - 141px);
+}
 .container-info-btn{
     flex-direction: column;
     align-items: flex-start;
@@ -184,6 +187,14 @@
 }
 .photo-not-found:first-child {
     margin-top: 0px;
+}
+.profile-icon-menu{
+    padding: 13px 10px 12px 10px;
+}
+
+.open-search .search_block{
+    margin: 10px 10px 0 0;
+    width: calc(100% - 28px);
 }
 
 /*Cтили toastMessage*/

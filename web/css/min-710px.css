@@ -6,10 +6,10 @@
 }
 .search_block{
     padding-right: 2px;
-    width: calc(100% - 317px);
+    width: calc(100% - 347px);
 }
 .authorized .search_block{
-    width: calc(100% - 377px);
+    width: calc(100% - 397px);
 }
 .h1-c{
     font-size: 30px;
@@ -32,7 +32,7 @@
     display: none;
 }
 .open-search .search_block{
-    width: calc(100% - 13px);
+    width: calc(100% - 36px);
 }
 .open-search .search{
     display: inherit;
@@ -40,7 +40,7 @@
 }
 
 .open-search .authorized .search_block{
-    width: calc(100% - 138px);
+    width: calc(100% - 163px);
 }
 
 .autocomplete-result-search ul li{
@@ -190,7 +190,7 @@
     margin-left: 0px;
 }
 .without_header .block-review-content{
-    margin: 0 20px 0 20px;
+    padding: 0 20px;
 }
 .without_header .review-photo{
     margin-left: 20px;

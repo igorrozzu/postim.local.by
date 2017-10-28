@@ -14,18 +14,18 @@
     display: flex;
     padding-left:10px;
     float: right;
-    margin: 10px 0 0 0;
+    margin: 10px 15px 0 0;
     background-color: white;
     height: 40px;
     border-radius: 40px;
-    width: calc(100% - 13px);
+    width: calc(100% - 33px);
 }
 .open-search .search{
     display: inherit;
     width: calc(100% - 77px);
 }
 .open-search .authorized .search_block{
-    width: calc(100% - 111px);
+    width: calc(100% - 156px);
 }
 .h1-c,
 .h1-v{
@@ -94,7 +94,7 @@
 .profile-icon-menu{
     width: 35px;
     height: 35px;
-    padding: 13px 0 12px 15px;
+    padding: 13px 15px 12px 15px;
 }
 .profile-icon-menu img{
     width: 35px;
@@ -175,9 +175,6 @@
     align-items:flex-start;
     padding-bottom: 5px;
     padding-top: 20px;
-}
-.btn-sort {
-    padding: 0 35px;
 }
 
 .btn-sort-reviews{
