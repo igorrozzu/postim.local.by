@@ -11,10 +11,10 @@
     margin-left: 0px;
 }
 .search_block{
-    width: calc(100% - 315px);
+    width: calc(100% - 345px);
 }
 .authorized .search_block{
-    width: calc(100% - 375px);
+    width: calc(100% - 395px);
 }
 
 .select-city{

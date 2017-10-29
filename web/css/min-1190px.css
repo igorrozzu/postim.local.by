@@ -1,11 +1,11 @@
 .header,
 .header-selected-city,
 .btns-map{
-    width: calc(100% - 60px);
-    margin: 0 30px;
+    width: calc(100% - 35px);
+    margin: 0 15px 0 20px;
 }
 .open-search .search_block{
-    width: calc(100% - 134px);
+    width: calc(100% - 169px);
 }
 .a-auto-complete,
 .block-auto-complete-header{
@@ -30,7 +30,7 @@
 .btn_add_place:after{
     width: 31px;
     height: 31px;
-    background-image: url("../img/add-place-icon.png");
+    background: url("../img/add-place-icon.png");
     content: '';
     background-position: 0px 0px;
 }
@@ -154,5 +154,5 @@
 }
 
 .open-search .authorized .search_block{
-    width: calc(100% - 192px);
+    width: calc(100% - 222px);
 }
