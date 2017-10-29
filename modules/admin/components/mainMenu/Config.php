@@ -54,7 +54,7 @@ class Config{
             [
                 'name' => 'Бизнес-аккаунты',
                 'icon' => 'icon-bz-ac-adm',
-                'url' => '',
+                'url' => '/admin/biz',
                 'id' => 'bs-ac'
             ],
 

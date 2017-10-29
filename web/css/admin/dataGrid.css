@@ -1,0 +1,110 @@
+.grid-view{
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.grid-view .pagination{
+    display: flex;
+    margin-top: 20px;
+}
+
+
+.pagination > li > a,
+.pagination > li > span{
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+
+.pagination > li {
+    display: inline;
+}
+
+.pagination > li:first-child > a, .pagination > li:first-child > span {
+    margin-left: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.pagination > li:last-child > a, .pagination > li:last-child > span {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
+}
+
+
+.grid-view .--custom-tbl-p{
+    width: 940px;
+    margin-top: 30px;
+}
+
+.grid-view .--header-p{
+    background-color: #626e87;
+}
+
+.grid-view .--header-p{
+    color: white;
+    font-family: PT_Sans;
+    font-size: 14px;
+    text-align: left;
+    padding-left: 20px;
+    cursor: default;
+}
+.grid-view .--header-p a{
+    height: 50px;
+    align-items: center;
+    display: flex;
+    color: white;
+    text-decoration: none;
+    font-family: PT_Sans;
+    font-size: 14px;
+}
+.--custom-tbl-p .filters td{
+    background-color: white;
+}
+.--custom-tbl-p .filters input{
+    width: 100%;
+    border: none;
+    height: 30px;
+    padding-left: 20px;
+}
+
+.--custom-tbl-p tbody tr{
+    height: 50px;
+    background-color: white;
+    border-top: 1px solid #a7c9ff;
+    padding-left: 20px;
+
+}
+.--custom-tbl-p tbody tr td{
+    display: table-cell;
+    height: 50px;
+    vertical-align: middle;
+    font-family: PT_Sans;
+    font-size: 14px;
+}
+
+.--custom-tbl-p tbody tr td{
+    padding-left: 20px;
+}
+

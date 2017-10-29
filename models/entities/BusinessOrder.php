@@ -1,0 +1,80 @@
+<?php
+
+namespace app\models\entities;
+
+use app\models\Posts;
+use app\models\User;
+use Yii;
+
+/**
+ * This is the model class for table "tbl_business_order".
+ *
+ * @property integer $user_id
+ * @property integer $post_id
+ * @property string $position
+ * @property integer $status
+ */
+class BusinessOrder extends \yii\db\ActiveRecord
+{
+    private $mapStatusText = [
+        10 => 'Бизнес-аккаунт',
+        20 => 'Заявка на доблавление',
+    ];
+
+    public static $BIZ_AC = 10;
+    public static $BIZ_ORDER = 20;
+
+
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'tbl_business_order';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['user_id', 'post_id', 'status'], 'required'],
+            [['position'], 'required','message'=>'Введите должность'],
+            [['phone'], 'required','message'=>'Введите телефон'],
+            [['user_id', 'post_id', 'status'], 'integer'],
+            [['position','phone'], 'string', 'max' => 100],
+            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'unique', 'targetAttribute' => ['user_id', 'post_id'], 'message'=>'Заявка уже отправлена'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'user_id' => 'id user',
+            'post_id' => 'id места',
+            'position' => 'Должность',
+            'phone' => 'Телефон',
+            'status' => 'Статус',
+        ];
+    }
+
+    public function getStatusText(int $status){
+
+        return $this->mapStatusText[$status]??'';
+    }
+
+    public function beforeValidate()
+    {
+        if(!$this->date){
+            $this->date = time();
+        }
+
+        return parent::beforeValidate();
+    }
+}

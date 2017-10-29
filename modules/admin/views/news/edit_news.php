@@ -2,7 +2,7 @@
 use \yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 
-$this->title = 'Добавить новость на Postim.by';
+$this->title = 'Редактирование новости на Postim.by';
 
 Pjax::begin([
     'timeout' => 60000,
@@ -15,7 +15,7 @@ Pjax::begin([
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
-    <h1 class="h1-c" style="margin-top: 35px">Добавить новость</h1>
+    <h1 class="h1-c" style="margin-top: 35px">Редактирование новости</h1>
     <?php $form = ActiveForm::begin(['id' => 'form-add-news', 'enableClientScript' => false,'action'=>'/admin/news/save','options'=>['pjax-container-add-news'=>'true']]) ?>
 
     <div style="display: none">
@@ -61,7 +61,7 @@ Pjax::begin([
 
     <div class="container-add-place">
         <div class="container-description">
-            <div class="description-header">Описание</div>
+            <div class="description-header">Редактировать</div>
             <div class="block-write-editors">
 
                 <?php if($news['data']):?>

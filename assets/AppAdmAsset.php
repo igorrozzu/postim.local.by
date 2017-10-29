@@ -31,6 +31,7 @@ class AppAdmAsset extends AssetBundle
         ['css/max-480px.css','media'=>'(max-width:480px)'],
         'css/main-media.css',
         'css/admin/main.css',
+        'css/admin/dataGrid.css',
     ];
     public $js = [
         'js/uploads.js',
