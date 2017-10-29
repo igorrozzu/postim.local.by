@@ -877,8 +877,7 @@ class PostController extends MainController
     public function actionGetPhotoInfo()
     {
         $params = [
-            'src' => Yii::$app->request->get('src', ''),
-            'description' => Yii::$app->request->get('description', '')
+            'src' => Yii::$app->request->get('src', '')
         ];
 
         return $this->renderAjax('__form_photo_info', $params);

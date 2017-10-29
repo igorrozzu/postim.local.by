@@ -682,7 +682,6 @@ var Post_add = (function (window, document, undefined, $) {
 					var $containerNewPhoto = $('<div></div>');
 					var $blockInput = $('<div id="">' +
 								'<input class="src" name="photos[link][src]" type="text">' +
-								'<input class="desc" name="photos[link][description]" type="text">' +
 								'<input class="confirm" name="photos[link][confirm]" type="text">' +
 						'</div>');
 
@@ -700,8 +699,6 @@ var Post_add = (function (window, document, undefined, $) {
 							$blockInput.attr('id', 'inputs_'+that.photos.getHashCode(response.data[i].link));
 							$blockInput.find('.src')
 								.attr('name', 'photos[' + response.data[i].link + '][src]');
-							$blockInput.find('.desc')
-								.attr('name', 'photos[' + response.data[i].link + '][description]');
 							$blockInput.find('.confirm')
 								.attr('name', 'photos[' + response.data[i].link + '][confirm]');
 							$containerBlockInputs.append($blockInput.clone());
@@ -728,20 +725,36 @@ var Post_add = (function (window, document, undefined, $) {
 				editPhoto:function (id) {
 					var __$containerForms = $('.container-blackout-popup-window');
 					var $inputSrc = $('#inputs_'+id).find('.src');
-					var $inputDesc = $('#inputs_'+id).find('.desc');
 
 					__$containerForms.html(that.photos.getFormForEditPhoto(id, {
-						src: $inputSrc.val(),
-						description: $inputDesc.val()
+						src: $inputSrc.val()
 					}))
 						.show();
 
+
+					$(__$containerForms.find('.src').selector).on('keydown',function () {
+						var $input =  $(this);
+						setTimeout(function () {
+							var value = $input.val();
+                            if(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(value) || value.length == 0){
+                                __$containerForms.find('.src').removeClass('error')
+                            }else {
+                                __$containerForms.find('.src').addClass('error')
+                            }
+                        },10);
+
+                    });
 					$('.save-info').click(function () {
-						$inputSrc.attr('value',__$containerForms.find('.src').val());
-						$inputSrc.val(__$containerForms.find('.src').val());
-						$inputDesc.attr('value',__$containerForms.find('.description').val());
-						$inputDesc.val(__$containerForms.find('.description').val());
-						__$containerForms.hide();
+						var value = __$containerForms.find('.src').val();
+
+						if(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(value) || value.length == 0){
+                            $inputSrc.attr('value',value);
+                            $inputSrc.val(value);
+                            __$containerForms.hide();
+						}else {
+                            __$containerForms.find('.src').addClass('error')
+						}
+
 					})
 
 				},
@@ -762,8 +775,7 @@ var Post_add = (function (window, document, undefined, $) {
 						type: "get",
 						async:false,
 						data: {
-							src: info.src,
-							description:info.description
+							src: info.src
 						},
 						success: function (response) {
 							form = response;
@@ -874,7 +886,7 @@ var Post_add = (function (window, document, undefined, $) {
 						that.validation.dopErrors.push({message: 'Отметьте место на карте, перетащите и кликните по значку'});
 					}
 
-					if ($('input[name="city[]"]', '.btn-selected-option').length == 0) {
+					if ($('input[name="city"]', '.btn-selected-option').length == 0) {
 						is_valid = false;
 						that.validation.dopErrors.push({message: 'Выберите город'});
 					}
