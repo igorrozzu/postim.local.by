@@ -1,8 +1,11 @@
-.header,
-.header-selected-city,
-.btns-map{
+.header {
     width: calc(100% - 35px);
     margin: 0 15px 0 20px;
+}
+.header-selected-city,
+.btns-map {
+    width: calc(100% - 60px);
+    margin: 0 30px;
 }
 .open-search .search_block{
     width: calc(100% - 169px);

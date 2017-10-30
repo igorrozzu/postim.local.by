@@ -126,6 +126,10 @@
 .icon-filter span{
     display: none;
 }
+.icon-filter {
+    padding: 0 10px;
+    margin-right: -10px;
+}
 .social-btn-share p{
     display: none;
 }

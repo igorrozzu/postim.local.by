@@ -55,9 +55,12 @@ body{
     padding-left: 20px;
 }
 .header-menu-title{
-    padding: 22px 0;
+    padding: 22px 20px;
     font-size: 18px;
     color: #ffffff;
+}
+.notif-header-menu .header-menu-title {
+    padding: 22px 0px;
 }
 .left-arrow:hover{
     cursor: pointer;
@@ -1324,16 +1327,19 @@ a.btn-show-more{
 .btn-filter:hover.text{
     color: #788399;
 }
-.btn-filter:last-child{
-    margin-right: 0px;
-}
+
 .icon-filter:after{
     content: '';
     width: 19px;
     height: 19px;
     background-image: url("../img/icons_filters.png");
     background-position: 0 0;
-    margin-left: 20px;
+}
+.icon-filter span {
+    margin-right: 20px;
+}
+.icon-filter {
+    margin: 0;
 }
 .btn-filter:hover.icon-filter:after,
 .btn-filter.active.icon-filter:after{
@@ -1342,7 +1348,6 @@ a.btn-show-more{
     height: 19px;
     background-image: url("../img/icons_filters.png");
     background-position: 19px 0;
-    margin-left: 20px;
 }
 .btn-filter.active{
     color: #4b98df;
@@ -2896,8 +2901,11 @@ a .btn-sort-reviews.active
 }
 .official_answer{
     margin-top: 20px;
-    padding-right: 20px;
+    padding: 0 20px;
     background-color: #f7f8fd;
+}
+.container-news .official_answer {
+    padding: 0 20px 0 0;
 }
 .official_answer .comment-content{
     border-top: 0px;
@@ -4861,7 +4869,7 @@ input.search-selected-field{
 .hidden-complaint-message{display: none;}
 .sign-official-answer{
     margin: -30px 0px 50px 20px;
-    width: 230px;
+    width: 183px;
     text-align: center;
 }
 
@@ -5943,15 +5951,14 @@ form .field-input:first-child{
 }
 
 .not-found-block{
-    margin-top: 100px;
     display: flex;
     flex-direction: column;
 }
-.h1-nf{
-    font-family: PT_Sans;
-    font-size: 72px;
-    color: #788399;
-    margin-bottom: 15px;
+.nf-gif{
+    width: 600px;
+    height: 562px;
+    background-image: url("/img/404.gif");
+    margin: -140px 0 -140px -120px;
 }
 .nf-desc{
     font-family: PT_Sans;

@@ -201,8 +201,8 @@
 .official_answer .profile-commentator{
     margin-left: 0px;
 }
-.official_answer {
-    padding-left: 20px;
+.container-news .official_answer {
+    padding: 0 20px;
 }
 .nf-desc{
     font-size: 20px;
