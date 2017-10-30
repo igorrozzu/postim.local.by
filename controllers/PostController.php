@@ -9,6 +9,7 @@ use app\components\Pagination;
 use app\models\AddPost;
 use app\models\City;
 use app\models\Comments;
+use app\models\entities\BusinessOrder;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
 use app\models\entities\GalleryComplaint;
@@ -39,14 +40,20 @@ class PostController extends MainController
 
     public function actionIndex(int $id, string $photo_id = null, int $review_id = null)
     {
-        $post = Posts::find()->with(['info',
+        $query = Posts::find()
+        ->where(['id'=>$id]);
+        $with = ['info',
             'workingHours'=>function ($query) {
                 $query->orderBy(['day_type'=>SORT_ASC]);
             },
-            'city', 'totalView',
-            'hasLike','onlyOnceCategories.category'])
-        ->where(['id'=>$id])
-        ->one();
+            'city', 'totalView','onlyOnceCategories.category'];
+
+        if(!Yii::$app->user->isGuest){
+            $with[]='hasLike';
+            $with[]='hasSendBs';
+        }
+        $post = $query->with($with)->one();
+
 
         $user_id = Yii::$app->user->isGuest ? null : Yii::$app->user->getId();
 
@@ -882,4 +889,43 @@ class PostController extends MainController
 
         return $this->renderAjax('__form_photo_info', $params);
     }
+
+    public function actionGetFormBusinessAccount(){
+
+        if(!Yii::$app->user->isGuest){
+            $businessOrder = new BusinessOrder();
+            $businessOrder->user_id = Yii::$app->user->getId();
+            $businessOrder->post_id = Yii::$app->request->get('post_id',null);
+
+            return $this->renderAjax('__form_add_business_account',['businessOrder'=>$businessOrder]);
+        }else{
+            throw new NotFoundHttpException();
+        }
+
+    }
+
+    public function actionSaveBusinessAccount(){
+
+        if(Yii::$app->request->isPost){
+            $businessOrder = new BusinessOrder();
+            $businessOrder->status = BusinessOrder::$BIZ_ORDER;
+
+            if($businessOrder->load(Yii::$app->request->post()) && $businessOrder->save()){
+                return $this->asJson(['success'=>true,'message'=>'Спасибо за вашу заявку. Она будет рассмотренав ближайшее время, после чего наш менеджер свяжется с вами']);
+            }else{
+
+                $message = $businessOrder->getFirstError('user_id');
+                if($message){
+                    $newBusinessOrder = new BusinessOrder();
+                    $newBusinessOrder->user_id = $businessOrder->user_id;
+                    $newBusinessOrder->post_id = $businessOrder->post_id;
+                    $businessOrder = $newBusinessOrder;
+                }
+                $html = $this->renderPartial('__form_add_business_account',['businessOrder'=>$businessOrder]);
+                return $this->asJson(['success'=>false,'html'=>$html,'message'=>$message]);
+            }
+        }
+
+    }
+
 }

@@ -41,6 +41,7 @@ class BusinessOrder extends \yii\db\ActiveRecord
         return [
             [['user_id', 'post_id', 'status'], 'required'],
             [['position'], 'required','message'=>'Введите должность'],
+            [['full_name'], 'required','message'=>'Введите имя и фамилию'],
             [['phone'], 'required','message'=>'Введите телефон'],
             [['user_id', 'post_id', 'status'], 'integer'],
             [['position','phone'], 'string', 'max' => 100],

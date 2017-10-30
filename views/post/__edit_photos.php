@@ -2,7 +2,6 @@
 	<?php foreach ($photos as $photo):?>
 		<div id="inputs_<?=md5($photo['link'])?>">
 			<input class="src" name="photos[<?=$photo['link']?>][src]" type="text" value="<?=$photo->source?>">
-			<input class="desc" name="photos[<?=$photo['link']?>][description]" type="text">
             <?php if(strpos($post['cover'],$photo['link'])!==false):?>
                 <input class="confirm" name="photos[<?=$photo['link']?>][confirm]" type="text" value="true">
             <?php else:?>

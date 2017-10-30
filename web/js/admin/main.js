@@ -26,6 +26,13 @@ var AdminMain = (function (window, document, undefined,$) {
                 $(document).off("submit", "#pjax-container-add-news form");
                 $(document).on("submit", "#pjax-container-add-news form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-add-news"});});
 
+                $(document).off('click','#pjax-container-add-biz a');
+                $(document).pjax("#pjax-container-add-biz a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-add-biz"});
+
+                $(document).off("submit", "#pjax-container-add-biz form");
+                $(document).on("submit", "#pjax-container-add-biz form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-add-biz"});});
+
+
 
             }
 

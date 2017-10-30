@@ -315,7 +315,6 @@
 					$arr = [];
 					$arr['link'] = $link;
 					$arr['src'] = $photo['src'];
-					$arr['description'] = $photo['description'];
 					$arr['confirm'] = $photo['confirm'];
 					if($arr['confirm']=='true'){
 						$this->cover = $link;

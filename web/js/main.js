@@ -123,6 +123,21 @@ var Main = (function (window, document, undefined,$) {
 
                 return  main.getFormComplaint.cache['Complaint'];
             },
+
+            getFormEntities:function (url) {
+                var form = null;
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    async:false,
+                    success: function (response) {
+                        form = response;
+                    }
+                });
+
+                return  form;
+            },
+
             closeFormComplaint:function () {
                 $('.container-popup-window.form-complaint').remove();
                 $('.container-blackout-popup-window').hide();

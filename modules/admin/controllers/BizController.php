@@ -124,6 +124,7 @@ class BizController extends AdminDefaultController
                 }break;
                 case 'confirm':{
                     $biz_account->status = BusinessOrder::$BIZ_AC;
+                    $biz_account->date = time();
                     $biz_account->update();
                     $biz = new OwnerPost([
                         'owner_id' => $biz_account->user_id,

@@ -296,11 +296,11 @@ Pjax::begin([
     </div>
 
     <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post_id'=>$post->id])?>
-
-    <div class="block-info-for-owner">
-        <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и отвечайте на отзывы от имени компании.<br>
-            Рекламируйтесь бесплатно размещая свои скидки для пользователей Postim.by</p>
+    <?php if(!$post->has_send_bs):?>
+    <div class="block-info-for-owner" data-post_id="<?=$post->id?>">
+        <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и отвечайте на отзывы от имени компании.</p>
     </div>
+    <?php endif;?>
     <div class="margin-top60"></div>
 </div>
 <?php if(Yii::$app->request->get('review_id',false)):?>

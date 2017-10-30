@@ -4030,6 +4030,12 @@ a .btn-sort-reviews.active
     color: #6b778f;
     font-size: 15px;
 }
+.field-input .help-block{
+    margin-top: 5px;
+}
+.field-input .help-block:empty{
+    margin-top: 0px;
+}
 .btn-red{
     background-color: #cf4d43;
     box-shadow: 0 2px 0 #a82828;

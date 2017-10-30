@@ -33,7 +33,7 @@ $currentUrl = yii\helpers\Url::current([], true);
                 'label' => 'Имя и фамилия',
                 'headerOptions' => ['class' => '--header-p'],
                 'value' => function($data){
-                    return $data->user->name.' '.$data->user->surname;
+                    return $data->full_name;
                 },
             ],
             [

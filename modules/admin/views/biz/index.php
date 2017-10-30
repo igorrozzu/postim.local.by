@@ -35,8 +35,12 @@ Pjax::begin([
                 ->label(false) ?>
         </div>
 
-
-
+        <div class="block-field-setting">
+            <?= $form->field($biz_account, 'full_name')
+                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
+                    'placeholder' => 'Введите имя и фамилию', 'value' => $biz_account['full_name']])
+                ->label(false) ?>
+        </div>
 
         <div class="block-field-setting">
             <?= $form->field($biz_account, 'position')

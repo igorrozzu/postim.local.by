@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\Helper;
+use app\models\entities\BusinessOrder;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
 use app\models\entities\OwnerPost;
@@ -28,6 +29,7 @@ class Posts extends \yii\db\ActiveRecord
 
     public $is_like = false;
     public $is_open = false;
+    public $has_send_bs = false;
     public $current_working_hours = null;
     public $timeOpenOrClosed = null;
 
@@ -190,6 +192,12 @@ class Posts extends \yii\db\ActiveRecord
             ->onCondition([FavoritesPost::tableName() . '.user_id' => Yii::$app->user->id]);
     }
 
+    public function getHasSendBs()
+    {
+        return $this->hasOne(BusinessOrder::className(), ['post_id' => 'id'])
+            ->onCondition([BusinessOrder::tableName() . '.user_id' => Yii::$app->user->id]);
+    }
+
     public function getInfo()
     {
         return $this->hasOne(PostInfo::className(), ['post_id' => 'id']);
@@ -227,6 +235,10 @@ class Posts extends \yii\db\ActiveRecord
             ($this->isRelationPopulated('hasLike') && !empty($this->hasLike))
         ) {
             $this->is_like = true;
+        }
+
+        if($this->isRelationPopulated('hasSendBs') && !empty($this->hasSendBs)){
+            $this->has_send_bs = true;
         }
 
         if ($this->coordinates) {

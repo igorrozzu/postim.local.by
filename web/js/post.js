@@ -611,9 +611,111 @@ var Post = (function (window, document, undefined,$) {
                     prevPhoto: function () {
                         _container.state.$leftSliderButton.trigger('click');
                     },
+
                 };
 
                 return that
+            },
+
+            BusinessAccount: function () {
+
+                var businessAccount = {
+
+                    init: function () {
+                        $(document).ready(function () {
+                            $(document).off('click','.block-info-for-owner')
+                                .on('click','.block-info-for-owner',function () {
+                                    if(!main.User.is_guest){
+                                        var post_id = $(this).data('post_id');
+                                        businessAccount.initForm(post_id);
+                                    }else {
+                                        main.showErrorAut('Незарегистрированные пользователи не могут оставить заявку на бизнес-аккаунт.');
+                                    }
+
+                                })
+                        });
+                    },
+
+                    initForm:function (post_id) {
+                        var html = main.getFormEntities('/post/get-form-business-account?post_id='+post_id);
+                        $('.container-blackout-popup-window').html(html).show();
+
+                        businessAccount.initEventForm();
+
+                    },
+
+                    clearEventsForm:function () {
+
+                        $('.container-popup-window')
+                            .off('click','.close-business-account-btn');
+                        $('.container-popup-window')
+                            .off('click','.create-business-account-btn');
+
+                    },
+                    initEventForm: function () {
+
+                        $('.container-popup-window').off('click','.close-business-account-btn')
+                            .on('click','.close-business-account-btn',function () {
+                                businessAccount.closeForm()
+                            });
+
+                        $('.container-popup-window').off('click','.create-business-account-btn')
+                            .on('click','.create-business-account-btn',function () {
+                                var $form = $(this).parents('form');
+                                businessAccount.sendForm($form);
+                            });
+
+
+                    },
+
+                    sendForm : function ($form) {
+                        var data = $form.serialize();
+
+                        $.post('/post/save-business-account',data,function (response) {
+
+                            if(response.success){
+
+                                $().toastmessage('showToast', {
+                                    text: response.message,
+                                    stayTime:10000,
+                                    type: 'success'
+                                });
+
+                                businessAccount.closeForm();
+
+                            }else {
+                                if(response.html){
+
+                                    if(response.message){
+                                        $().toastmessage('showToast', {
+                                            text: response.message,
+                                            stayTime:5000,
+                                            type: 'error'
+                                        });
+                                    }
+
+                                    $('.container-blackout-popup-window').html(response.html).show();
+                                    businessAccount.initEventForm();
+                                }
+                            }
+
+                        })
+
+                    },
+
+
+                    closeForm:function () {
+
+                        $('.form-business-account').remove();
+                        $('.container-blackout-popup-window').hide();
+                        businessAccount.clearEventsForm();
+                    }
+
+
+
+                }
+                return businessAccount;
+
             }
 
         };
@@ -630,3 +732,6 @@ post.info.init();
 
 post.photos = post.Photos();
 post.photos.init();
+
+post.business = post.BusinessAccount();
+post.business.init();
