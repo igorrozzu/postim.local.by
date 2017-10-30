@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\behaviors\notification\handlers\NewReview;
+use app\models\entities\Complaints;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
 use app\models\entities\OwnerPost;
@@ -158,8 +159,11 @@ class Reviews extends \yii\db\ActiveRecord
 	}
 
 	public function getHasComplaint(){
-		return $this->hasOne(ReviewsComplaint::className(), ['reviews_id' => 'id'])
-			->onCondition([ReviewsComplaint::tableName() . '.user_id' => Yii::$app->user->getId()]);
+		return $this->hasOne(Complaints::className(), ['entities_id' => 'id'])
+			->onCondition([
+			    Complaints::tableName() . '.user_id' => Yii::$app->user->getId(),
+                Complaints::tableName() . '.type' => Complaints::$REVIEWS_TYPE
+            ]);
 	}
 
 	public function getTotalComments(){

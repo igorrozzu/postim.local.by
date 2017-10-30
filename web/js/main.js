@@ -106,22 +106,58 @@ var Main = (function (window, document, undefined,$) {
                     range.select();
                 }
             },
-            getFormComplaint:function () {
-                if(main.getFormComplaint.cache==undefined)
-                    main.getFormComplaint.cache = {};
 
-                if(main.getFormComplaint.cache['Complaint']==undefined){
+            initFormComplaint:function (id,type,callBack) {
+                if(main.initFormComplaint.cache==undefined)
+                    main.initFormComplaint.cache = {};
+
+                if(main.initFormComplaint.cache['Complaint']==undefined){
                     $.ajax({
                         url: '/site/get-form-complaint',
                         type: "GET",
                         async:false,
                         success: function (response) {
-                            main.getFormComplaint.cache['Complaint']=response;
+                            main.initFormComplaint.cache['Complaint']=response;
                         }
                     });
                 }
 
-                return  main.getFormComplaint.cache['Complaint'];
+                $('.container-blackout-popup-window').html(main.initFormComplaint.cache['Complaint']).show();
+                $('.container-blackout-popup-window .form-complaint .complain-btn').on('click',function () {
+                    var message = $('.container-blackout-popup-window .form-complaint input[name="complain"]').val();
+                    $.ajax({
+                        url: '/site/add-complain',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: id,
+                            message: message,
+                            type:type
+                        },
+                        success: function (response) {
+                            if (response.success){
+                                $().toastmessage('showToast', {
+                                    text: response.message,
+                                    stayTime:5000,
+                                    type: 'success'
+                                });
+
+                                if(callBack != undefined){
+                                    callBack.call();
+                                }
+
+                                main.closeFormComplaint();
+                            } else {
+                                $().toastmessage('showToast', {
+                                    text: response.message,
+                                    stayTime:8000,
+                                    type: 'error'
+                                });
+                            }
+                        }
+                    });
+                })
+
             },
 
             getFormEntities:function (url) {

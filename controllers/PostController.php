@@ -12,7 +12,6 @@ use app\models\Comments;
 use app\models\entities\BusinessOrder;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
-use app\models\entities\GalleryComplaint;
 use app\models\entities\OwnerPost;
 use app\models\moderation_post\PostsModeration;
 use app\models\Posts;
@@ -591,32 +590,6 @@ class PostController extends MainController
                 'photoId' => $photo_id
             ]
         ]);
-    }
-
-    public function actionComplainGallery()
-    {
-        $response = new \stdClass();
-        $response->success = true;
-        $response->message = 'Спасибо, что помогаете!<br>Ваша жалоба будет рассмотрена модераторами';
-
-        if (!Yii::$app->user->isGuest) {
-            $photoId = Yii::$app->request->post('id', null);
-            $message = Yii::$app->request->post('message', null);
-            $galleryComplaint = new GalleryComplaint([
-                'photo_id' => $photoId,
-                'message' => $message,
-                'user_id' => Yii::$app->user->id
-            ]);
-
-            if ($galleryComplaint->validate() && $galleryComplaint->save()) {
-                return $this->asJson($response);
-            } else {
-                $nameAttribute = key($galleryComplaint->getErrors());
-                $response->success = false;
-                $response->message = $galleryComplaint->getFirstError($nameAttribute);
-            }
-            return $this->asJson($response);
-        }
     }
 
     public function actionGetPlaceForMap(string $id)

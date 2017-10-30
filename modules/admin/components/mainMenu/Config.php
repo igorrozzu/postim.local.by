@@ -40,7 +40,7 @@ class Config{
                     ],
                     [
                         'name' => 'Жалобы',
-                        'url' => '/'
+                        'url' => '/admin/moderation/complaints'
                     ],
 
                 ],

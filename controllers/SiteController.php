@@ -10,13 +10,13 @@ use app\components\customUrlManager\NewsUrlRule;
 use app\components\customUrlManager\ReviewsUrlRule;
 use app\components\MailSender;
 use app\components\Pagination;
+use app\models\entities\Complaints;
 use app\models\Feedback;
 use app\models\LoginModel;
 use app\models\News;
 use app\models\Posts;
 use app\models\PostsSearch;
 use app\models\Reviews;
-use app\models\ReviewsComplaint;
 use app\models\ReviewsLike;
 use app\models\ReviewsSearch;
 use app\models\search\NewsSearch;
@@ -349,32 +349,6 @@ class SiteController extends MainController
 		return $response;
 	}
 
-	public function actionComplainReviews(){
-		$response = new \stdClass();
-		$response->status='OK';
-		$response->message='Спасибо, что помогаете!<br>Ваша жалоба будет рассмотрена модераторами';
-		Yii::$app->response->format = Response::FORMAT_JSON;
-
-		if(!Yii::$app->user->isGuest){
-			$reviews_id =Yii::$app->request->post('id',null);
-			$message = Yii::$app->request->post('message',null);
-
-			$reviewsComplaint = new ReviewsComplaint(['reviews_id' => $reviews_id,
-				'message'=>$message,
-				'user_id'=>Yii::$app->user->getId()
-			]);
-
-			if ($reviewsComplaint->validate() && $reviewsComplaint->save()) {
-				return $response;
-			} else {
-				$name_attribute = key($reviewsComplaint->getErrors());
-				$response->status = 'error';
-				$response->message = $reviewsComplaint->getFirstError($name_attribute);
-			}
-			return $response;
-		}
-	}
-
 	public function actionVseOtzyvy(int $review_id = null, int $photo_id = null)
 	{
 		$request = Yii::$app->request;
@@ -580,6 +554,38 @@ class SiteController extends MainController
 
     public function actionError(){
         return $this->render('404');
+    }
+
+    public function actionAddComplain(){
+
+        $response = new \stdClass();
+        $response->success = true;
+        $response->message = 'Спасибо, что помогаете!<br>Ваша жалоба будет рассмотрена модераторами';
+
+        if (!Yii::$app->user->isGuest) {
+
+            $id = Yii::$app->request->post('id', null);
+            $message = Yii::$app->request->post('message', null);
+            $type = Yii::$app->request->post('type', null);
+
+            $complaint = new Complaints([
+                'entities_id' => $id,
+                'data' => $message,
+                'user_id' => Yii::$app->user->id,
+                'type' => $type,
+                'status' => Complaints::$MODERATION_STATUS
+            ]);
+
+            if ($complaint->validate() && $complaint->save()) {
+                return $this->asJson($response);
+            } else {
+                $nameAttribute = key($complaint->getErrors());
+                $response->success = false;
+                $response->message = $complaint->getFirstError($nameAttribute);
+            }
+            return $this->asJson($response);
+        }
+
     }
 
 }

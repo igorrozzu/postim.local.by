@@ -287,40 +287,13 @@ var Comments = (function (window, document, undefined,$) {
 				});
 			},
 			showFormComplaint:function () {
-				var html = main.getFormComplaint();
 				var id_comment = $(this).parents('.container-comment').data('comment_id');
 				var entity_id =parseInt($(this).parents('.comments_entity_container').data('entity_id'));
 				var $containerReplace = $(this).parents('.comments_entity_container');
-				$('.container-blackout-popup-window').html(html).show();
-				$('.container-blackout-popup-window .form-complaint .complain-btn').off('click')
-					.on('click',function () {
-						var message = $('.container-blackout-popup-window .form-complaint input[name="complain"]').val();
-						$.ajax({
-							url: '/comments/complain-comment',
-							type: "POST",
-							dataType: "json",
-							data:{id:id_comment,message:message},
-							success: function (response) {
-								if(response.status=='error'){
-									$().toastmessage('showToast', {
-										text: response.message,
-										stayTime:5000,
-										type:'error'
-									});
-
-								}else {
-									main.closeFormComplaint();
-
-									$().toastmessage('showToast', {
-										text: response.message,
-										stayTime:8000,
-										type:'success'
-									});
-									comments.reloadComments(entity_id,$containerReplace);
-								}
-							}
-						});
-					})
+				var typeComment = 3;
+                main.initFormComplaint(id_comment,typeComment,function () {
+                    comments.reloadComments(entity_id,$containerReplace);
+                });
 
 			}
 

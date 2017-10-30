@@ -416,37 +416,10 @@ var Post = (function (window, document, undefined,$) {
 								main.showErrorAut('Незарегистрированные пользователи не могут жаловаться на фото');
                                 return;
                             }
-                            var html = main.getFormComplaint();
+
                             var photo_id = _container.data[_container.currentItem].id;
-                            $('.container-blackout-popup-window').html(html).show();
-                            $('.container-blackout-popup-window .form-complaint .complain-btn').on('click',function () {
-                                var message = $('.container-blackout-popup-window .form-complaint input[name="complain"]').val();
-                                $.ajax({
-                                    url: '/post/complain-gallery',
-                                    type: "POST",
-                                    dataType: "json",
-                                    data: {
-                                        id: photo_id,
-                                        message: message
-                                    },
-                                    success: function (response) {
-                                        if (response.success){
-                                            $().toastmessage('showToast', {
-                                                text: response.message,
-                                                stayTime:5000,
-                                                type: 'success'
-                                            });
-                                            main.closeFormComplaint();
-                                        } else {
-                                            $().toastmessage('showToast', {
-                                                text: response.message,
-                                                stayTime:8000,
-                                                type: 'error'
-                                            });
-                                        }
-                                    }
-                                });
-                            })
+                            var type_photo = 1;
+                            main.initFormComplaint(photo_id,type_photo,undefined);
                         });
                     },
 

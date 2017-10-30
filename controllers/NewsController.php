@@ -7,7 +7,6 @@ use app\components\commentsWidget\CommentsNewsWidget;
 use app\components\Helper;
 use app\components\MainController;
 use app\components\Pagination;
-use app\models\CommentsComplaint;
 use app\models\Comments;
 use app\models\CommentsLike;
 use app\models\entities\FavoritesNews;

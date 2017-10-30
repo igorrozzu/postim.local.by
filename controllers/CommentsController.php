@@ -6,7 +6,6 @@ use app\components\commentsWidget\CommentsNewsWidget;
 use app\components\commentsWidget\CommentsPostsWidget;
 use app\components\MainController;
 use app\components\Pagination;
-use app\models\CommentsComplaint;
 use app\models\Comments;
 use app\models\CommentsLike;
 use app\models\entities\OwnerPost;
@@ -212,32 +211,6 @@ class CommentsController extends MainController
             $response->count = $comment->like;
         }
         return $response;
-    }
-
-    public function actionComplainComment()
-    {
-        $response = new \stdClass();
-        $response->status = 'OK';
-        $response->message = 'Спасибо, что помогаете!<br>Ваша жалоба будет рассмотрена модераторами';
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        if (!Yii::$app->user->isGuest) {
-            $comment_id = Yii::$app->request->post('id', null);
-            $message = Yii::$app->request->post('message', null);
-            $commentComplaint = new CommentsComplaint(['comment_id' => $comment_id,
-                'message' => $message,
-                'user_id' => Yii::$app->user->id
-            ]);
-
-            if ($commentComplaint->validate() && $commentComplaint->save()) {
-                return $response;
-            } else {
-                $name_attribute = key($commentComplaint->getErrors());
-                $response->status = 'error';
-                $response->message = $commentComplaint->getFirstError($name_attribute);
-            }
-            return $response;
-        }
     }
 
 }

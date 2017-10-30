@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\behaviors\notification\handlers\NewUnderComment;
 use app\behaviors\notification\handlers\NewCommentToReview;
+use app\models\entities\Complaints;
 use Yii;
 use yii\bootstrap\Html;
 use yii\helpers\HtmlPurifier;
@@ -242,7 +243,11 @@ class Comments extends \yii\db\ActiveRecord
 
     public function getComplaintUser()
     {
-        return $this->hasOne(CommentsComplaint::className(), ['comment_id' => 'id'])
-            ->where(['user_id' => Yii::$app->user->id]);
+        return $this->hasOne(Complaints::className(), ['entities_id' => 'id'])
+            ->onCondition([
+                Complaints::tableName() . '.user_id' => Yii::$app->user->getId(),
+                Complaints::tableName() . '.type' => Complaints::$COMMENTS_TYPE
+            ]);
+
     }
 }

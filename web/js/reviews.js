@@ -279,39 +279,12 @@ var Reviews = (function (window, document, undefined,$) {
 
 			showFormComplaint:function () {
 				var $btn_complaint = $(this);
-				var html = main.getFormComplaint();
 				var id_reviews = $btn_complaint.parents('.block-reviews').attr('data-reviews_id');
+				var type_reviews = 2;
 
-				$('.container-blackout-popup-window').html(html).show();
-				$('.container-blackout-popup-window .form-complaint .complain-btn').off('click')
-					.on('click',function () {
-						var message = $('.container-blackout-popup-window .form-complaint input[name="complain"]').val();
-						$.ajax({
-							url: '/site/complain-reviews',
-							type: "POST",
-							dataType: "json",
-							data:{id:id_reviews,message:message},
-							success: function (response) {
-								if(response.status=='error'){
-									$().toastmessage('showToast', {
-										text: response.message,
-										stayTime:5000,
-										type:'error'
-									});
-
-								}else {
-									main.closeFormComplaint();
-
-									$().toastmessage('showToast', {
-										text: response.message,
-										stayTime:8000,
-										type:'success'
-									});
-									$btn_complaint.remove();
-								}
-							}
-						});
-					})
+                main.initFormComplaint(id_reviews,type_reviews,function () {
+                    $btn_complaint.remove();
+                });
 
 			},
 
