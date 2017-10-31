@@ -250,4 +250,17 @@ class Comments extends \yii\db\ActiveRecord
             ]);
 
     }
+
+    public function getLink(){
+        $link = '';
+
+        if($this->isRelatedWithNews()){
+            $link = "/{$this->news->url_name}-n{$this->news->id}?comments_id={$this->id}";
+        }elseif ($this->isRelatedWithReviews()){
+            $link = "/{$this->review->post->url_name}-p{$this->review->post->id}?review_id={$this->review->id}";
+        }
+
+
+        return $link;
+    }
 }

@@ -171,6 +171,12 @@ class Reviews extends \yii\db\ActiveRecord
 			->onCondition(['type_entity'=>2])->count();
 	}
 
+	public function getLink(){
+        $link = "/{$this->post->url_name}-p{$this->post->id}?review_id={$this->id}";
+        return $link;
+    }
+
+
     public function load($data, $formName = null)
 	{
 		$result = parent::load($data, $formName);

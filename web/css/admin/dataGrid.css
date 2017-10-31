@@ -89,6 +89,10 @@
     padding-left: 20px;
 }
 
+.--custom-tbl-p .filters td:last-child input{
+    width: calc(100% - 20px);
+}
+
 .--custom-tbl-p tbody tr{
     height: 50px;
     background-color: white;
@@ -106,5 +110,14 @@
 
 .--custom-tbl-p tbody tr td{
     padding-left: 20px;
+}
+
+.--custom-tbl-p tbody .data-link{
+    color: #788399;
+    text-decoration: underline;
+}
+.--custom-tbl-p tbody .data-link:hover{
+    color: #4b98df;
+    text-decoration: none;
 }
 

@@ -90,6 +90,11 @@ class Gallery extends \yii\db\ActiveRecord
         return self::PHOTO_FOLDER . $this->post_id . DIRECTORY_SEPARATOR . $this->link;
     }
 
+    public function getLink(){
+        $link = "/{$this->post->url_name}-p{$this->post->id}?photo_id={$this->id}-{$this->status}";
+        return $link;
+    }
+
     public function getUserPhoto()
     {
         return self::PHOTO_FOLDER . $this->user_id . DIRECTORY_SEPARATOR . 'pho';
