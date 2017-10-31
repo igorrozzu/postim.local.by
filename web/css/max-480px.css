@@ -1,8 +1,11 @@
-.header,
-.header-selected-city,
-.btns-map{
+.header {
     width: calc(100%);
     margin: 0;
+}
+.header-selected-city,
+.btns-map {
+    width: calc(100% - 20px);
+    margin: 0 10px;
 }
 .block-content{
     width: calc(100% - 20px);
@@ -121,12 +124,8 @@
 .block-sort{
     width: 100%;
     display: flex;
-    justify-content: space-between;
 }
 .btn-sort{
-    margin-right: 0px;
-}
-.btn-filter{
     margin-right: 0px;
 }
 .left-menu.filter .btn-filter{
@@ -155,8 +154,17 @@
     display: inherit;
     width: calc(100% - 77px);
 }
+.btn-notice {
+    padding: 15px 10px;
+}
+.btn_add_place {
+    padding: 0 10px;
+}
 .open-search .authorized .search_block {
-    width: calc(100% - 141px);
+    width: calc(100% - 131px);
+}
+.sign_in_btn {
+    padding: 0 10px;
 }
 .container-info-btn{
     flex-direction: column;

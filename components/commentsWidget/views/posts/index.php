@@ -7,7 +7,7 @@
         <textarea placeholder="Что скажете по этому поводу?" class="textarea-comment textarea-main-comment"></textarea>
     </div>
     <?php if($is_official_user):?>
-        <div class="sign-official-answer">Закрепить как офиц. ответ</div>
+        <div class="sign-official-answer">Официальный ответ</div>
     <?php endif;?>
     <div class="large-wide-button main"><p>Написать комментарий</p></div>
 </div>
