@@ -2904,7 +2904,10 @@ a .btn-sort-reviews.active
     padding: 0 20px;
     background-color: #f7f8fd;
 }
-.container-news .official_answer {
+.block-reviews.without_header .official_answer {
+    padding: 0 20px;
+}
+.block-reviews .official_answer {
     padding: 0 20px 0 0;
 }
 .official_answer .comment-content{

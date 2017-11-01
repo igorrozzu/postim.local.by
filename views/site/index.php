@@ -74,12 +74,8 @@ $descriptionText = 'Подробная карта '.Yii::t('app/parental_slope',
 
 </div>
 <div class="clear-fix"></div>
-<?= ListCityWidget::widget(['settings' => [
-        'id' => 'content_list_city',
-        'is_menu' => false
-]]);?>
 
-<div class="block-content">
+<div class="block-content" style="margin-top: 30px;">
     <div class="description-text">
         <?=$descriptionText?>
     </div>

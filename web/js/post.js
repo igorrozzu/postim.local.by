@@ -344,7 +344,7 @@ var Post = (function (window, document, undefined,$) {
                             if(_container.state.$photoBox === null) {
                                 _container.state.$photoBox = $('.photo-popup');
                                 _container.state.$wrapPhotoBox = $('.photo-popup .photo-wrap');
-                                _container.state.$sourceBox = $('.photo-popup-content .photo-source');
+                                _container.state.$sourceBox = $('.wrap-photo-info .photo-source');
                                 _container.state.$titleBox = $('.photo-popup .photo-header a');
                                 _container.state.$leftSliderButton = $('.photo-left-arrow div');
                                 _container.state.$rightSliderButton = $('.photo-right-arrow div');
@@ -356,7 +356,7 @@ var Post = (function (window, document, undefined,$) {
                         setSourceInPhoto: function () {
                             var source = _container.data[_container.currentItem].source;
                             if (source !== null && source !== '') {
-                                _container.state.$sourceBox.children().attr('href', source);
+                                _container.state.$sourceBox.children('a').attr('href', source);
                                 _container.state.$sourceBox.show();
                             } else {
                                 _container.state.$sourceBox.hide();
