@@ -3,6 +3,7 @@
 namespace app\models\entities;
 
 use app\models\Posts;
+use app\models\Reviews;
 use app\models\ReviewsGallery;
 use app\models\User;
 use Yii;
@@ -145,6 +146,30 @@ class Gallery extends \yii\db\ActiveRecord
             ->orderBy(['id' => SORT_DESC])
             ->limit($limit)
             ->all();
+    }
+
+
+    public function delete()
+    {
+        $review_id = null;
+        if($reviewsGallery = ReviewsGallery::find()->where(['gallery_id'=>$this->id])->one()){
+            $review_id = $reviewsGallery->review_id;
+        }
+
+        $result = parent::delete();
+
+        if($result && $review_id){
+            $this->reCalcPhotoForReviews($review_id);
+        }
+
+        return $result;
+    }
+
+    public function reCalcPhotoForReviews($id){
+        $reviews = Reviews::find()->where(['id'=>$id])->one();
+        if($reviews){
+            $reviews->reCalcCountPhotos();
+        }
     }
 
 }

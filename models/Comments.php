@@ -246,7 +246,7 @@ class Comments extends \yii\db\ActiveRecord
         return $this->hasOne(Complaints::className(), ['entities_id' => 'id'])
             ->onCondition([
                 Complaints::tableName() . '.user_id' => Yii::$app->user->getId(),
-                Complaints::tableName() . '.type' => Complaints::$COMMENTS_TYPE
+                Complaints::tableName() . '.type' => Complaints::$TYPE['comments']
             ]);
 
     }

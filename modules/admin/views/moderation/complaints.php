@@ -35,7 +35,7 @@ Pjax::begin([
                 'attribute' => 'data',
                 'format' => 'raw',
                 'label' => 'Название',
-                'headerOptions' => ['width'=>'650px','class' => '--header-p'],
+                'headerOptions' => ['width'=>'550px','class' => '--header-p'],
                 'value'=>function($data){
                     return $data->getInfoForName();
                 }
@@ -50,10 +50,21 @@ Pjax::begin([
                     return "<a data-pjax=false target=\"_blank\" class='data-link' href='/id{$data->user->id}'>{$data->user->name} {$data->user->surname}</a>" ;
                 }
             ],
+
             [
                 'attribute' => 'status',
                 'format' => 'raw',
                 'label' => 'Статус',
+                'headerOptions' => ['class' => '--header-p'],
+                'value' => function($data){
+                    return $data->getStatus();
+                },
+            ],
+
+            [
+                'attribute' => null,
+                'format' => 'raw',
+                'label' => 'Действие',
                 'headerOptions' => ['class' => '--header-p'],
                 'value' => function($data){
                     return $data->getButtons();

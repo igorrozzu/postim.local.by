@@ -32,6 +32,12 @@ class Reviews extends \yii\db\ActiveRecord
 	public static $SCENARIO_ADD = 'add';
 	public static $SCENARIO_EDIT = 'edit';
 
+	public static $STATUS = [
+	    'confirm' => 1,
+	    'moderation' => 2,
+	    'private' => 3,
+    ];
+
     /**
      * @inheritdoc
      */
@@ -162,7 +168,7 @@ class Reviews extends \yii\db\ActiveRecord
 		return $this->hasOne(Complaints::className(), ['entities_id' => 'id'])
 			->onCondition([
 			    Complaints::tableName() . '.user_id' => Yii::$app->user->getId(),
-                Complaints::tableName() . '.type' => Complaints::$REVIEWS_TYPE
+                Complaints::tableName() . '.type' => Complaints::$TYPE['reviews']
             ]);
 	}
 
@@ -195,7 +201,16 @@ class Reviews extends \yii\db\ActiveRecord
 
 	}
 
-	public function afterFind()
+	public function afterDelete()
+    {
+        parent::afterDelete();
+
+        $this->reCalcCountReviews();
+        $this->reCalcRatingPlace();
+    }
+
+
+    public function afterFind()
 	{
 		parent::afterFind();
 
@@ -223,16 +238,23 @@ class Reviews extends \yii\db\ActiveRecord
 
 		$countReviewsUser = Reviews::find()
 			->where(['user_id'=>Yii::$app->user->getId()])
+            ->andWhere(['<>','status',self::$STATUS['private']])
 			->count();
 
 		$countReviewsPost = Reviews::find()
 			->where(['post_id'=>$this->post_id])
+            ->andWhere(['<>','status',self::$STATUS['private']])
 			->count();
 
 		Posts::updateAll(['count_reviews'=>$countReviewsPost],['id'=>$this->post_id]);
 		UserInfo::updateAll(['count_reviews'=>$countReviewsUser],['user_id'=>Yii::$app->user->getId()]);
 
 	}
+
+	public function reCalcCountPhotos(){
+        $countReviewsPhoto = ReviewsGallery::find()->where(['review_id'=>$this->id])->count();
+        Reviews::updateAll(['count_photos'=>$countReviewsPhoto],['id'=>$this->id]);
+    }
 
 	private function reCalcRatingPlace(){
 

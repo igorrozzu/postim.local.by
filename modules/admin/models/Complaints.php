@@ -9,6 +9,7 @@ use app\models\User;
 use Yii;
 use app\models\entities\Complaints as parentComplaints;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "tbl_complaints".
@@ -46,18 +47,33 @@ class Complaints extends parentComplaints
         switch ($this->type){
             case 1:{
 
-                $aLink = "<a data-pjax=false target=\"_blank\" class='data-link' href='{$this->photo->getLink()}'>{$this->data}</a>";
-                $this->tagName = $aLink;
+                if($this->photo){
+                    $aLink = "<a data-pjax=false target=\"_blank\" class='data-link' href='{$this->photo->getLink()}'>{$this->data} (Фото)</a>";
+                    $this->tagName = $aLink;
+                }else{
+                    $this->tagName = $this->data.' (удалено)';
+                }
+
+
 
             }break;
-            case 2:{
-                $aLink = "<a data-pjax=false target=\"_blank\" class='data-link' href='{$this->reviews->getLink()}'>{$this->data}</a>";
-                $this->tagName = $aLink;
+            case 2: {
+                if ($this->reviews) {
+                    $aLink = "<a data-pjax=false target=\"_blank\" class='data-link' href='{$this->reviews->getLink()}'>{$this->data} (Отзыв)</a>";
+                    $this->tagName = $aLink;
+                }else{
+                    $this->tagName = $this->data.' (удалено)';
+                }
+
             }break;
             case 3:{
+                if($this->comments){
+                    $aLink = "<a data-pjax=false target=\"_blank\" class='data-link' href='{$this->comments->getLink()}'>{$this->data} (Комментарий)</a>";
+                    $this->tagName = $aLink;
+                }else{
+                    $this->tagName = $this->data.' (удалено)';
+                }
 
-                $aLink = "<a data-pjax=false target=\"_blank\" class='data-link' href='{$this->comments->getLink()}'>{$this->data}</a>";
-                $this->tagName = $aLink;
 
             }break;
         }
@@ -67,24 +83,24 @@ class Complaints extends parentComplaints
 
         switch ($this->type) {
             case 1: {
-                return "<div>
-                        <a href='/admin/moderation/act-complaints?type={$this->type}&act=confirm' class='btn-moderation --confirm'></a>
-                        <a href='/admin/moderation/act-complaints?type={$this->type}&act=delete' class='btn-moderation --delete'></a>
+                return "<div class='complaints-container-btn'>
+                        <a title='Одобрить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=confirm' class='btn-moderation --confirm'></a>
+                        <a title='Удалить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=delete' class='btn-moderation --delete'></a>
                 </div>";
             }
                 break;
             case 2: {
-                return "<div>
-                        <a class='btn-moderation --confirm'></a>
-                        <a class='btn-moderation --delete'></a>
-                        <a class='btn-moderation --cancels'></a>
+                return "<div class='complaints-container-btn'>
+                        <a title='Одобрить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=confirm' class='btn-moderation --confirm'></a>
+                        <a title='Удалить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=delete' class='btn-moderation --delete'></a>
+                        <a title='Скрыть' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=delete' class='btn-moderation --cancels'></a>
                 </div>";
             }
                 break;
             case 3: {
-                return "<div>
-                        <a class='btn-moderation --confirm'></a>
-                        <a class='btn-moderation --delete'></a>
+                return "<div class='complaints-container-btn'>
+                        <a title='Одобрить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=confirm' class='btn-moderation --confirm'></a>
+                        <a title='Удалить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=delete' class='btn-moderation --delete'></a>
                 </div>";
             }
                 break;
@@ -102,6 +118,34 @@ class Complaints extends parentComplaints
 
     public function getComments(){
         return $this->hasOne(Comments::className(), ['id' => 'entities_id']);
+    }
+
+    public static function getModelByType($type):string {
+
+        switch ($type){
+            case 1 : {
+                return Gallery::className();
+            }break;
+
+            case 2 : {
+                return Reviews::className();
+            }break;
+
+            case 3 : {
+                return Comments::className();
+            }break;
+        }
+
+    }
+
+    public function getStatus(){
+        $labelStatus = [
+            1 => 'На модерации',
+            2 => 'Проверено'
+        ];
+
+        return $labelStatus[$this->status];
+
     }
 
 

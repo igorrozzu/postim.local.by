@@ -17,9 +17,11 @@ use Yii;
 class Complaints extends \yii\db\ActiveRecord
 {
 
-    public static $PHOTO_TYPE = 1;
-    public static $REVIEWS_TYPE = 2;
-    public static $COMMENTS_TYPE = 3;
+    public static $TYPE = [
+        'photo' => 1,
+        'reviews' => 2,
+        'comments' => 3,
+    ];
 
     public static $MODERATION_STATUS = 1;
     public static $VERIFIED_STATUS = 2;

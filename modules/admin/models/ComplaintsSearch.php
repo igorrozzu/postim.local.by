@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\models;
 
+use app\components\Pagination;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -38,7 +39,7 @@ class ComplaintsSearch extends Complaints
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,Pagination $pagination)
     {
         $query = Complaints::find();
 
@@ -46,9 +47,7 @@ class ComplaintsSearch extends Complaints
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 8,
-            ],
+            'pagination' => $pagination
         ]);
 
         $this->load($params);
