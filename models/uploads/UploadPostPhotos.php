@@ -50,7 +50,7 @@ class UploadPostPhotos extends Model
                 if (!is_dir($dir)) {
                     FileHelper::createDirectory($dir);
                 }
-                $headers = ['link', 'post_id', 'user_id', 'user_status', 'date'];
+                $headers = ['link', 'post_id', 'user_id', 'user_status','status', 'date'];
                 $rows = [];
                 $user = Yii::$app->user->identity;
                 foreach ($this->files as $file) {
@@ -62,6 +62,7 @@ class UploadPostPhotos extends Model
                             'post_id' => $this->postId,
                             'user_id' => $user->id,
                             'user_status' => $this->userStatus,
+                            'status' => $this->userStatus,
                             'date' => time(),
                         ];
                     }

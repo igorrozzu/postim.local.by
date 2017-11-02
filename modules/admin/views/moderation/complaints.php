@@ -1,7 +1,6 @@
 <?php
 
 use yii\grid\GridView;
-use yii\helpers\Html;
 use yii\widgets\Pjax;
 
 $currentUrl = yii\helpers\Url::current([], true);
@@ -12,9 +11,9 @@ $this->title = 'Модерация жалоб';
 Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => false,
-    'id' => 'pjax-container-moderation-confirm',
-    'linkSelector' => '#pjax-container-moderation-confirm a',
-    'formSelector' => '#pjax-container-moderation-confirm form',
+    'id' => 'pjax-container-moderation',
+    'linkSelector' => '#pjax-container-moderation a',
+    'formSelector' => '#pjax-container-moderation form',
 ]);
 
 ?>

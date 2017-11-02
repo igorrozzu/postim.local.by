@@ -83,14 +83,14 @@ class Complaints extends parentComplaints
 
         switch ($this->type) {
             case 1: {
-                return "<div class='complaints-container-btn'>
+                return "<div class='data-grid-container-btn'>
                         <a title='Одобрить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=confirm' class='btn-moderation --confirm'></a>
                         <a title='Удалить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=delete' class='btn-moderation --delete'></a>
                 </div>";
             }
                 break;
             case 2: {
-                return "<div class='complaints-container-btn'>
+                return "<div class='data-grid-container-btn'>
                         <a title='Одобрить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=confirm' class='btn-moderation --confirm'></a>
                         <a title='Удалить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=delete' class='btn-moderation --delete'></a>
                         <a title='Скрыть' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=delete' class='btn-moderation --cancels'></a>
@@ -98,7 +98,7 @@ class Complaints extends parentComplaints
             }
                 break;
             case 3: {
-                return "<div class='complaints-container-btn'>
+                return "<div class='data-grid-container-btn'>
                         <a title='Одобрить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=confirm' class='btn-moderation --confirm'></a>
                         <a title='Удалить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=delete' class='btn-moderation --delete'></a>
                 </div>";
@@ -140,8 +140,8 @@ class Complaints extends parentComplaints
 
     public function getStatus(){
         $labelStatus = [
-            1 => 'На модерации',
-            2 => 'Проверено'
+            1 => '<span class="moderation">На модерации</span>',
+            2 => '<span class="confirm">Проверено</span>'
         ];
 
         return $labelStatus[$this->status];

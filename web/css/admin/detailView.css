@@ -1,0 +1,30 @@
+.detail_view{
+    background-color: white;
+}
+.detail_view{
+    width: 940px;
+}
+.detail_view tr{
+    height: 40px;
+}
+.detail_view tr th{
+    text-align: start;
+    padding-left: 30px;
+    padding-right: 30px;
+
+    display: table-cell;
+    height: 50px;
+    vertical-align: middle;
+    font-family: PT_Sans;
+    font-size: 14px;
+}
+.detail_view tr td{
+    text-align: start;
+
+
+    display: table-cell;
+    height: 50px;
+    vertical-align: middle;
+    font-family: PT_Sans;
+    font-size: 14px;
+}

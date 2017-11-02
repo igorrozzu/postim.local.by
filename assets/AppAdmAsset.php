@@ -32,9 +32,12 @@ class AppAdmAsset extends AssetBundle
         'css/main-media.css',
         'css/admin/main.css',
         'css/admin/dataGrid.css',
+        'css/admin/detailView.css',
+        'css/admin/pop-up/pop-up.css',
     ];
     public $js = [
         'js/uploads.js',
+        'js/admin/pop-up.js',
         'js/preview-photo.js',
         'js/libs/Mobile-detect.js',
         'js/libs/jquery.toastmessage.js',

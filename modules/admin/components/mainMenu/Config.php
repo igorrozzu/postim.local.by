@@ -31,8 +31,8 @@ class Config{
                         'url' => '/'
                     ],
                     [
-                        'name' => 'Комментарии',
-                        'url' => '/'
+                        'name' => 'Фото',
+                        'url' => '/admin/moderation/photo'
                     ],
                     [
                         'name' => 'Места',

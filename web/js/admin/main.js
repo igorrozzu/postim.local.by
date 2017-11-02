@@ -33,6 +33,12 @@ var AdminMain = (function (window, document, undefined,$) {
                 $(document).on("submit", "#pjax-container-add-biz form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-add-biz"});});
 
 
+                $(document).off("submit", "#pjax-container-moderation form");
+                $(document).off('click','#pjax-container-moderation a');
+                $(document).pjax("#pjax-container-moderation a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-moderation"});
+                $(document).on("submit", "#pjax-container-moderation form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-moderation"});});
+
+
 
             }
 

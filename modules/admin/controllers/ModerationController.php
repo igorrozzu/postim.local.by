@@ -7,6 +7,8 @@ use app\modules\admin\components\AdminDefaultController;
 use app\modules\admin\models\Complaints;
 use app\modules\admin\models\ComplaintsSearch;
 use app\components\Pagination;
+use app\modules\admin\models\Gallery;
+use app\modules\admin\models\GallerySearch;
 use yii\db\ActiveRecord;
 use yii\web\Controller;
 
@@ -105,40 +107,59 @@ class ModerationController extends AdminDefaultController
 
     }
 
-    public function actionChangeStatus(){
+    public function actionPhoto(){
 
-        if(\Yii::$app->request->isPost){
-            $request =\Yii::$app->request;
+        $searchModel = new GallerySearch();
 
-            $complaints =  Complaints::find()->where([
-                'user_id'=>$request->post('user_id',null),
-                'entities_id'=>$request->post('entities_id',null),
-                'type'=>$request->post('type',null),
-            ])->one();
+        $pagination = new Pagination([
+            'pageSize' => \Yii::$app->request->get('per-page', 8),
+            'page' => \Yii::$app->request->get('page', 1)-1,
+            'route'=>'/admin/moderation/photo',
+            'selfParams'=>[
+                'sort'=>true,
+            ]
+        ]);
+        $dataProvider = $searchModel->search(\Yii::$app->request->get(),$pagination);
 
-            switch ($request->post('action',null)){
-                case Complaints::$VERIFIED_STATUS:{
+      return  $this->render('photo',['dataProvider'=>$dataProvider]);
+    }
+
+    public function actionActPhoto(){
+        $act = \Yii::$app->request->get('act');
+        $id = \Yii::$app->request->get('id');
+        $photo = Gallery::find()->where(['id'=>$id])->one();
+
+        if(in_array($act,['delete','confirm']) && $photo){
 
 
-                    if($complaints){
-                        $complaints->status = Complaints::$VERIFIED_STATUS;
-                        $complaints->update();
-                    }
-
-
-                }break;
-                case Complaints::$MODERATION_STATUS:{
-                    if($complaints){
-                        $complaints->status = Complaints::$MODERATION_STATUS;
-                        $complaints->update();
-                    }
-
-                }break;
+            switch ($act) {
+                case 'delete': {
+                    $photo->delete();
+                }
+                    break;
+                case 'confirm': {
+                    $photo->status = Gallery::$STATUS['confirm'];
+                    $photo->save();
+                }
+                    break;
             }
 
-            return $this->asJson(['success'=>true,'action'=>'update']);
-
         }
+
+
+        $searchModel = new GallerySearch();
+
+        $pagination = new Pagination([
+            'pageSize' => \Yii::$app->request->get('per-page', 8),
+            'page' => \Yii::$app->request->get('page', 1)-1,
+            'route'=>'/admin/moderation/photo',
+            'selfParams'=>[
+                'sort'=>true,
+            ]
+        ]);
+        $dataProvider = $searchModel->search(\Yii::$app->request->get(),$pagination);
+
+        return  $this->render('photo',['dataProvider'=>$dataProvider]);
 
     }
 
