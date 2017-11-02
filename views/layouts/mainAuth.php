@@ -19,7 +19,7 @@ use \app\components\ListCityWidget\ListCityWidget;
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
 AuthUserAsset::register($this);
-//проверка роли
+//условие проверки роли
 BusinessAccountAsset::register($this);
 //конец условия
 $user = Yii::$app->user->identity;
@@ -57,7 +57,7 @@ $countNotif = NotificationUser::getCountNotifications();
         </div>
         <div class="btn-notice btn-notice-<?=($countNotif === 0) ? 'un': '' ?>active">
             <?php if($countNotif > 0): ?>
-            <span class="count-notice"><?=$countNotif?></span>
+                <span class="count-notice"><?=$countNotif?></span>
             <?php endif;?>
         </div>
         <div class="main-pjax">
@@ -121,13 +121,13 @@ $countNotif = NotificationUser::getCountNotifications();
             </a>
         </div>-->
         <?php if(Yii::$app->user->identity->hasOwner()):?>
-        <div class="container-item-menu active closed">
-            <a class="close-right-menu-list section" data-id-open="business"><span><img src="/img/icon-business.png"></span>Бизнес акаунт</a>
-            <div class="menu-list open-list" id="business">
-                <a><span></span>Заказы промокодов</a>
-                <a><span></span>Заказы сертификатов</a>
+            <div class="container-item-menu active closed">
+                <a class="close-right-menu-list section" data-id-open="business"><span><img src="/img/icon-business.png"></span>Бизнес акаунт</a>
+                <div class="menu-list open-list" id="business">
+                    <a><span></span>Заказы промокодов</a>
+                    <a><span></span>Заказы сертификатов</a>
+                </div>
             </div>
-        </div>
         <?php endif;?>
 
         <div class="container-item-menu closed">

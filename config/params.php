@@ -16,4 +16,6 @@ return [
 
     'security.encryptionKey' => 'mc2447382@',
     'post.perPage' => 16,
+    'mainPage.postCount' => 3,
+    'mainPage.newsCount' => 3,
 ];

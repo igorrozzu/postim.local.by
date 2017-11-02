@@ -201,7 +201,8 @@
 .official_answer .profile-commentator{
     margin-left: 0px;
 }
-.container-news .official_answer {
+
+.block-reviews .official_answer  {
     padding: 0 20px;
 }
 .nf-desc{

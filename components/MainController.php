@@ -24,6 +24,7 @@ class MainController extends Controller
     public function getParamsForMainPage()
     {
         $request = Yii::$app->request;
+        $params = Yii::$app->params;
         $city_name = $request->get('city', ['name' => false])['name'];
 
         if (!$city_name) {
@@ -32,7 +33,7 @@ class MainController extends Controller
 
         $searchModel = new PostsSearch();
         $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 4),
+            'pageSize' => $request->get('per-page', $params['mainPage.postCount']),
             'page' => $request->get('page', 1) - 1,
         ]);
         $sort = [
@@ -46,7 +47,7 @@ class MainController extends Controller
 
         $NewsSearchModel = new NewsSearch();
         $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 4),
+            'pageSize' => $request->get('per-page', $params['mainPage.newsCount']),
             'page' => $request->get('page', 1) - 1,
         ]);
 
