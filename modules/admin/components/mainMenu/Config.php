@@ -15,10 +15,13 @@ class Config{
                         'url' => '/admin/news'
                     ],
                     [
-                        'name' => 'Добавить место\\Категорию',
-                        'url' => '/'
+                        'name' => 'Добавить категорию',
+                        'url' => '/admin/post/categories'
                     ],
-
+                    [
+                        'name' => 'Удалить категорию',
+                        'url' => '/admin/post/delete-categories'
+                    ],
                 ],
             ],
             [

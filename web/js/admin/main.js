@@ -32,6 +32,8 @@ var AdminMain = (function (window, document, undefined,$) {
                 $(document).off("submit", "#pjax-container-add-biz form");
                 $(document).on("submit", "#pjax-container-add-biz form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-add-biz"});});
 
+                $(document).off("submit", "#pjax-container-categories form");
+                $(document).on("submit", "#pjax-container-categories form", function (event) {$.pjax.submit(event, {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#pjax-container-categories"});});
 
                 $(document).off("submit", "#pjax-container-moderation form");
                 $(document).off('click','#pjax-container-moderation a');
