@@ -44,7 +44,7 @@ var AdminMain = (function (window, document, undefined,$) {
 
             },
 
-            initFormCancels:function (id,callBack) {
+            initFormCancels:function (callBack) {
                 if(adminMain.initFormCancels.cache==undefined)
                     adminMain.initFormCancels.cache = {};
 
@@ -66,36 +66,7 @@ var AdminMain = (function (window, document, undefined,$) {
 
                 $('.container-blackout-popup-window .form-cancels .js-cancels-btn').off('click').on('click',function () {
                     var message = $('.container-blackout-popup-window .form-cancels input[name="message"]').val();
-                    $.ajax({
-                        url: '/admin/moderation/cancels-reviews',
-                        type: "POST",
-                        dataType: "json",
-                        data: {
-                            id: id,
-                            message: message
-                        },
-                        success: function (response) {
-                            if (response.success){
-                                $().toastmessage('showToast', {
-                                    text: response.message,
-                                    stayTime:5000,
-                                    type: 'success'
-                                });
-
-                                if(callBack != undefined){
-                                    callBack.call();
-                                }
-
-                                $('.container-blackout-popup-window').html('').hide();
-                            } else {
-                                $().toastmessage('showToast', {
-                                    text: response.message,
-                                    stayTime:8000,
-                                    type: 'error'
-                                });
-                            }
-                        }
-                    });
+                    callBack(message);
                 })
 
             },

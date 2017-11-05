@@ -56,7 +56,10 @@ class PostController extends MainController
 
         $user_id = Yii::$app->user->isGuest ? null : Yii::$app->user->getId();
 
-        if ($post && ($post['status'] != 0 ? true : $post['user_id'] == $user_id)) {
+        if ($post &&
+            (($post['status'] != 0 ? true : $post['user_id'] == $user_id) ||
+                Yii::$app->user->isModerator())
+        ) {
 
             Helper::checkValidUrl('/' . Yii::$app->request->pathInfo,
                 Url::to(['post/index', 'url' => $post['url_name'], 'id' => $post['id']])
@@ -152,6 +155,50 @@ class PostController extends MainController
 
             return $this->render('index_moderation', [
                 'post' => $post,
+                'keyForMap' => $keyForMap
+            ]);
+        } else {
+            throw new NotFoundHttpException();
+        }
+    }
+
+    public function actionPostCompare(int $id,$main_id){
+
+        if(!Yii::$app->user->isModerator()){
+            throw new NotFoundHttpException();
+        }
+
+        $post = PostsModeration::find()->with([
+            'info',
+            'workingHours' => function ($query) {
+                $query->orderBy(['day_type' => SORT_ASC]);
+            },
+        ])
+            ->where(['main_id' => $main_id])
+            ->andWhere(['id' => $id])
+            ->one();
+
+        $mainPost = Posts::find()->with([
+            'info',
+            'workingHours' => function ($query) {
+                $query->orderBy(['day_type' => SORT_ASC]);
+            },
+        ])
+            ->where(['id' => $main_id])
+            ->one();
+
+
+        if ($post && $mainPost) {
+            Helper::addViews($post->totalView);
+
+            $queryPost = PostsModeration::find()->where(['tbl_posts_moderation.id' => $id])
+                ->prepare(Yii::$app->db->queryBuilder)
+                ->createCommand()->rawSql;
+            $keyForMap = Helper::saveQueryForMap($queryPost);
+
+            return $this->render('index_compare', [
+                'post' => $post,
+                'mainPost'=>$mainPost,
                 'keyForMap' => $keyForMap
             ]);
         } else {

@@ -99,7 +99,7 @@
 
 			}
 
-			$this->updateCountUserPlace();
+			self::updateCountUserPlace(Yii::$app->user->getId());
 			return true;
 		}
 
@@ -560,17 +560,17 @@
 			return $currentTime;
 		}
 
-		private function updateCountUserPlace(){
-			$user  = UserInfo::find()->where(['user_id' => Yii::$app->user->getId()])->one();
+		public static function updateCountUserPlace($user_id){
+			$user  = UserInfo::find()->where(['user_id' => $user_id])->one();
 
 			$count = Posts::find()
 				->joinWith('info')
-				->where("editors @> '[".Yii::$app->user->getId()."]'")
-				->andWhere(['status'=>1])
+				->where("editors @> '[".$user_id."]'")
+				->andWhere(['status'=>Posts::$STATUS['confirm']])
 				->count();
 
-			$countModeration = PostsModeration::find()->where(['user_id'=>Yii::$app->user->getId(),'status'=>0])->count();
-			$countModeration2 = Posts::find()->where(['user_id'=>Yii::$app->user->getId(),'status'=>0])->count();
+			$countModeration = PostsModeration::find()->where(['user_id'=>$user_id,'status'=>Posts::$STATUS['moderation']])->count();
+			$countModeration2 = Posts::find()->where(['user_id'=>$user_id,'status'=>Posts::$STATUS['moderation']])->count();
 
 			$user->count_places_added = $count;
 			$user->count_place_moderation = $countModeration + $countModeration2;

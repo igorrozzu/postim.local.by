@@ -39,7 +39,7 @@ class Config{
                     ],
                     [
                         'name' => 'Места',
-                        'url' => '/'
+                        'url' => '/admin/moderation/post'
                     ],
                     [
                         'name' => 'Жалобы',

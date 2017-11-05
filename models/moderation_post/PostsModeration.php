@@ -8,6 +8,7 @@ use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
 use app\models\TotalView;
 use app\models\UnderCategory;
+use app\models\User;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -36,6 +37,13 @@ class PostsModeration extends \yii\db\ActiveRecord
     public $lon;
     public $distance=null;
     public $distanceText = null;
+
+    public static $STATUS = [
+        'moderation' => 0,
+        'confirm' => 1,
+        'private'=> 2,
+    ];
+
 
     /**
      * @inheritdoc
@@ -91,6 +99,9 @@ class PostsModeration extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getUser(){
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
 	public function getPostUnderCategory(){
 		return $this->hasMany(PostModerationUnderCategory::className(), ['post_id' => 'id']);
 	}

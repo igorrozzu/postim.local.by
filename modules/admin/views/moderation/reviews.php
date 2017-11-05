@@ -36,13 +36,44 @@ Pjax::begin([
 
         $(document).off('click','.btn-moderation.--cancels')
             .on('click','.btn-moderation.--cancels',function () {
-                adminMain.initFormCancels($(this).data('id'),function () {
-                    $.pjax.reload({
-                        container: '#pjax-container-moderation',
-                        url: '<?=$currentUrl?>',
-                        push: false,
-                        replace: false
+                var id = $(this).data('id');
+                adminMain.initFormCancels(function (message) {
+
+                    $.ajax({
+                        url: '/admin/moderation/cancels-reviews',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: id,
+                            message: message
+                        },
+                        success: function (response) {
+                            if (response.success){
+                                $().toastmessage('showToast', {
+                                    text: response.message,
+                                    stayTime:5000,
+                                    type: 'success'
+                                });
+
+                                $.pjax.reload({
+                                    container: '#pjax-container-moderation',
+                                    url: '<?=$currentUrl?>',
+                                    push: false,
+                                    replace: false
+                                });
+
+
+                                $('.container-blackout-popup-window').html('').hide();
+                            } else {
+                                $().toastmessage('showToast', {
+                                    text: response.message,
+                                    stayTime:8000,
+                                    type: 'error'
+                                });
+                            }
+                        }
                     });
+
                 });
             });
 

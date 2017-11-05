@@ -78,8 +78,38 @@ Pjax::begin([
         $(document).off('click','.btn-moderation.--cancels')
             .on('click','.btn-moderation.--cancels',function () {
                 var $btn_confirm = $(this).parents('.data-grid-container-btn').find('.--confirm');
-                adminMain.initFormCancels($(this).data('id'),function () {
-                    $btn_confirm.trigger('click');
+                var id = $(this).data('id');
+                adminMain.initFormCancels(function (message) {
+
+                    $.ajax({
+                        url: '/admin/moderation/cancels-reviews',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: id,
+                            message: message
+                        },
+                        success: function (response) {
+                            if (response.success){
+                                $().toastmessage('showToast', {
+                                    text: response.message,
+                                    stayTime:5000,
+                                    type: 'success'
+                                });
+
+                                $btn_confirm.trigger('click');
+
+                                $('.container-blackout-popup-window').html('').hide();
+                            } else {
+                                $().toastmessage('showToast', {
+                                    text: response.message,
+                                    stayTime:8000,
+                                    type: 'error'
+                                });
+                            }
+                        }
+                    });
+
                 });
             });
     })

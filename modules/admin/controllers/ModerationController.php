@@ -3,6 +3,10 @@
 namespace app\modules\admin\controllers;
 
 use app\components\UserHelper;
+use app\models\AddPost;
+use app\models\Posts;
+use app\modules\admin\models\post\PostsModeration;
+use app\modules\admin\models\post\PostsModerationSearch;
 use app\modules\admin\models\Reviews;
 use app\modules\admin\components\AdminDefaultController;
 use app\modules\admin\models\Complaints;
@@ -302,6 +306,230 @@ class ModerationController extends AdminDefaultController
 
     public function actionGetFormCancels(){
         return $this->renderAjax('__cancels');
+    }
+
+
+    public function actionPost(){
+
+        $searchModel = new PostsModerationSearch();
+
+
+        $pagination = new Pagination([
+            'pageSize' => \Yii::$app->request->get('per-page', 8),
+            'page' => \Yii::$app->request->get('page', 1)-1,
+            'route'=>'/admin/moderation/post',
+        ]);
+
+        $dataProvider = $searchModel->search(\Yii::$app->request->get(),$pagination);
+
+
+        return $this->render('list_post',[
+            'searchModel'=>$searchModel,
+            'dataProvider'=>$dataProvider
+        ]);
+    }
+
+    public function actionActPost(){
+        $id = \Yii::$app->request->get('id',false);
+        $mainId = \Yii::$app->request->get('main_id',false);
+        $act = \Yii::$app->request->get('act',false);
+
+        if(in_array($act,['confirm','confirm10','delete'])){
+
+            switch ($act) {
+
+                case 'confirm': {
+
+                    if(!$mainId){
+
+                        $mainPost = Posts::find()->where(['id' => $id])->one();
+
+                        if($mainPost){
+                            $mainPost->status = Posts::$STATUS['confirm'];
+                            $mainPost->save();
+                        }
+
+                        AddPost::updateCountUserPlace($mainPost->user_id);
+
+                    }else{
+
+                        $newPost = PostsModeration::find()->where(['id'=>$id])->one();
+                        if($newPost->replacement($mainId)){
+                            $newPost->delete();
+                            AddPost::updateCountUserPlace($newPost->user_id);
+                        }
+
+                    }
+
+
+                }
+                    break;
+                case 'confirm10': {
+
+                    if(!$mainId){
+
+                        $mainPost = Posts::find()->where(['id' => $id])->one();
+
+                        if($mainPost){
+                            $mainPost->status = Posts::$STATUS['confirm'];
+                            if($mainPost->save()){
+                                AddPost::updateCountUserPlace($mainPost->user_id);
+
+                                $link = '/'.$mainPost->url_name.'-p'.$mainPost->id;
+                                $titlePost = $mainPost->data;
+                                $templateMessage = \Yii::$app->params['notificationTemplates']['post'];
+                                $message = sprintf($templateMessage['confirm'], $link, 10, 0.10,$titlePost);
+                                $messageEmail = sprintf($templateMessage['emailConfirm'], 10, 0.10,$titlePost);
+                                UserHelper::chargeBonuses($mainPost->user_id,10,0.10,
+                                    $message,$messageEmail,$link);
+
+                            }
+                        }
+
+                    }else{
+
+                        $newPost = PostsModeration::find()->where(['id'=>$id])->one();
+                        if($newPost->replacement($mainId)){
+
+                            $mainPost = Posts::find()->where(['id' => $mainId])->one();
+                            $link = '/'.$mainPost->url_name.'-p'.$mainPost->id;
+                            $titlePost = $mainPost->data;
+                            $templateMessage = \Yii::$app->params['notificationTemplates']['post'];
+                            $message = sprintf($templateMessage['confirmEdit'], $link, 5, 0.05,$titlePost);
+                            $messageEmail = sprintf($templateMessage['emailConfirmEdit'], 5, 0.05,$titlePost);
+                            UserHelper::chargeBonuses($newPost->user_id,5,0.05,
+                                $message,$messageEmail,$link);
+
+                            $newPost->delete();
+                            AddPost::updateCountUserPlace($newPost->user_id);
+
+                        }
+
+                    }
+
+                }
+                    break;
+                case 'delete': {
+
+                    if(!$mainId){
+
+                        $mainPost = Posts::find()->where(['id' => $id])->one();
+
+                        if($mainPost){
+                            $mainPost->delete();
+                            AddPost::updateCountUserPlace($mainPost->user_id);
+                        }
+
+
+
+                    }else{
+
+                        $post = PostsModeration::find()
+                            ->where(['main_id' => $mainId])
+                            ->andWhere(['id' => $id])
+                            ->one();
+
+                        if($post){
+                            $post->delete();
+                            AddPost::updateCountUserPlace($post->user_id);
+                        }
+
+                    }
+
+                }
+                    break;
+            }
+        }
+
+        $searchModel = new PostsModerationSearch();
+
+
+        $pagination = new Pagination([
+            'pageSize' => \Yii::$app->request->get('per-page', 8),
+            'page' => \Yii::$app->request->get('page', 1)-1,
+            'route'=>'/admin/moderation/post',
+        ]);
+
+        $dataProvider = $searchModel->search(\Yii::$app->request->get(),$pagination);
+
+
+        return $this->render('list_post',[
+            'searchModel'=>$searchModel,
+            'dataProvider'=>$dataProvider
+        ]);
+
+    }
+
+
+    public function actionCancelsPost(){
+        $response = new \stdClass();
+        $response->success = true;
+        $response->message = 'Место успешно скрыто';
+
+        $message = \Yii::$app->request->post('message',false);
+        $id = \Yii::$app->request->post('id',false);
+        $mainId = \Yii::$app->request->post('main_id',false);
+
+        if ($message && $id) {
+
+            if(!$mainId){
+
+                $mainPost = Posts::find()->where(['id' => $id])->one();
+
+                if($mainPost){
+                    $mainPost->status = Posts::$STATUS['private'];
+                    $mainPost->update();
+
+                    $link = '/'.$mainPost->url_name.'-p'.$mainPost->id;
+                    $titlePost = $mainPost->data;
+                    $templateMessage = \Yii::$app->params['notificationTemplates']['post'];
+                    $messageNotice = sprintf($templateMessage['cancel'], $link, $titlePost,$message);
+                    $messageEmail = sprintf($templateMessage['emailCancel'], $titlePost,$message);
+
+                    UserHelper::sendNotification($mainPost->user_id, [
+                        'type' => '',
+                        'data' => $messageNotice,
+                    ]);
+                    UserHelper::sendMessageToEmailCustomReward($mainPost->user,$messageEmail,$link);
+                    AddPost::updateCountUserPlace($mainPost->user_id);
+                }
+
+            }else{
+
+                $post = PostsModeration::find()
+                    ->where(['main_id' => $mainId])
+                    ->andWhere(['id' => $id])
+                    ->one();
+
+                if($post){
+                    $post->status = PostsModeration::$STATUS['private'];
+                    $post->update();
+
+
+                    $link = '/'.$post->url_name.'-p'.$post->main_id.'/moderation';
+                    $titlePost = $post->data;
+                    $templateMessage = \Yii::$app->params['notificationTemplates']['post'];
+                    $messageNotice = sprintf($templateMessage['cancel'], $link, $titlePost,$message);
+                    $messageEmail = sprintf($templateMessage['emailCancel'], $titlePost,$message);
+
+                    UserHelper::sendNotification($post->user_id, [
+                        'type' => '',
+                        'data' => $messageNotice,
+                    ]);
+                    UserHelper::sendMessageToEmailCustomReward($post->user,$messageEmail,$link);
+                    AddPost::updateCountUserPlace($post->user_id);
+
+                }
+            }
+
+
+        } else {
+            $response->success = false;
+            $response->message = 'Введите текст сообщения';
+        }
+
+        return $this->asJson($response);
+
     }
 
 

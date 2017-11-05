@@ -38,6 +38,13 @@ class Posts extends \yii\db\ActiveRecord
     public $distance = null;
     public $distanceText = null;
 
+
+    public static $STATUS = [
+        'moderation' => 0,
+        'confirm' => 1,
+        'private'=> 2,
+    ];
+
     /**
      * @inheritdoc
      */
@@ -263,7 +270,10 @@ class Posts extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        $this->coordinates = '(' . $this->lat . ',' . $this->lon . ')';
+        if(!$this->coordinates){
+            $this->coordinates = '(' . $this->lat . ',' . $this->lon . ')';
+        }
+
         return parent::beforeValidate();
     }
 
