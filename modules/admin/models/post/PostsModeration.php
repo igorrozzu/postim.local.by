@@ -40,6 +40,7 @@ class PostsModeration extends ParentsModel
         $mainPost->additional_address = $this->additional_address;
         $mainPost->coordinates = $this->coordinates;
         $mainPost->metro = $this->metro;
+        $mainPost->requisites = $this->requisites;
 
         if($mainPost->update()){
 
