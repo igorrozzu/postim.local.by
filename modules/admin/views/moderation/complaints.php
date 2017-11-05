@@ -73,6 +73,18 @@ Pjax::begin([
     ]);?>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $(document).off('click','.btn-moderation.--cancels')
+            .on('click','.btn-moderation.--cancels',function () {
+                var $btn_confirm = $(this).parents('.data-grid-container-btn').find('.--confirm');
+                adminMain.initFormCancels($(this).data('id'),function () {
+                    $btn_confirm.trigger('click');
+                });
+            });
+    })
+</script>
+
 <?php
 Pjax::end();
 ?>

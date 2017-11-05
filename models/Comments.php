@@ -175,8 +175,7 @@ class Comments extends \yii\db\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
 
         if ($this->getScenario() == self::$ADD_MAIN_COMMENT && $this->official_answer) {
-            OfficialAnswer::deleteAll(['user_id' => Yii::$app->user->getId(),
-                'entity_id' => $this->entity_id
+            OfficialAnswer::deleteAll(['entity_id' => $this->entity_id
             ]);
             $newOfficialAnswer = new OfficialAnswer(['comment_id' => $this->id,
                 'user_id' => Yii::$app->user->getId(),

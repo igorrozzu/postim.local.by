@@ -40,7 +40,63 @@ var AdminMain = (function (window, document, undefined,$) {
 
 
 
-            }
+            },
+
+            initFormCancels:function (id,callBack) {
+                if(adminMain.initFormCancels.cache==undefined)
+                    adminMain.initFormCancels.cache = {};
+
+                if(adminMain.initFormCancels.cache['Cancels']==undefined){
+                    $.ajax({
+                        url: '/admin/moderation/get-form-cancels',
+                        type: "GET",
+                        async:false,
+                        success: function (response) {
+                            adminMain.initFormCancels.cache['Cancels']=response;
+                        }
+                    });
+                }
+
+                $('.container-blackout-popup-window').html(adminMain.initFormCancels.cache['Cancels']).show();
+                $('.js-close-cancels').off('click').on('click',function () {
+                    $('.container-blackout-popup-window').html('').hide();
+                });
+
+                $('.container-blackout-popup-window .form-cancels .js-cancels-btn').off('click').on('click',function () {
+                    var message = $('.container-blackout-popup-window .form-cancels input[name="message"]').val();
+                    $.ajax({
+                        url: '/admin/moderation/cancels-reviews',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: id,
+                            message: message
+                        },
+                        success: function (response) {
+                            if (response.success){
+                                $().toastmessage('showToast', {
+                                    text: response.message,
+                                    stayTime:5000,
+                                    type: 'success'
+                                });
+
+                                if(callBack != undefined){
+                                    callBack.call();
+                                }
+
+                                $('.container-blackout-popup-window').html('').hide();
+                            } else {
+                                $().toastmessage('showToast', {
+                                    text: response.message,
+                                    stayTime:8000,
+                                    type: 'error'
+                                });
+                            }
+                        }
+                    });
+                })
+
+            },
 
         }
 

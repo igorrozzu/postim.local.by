@@ -16,7 +16,7 @@ Pjax::begin([
 
 <div class="margin-top60"></div>
 <div class="block-content">
-    <h1 class="h1-c" style="margin-top: 35px">Модерация-Фото</h1>
+    <h1 class="h1-c" style="margin-top: 35px">Модерация - Фото</h1>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

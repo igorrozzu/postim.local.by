@@ -54,6 +54,8 @@ Pjax::end();
 
 ?>
 
+<div class="container-blackout-popup-window" style="display: none"></div>
+
 <div class="block-footer">
     <div class="block-footer-content">
         <div class="block-footer-btn">

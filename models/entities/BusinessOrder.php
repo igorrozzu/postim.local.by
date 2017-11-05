@@ -78,4 +78,12 @@ class BusinessOrder extends \yii\db\ActiveRecord
 
         return parent::beforeValidate();
     }
+
+    public function getPost(){
+        return $this->hasOne(Posts::className(), ['id' => 'post_id']);
+    }
+
+    public function getUser(){
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
 }

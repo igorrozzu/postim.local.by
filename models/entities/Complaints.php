@@ -41,7 +41,8 @@ class Complaints extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'data', 'date', 'type','status','entities_id'], 'required'],
+            [['user_id','date','type','status','entities_id'], 'required'],
+            [['data'], 'required','message'=>'Опишите суть жалобы'],
             [['user_id', 'type'], 'integer'],
             [['data'], 'string'],
             [['date'], 'safe'],

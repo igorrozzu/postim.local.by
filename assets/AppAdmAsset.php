@@ -33,6 +33,7 @@ class AppAdmAsset extends AssetBundle
         'css/admin/main.css',
         'css/admin/dataGrid.css',
         'css/admin/detailView.css',
+        'css/admin/list-view.css',
         'css/admin/pop-up/pop-up.css',
     ];
     public $js = [

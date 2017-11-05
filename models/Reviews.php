@@ -33,9 +33,9 @@ class Reviews extends \yii\db\ActiveRecord
 	public static $SCENARIO_EDIT = 'edit';
 
 	public static $STATUS = [
-	    'confirm' => 1,
-	    'moderation' => 2,
-	    'private' => 3,
+	    'confirm' => 2,
+	    'moderation' => 0,
+	    'private' => 1,
     ];
 
     /**
@@ -230,6 +230,9 @@ class Reviews extends \yii\db\ActiveRecord
 			$this->date = time();
 			$this->user_id = Yii::$app->user->getId();
 		}
+		if($this->getScenario() == self::$SCENARIO_EDIT){
+		    $this->status = self::$STATUS['moderation'];
+        }
 
 		return parent::beforeValidate();
 	}
@@ -261,6 +264,7 @@ class Reviews extends \yii\db\ActiveRecord
     	$arrayRatings =  static::find()
 			->select('rating')
 			->where(['post_id'=>$this->post_id])
+			->andWhere(['<>','status',self::$STATUS['private']])
 			->asArray()
 			->all();
     	$arrayRatings = ArrayHelper::getColumn($arrayRatings,'rating');
@@ -328,7 +332,7 @@ class Reviews extends \yii\db\ActiveRecord
 							'user_id' => Yii::$app->user->getId(),
 							'link' => $photoLink,
 							'user_status' => 0,
-							'status' => 0,
+							'status' => Gallery::$STATUS['moderation'],
 							'date' => time(),
 							'source' => '',
 						]);

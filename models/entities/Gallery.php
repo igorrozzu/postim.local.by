@@ -25,6 +25,12 @@ class Gallery extends \yii\db\ActiveRecord
 {
     const USER_STATUS = ['owner' => 1, 'user' => 0];
     const PHOTO_FOLDER = '/post_photo/';
+
+    public static $STATUS = [
+        'moderation' => 0,
+        'confirm' => 1,
+    ];
+
     /**
      * @inheritdoc
      */

@@ -121,12 +121,25 @@
     text-decoration: none;
 }
 
+.prop-sb{
+    margin-left: 25px;
+    color:#788399;
+}
+
+.data-grid-container-btn a{
+    color: #788399;
+    text-decoration: none;
+}
+
 span.moderation{
     color: red;
 }
 
 span.confirm{
     color: green;
+}
+span.cancels{
+    color: blue;
 }
 
 .data-grid-container-btn{
@@ -137,6 +150,7 @@ span.confirm{
 .btn-moderation{
     display: flex;
     margin-right: 15px;
+    cursor: pointer;
 }
 
 .--confirm{

@@ -28,7 +28,7 @@ class Config{
                 'under' => [
                     [
                         'name' => 'Отзывы',
-                        'url' => '/'
+                        'url' => '/admin/moderation/reviews'
                     ],
                     [
                         'name' => 'Фото',

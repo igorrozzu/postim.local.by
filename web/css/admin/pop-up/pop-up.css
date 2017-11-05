@@ -349,6 +349,7 @@ img.mfp-img {
     .mfp-container {
         padding-left: 6px;
         padding-right: 6px; } }
-.image-link{
+.image-link,
+.parent-container img{
     cursor: zoom-in;
 }

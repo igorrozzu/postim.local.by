@@ -7,7 +7,7 @@ $reviews = $dataProvider->getModels();
 ?>
 
 <?php foreach ($reviews as $review):?>
-    <div class="block-reviews <?=!($settings['without_header']??false)?'':'without_header'?>" data-reviews_id="<?=$review->id?>" data-type="review">
+    <div style="<?=$review->status==\app\models\Reviews::$STATUS['private']?'background: #ffff66;':''?>" class="block-reviews <?=!($settings['without_header']??false)?'':'without_header'?>" data-reviews_id="<?=$review->id?>" data-type="review">
         <?php if(!($settings['without_header']??false)):?>
             <a href="<?=Url::to(['post/index', 'url' => $review->post['url_name'], 'id' => $review->post['id']])?>">
                 <div class="block-review-post" style="border-bottom: solid 1px #D3E4FF; padding: 20px;">

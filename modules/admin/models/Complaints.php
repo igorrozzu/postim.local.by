@@ -93,7 +93,7 @@ class Complaints extends parentComplaints
                 return "<div class='data-grid-container-btn'>
                         <a title='Одобрить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=confirm' class='btn-moderation --confirm'></a>
                         <a title='Удалить' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=delete' class='btn-moderation --delete'></a>
-                        <a title='Скрыть' href='/admin/moderation/act-complaints?type={$this->type}&user_id={$this->user_id}&entities_id={$this->entities_id}&act=delete' class='btn-moderation --cancels'></a>
+                        <span data-id='{$this->entities_id}' title='Скрыть' class='btn-moderation --cancels'></span>
                 </div>";
             }
                 break;

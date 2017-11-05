@@ -78,6 +78,11 @@ class ReviewsSearch extends Reviews
             $query->andWhere(['tbl_reviews.id' => $params['review_id']]);
         }
 
+        $query->andWhere(['or',
+            ['<>','tbl_reviews.status',self::$STATUS['private']],
+            ['=','tbl_reviews.user_id',Yii::$app->user->getId()]
+        ]);
+
         if(!empty($this->city)) {
             $query->innerJoinWith(['post.city.region'], false)
 				 ->andWhere(['or',

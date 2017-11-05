@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use app\components\UserHelper;
 use app\models\City;
 use app\modules\admin\components\AdminDefaultController;
 use app\modules\admin\models\BusinessOrder;
@@ -58,6 +59,24 @@ class BizController extends AdminDefaultController
                 if ($biz->save() && $biz_account->save()) {
 
                     $transaction->commit();
+
+
+                    $linkToPost = '/'.$biz_account->post->url_name.'-p'.$biz_account->post->id;
+                    $titlePost = $biz_account->post->data;
+                    $templateMessage = \Yii::$app->params['notificationTemplates']['biz_ac'];
+                    $message = sprintf($templateMessage['confirm'], $linkToPost,$titlePost);
+                    $emailMessage = sprintf($templateMessage['emailConfirm'],$titlePost);
+
+                    UserHelper::sendNotification($biz_account->user_id,[
+                        'type' => '',
+                        'data' => $message
+                    ]);
+
+                    $user = $biz_account->user;
+                    $user->name = $biz_account->full_name;
+
+                    UserHelper::sendMessageToEmailCustomReward($user,$emailMessage,$linkToPost);
+
 
 
                     $toastMessage = [
@@ -118,6 +137,23 @@ class BizController extends AdminDefaultController
                         }else{
                             $biz_account->status = BusinessOrder::$BIZ_ORDER;
                             $biz_account->update();
+
+                            $linkToPost = '/'.$biz_account->post->url_name.'-p'.$biz_account->post->id;
+                            $titlePost = $biz_account->post->data;
+                            $templateMessage = \Yii::$app->params['notificationTemplates']['biz_ac'];
+                            $message = sprintf($templateMessage['deActive'], $linkToPost,$titlePost);
+                            $emailMessage = sprintf($templateMessage['emailDeActive'],$titlePost);
+
+                            UserHelper::sendNotification($biz_account->user_id,[
+                                'type' => '',
+                                'data' => $message
+                            ]);
+
+                            $user = $biz_account->user;
+                            $user->name = $biz_account->full_name;
+
+                            UserHelper::sendMessageToEmailCustomReward($user,$emailMessage,$linkToPost);
+
                         }
                     }
 
@@ -130,7 +166,25 @@ class BizController extends AdminDefaultController
                         'owner_id' => $biz_account->user_id,
                         'post_id' => $biz_account->post_id
                     ]);
-                    $biz->save();
+
+                    if($biz->save()){
+
+                        $linkToPost = '/'.$biz_account->post->url_name.'-p'.$biz_account->post->id;
+                        $titlePost = $biz_account->post->data;
+                        $templateMessage = \Yii::$app->params['notificationTemplates']['biz_ac'];
+                        $message = sprintf($templateMessage['confirm'], $linkToPost,$titlePost);
+                        $emailMessage = sprintf($templateMessage['emailConfirm'],$titlePost);
+
+                        UserHelper::sendNotification($biz_account->user_id,[
+                            'type' => '',
+                            'data' => $message
+                        ]);
+
+                        $user = $biz_account->user;
+                        $user->name = $biz_account->full_name;
+
+                        UserHelper::sendMessageToEmailCustomReward($user,$emailMessage,$linkToPost);
+                    }
 
                 }break;
             }

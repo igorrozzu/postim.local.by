@@ -3819,7 +3819,8 @@ a .btn-sort-reviews.active
 .form-password-recovery{
     top:calc(50% - 180px);
 }
-.form-complaint{
+.form-complaint,
+.form-cancels{
     top:calc(50% - 125px);
 }
 .form-business-account{
