@@ -68,7 +68,7 @@ class NewsSearch extends News
             $query->joinWith('hasLike');
         }
 
-        if(!empty($this->city)){
+        if(!empty($this->city) && $this->city['name']!='Беларусь'){
             $city = City::find()->with('region')->where(['url_name' => $this->city['url_name']])->one();
             $query->andWhere(['or',
                 ['tbl_region.url_name' => $city->region->url_name],

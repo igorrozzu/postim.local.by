@@ -100,13 +100,13 @@ class News extends ParentNews
                 }else{
                     $photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $this->cover);
                     if(file_exists($photoPath)){
-                        return '/tmp/'.$this->cover;
+                        return '/post_photo/tmp/'.$this->cover;
                     }
                 }
             }else{
                 $photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $this->cover);
                 if(file_exists($photoPath)){
-                    return '/tmp/'.$this->cover;
+                    return '/post_photo/tmp/'.$this->cover;
                 }
             }
         }

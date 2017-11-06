@@ -3,16 +3,18 @@ $data = $dataprovider->getModels();
 ?>
 
     <?php foreach ($data as $item):?>
-        <div class="card-block main-pjax" data-item-id="<?=$item['id']?>" data-type="news">
-            <a href="/<?=$item['url_name'].'-n'.$item['id']?>">
-                <div class="card-photo" style="background-image: url('<?=$item->getPatchCover()?>')">
-                    <div class="glass">
-                        <div class="bookmarks-btn<?=$item->is_like ? ' active' : ''?>">
-                            <?=$item["count_favorites"]?>
+        <div class="card-block" data-item-id="<?=$item['id']?>" data-type="news">
+            <div class="main-pjax">
+                <a href="/<?=$item['url_name'].'-n'.$item['id']?>">
+                    <div class="card-photo" style="background-image: url('<?=$item->getPatchCover()?>')">
+                        <div class="glass">
+                            <div class="bookmarks-btn<?=$item->is_like ? ' active' : ''?>">
+                                <?=$item["count_favorites"]?>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
             <?php
                 $tag =['url_name'=>'','name'=>''];
 

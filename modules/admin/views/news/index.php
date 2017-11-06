@@ -99,7 +99,7 @@ Pjax::begin([
 
     <div class="container-add-place container-feedback" style="margin-top: 30px">
         <div class="block-field-setting">
-            <label class="label-field-setting">Описание для превью</label>
+            <label class="label-field-setting">Название для превью</label>
             <?= $form->field($news, 'description')
                 ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
                     'placeholder' => 'Введите текст', 'value' => $news['description']])

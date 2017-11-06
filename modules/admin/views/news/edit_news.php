@@ -17,13 +17,14 @@ Pjax::begin([
 <div class="block-content">
     <h1 class="h1-c" style="margin-top: 35px">Редактирование новости</h1>
     <?php $form = ActiveForm::begin(['id' => 'form-add-news', 'enableClientScript' => false,'action'=>'/admin/news/save','options'=>['pjax-container-add-news'=>'true']]) ?>
-
-    <div style="display: none">
-        <?= $form->field($news, 'id')
-            ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                'placeholder' => 'id', 'value' => $news['id']])
-            ->label(false) ?>
-    </div>
+    <?php if($news->id):?>
+        <div style="display: none">
+            <?= $form->field($news, 'id')
+                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
+                    'placeholder' => 'id', 'value' => $news['id']])
+                ->label(false) ?>
+        </div>
+    <?php endif;?>
 
     <div class="container-add-place container-feedback" style="margin-top: 30px">
 
@@ -67,7 +68,7 @@ Pjax::begin([
                 <?php if($news['data']):?>
                     <?=\app\components\Helper::parserForEditor($news['data'],false);?>
                 <?php else:?>
-                    <div class="item-editor item container-editor"><div class="editable"></div></div>
+                    <div class="item-editor item container-editor"><div class="container-toolbar"> <div class="title-toolbar">Текст</div> <div class="btns-toolbar-container"><div class="btn-toolbar-top"></div> <div class="btn-toolbar-down"></div> <div class="btn-toolbar-close"></div></div></div><div class="editable"></div></div>
                 <?php endif;?>
             </div>
             <?= $form->field($news, 'data')
@@ -112,7 +113,7 @@ Pjax::begin([
 
     <div class="container-add-place container-feedback" style="margin-top: 30px">
         <div class="block-field-setting">
-            <label class="label-field-setting">Описание для превью</label>
+            <label class="label-field-setting">Название для превью</label>
             <?= $form->field($news, 'description')
                 ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
                     'placeholder' => 'Введите текст', 'value' => $news['description']])

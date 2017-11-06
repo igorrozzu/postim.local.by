@@ -74,6 +74,10 @@ class NewsController extends MainController
 
         Helper::addViews($news->totalView);
 
+        Helper::checkValidUrl('/' . Yii::$app->request->pathInfo,
+            Url::to(['news/news', 'url' => $news['url_name'], 'id' => $news['id']])
+        );
+
         $searchModel = new NewsSearch();
         $pagination = new Pagination([
             'pageSize' => Yii::$app->request->get('per-page', 6),
@@ -161,7 +165,7 @@ class NewsController extends MainController
         $h1 = $name;
 
         $breadcrumbParams[]=[
-            'name'=>$name,
+            'name'=>'Новости',
             'url_name'=>$currentUrl,
             'pjax'=>'class="main-pjax a"'
         ];
@@ -191,18 +195,16 @@ class NewsController extends MainController
             ];
         }
 
-        $currentUrl=$currentUrl.'/'.'novosti';
-        $name='Новости в '.Yii::t('app/locativus','Беларусь');
-        if($city = $news->city){
-            if($city['name']==$city->region['name']){
-                $name ='Новости в '.Yii::t('app/locativus',$city['name']);
-            }else{
-                $name ='Новости в '.Yii::t('app/locativus',$city['name']).' и области';
-            }
+        if($news->city['name']=='Беларусь'){
+            $currentUrl=$currentUrl.'novosti';
+        }else{
+            $currentUrl=$currentUrl.'/'.'novosti';
         }
 
+
+
         $breadcrumbParams[]=[
-            'name'=>$name,
+            'name'=>'Новости',
             'url_name'=>$currentUrl,
             'pjax'=>'class="main-header-pjax a"'
         ];

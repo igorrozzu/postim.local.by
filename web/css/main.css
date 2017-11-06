@@ -3484,11 +3484,26 @@ a .btn-sort-reviews.active
     font-size: 16px;
     color: #444444;
     line-height: 24px;
-    margin-bottom: 20px;
 }
-.container-content-post .insert-item p:last-child{
-    margin-bottom: 0px;
+.insert-item h2{
+    color: #444444;
+    font-size: 30px;
 }
+.insert-item a{
+    color: #4b98df;
+}
+.insert-item a:hover{
+    text-decoration: none;
+}
+.insert-item blockquote{
+    display: block;
+    border-left: 4px solid #4b98df;
+    padding-left: 15px;
+    font-family: PT_Sans italic;
+    font-style: italic;
+    color: #444444
+}
+
 .container-content-post .insert-item:last-child{
     margin-bottom: 0px;
 }
