@@ -109,21 +109,27 @@ var authUserMenu = (function (window, document, undefined,$) {
                     isOpen:false, width: '-484px', openTime: 200, pointTime: null
                 };
                 $(document).ready(function () {
-                    $(document).on('click','.btn-notice,.right-arrow', function () {
-                        if (!notifMenu.isOpen){
-                            notifMenu.isOpen = true;
-                            notifMenu.pointTime = Math.floor(Date.now() / 1000);
-                            $('.notif-menu').animate({right:'0px', top:'0px'}, notifMenu.openTime);
-                        } else {
-                            notifMenu.isOpen = false;
-                            $('.notif-menu').animate({right:notifMenu.width, top:'0px'}, {
-                                duration: notifMenu.openTime,
-                                complete: methods.resetNotifMenu
-                            });
+                    $(document).on('click','.btn-notice,.right-arrow', function (e) {
+                        if(!$(e.target).hasClass('count-notice')){
+                            if (!notifMenu.isOpen){
+                                notifMenu.isOpen = true;
+                                notifMenu.pointTime = Math.floor(Date.now() / 1000);
+                                $('.notif-menu').animate({right:'0px', top:'0px'}, notifMenu.openTime);
+                            } else {
+                                notifMenu.isOpen = false;
+                                $('.notif-menu').animate({right:notifMenu.width, top:'0px'}, {
+                                    duration: notifMenu.openTime,
+                                    complete: methods.resetNotifMenu
+                                });
+                            }
+                        }else {
+                            $(e.target).parents('.btn-notice').trigger('click');
                         }
+
                     });
 
                     $(document).click(function (e) {
+                        if($(e.target).hasClass('count-notice')) return;
                         if ($(e.target).closest(".notif-menu,.btn-notice").length) return;
                         if(notifMenu.isOpen) {
                             notifMenu.isOpen = false;
@@ -135,13 +141,19 @@ var authUserMenu = (function (window, document, undefined,$) {
                         }
                     });
 
-                    $(document).on('click', '.btn-notice,.replace-notif-block .bottom-btn', function () {
-                        methods.sendRequestOfGettingNotification(notifMenu.pointTime);
+                    $(document).on('click', '.btn-notice,.replace-notif-block .bottom-btn', function (e) {
+                        if(!$(e.target).hasClass('count-notice')){
+                            methods.sendRequestOfGettingNotification(notifMenu.pointTime);
+                        }
+
                     });
 
-                    $(document).on('click', '.btn-notice', function () {
-                        that.updatingNotificationOff();
-                        methods.changeNoticeBlock(0);
+                    $(document).on('click', '.btn-notice', function (e) {
+                        if(!$(e.target).hasClass('count-notice')){
+                            that.updatingNotificationOff();
+                            methods.changeNoticeBlock(0);
+                        }
+
                     });
 
                 })
