@@ -4,25 +4,39 @@ use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 use \app\components\breadCrumb\BreadCrumb;
-
-$this->title = 'Отзывы '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']).', сайт отзывов посетителей о местах - Postim.by';
-$this->registerMetaTag([
-    'name' => 'description',
-    'content' => 'Отзывы и оценки посетителей различных мест в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).'. Оставь свое мнение на Postim.by.'
-]);
-$this->registerMetaTag([
-    'name' => 'keywords',
-    'content'=> 'Отзывы '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
-]);
+use \app\models\DescriptionPage;
 
 $descriptionText = 'Отзывы и оценки посетителей различных мест в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).
     '. Оставь свое мнение на Postim.by. Рейтинг мест по популярности формируется по вашим отзывам.';
+
+$descriptionPage = DescriptionPage::initMetaTags(function ()use ($descriptionText,$h1){
+    $response = [
+        'title' => 'Отзывы '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']).', сайт отзывов посетителей о местах - Postim.by',
+        'description' => 'Отзывы и оценки посетителей различных мест в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).'. Оставь свое мнение на Postim.by.',
+        'keywords' => 'Отзывы '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']),
+        'descriptionText' => $descriptionText,
+        'h1' => $h1,
+    ];
+
+    return $response;
+});
+
+$this->title = $descriptionPage['title'];
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => $descriptionPage['description']
+]);
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content' => $descriptionPage['keywords']
+]);
+
 
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
 	<?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
-    <h1 class="h1-v"><?=$h1?></h1>
+    <h1 class="h1-v"><?=$descriptionPage['h1']?></h1>
 </div>
 <?php
 Pjax::begin([
@@ -95,7 +109,7 @@ Pjax::begin([
     <ul class="wrap-photo-info">
         <li class="complain-gallery-text">Пожаловаться</li>
         <li class="photo-source" style="display: none;">
-            <a href="#" target="_blank"><span>Источник</span></a>
+            <a href="#" rel="nofollow noopener" target="_blank"><span>Источник</span></a>
         </li>
     </ul>
     <div class="gallery-counter">
@@ -132,6 +146,6 @@ Pjax::end();
 ?>
 <div class="block-content">
     <div class="description-text">
-        <?=$descriptionText?>
+        <?=$descriptionPage['descriptionText']?>
     </div>
 </div>

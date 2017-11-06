@@ -7707,7 +7707,8 @@ MediumEditor.extensions = {};
                         } else {
                             this.options.ownerDocument.execCommand('createLink', false, targetUrl);
                         }
-                        if (targetUrl.indexOf(window.location.hostname)!=-1) {
+                        console.log(targetUrl);
+                        if (targetUrl.indexOf(window.location.hostname)==-1) {
                             MediumEditor.util.setTargetBlank(MediumEditor.selection.getSelectionStart(this.options.ownerDocument), targetUrl);
                         } else {
                             MediumEditor.util.removeTargetBlank(MediumEditor.selection.getSelectionStart(this.options.ownerDocument), targetUrl);

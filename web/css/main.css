@@ -1910,14 +1910,21 @@ a.btn-show-more{
 }
 .lists-feature{
     margin-right: 18px;
+    height: 34px;
+    line-height: normal;
+    align-items: center;
+    display: flex;
 }
 .lists-feature:before{
     display: flex;
     margin-right: 6px;
-    margin-left: -12px;
-    content: '•';
+    margin-left: -10px;
+    content: '';
+    width: 4px;
+    height: 4px;
+    background-color: #838da1;
+    border-radius: 3px;
     color: #838da1;
-    height: 1px;
 
 }
 .btn-info-card{

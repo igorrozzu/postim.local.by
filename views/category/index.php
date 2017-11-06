@@ -13,45 +13,61 @@ $city_name = Yii::$app->city->getSelected_city()['name'];
 $h1_text=$categoryText.' в '.Yii::t('app/locativus',$city_name);
 $descriptionText = '';
 
+$descriptionPage = [];
+
 if(!$this->context->under_category){
-    $title = $h1_text.': адреса, фото, отзывы — лучшие места';
+    $descriptionPage = \app\models\DescriptionPage::initMetaTags(function() use ($h1_text,$totalCount){
+        $response = [
+            'title' => $h1_text.': адреса, фото, отзывы — лучшие места',
+            'description' => $h1_text.' по отзывам посетителей. Места с адресами, фото и телефонами, найдено '.$totalCount.' — удобный поиск на карте Postim.by!',
+            'keywords' => $h1_text,
+            'descriptionText' => $h1_text.' по отзывам посетителей. Места с адресами, фото и телефонами, найдено '.
+                $totalCount.' — удобный поиск на карте Postim.by!</br> 
+        Время работы и прочую информацию смотрите у нас на сайте.',
+            'h1' => $h1_text,
+        ];
 
-    $description = $h1_text.' по отзывам посетителей. Места с адресами, фото и телефонами,
-     найдено '.$totalCount.' — удобный поиск на карте Postim.by!';
-
-    $keywords = $h1_text;
-
-    $descriptionText = $h1_text.' по отзывам посетителей. Места с адресами, фото и телефонами, найдено '.
-        $totalCount.' — удобный поиск на карте Postim.by!</br> 
-        Время работы и прочую информацию смотрите у нас на сайте.';
+        return $response;
+    });
 
 }else{
-    $title = $categoryText.' '.Yii::t('app/parental_slope',$city_name).
-    ': адреса, фото, отзывы — лучшие '.mb_strtolower($categoryText);
 
-    $description = 'Лучшие '.mb_strtolower($categoryText).
-        ' '.Yii::t('app/parental_slope',$city_name).
-        ' по отзывам посетителей. '.$categoryText.
-        ' с адресами, фото и телефонами, найдено '.
-        $totalCount.' — удобный поиск на карте Postim.by!';
-    $keywords = mb_strtolower($categoryText).' '.Yii::t('app/parental_slope',$city_name);
+    $descriptionPage = \app\models\DescriptionPage::initMetaTags(function () use ($categoryText, $city_name, $totalCount, $h1_text) {
+        $response = [
+            'title' => $categoryText . ' ' . Yii::t('app/parental_slope', $city_name) .
+                ': адреса, фото, отзывы — лучшие ' . mb_strtolower($categoryText),
 
-    $descriptionText = 'Лучшие '.mb_strtolower($categoryText).
-        ' '.Yii::t('app/parental_slope',$city_name).' по отзывам посетителей. '.
-        $categoryText
-        .' с адресами, фото и телефонами, найдено '.
-        $totalCount.' — удобный поиск на карте Postim.by!</br> Время работы 
-        и прочую информацию смотрите у нас на сайте.';
+            'description' => $description = 'Лучшие ' . mb_strtolower($categoryText) .
+                ' ' . Yii::t('app/parental_slope', $city_name) .
+                ' по отзывам посетителей. ' . $categoryText .
+                ' с адресами, фото и телефонами, найдено ' .
+                $totalCount . ' — удобный поиск на карте Postim.by!',
+
+            'keywords' => mb_strtolower($categoryText) . ' ' . Yii::t('app/parental_slope', $city_name),
+
+            'descriptionText' => 'Лучшие ' . mb_strtolower($categoryText) .
+                ' ' . Yii::t('app/parental_slope', $city_name) . ' по отзывам посетителей. ' .
+                $categoryText
+                . ' с адресами, фото и телефонами, найдено ' .
+                $totalCount . ' — удобный поиск на карте Postim.by!</br> Время работы 
+        и прочую информацию смотрите у нас на сайте.',
+
+            'h1' => $h1_text,
+        ];
+
+        return $response;
+    });
+
 }
 
-$this->title = $title;
+$this->title = $descriptionPage['title'];
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => $description
+    'content' => $descriptionPage['description']
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
-    'content' => $keywords
+    'content' => $descriptionPage['keywords']
 ]);
 
 ?>
@@ -79,7 +95,7 @@ $this->registerMetaTag([
 
 <div class="block-content">
     <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
-    <h1 class="h1-v"><?=$h1_text?></h1>
+    <h1 class="h1-v"><?=$descriptionPage['h1']?></h1>
 </div>
 <?php
 Pjax::begin([
@@ -131,7 +147,7 @@ Pjax::begin([
     <?php endif;?>
 
     <div class="description-text">
-        <?=$descriptionText?>
+        <?=$descriptionPage['descriptionText']?>
     </div>
 
 </div>

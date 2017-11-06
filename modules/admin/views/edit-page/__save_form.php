@@ -100,8 +100,10 @@ Pjax::begin([
             $(document).ready(function () {
                 editable.init('.editable', {
                     toolbar: {
+                        photo: true,
                         video: true,
                         text: true
+
                     }
                 })
             });

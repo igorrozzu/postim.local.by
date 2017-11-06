@@ -1,17 +1,32 @@
 <?php
 use app\components\cardsNewsWidget\CardsNewsWidget;
 use \app\components\breadCrumb\BreadCrumb;
+use \app\models\DescriptionPage;
 
 $descriptionText = 'Последние новости в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).' – обзоры интересных мест с фото и видео,
      а также главные события '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']).' на Postim.by!';
-$this->title = $title;
+
+$descriptionPage = DescriptionPage::initMetaTags(function ()use ($title,$descriptionText,$h1){
+    $response = [
+        'title' => $title,
+        'description' => $descriptionText,
+        'keywords' => 'новости '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']),
+        'descriptionText' => $descriptionText,
+        'h1' => $h1,
+    ];
+
+    return $response;
+});
+
+
+$this->title = $descriptionPage['title'];
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => $descriptionText
+    'content' => $descriptionPage['description']
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
-    'content'=> 'новости '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
+    'content' => $descriptionPage['keywords']
 ]);
 
 ?>
@@ -31,7 +46,7 @@ $this->registerMetaTag([
 <div style="margin-top: 30px"></div>
 <div class="block-content">
     <div class="description-text">
-        <?=$descriptionText?>
+        <?=$descriptionPage['descriptionText']?>
     </div>
 </div>
 

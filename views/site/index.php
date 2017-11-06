@@ -3,23 +3,38 @@ use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use \app\components\mainMenu\MainMenuWidget;
 use \app\components\cardsPlaceWidget\CardsPlaceWidget;
 use \app\components\cardsNewsWidget\CardsNewsWidget;
-use \app\components\ListCityWidget\ListCityWidget;
+use \app\models\DescriptionPage;
 
 
-$this->title = "Карта ".Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])." — лучшие места по отзывам посетителей - Postim.by";
+$descriptionPage = DescriptionPage::initMetaTags(function ()use ($spotlight){
+    $response = [
+        'title' => "Карта ".Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])." — лучшие места по отзывам посетителей - Postim.by",
+
+        'description' => 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']).
+        ', лучшие места по отзывам посетителей. Найдено '.$spotlight->totalCount.' — удобный поиск на карте Postim.by!',
+
+        'keywords' => 'карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']),
+
+        'descriptionText' => 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
+            .', лучшие места по отзывам посетителей. Найдено '.$spotlight->totalCount
+            .' — удобный поиск на карте Postim.by!</br> Время работы и прочую информацию смотрите у нас на сайте.',
+
+        'h1' => 'Карта лучших мест в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).' по отзывам посетителей',
+    ];
+
+    return $response;
+});
+
+
+$this->title = $descriptionPage['title'];
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']).
-        ', лучшие места по отзывам посетителей. Найдено '.$spotlight->totalCount.' — удобный поиск на карте Postim.by!'
+    'content' => $descriptionPage['description']
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
-    'content'=> 'карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
+    'content' => $descriptionPage['keywords']
 ]);
-
-$descriptionText = 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
-    .', лучшие места по отзывам посетителей. Найдено '.$spotlight->totalCount
-    .' — удобный поиск на карте Postim.by!</br> Время работы и прочую информацию смотрите у нас на сайте.';
 
 ?>
 
@@ -35,7 +50,7 @@ $descriptionText = 'Подробная карта '.Yii::t('app/parental_slope',
 </div>
 
 <div class="block-content">
-    <h1 class="h1-c center-mx">Карта лучших мест в <?=Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name'])?> по отзывам посетителей</h1>
+    <h1 class="h1-c center-mx"><?=$descriptionPage['h1']?></h1>
     <?= MainMenuWidget::widget(['typeMenu' => MainMenuWidget::$catalogMenu]) ?>
     <?php if ($spotlight->totalCount): ?>
         <h2 class="h2-c">В центре внимания</h2>
@@ -77,7 +92,7 @@ $descriptionText = 'Подробная карта '.Yii::t('app/parental_slope',
 
 <div class="block-content" style="margin-top: 30px;">
     <div class="description-text">
-        <?=$descriptionText?>
+        <?=$descriptionPage['descriptionText']?>
     </div>
 </div>
 
@@ -99,7 +114,7 @@ $descriptionText = 'Подробная карта '.Yii::t('app/parental_slope',
     <ul class="wrap-photo-info">
         <li class="complain-gallery-text">Пожаловаться</li>
         <li class="photo-source" style="display: none;">
-            <a href="#" target="_blank"><span>Источник</span></a>
+            <a href="#" rel="nofollow noopener" target="_blank"><span>Источник</span></a>
         </li>
     </ul>
     <div class="gallery-counter">

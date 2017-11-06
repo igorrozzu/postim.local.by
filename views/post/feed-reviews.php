@@ -153,7 +153,7 @@ Pjax::begin([
     <ul class="wrap-photo-info">
         <li class="complain-gallery-text">Пожаловаться</li>
         <li class="photo-source" style="display: none;">
-            <a href="#" target="_blank"><span>Источник</span></a>
+            <a href="#" rel="nofollow noopener" target="_blank"><span>Источник</span></a>
         </li>
     </ul>
     <div class="gallery-counter">
