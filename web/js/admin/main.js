@@ -16,6 +16,39 @@ var AdminMain = (function (window, document, undefined,$) {
                     }
 
                 });
+
+                $(document).ready(function () {
+
+                    $(document).off('click','.--delete')
+                        .on('click','.--delete',function (e) {
+
+                            if(!$(e.target).hasClass('confirm-href')) {
+                                e.preventDefault();
+
+                                $.confirm({
+                                    title: 'Уведомление!',
+                                    content: 'Вы точно хотите удалить?',
+                                    buttons: {
+                                        confirm:{
+                                            text: 'Да',
+                                            action:function () {
+                                                $(e.target).addClass('confirm-href');
+                                                $(e.target).trigger('click');
+                                            },
+                                        },
+                                        cancel:{
+                                            text: 'Отмена',
+                                            action:function () {
+                                                $(e.target).removeClass('confirm-href')
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+
+                        })
+
+                });
             },
 
             reloadViewPjaxEvents:function () {

@@ -9,6 +9,7 @@ use app\modules\admin\models\CategorySearch;
 use app\modules\admin\models\News;
 use app\modules\admin\models\UnderCategory;
 use app\modules\admin\models\UnderCategorySearch;
+use yii\db\Exception;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 
@@ -81,19 +82,24 @@ class PostController extends AdminDefaultController
         $act = \Yii::$app->request->get('act',false);
         $id = \Yii::$app->request->get('id');
 
-        if($act && $id){
-            if($act == 'category'){
-                $category = Category::find()->where(['id'=>$id])->one();
-                if($category){
-                    $category->delete();
-                }
-            }elseif($act == 'under_category'){
-                $underCategory = UnderCategory::find()->where(['id'=>$id])->one();
-                if($underCategory){
-                    $underCategory->delete();
+        try{
+            if($act && $id){
+                if($act == 'category'){
+                    $category = Category::find()->where(['id'=>$id])->one();
+                    if($category){
+                        $category->delete();
+                    }
+                }elseif($act == 'under_category'){
+                    $underCategory = UnderCategory::find()->where(['id'=>$id])->one();
+                    if($underCategory){
+                        $underCategory->delete();
+                    }
                 }
             }
+        }catch (Exception $e){
+
         }
+
 
         $searchModel = new CategorySearch();
 
