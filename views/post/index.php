@@ -298,7 +298,7 @@ Pjax::begin([
     <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post_id'=>$post->id])?>
     <?php if(!$post->has_send_bs):?>
     <div class="block-info-for-owner" data-post_id="<?=$post->id?>">
-        <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и отвечайте на отзывы от имени компании.</p>
+        <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и получите доступ к эффективным инструментам для развития бизнеса.</p>
     </div>
     <?php endif;?>
     <div class="margin-top60"></div>
