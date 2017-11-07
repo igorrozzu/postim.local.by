@@ -254,9 +254,19 @@ class Comments extends \yii\db\ActiveRecord
         $link = '';
 
         if($this->isRelatedWithNews()){
-            $link = "/{$this->news->url_name}-n{$this->news->id}?comments_id={$this->id}";
+            if($this->news){
+                $link = "/{$this->news->url_name}-n{$this->news->id}?comments_id={$this->id}";
+            }else{
+                return false;
+            }
+
         }elseif ($this->isRelatedWithReviews()){
-            $link = "/{$this->review->post->url_name}-p{$this->review->post->id}?review_id={$this->review->id}";
+            if($this->review){
+                $link = "/{$this->review->post->url_name}-p{$this->review->post->id}?review_id={$this->review->id}";
+            }else{
+                return false;
+            }
+
         }
 
 

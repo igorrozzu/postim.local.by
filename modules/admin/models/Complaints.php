@@ -68,8 +68,13 @@ class Complaints extends parentComplaints
             }break;
             case 3:{
                 if($this->comments){
-                    $aLink = "<a data-pjax=false target=\"_blank\" class='data-link' href='{$this->comments->getLink()}'>{$this->data} (Комментарий)</a>";
-                    $this->tagName = $aLink;
+                    if($link =$this->comments->getLink()){
+                        $aLink = "<a data-pjax=false target=\"_blank\" class='data-link' href='{}'>{$this->data} (Комментарий)</a>";
+                        $this->tagName = $aLink;
+                    }else{
+                        $this->tagName = $this->data.' (удалено)';
+                    }
+
                 }else{
                     $this->tagName = $this->data.' (удалено)';
                 }
