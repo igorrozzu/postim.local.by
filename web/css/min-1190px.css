@@ -86,6 +86,15 @@
 .container-add-place{
     width: calc(100% - 355px);
 }
+
+.__first-column .container-add-place,
+.__first-column .block-description-card,
+.__first-column .container-post,
+.__first-column .container-settings
+{
+    width: calc(100% - 40px);
+}
+
 .card-block,
 .card-block-discount{
     width: calc((100% - 20px)/2 );

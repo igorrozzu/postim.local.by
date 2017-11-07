@@ -3444,6 +3444,11 @@ a .btn-sort-reviews.active
     width: calc(100% - 360px);
     border-radius: 3px;
 }
+
+.__first-column .container-post{
+    width: 100%;
+}
+
 .container-post .bread-crumb{
     margin-top: 0px;
 }
@@ -6112,4 +6117,47 @@ form .field-input:first-child{
 .--mini-icon-photo:before{
     content: url(../img/add-photo-icon.png);
     margin-right: 10px;
+}
+.--description-width{
+    max-width: 940px;
+}
+
+
+.nav-right-menu{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 260px;
+    padding: 20px;
+    border-radius: 3px;
+    margin-top: 100px;
+}
+.nav-right-menu li{
+    margin-bottom: 15px;
+}
+.nav-right-menu li a{
+    color: #444444;
+    text-decoration: none;
+}
+.nav-right-menu li:last-child{
+    margin-bottom: 0px;
+}
+
+.nav-right-menu li a:hover,
+.nav-right-menu li a.active{
+    color: #4b98df;
+}
+
+
+
+.container-columns{
+    display: flex;
+    justify-content: space-between;
+}
+.__first-column{
+    width: calc(100% - 320px);
+}
+.__second-column{
+    display: flex;
+    flex-direction: column;
 }

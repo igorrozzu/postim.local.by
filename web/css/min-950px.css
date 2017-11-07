@@ -48,6 +48,25 @@
 .container-add-place{
     width: calc(100% - 40px);
 }
+
+.__first-column .block-description-card,
+.__first-column .container-message,
+.__first-column .container-post,
+.__first-column .container-settings,
+.__first-column .container-add-place{
+    width: calc(100% - 40px);
+}
+
+.container-columns{
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.nav-right-menu{
+    width: calc(100% - 40px);
+    margin-top: -30px;
+}
+
 .right-block{
     display: none;
 }
@@ -125,3 +144,10 @@
     left: 0;
 }
 /*end Cтили toastMessage*/
+
+.__first-column{
+    width: 100%;
+}
+.__second-column{
+    width: 100%;
+}

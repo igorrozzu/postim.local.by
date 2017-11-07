@@ -9,6 +9,11 @@ use yii\base\Model;
 class Reviews extends ParentReviews
 {
 
+    public static $IS_ACCRUE = [
+        'false' => 0,
+        'true' => 1
+    ];
+
     public function rules()
     {
         return [
@@ -52,6 +57,14 @@ class Reviews extends ParentReviews
 
     public function getTextStatus(){
         return $this->labelStatus[$this->status];
+    }
+
+    public function getTextIsAccrue(){
+        $label = [
+            0 => 'Не было начислений',
+            1=>'Уже начисляли'
+        ];
+        return $label[$this->is_accrue];
     }
 
 }

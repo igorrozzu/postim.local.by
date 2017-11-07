@@ -45,7 +45,7 @@ $this->registerMetaTag([
 <div class="clear-fix"></div>
 <div style="margin-top: 30px"></div>
 <div class="block-content">
-    <div class="description-text">
+    <div class="description-text --description-width">
         <?=$descriptionPage['descriptionText']?>
     </div>
 </div>

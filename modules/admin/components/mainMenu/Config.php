@@ -19,6 +19,14 @@ class Config{
                         'url' => '/admin/post/categories'
                     ],
                     [
+                        'name' => 'Добавить страницу',
+                        'url' => '/admin/post/other-page'
+                    ],
+                    [
+                        'name' => 'Удалить страницу',
+                        'url' => '/admin/post/other-page-delete'
+                    ],
+                    [
                         'name' => 'Удалить категорию',
                         'url' => '/admin/post/delete-categories'
                     ],

@@ -72,6 +72,9 @@ $config = [
                 '<url:^edit>/<id:\d+>'=>'post/edit',
                 'search/<text:.+>'=>'site/search',
                 'feedback'=>'site/feedback',
+                [
+                    'class' => 'app\components\customUrlManager\OtherPageUrlRule', //лента отзывов
+                ],
             ],
         ],
         'i18n' => [

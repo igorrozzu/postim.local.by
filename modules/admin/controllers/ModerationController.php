@@ -204,6 +204,7 @@ class ModerationController extends AdminDefaultController
                     break;
                 case 'confirm10': {
                     $reviews->status = Reviews::$STATUS['confirm'];
+                    $reviews->is_accrue = Reviews::$IS_ACCRUE['true'];
                     if($reviews->save()){
                         $link = $reviews->getLink();
                         $titlePost = $reviews->post->data;
@@ -218,6 +219,7 @@ class ModerationController extends AdminDefaultController
                     break;
                 case 'confirm12': {
                     $reviews->status = Reviews::$STATUS['confirm'];
+                    $reviews->is_accrue = Reviews::$IS_ACCRUE['true'];
                     if($reviews->save()){
                         $link = $reviews->getLink();
                         $titlePost = $reviews->post->data;
@@ -233,6 +235,7 @@ class ModerationController extends AdminDefaultController
                     break;
                 case 'confirm15': {
                     $reviews->status = Reviews::$STATUS['confirm'];
+                    $reviews->is_accrue = Reviews::$IS_ACCRUE['true'];
                     if($reviews->save()){
                         $link = $reviews->getLink();
                         $titlePost = $reviews->post->data;

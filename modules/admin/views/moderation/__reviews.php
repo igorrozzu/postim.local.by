@@ -56,6 +56,13 @@ echo \yii\widgets\DetailView::widget([
             'contentOptions'=> ['style'=>'padding:10px 30px;']
         ],
         [
+            'label' => 'Баллы',
+            'format' => 'raw',
+            'value' => $model->getTextIsAccrue(),
+            'captionOptions' => ['width'=>'70px','style'=>'height:50px'],
+            'contentOptions'=> ['style'=>'padding:10px 30px;']
+        ],
+        [
             'label' => 'Действие',
             'format' => 'raw',
             'value' => $model->getButtons(),

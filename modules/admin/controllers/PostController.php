@@ -7,6 +7,8 @@ use app\modules\admin\components\AdminDefaultController;
 use app\modules\admin\models\Category;
 use app\modules\admin\models\CategorySearch;
 use app\modules\admin\models\News;
+use app\modules\admin\models\OtherPage;
+use app\modules\admin\models\OtherPageSearch;
 use app\modules\admin\models\UnderCategory;
 use app\modules\admin\models\UnderCategorySearch;
 use yii\db\Exception;
@@ -199,6 +201,96 @@ class PostController extends AdminDefaultController
             'categories'=>$categories,
             'modelCategory'=>$modelCategory,
             'toastMessage' => $toastMessage
+        ]);
+
+    }
+
+    public function actionOtherPage(){
+
+        $editPage = new OtherPage();
+        $editPage->setScenario(OtherPage::$FIND_PAGE);
+        if(\Yii::$app->request->isPost){
+            if($editPage->load(\Yii::$app->request->post()) && $editPage->validate()){
+
+                if($findPage = $editPage->getData()){
+                    $findPage->find_url = $editPage->find_url;
+                    $editPage = $findPage;
+                }
+
+                return $this->render('otherPageSave',['editPage'=>$editPage]);
+            }else{
+
+                $toastMessage = [
+                    'type' => 'error',
+                    'message' => 'Произошла ошибка',
+                ];
+
+                return $this->render('otherPage',['editPage'=>$editPage,'toastMessage'=>$toastMessage]);
+            }
+
+        }else{
+            return $this->render('otherPage',['editPage'=>$editPage]);
+        }
+    }
+
+    public function actionOtherPageSave(){
+        $editPage = new OtherPage();
+        $editPage->setScenario(OtherPage::$ADD_PAGE);
+
+        if(\Yii::$app->request->isPost){
+
+            if($editPage->load(\Yii::$app->request->post())){
+
+                if($editPage->validate()){
+                    $editPage->save();
+                }else{
+                    $editPage = $editPage->getData();
+                    $editPage->setScenario(OtherPage::$EDIT_PAGE);
+                    $editPage->load(\Yii::$app->request->post());
+                    $editPage->update();
+                }
+
+                $editPage = new OtherPage();
+
+                $toastMessage = [
+                    'type' => 'success',
+                    'message' => 'Страница сохранена',
+                ];
+
+                return $this->render('otherPage',['editPage'=>$editPage,'toastMessage'=>$toastMessage]);
+            }
+
+
+        }else{
+            return $this->render('otherPage',['editPage'=>$editPage]);
+        }
+    }
+
+    public function actionOtherPageDelete(){
+
+        $act = \Yii::$app->request->get('act', false);
+        $url_name = \Yii::$app->request->get('url_name', false);
+
+        if ($act && $url_name) {
+            $page = OtherPage::find()->where(['url_name' => $url_name])->one();
+            if ($page) {
+                $page->delete();
+            }
+        }
+
+        $searchModel = new OtherPageSearch();
+
+        $pagination = new Pagination([
+            'pageSize' => \Yii::$app->request->get('per-page', 8),
+            'page' => \Yii::$app->request->get('page', 1) - 1,
+            'route' => '/admin/post/other-page-delete',
+        ]);
+
+        $dataProvider = $searchModel->search(\Yii::$app->request->get(), $pagination);
+
+        return $this->render('otherPageDelete', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
         ]);
 
     }

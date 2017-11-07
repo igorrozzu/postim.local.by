@@ -14,6 +14,7 @@ use app\models\entities\Complaints;
 use app\models\Feedback;
 use app\models\LoginModel;
 use app\models\News;
+use app\models\OtherPage;
 use app\models\Posts;
 use app\models\PostsSearch;
 use app\models\Reviews;
@@ -585,6 +586,22 @@ class SiteController extends MainController
             }
             return $this->asJson($response);
         }
+
+    }
+
+    public function actionOtherPage(string $url_name){
+
+        $page = OtherPage::find()
+            ->where(['url_name'=>$url_name])
+            ->one();
+
+
+        if(!$page){
+
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
+        return $this->render('otherPage',['page'=>$page]);
 
     }
 
