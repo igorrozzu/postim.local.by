@@ -1,7 +1,7 @@
 <?php
 use yii\web\View;
 ?>
-<div class="main-menu main-pjax">
+<div class="main-menu">
     <div class="header-menu">
         <div class="header-menu-title">Меню</div>
         <div class="left-arrow close-main-menu"></div>

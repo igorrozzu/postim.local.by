@@ -23,6 +23,10 @@ class Config{
                         'url' => '/admin/post/other-page'
                     ],
                     [
+                        'name' => 'Удалить место',
+                        'url' => '/admin/post/delete-post'
+                    ],
+                    [
                         'name' => 'Удалить страницу',
                         'url' => '/admin/post/other-page-delete'
                     ],

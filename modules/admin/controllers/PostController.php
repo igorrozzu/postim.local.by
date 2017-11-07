@@ -9,6 +9,8 @@ use app\modules\admin\models\CategorySearch;
 use app\modules\admin\models\News;
 use app\modules\admin\models\OtherPage;
 use app\modules\admin\models\OtherPageSearch;
+use app\modules\admin\models\post\Posts;
+use app\modules\admin\models\post\PostsSearch;
 use app\modules\admin\models\UnderCategory;
 use app\modules\admin\models\UnderCategorySearch;
 use yii\db\Exception;
@@ -289,6 +291,36 @@ class PostController extends AdminDefaultController
         $dataProvider = $searchModel->search(\Yii::$app->request->get(), $pagination);
 
         return $this->render('otherPageDelete', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
+        ]);
+
+    }
+
+
+    public function actionDeletePost(){
+
+        $act = \Yii::$app->request->get('act', false);
+        $id = \Yii::$app->request->get('id', false);
+
+        if ($act && $id) {
+            $page = Posts::find()->where(['id'=>$id])->one();
+            if ($page) {
+                $page->delete();
+            }
+        }
+
+        $searchModel = new PostsSearch();
+
+        $pagination = new Pagination([
+            'pageSize' => \Yii::$app->request->get('per-page', 8),
+            'page' => \Yii::$app->request->get('page', 1) - 1,
+            'route' => '/admin/post/delete-post',
+        ]);
+
+        $dataProvider = $searchModel->search(\Yii::$app->request->get(), $pagination);
+
+        return $this->render('deletePost', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel
         ]);
