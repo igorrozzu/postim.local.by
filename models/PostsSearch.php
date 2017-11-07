@@ -84,7 +84,7 @@ class PostsSearch extends Posts
             return $dataProvider;
         }
 
-        $relations = ['city.region'];
+        $relations = ['city.region.coutries'];
         if(isset($this->favorite) && $this->favorite === 'posts') {
             $relations[] = 'favoritePosts';
             $this->queryForPlaceOnMap->innerJoinWith('favoritePosts');
@@ -121,13 +121,15 @@ class PostsSearch extends Posts
         if(!empty($this->city)){
             $query->andWhere(['or',
                 ['tbl_region.url_name'=>$this->city['url_name']],
-                ['tbl_city.url_name'=>$this->city['url_name']]
+                ['tbl_city.url_name'=>$this->city['url_name']],
+                ['tbl_countries.url_name'=>$this->city['url_name']],
             ]);
 
-            $this->queryForPlaceOnMap->innerJoinWith('city.region');
+            $this->queryForPlaceOnMap->innerJoinWith('city.region.coutries');
             $this->queryForPlaceOnMap->andWhere(['or',
                 ['tbl_region.url_name'=>$this->city['url_name']],
-                ['tbl_city.url_name'=>$this->city['url_name']]
+                ['tbl_city.url_name'=>$this->city['url_name']],
+                ['tbl_countries.url_name'=>$this->city['url_name']],
             ]);
 
         }
