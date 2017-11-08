@@ -3,7 +3,12 @@
 namespace app\modules\admin\models\post;
 
 
+use app\models\City;
+use app\models\PostCategoryCount;
+use app\models\PostUnderCategory;
+use app\models\UnderCategory;
 use app\models\User;
+use app\modules\admin\models\UnderCategorySearch;
 use Yii;
 
 /**
@@ -22,6 +27,8 @@ use Yii;
  */
 class Posts extends \yii\db\ActiveRecord
 {
+
+    private $post = null;
 
     /**
      * @inheritdoc
@@ -81,6 +88,109 @@ class Posts extends \yii\db\ActiveRecord
         $bodyHtml.="<a title='Удалить' href='/admin/post/delete-post?id={$this->id}&act=delete' class='btn-moderation --delete'></a>";
 
         return $beginHtml.$bodyHtml.$endHtml;
+    }
+
+    public function getCity()
+    {
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    public function getPostUnderCategory()
+    {
+        return $this->hasMany(PostUnderCategory::className(), ['post_id' => 'id']);
+    }
+
+    public function getCategories()
+    {
+        return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
+            ->via('postUnderCategory');
+    }
+
+    public function beforeDelete()
+    {
+        $city = $this->city;
+        $category = $this->categories;
+        $this->post = $this;
+        return parent::beforeDelete();
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        $this->countCategorySave();
+    }
+
+    private function countCategorySave(){
+
+        $post = $this->post;
+
+        if($post->status == 1){
+            foreach ($post->categories as $under_category){
+
+                $this->savePostCategoryCount($under_category->url_name,
+                    $post->city->name,
+                    $post->city->url_name
+                );
+                $this->savePostCategoryCount($under_category->url_name,
+                    $post->city->region->name,
+                    $post->city->region->url_name
+                );
+                $this->savePostCategoryCount($under_category->url_name,
+                    $post->city->region->coutries->name,
+                    $post->city->region->coutries->url_name
+                );
+
+                $this->savePostCategoryCount($under_category->category->url_name,
+                    $post->city->name,
+                    $post->city->url_name
+                );
+
+                $this->savePostCategoryCount($under_category->category->url_name,
+                    $post->city->region->name,
+                    $post->city->region->url_name
+                );
+
+                $this->savePostCategoryCount($under_category->category->url_name,
+                    $post->city->region->coutries->name,
+                    $post->city->region->coutries->url_name
+                );
+            }
+        }
+
+    }
+
+    private function savePostCategoryCount($category_name,$city_name,$city_url_name){
+
+        $model = PostCategoryCount::find()
+            ->where(['category_url_name'=>$category_name])
+            ->andWhere(['city_name'=>$city_name])->one();
+        if($model != null){
+
+            $query = Posts::find()
+                ->joinWith('categories.category')
+                ->joinWith('city.region')
+                ->where(['status'=>1]);
+            if(\Yii::$app->category->getCategoryByName($category_name)){
+                $query->andWhere(['tbl_category.url_name'=>$category_name]);
+            }else{
+                $query->andWhere(['tbl_under_category.url_name'=> $category_name]);
+            }
+            if($city_name !='Беларусь'){
+                $query->andWhere(['or',
+                    ['tbl_region.url_name'=>$city_url_name],
+                    ['tbl_city.url_name'=>$city_url_name]
+                ]);
+            }
+            $query->groupBy('tbl_posts.id');
+            $count = $query->count();
+            $model->count=$count;
+            $model->update();
+        }else{
+            $model = new PostCategoryCount(['category_url_name' => $category_name,
+                'city_name'=>$city_name,'count'=>-1]);
+            $model->save();
+        }
     }
 
 

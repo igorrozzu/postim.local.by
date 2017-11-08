@@ -42,13 +42,13 @@ class OtherPageUrlRule extends CityUrlRule {
     {
         $array= parent::getIndexArray();
 
-        if(!$indexOtherPage = \Yii::$app->cache->get('listOtherPage')){
+        /*if(!$indexOtherPage = \Yii::$app->cache->get('listOtherPage')){*/
             $indexOtherPage = ArrayHelper::index(OtherPage::find()
                 ->select(['url_name'])
                 ->all(),'url_name');
 
-            \Yii::$app->cache->add('listOtherPage',$indexOtherPage,600);
-        }
+        /*    \Yii::$app->cache->add('listOtherPage',$indexOtherPage,600);
+        }*/
 
         $array['indexOtherPage'] = $indexOtherPage;
         return $array;
