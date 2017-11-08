@@ -84,10 +84,11 @@ class ReviewsSearch extends Reviews
         ]);
 
         if(!empty($this->city)) {
-            $query->innerJoinWith(['post.city.region'], false)
+            $query->innerJoinWith(['post.city.region.coutries'], false)
 				 ->andWhere(['or',
 					 ['tbl_region.url_name'=>$this->city['url_name']],
-					 ['tbl_city.url_name'=>$this->city['url_name']]
+					 ['tbl_city.url_name'=>$this->city['url_name']],
+                     ['tbl_countries.url_name'=>$this->city['url_name']],
 				 ]);
         }
         if(isset($params['type']) && $params['type'] !== 'all') {
