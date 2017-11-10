@@ -4,5 +4,6 @@ idea
 web/user_photo/
 web/post-img/
 web/post_photo/
+web/*.xml
 runtime
 web/assets/

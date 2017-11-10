@@ -314,4 +314,8 @@ class Posts extends \yii\db\ActiveRecord
 
         return $features_result;
     }
+
+    public function getUrl(){
+        return   '/'.$this->url_name.'-p'.$this->id;
+    }
 }

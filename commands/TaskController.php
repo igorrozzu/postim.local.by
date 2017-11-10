@@ -7,15 +7,24 @@
 
 namespace app\commands;
 use app\behaviors\notification\handlers\NotificationHandler;
+use app\commands\cron\siteMap\models\SiteMap;
 use app\components\user\ExperienceCalc;
+use app\models\Category;
+use app\models\City;
 use app\models\entities\NotificationUser;
 use app\models\entities\Task;
+use app\models\News;
 use app\models\Notification;
+use app\models\PostUnderCategory;
+use app\models\UnderCategory;
 use app\models\User;
 use app\models\UserInfo;
+use app\models\Posts;
+use app\modules\admin\models\Reviews;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 
 
 /**
@@ -163,4 +172,140 @@ class TaskController extends Controller
 
         return true;
     }
+
+    public function actionCreatingSiteMap(){
+
+        //достаем список городов
+        //цикл по всем городам
+        //в цекле создаем подразделы и находим самую большую цифру в дате
+        // после добавляем секцию
+        // после цикла рендарим секции
+
+
+        $cities = City::find()->all();
+        $siteMapMain = new SiteMap();
+        $host = Yii::$app->params['site.hostName'];
+
+        foreach ($cities as $city){
+
+            $siteMapCity = new SiteMap();
+
+            $isIssetSection = false;
+
+            $pathToCitySiteMap = '/sitemap_city_'.$city['id'].'.xml';
+            $newDate = 0;
+
+            $underCategoryCityQuery = PostUnderCategory::find()
+                ->select('tbl_under_category.url_name, tbl_category.url_name as category_url_name, tbl_posts.date')
+                ->innerJoinWith(['post.city','underCategory.category'])
+                ->where(['tbl_city.url_name'=>$city->url_name])
+                ->orderBy(['tbl_posts.date'=>SORT_DESC])
+                ->prepare(Yii::$app->db->queryBuilder)
+                ->createCommand()->rawSql;
+
+            $underCategoryCity = Yii::$app->db->createCommand($underCategoryCityQuery)->queryAll();
+            $underCategoryUncl = [];
+            $category = [];
+
+            foreach ($underCategoryCity as $item){
+                if(!isset($underCategoryUncl[$item['url_name']])){
+                    $underCategoryUncl[$item['url_name']] = true;
+                    $siteMapCity->addUrl(
+                        '/'.$city->url_name.'/'.$item['url_name'],
+                        SiteMap::DAILY,
+                        0.7,
+                        $item['date']
+                    );
+                    $category[$item['category_url_name']] = ['url_name'=> $item['category_url_name'],'date'=>$item['date']];
+                    $isIssetSection = true;
+                }
+
+            }
+
+            foreach ($category as $item){
+                $siteMapCity->addUrl(
+                    '/'.$city->url_name.'/'.$item['url_name'],
+                    SiteMap::DAILY,
+                    0.7,
+                    $item['date']
+                );
+            }
+
+
+            $posts = Posts::find()
+                ->select(['city_id','tbl_posts.url_name','tbl_posts.id','date'])
+                ->innerJoinWith(['city'])
+                ->where(['tbl_city.url_name'=>$city->url_name])
+                ->orderBy(['date' => SORT_DESC])
+                ->all();
+
+            if($posts){
+                $siteMapCity->addUrl('/'.$city->url_name,SiteMap::WEEKLY,1,$posts[0]->date);
+                $siteMapCity->addModels($posts,SiteMap::WEEKLY,1);
+                $newDate = $posts[0]->date > $newDate ? $posts[0]->date : $newDate;
+                $isIssetSection = true;
+            }
+
+
+            $news = News::find()
+                ->select(['city_id','tbl_news.url_name','tbl_news.id','date'])
+                ->innerJoinWith(['city'])
+                ->where(['tbl_city.url_name'=>$city->url_name])
+                ->orderBy(['date' => SORT_DESC])
+                ->all();
+
+            if($news){
+                $siteMapCity->addUrl('/'.$city->url_name.'/novosti',
+                    SiteMap::DAILY,
+                    0.6,
+                    $news[0]->date
+                );
+                $siteMapCity->addModels($news,SiteMap::WEEKLY,0.6);
+                $newDate = $news[0]->date;
+                $isIssetSection = true;
+            }
+
+
+            $reviewsQuery = Reviews::find()
+                ->innerJoinWith(['post.city'])
+                ->where(['tbl_city.url_name'=>$city->url_name])
+                ->orderBy(['tbl_reviews.date'=>SORT_DESC])
+                ->prepare(Yii::$app->db->queryBuilder)
+                ->createCommand()->rawSql;
+
+            $reviews = Yii::$app->db->createCommand($reviewsQuery)->queryOne();
+
+            if($reviews){
+                $siteMapCity->addUrl(
+                    '/'.$city->url_name.'/otzyvy',
+                    SiteMap::DAILY,
+                    0.7,
+                    $reviews['date']
+                );
+                $newDate = $reviews['date'];
+                $isIssetSection = true;
+            }
+
+
+            $item = [];
+            $item['loc'] = $host. $pathToCitySiteMap;
+
+            if($newDate){
+                $item['lastmod'] = $newDate;
+            }
+
+            if($isIssetSection){
+                $siteMapMain->addSections([$item]);
+
+                $xmlCity = $siteMapCity->render();
+                file_put_contents(Yii::getAlias('@webroot').$pathToCitySiteMap,$xmlCity);
+            }
+
+        }
+
+        $mainXml = $siteMapMain->renderSections();
+        file_put_contents(Yii::getAlias('@webroot'.'/sitemap.xml'),$mainXml);
+
+    }
+
 }

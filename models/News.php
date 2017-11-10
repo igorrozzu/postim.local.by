@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\entities\FavoritesNews;
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "tbl_news".
@@ -120,5 +121,9 @@ class News extends \yii\db\ActiveRecord
         }
 
         return '';
+    }
+
+    public function getUrl(){
+       return   '/'.$this->url_name.'-n'.$this->id;
     }
 }
