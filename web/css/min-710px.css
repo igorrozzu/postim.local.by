@@ -106,23 +106,6 @@
 .review-footer-btn:first-child{
     margin-left: 20px;
 }
-.block-btn-circle-share, .block-btn-social-share{
-    display: none;
-}
-.block-btn-m-social-share, .block-btn-m-circle-share{
-    display: flex;
-}
-.open-m-share{
-    border: 1px solid #d4e5ff;
-}
-.open-m-share{
-    border: 1px solid #a7c9ff;
-}
-.open-m-share:after{
-    margin-top: 1px;
-    margin-left: -2px;
-    content: url("../img/open-share-icon.png");
-}
 
 .container-photo{
     width: 100%;
@@ -172,8 +155,8 @@
     right: 10px;
 }
 .close-photo-popup{right: 10px;}
-.official-sign{
-    background: url("../img/sign-check.png") rgba(0, 0, 0, 0) no-repeat ;
+.official-sign {
+    background: url("../img/icons.png") rgba(0, 0, 0, 0) 114px 687px;
     width: 20px;
     color: rgba(0, 0, 0, 0);
 }

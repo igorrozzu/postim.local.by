@@ -30,11 +30,11 @@ $data = $dataprovider->getModels();
             </div>
             <div class="block-btn">
                 <div class="comments">
-                    <span class="icon"><img src="/img/comments-icon.png"></span>
+                    <span class="icon icon-comments"></span>
                     <span class="count-t"><?=$item->getTotalComments()?></span>
                 </div>
                 <div class="views">
-                    <span class="icon"><img src="/img/views-icon.png"></span>
+                    <span class="icon icon-views"></span>
                     <span class="count-t"><?=$item->totalView['count']?></span>
                 </div>
             </div>

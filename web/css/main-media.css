@@ -16,11 +16,11 @@
     body:not(.open-search) .authorized .btn-search:after{
         width: 18px;
         height: 18px;
-        background-image: url("../img/search.png");
-        background-position: 0px 0px;
+        background-image: url("../img/icons.png");
+        background-position: 482px 830px;
     }
     body:not(.open-search) .authorized .btn-search:hover:after{
-        background-position: 18px 0px;
+        background-position: 464px 830px;
     }
     body:not(.open-search) .authorized .btn-search{
         height: auto;

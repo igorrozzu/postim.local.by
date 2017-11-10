@@ -29,11 +29,11 @@ $data = $dataprovider->getModels();
             </div>
             <div class="block-btn">
                 <div class="comments">
-                    <span class="icon"><img src="/img/comments-icon.png"></span>
+                    <span class="icon icon-comments"></span>
                     <span class="count-t"><?=$item->getTotalComments()?></span>
                 </div>
                 <div class="views">
-                    <span class="icon"><img src="/img/views-icon.png"></span>
+                    <span class="icon icon-views"></span>
                     <span class="count-t"><?=$item->totalView['count']?></span>
                 </div>
             </div>
@@ -42,6 +42,7 @@ $data = $dataprovider->getModels();
 
 <?php if ($hrefNext = $dataprovider->pagination->getLinks()['next']??false): ?>
     <div class="replace-block mg-btm-30" id="<?=$settings['replace-container-id']?>">
-        <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>" data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?>">Показать больше новостей</div>
+        <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>"
+             data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?>">Показать больше новостей</div>
     </div>
 <?php endif; ?>
