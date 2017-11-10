@@ -83,7 +83,7 @@ class DiscountOrder extends \yii\db\ActiveRecord
     public static function getAllCount($type)
     {
         return self::find()
-            ->innerJoinWith(['discount.ownerPost'])
+            ->innerJoinWith(['discount.ownerPost'], false)
             ->onCondition([OwnerPost::tableName() . '.owner_id' => \Yii::$app->user->id])
             ->andWhere([Discounts::tableName() . '.type' => $type])
             ->count();
@@ -91,7 +91,7 @@ class DiscountOrder extends \yii\db\ActiveRecord
     public static function getActiveCount($type, $status)
     {
         return self::find()
-            ->innerJoinWith(['discount.ownerPost'])
+            ->innerJoinWith(['discount.ownerPost'], false)
             ->onCondition([OwnerPost::tableName() . '.owner_id' => \Yii::$app->user->id])
             ->andWhere([Discounts::tableName() . '.type' => $type])
             ->andWhere([DiscountOrder::tableName() . '.status_promo' => $status])

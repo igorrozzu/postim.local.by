@@ -98,31 +98,12 @@ $countNotif = NotificationUser::getCountNotifications();
                 <span><img src="<?=$user->getPhoto()?>"></span>Мой профиль
             </a>
         </div>
-        <!--<div class="container-item-menu active">
-            <a class="close-right-menu-list" data-id-open="business"><span><img src="/img/icon-business.png"></span>Бизнес акаунт</a>
-            <div class="menu-list open-list" id="business">
-                <a href="<?/*=Url::to(['user/zakazy-promokodov'])*/?>">
-                    <span></span>Заказы промокодов</a>
-                <a href="<?/*=Url::to(['user/zakazy-sertifikatov'])*/?>">
-                    <span></span>Заказы сертификатов</a>
-            </div>
-        </div>
-        <div class="container-item-menu">
-            <a><span><img src="/img/icon-big-purse.png"></span>Пополнить счет</a>
-        </div>
-        <div class="container-item-menu">
-            <a href="<?/*=Url::to(['user/promocody'])*/?>">
-                <span><img src="/img/icon-promotional.png"></span>Мои промокоды
-            </a>
-        </div>
-        <div class="container-item-menu">
-            <a href="<?/*=Url::to(['user/sertifikaty'])*/?>">
-                <span><img src="/img/icon-certificates.png"></span>Мои сертификаты
-            </a>
-        </div>-->
+
         <?php if(Yii::$app->user->identity->hasOwner()):?>
             <div class="container-item-menu active closed">
-                <a class="close-right-menu-list section" data-id-open="business"><span><img src="/img/icon-business.png"></span>Бизнес акаунт</a>
+                <a class="close-right-menu-list section" data-id-open="business">
+                    <span class="icon-business"></span>Бизнес акаунт
+                </a>
                 <div class="menu-list open-list" id="business">
                     <a><span></span>Заказы промокодов</a>
                     <a><span></span>Заказы сертификатов</a>
@@ -132,28 +113,28 @@ $countNotif = NotificationUser::getCountNotifications();
 
         <div class="container-item-menu closed">
             <a class="section">
-                <span><img src="/img/icon-big-purse.png"></span>Пополнить счет
+                <span class="icon-big-purse"></span>Пополнить счет
             </a>
         </div>
         <div class="container-item-menu closed">
             <a class="section">
-                <span><img src="/img/icon-promotional.png"></span>Мои промокоды
+                <span class="icon-promotional"></span>Мои промокоды
             </a>
         </div>
         <div class="container-item-menu closed">
             <a class="section">
-                <span><img src="/img/icon-certificates.png"></span>Мои сертификаты
+                <span class="icon-certificates"></span>Мои сертификаты
             </a>
         </div>
 
         <div class="container-item-menu visible">
             <a href="<?=Url::to(['user/izbrannoe'])?>">
-                <span><img src="/img/add-favorit-icon.png"></span>Избранное
+                <span class="icon-favorites"></span>Избранное
             </a>
         </div>
         <div class="container-item-menu visible">
             <a href="<?=Url::to(['user/settings'])?>">
-                <span><img src="/img/icon-filter.png"></span>Настройки
+                <span class="icon-settings"></span>Настройки
             </a>
         </div>
         <div class="container-item-menu visible">

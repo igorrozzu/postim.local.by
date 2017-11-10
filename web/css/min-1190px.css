@@ -33,12 +33,12 @@
 .btn_add_place:after{
     width: 31px;
     height: 31px;
-    background: url("../img/add-place-icon.png");
+    background-image: url("../img/icons.png");
     content: '';
-    background-position: 0px 0px;
+    background-position: 639px 837px;
 }
 .btn_add_place:hover:after{
-    background-position: 31px 0px;
+    background-position: 608px 837px;
 }
 
 
@@ -108,24 +108,7 @@
 .autocomplete-result-search ul li{
     width: 25%;
 }
-.social-btn-vk:after{
-    content: url("../img/vk-icon.png");
-}
-.social-btn-fb:after{
-    content: url("../img/fb-icon.png");
-}
-.social-btn-tw:after{
-    content: url("../img/tw-icon.png");
-}
-.social-btn-ok:after{
-    content: url("../img/ok-icon.png");
-}
-.social-btn-inst:after{
-    content: url("../img/inst-icon.png");
-}
-.social-btn-viber:after{
-    content: url("../img/viber-icon.png");
-}
+
 .menu-info-cards{
     width: calc(100% - 60px);
     margin: 0 30px;

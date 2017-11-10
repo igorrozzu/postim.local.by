@@ -54,7 +54,7 @@ $descriptionText = 'Подробная карта '.Yii::t('app/parental_slope',
     <?php endif;?>
     <?php if($reviews->totalCount):?>
         <div class="clear-fix"></div>
-        <h2 class="h2-c">Последние отзывы</h2>
+        <h2 class="h2-c">Новые отзывы</h2>
         <div class="container-news">
             <div class="block-news">
                 <?= CardsReviewsWidget::widget([
