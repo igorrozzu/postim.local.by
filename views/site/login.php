@@ -42,5 +42,9 @@ use yii\widgets\ActiveForm;
             <a class="btn-link sign-up-btn">Регистрация</a>
             <a class="btn-link recovery-btn">Забыли пароль?</a>
         </div>
+        <div class="text-label" style="font-size: 12px;">
+            Авторизуясь, вы соглашаетесь с <a href="/agreement" class="btn-link" style="font-size: 12px;">
+                правилами пользования сайтом</a> и даете согласие на обработку персональных данных.
+        </div>
     </div>
 </div>

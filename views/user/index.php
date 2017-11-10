@@ -68,7 +68,7 @@ $experience = ExperienceCalc::getExperienceInfo($user->userInfo->level, $user->u
             <?php endfor;?>
         </div>
         <div class="block-photos-bottom">
-            <div class="block-photos-text"><?=$profilePhotoCount?> фотографий</div>
+            <div class="block-photos-text">Фотографии <?=$profilePhotoCount?></div>
         </div>
     </div>
     <?php endif; ?>

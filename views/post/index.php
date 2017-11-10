@@ -107,7 +107,7 @@ Pjax::begin([
             <?php endfor;?>
         </div>
         <div class="block-photos-bottom">
-            <div class="block-photos-text"><?=$photoCount?> фотографий</div>
+            <div class="block-photos-text">Фотографии <?=$photoCount?></div>
             <label class="btn-add-photo photo-upload-sign" for="post-photos">Добавить фото</label>
             <input type="file" name="post-photos" id="post-photos" style="display: none;" multiple
                    accept="image/*,image/jpeg,image/gif,image/png" data-id="<?=$post->id?>">

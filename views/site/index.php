@@ -71,7 +71,7 @@ $this->registerMetaTag([
         <div class="clear-fix"></div>
         <h2 class="h2-c">Новые отзывы</h2>
         <div class="container-news">
-            <div class="block-news">
+            <div class="block-news block-new-reviews">
                 <?= CardsReviewsWidget::widget([
                     'dataProvider' => $reviews,
                     'settings'=>[

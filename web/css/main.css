@@ -1124,6 +1124,11 @@ body:not(.open-search) .search{
 .block-news .card-info{
     height: 85px;
 }
+.block-new-reviews .block-reviews,
+.block-new-reviews .review-show-more {
+    width: 100%;
+    max-width: none;
+}
 .time-work{
     margin: 25px 20px 20px 20px;
     font-size: 14px;
