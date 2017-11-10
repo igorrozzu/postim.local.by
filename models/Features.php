@@ -79,6 +79,10 @@ class Features extends \yii\db\ActiveRecord
         return $this->hasMany(CategoryFeatures::className(), ['features_id' => 'id']);
     }
 
+    public function getMainFeatures(){
+        return $this->hasOne(self::className(),['id'=>'main_features']);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -21,7 +21,10 @@ class RightMenuWidget extends Widget
     {
         parent::init();
 
-        $this->list = OtherPage::find()->where(['status'=>OtherPage::$STATUS['showMenu']])->all();
+        $this->list = OtherPage::find()
+            ->where(['status'=>OtherPage::$STATUS['showMenu']])
+            ->orderBy(['id'=>SORT_ASC])
+            ->all();
 
     }
 

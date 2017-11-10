@@ -90,7 +90,7 @@ Pjax::begin([
                         <div class="btn-selected-option"><span class="option-text"><?=$editPage->status?></span> <span class="close-selected-option"></span> <input name="OtherPage[status]" value="<?=$editPage->status?>" style="display: none"> </div>
                     </div>
                     <div class="between-selected-field btn-open-field" data-open=false>
-                        <input class="search-selected-field" type="button" data-value="Выберите"
+                        <input class="search-selected-field" type="button" data-value="<?=$editPage->getLabelStatus()?>"
                                value="<?=$editPage->getLabelStatus()?>" placeholder="Выберите">
                         <div class="open-select-field2"></div>
                     </div>

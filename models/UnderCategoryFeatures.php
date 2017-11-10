@@ -32,6 +32,7 @@ class UnderCategoryFeatures extends \yii\db\ActiveRecord
             [['under_category_id', 'features_id'], 'required'],
             [['under_category_id'], 'integer'],
             [['features_id'], 'string', 'max' => 30],
+            [['features_id'], 'unique', 'targetAttribute' => ['under_category_id', 'features_id'], 'message' => 'Особенность уже приязана к этой подкатегории'],
             [['features_id'], 'exist', 'skipOnError' => true, 'targetClass' => Features::className(), 'targetAttribute' => ['features_id' => 'id']],
             [['under_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => UnderCategory::className(), 'targetAttribute' => ['under_category_id' => 'id']],
         ];

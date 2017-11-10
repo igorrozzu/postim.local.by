@@ -36,6 +36,33 @@ class Config{
                     ],
                 ],
             ],
+
+            [
+                'name' => 'Особенности',
+                'icon' => 'icon-add-content',
+                'url' => '',
+                'under' => [
+                    [
+                        'name' => 'Добавить особенность',
+                        'url' => '/admin/features/add'
+                    ],
+                    [
+                        'name' => 'Действия над особенностями',
+                        'url' => '/admin/features/index'
+                    ],
+                    [
+                        'name' => 'Особенность и категории',
+                        'url' => '/admin/features/bind-category-and-features'
+                    ],
+                    [
+                        'name' => 'Удалить особенность в категории',
+                        'url' => '/admin/features/delete-category-and-features'
+                    ],
+
+                ],
+            ],
+
+
             [
                 'name' => 'Модерация',
                 'icon' => 'icon-moderation-adm',

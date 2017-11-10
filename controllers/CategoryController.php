@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\Helper;
 use app\components\MainController;
+use app\models\CategoryFeatures;
 use app\models\Posts;
 use app\models\PostsSearch;
 use app\models\UnderCategoryFeatures;
@@ -138,7 +139,13 @@ class CategoryController extends MainController
             $category=false;
         }
         if($cat=Yii::$app->category->getCategoryByName($category)){
-
+            $features= CategoryFeatures::find()
+                ->joinWith('features')
+                ->where(['category_id'=>$cat->id])
+                ->andWhere(['filter_status'=>1])
+                ->andWhere(['main_features'=>null])
+                ->all();
+            $under_category = false;
         }
 
         $response = new \stdClass();
@@ -186,6 +193,23 @@ class CategoryController extends MainController
 
         }
         if($category){
+
+            $features= CategoryFeatures::find()
+                ->innerJoinWith('features')
+                ->where(['category_id'=>$category->id])
+                ->andWhere(['filter_status'=>1])
+                ->andWhere(['main_features'=>null])
+                ->all();
+
+            foreach ($features as $feature){
+                if($feature->features->underFeatures==null){
+                    $filtersSelf[$feature->features->id]=true;
+                }else{
+                    foreach ($feature->features->underFeatures as $underFeature){
+                        $filtersSelf[$underFeature->id]=true;
+                    }
+                }
+            }
 
         }
 

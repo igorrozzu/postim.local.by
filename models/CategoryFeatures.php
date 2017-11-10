@@ -32,6 +32,7 @@ class CategoryFeatures extends \yii\db\ActiveRecord
             [['category_id', 'features_id'], 'required'],
             [['category_id'], 'integer'],
             [['features_id'], 'string', 'max' => 30],
+            [['features_id'], 'unique', 'targetAttribute' => ['category_id', 'features_id'], 'message' => 'Особенность уже приязана к этой категории'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['features_id'], 'exist', 'skipOnError' => true, 'targetClass' => Features::className(), 'targetAttribute' => ['features_id' => 'id']],
         ];

@@ -44,7 +44,7 @@ class Category extends  yii\base\Model {
     private function getIndexCategory(){
         if(!$index_category =Yii::$app->cache->get('list_cat_from_bd')){
             $index_category = ArrayHelper::index(\app\models\Category::find()
-                ->select(['name','url_name'])
+                ->select(['name','url_name','id'])
                 ->orderBy(['name'=>SORT_ASC])
                 ->all(),'url_name');
             Yii::$app->cache->add('list_cat_from_bd',$index_category,3600);
