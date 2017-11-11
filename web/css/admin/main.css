@@ -2,6 +2,7 @@
 .news-list-title:before{
     content: '';
     width: 15px;
+    background: none;
 }
 
 .icon-add-content:before{
