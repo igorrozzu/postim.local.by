@@ -578,5 +578,80 @@
 
 		}
 
+
+
+        public static function countCategorySave($post){
+
+
+            if($post->status == 1){
+                foreach ($post->categories as $under_category){
+
+                    self::savePostCategoryCount($under_category->url_name,
+                        $post->city->name,
+                        $post->city->url_name
+                    );
+                    self::savePostCategoryCount($under_category->url_name,
+                        $post->city->region->name,
+                        $post->city->region->url_name
+                    );
+                    self::savePostCategoryCount($under_category->url_name,
+                        $post->city->region->coutries->name,
+                        $post->city->region->coutries->url_name
+                    );
+
+                    self::savePostCategoryCount($under_category->category->url_name,
+                        $post->city->name,
+                        $post->city->url_name
+                    );
+
+                    self::savePostCategoryCount($under_category->category->url_name,
+                        $post->city->region->name,
+                        $post->city->region->url_name
+                    );
+
+                    self::savePostCategoryCount($under_category->category->url_name,
+                        $post->city->region->coutries->name,
+                        $post->city->region->coutries->url_name
+                    );
+                }
+            }
+
+        }
+
+        public static function savePostCategoryCount($category_name,$city_name,$city_url_name){
+
+            $model = PostCategoryCount::find()
+                ->where(['category_url_name'=>$category_name])
+                ->andWhere(['city_name'=>$city_name])->one();
+            if($model != null){
+
+                $query = Posts::find()
+                    ->joinWith('categories.category')
+                    ->joinWith('city.region')
+                    ->where(['status'=>1]);
+                if(\Yii::$app->category->getCategoryByName($category_name)){
+                    $query->andWhere(['tbl_category.url_name'=>$category_name]);
+                }else{
+                    $query->andWhere(['tbl_under_category.url_name'=> $category_name]);
+                }
+                if($city_name !='Беларусь'){
+                    $query->andWhere(['or',
+                        ['tbl_region.url_name'=>$city_url_name],
+                        ['tbl_city.url_name'=>$city_url_name]
+                    ]);
+                }
+                $query->groupBy('tbl_posts.id');
+                $count = $query->count();
+                $model->count=$count;
+                $model->update();
+            }else{
+                $model = new PostCategoryCount(['category_url_name' => $category_name,
+                    'city_name'=>$city_name,'count'=>-1]);
+                $model->save();
+            }
+        }
+
+
+
 	}
 

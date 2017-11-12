@@ -385,12 +385,17 @@ var Category = (function (window, document, undefined,$) {
                         });
                         var $iconFilter =  $('.icon-filter','.menu-info-cards-contener');
                         $iconFilter.removeClass('active');
-                        for (var index in __params_filters){
-                            if(index != 'open' ){
-                                $iconFilter.addClass('active');
-                                break;
+                        if($('.container-filters .btn-filter').hasClass('active')){
+                            $iconFilter.addClass('active');
+                        }else {
+                            for (var index in __params_filters){
+                                if(index != 'open' ){
+                                    $iconFilter.addClass('active');
+                                    break;
+                                }
                             }
                         }
+
 
                     }
                 };

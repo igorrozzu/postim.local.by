@@ -353,6 +353,7 @@ class ModerationController extends AdminDefaultController
                         }
 
                         AddPost::updateCountUserPlace($mainPost->user_id);
+                        AddPost::countCategorySave($mainPost);
 
                     }else{
 
@@ -360,6 +361,9 @@ class ModerationController extends AdminDefaultController
                         if($newPost->replacement($mainId)){
                             $newPost->delete();
                             AddPost::updateCountUserPlace($newPost->user_id);
+
+                            $mainPost = Posts::find()->where(['id' => $mainId])->one();
+                            AddPost::countCategorySave($mainPost);
                         }
 
                     }
@@ -377,6 +381,7 @@ class ModerationController extends AdminDefaultController
                             $mainPost->status = Posts::$STATUS['confirm'];
                             if($mainPost->save()){
                                 AddPost::updateCountUserPlace($mainPost->user_id);
+                                AddPost::countCategorySave($mainPost);
 
                                 $link = '/'.$mainPost->url_name.'-p'.$mainPost->id;
                                 $titlePost = $mainPost->data;
@@ -405,6 +410,7 @@ class ModerationController extends AdminDefaultController
 
                             $newPost->delete();
                             AddPost::updateCountUserPlace($newPost->user_id);
+                            AddPost::countCategorySave($mainPost);
 
                         }
 
