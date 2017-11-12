@@ -6116,10 +6116,11 @@ form .field-input:first-child{
     flex-direction: column;
 }
 .nf-gif{
-    width: 600px;
-    height: 562px;
+    width: 450px;
+    height: 411px;
     background-image: url("/img/404.gif");
-    margin: -140px 0 -140px -120px;
+    background-repeat: no-repeat;
+    margin: -20px 0 40px -75px;
 }
 .nf-desc{
     font-family: PT_Sans;
