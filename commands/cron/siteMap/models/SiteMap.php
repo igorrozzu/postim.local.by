@@ -55,7 +55,24 @@ class SiteMap {
             if ($model->hasAttribute('date'))
                 $item['lastmod'] = $this->dateToW3C($model->date);
 
+
             $this->items[] = $item;
+
+            if($model->hasMethod('getUrls')){
+                $urls = $model->getUrls();
+                foreach ($urls as $url){
+
+                    $item = array(
+                        'loc' => $host . $url,
+                        'changefreq' => $changeFreq,
+                        'priority' => $priority
+                    );
+
+                    $this->items[] = $item;
+                }
+            }
+
+
         }
     }
 

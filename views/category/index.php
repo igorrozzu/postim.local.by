@@ -78,7 +78,7 @@ $this->registerMetaTag([
             <div class="btn-filter btn-bb active total-count"><span class="under-line">Места <?=$totalCount?></span></div>
             <div class="btn-filter btn-bb open-now" data-name_filter="open" data-value="now"><span class="under-line">Открыто сейчас</span></div>
         </div>
-        <div class="btn-filter icon-filter"><span>Все фильтры</span></div>
+        <div class="btn-filter icon-filter <?=!$issetFilters?'hide-dp':''?>"><span>Все фильтры</span></div>
     </div>
 </div>
 <div id="map_block" class="block-map preload-map">

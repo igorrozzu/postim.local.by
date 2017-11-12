@@ -252,13 +252,13 @@ Pjax::begin([
             </div>
         </div>
         <?php endif;?>
+        <?php if ($post->info && is_array($post->info->editors_users) && $post->info->editors_users): ?>
         <div class="info-row">
             <div class="left-block-f">
                 <div class="title-info-card">Редакторы</div>
                 <div class="block-inside user-editor">
                     <div class="container-user-editor">
                         <ul>
-							<?php if ($post->info && is_array($post->info->editors_users)): ?>
 								<?php foreach ($post->info->editors_users as $editor): ?>
                                     <li>
                                         <a href="/id<?= $editor->id ?>">
@@ -267,7 +267,6 @@ Pjax::begin([
                                         </a>
                                     </li>
 								<?php endforeach; ?>
-							<?php endif; ?>
                         </ul>
                     </div>
                 </div>
@@ -276,6 +275,7 @@ Pjax::begin([
                 <div class="btn-info-card"></div>
             </div>
         </div>
+        <?php endif; ?>
     </div>
     <?php if($post->info && $post->info->article):?>
     <h2 class="h2-c">Описание</h2>

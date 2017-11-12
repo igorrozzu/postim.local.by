@@ -74,22 +74,22 @@ Pjax::end();
     <div class="block-footer-content">
         <div class="block-footer-btn">
             <ul class="menu-inline main-pjax">
-                <li><a>О сайте</a></li>
-                <li><a>Правила</a></li>
-                <li><a>Соглашение</a></li>
-                <li><a>Реклама</a></li>
+                <li><a href="/about">О сайте</a></li>
+                <li><a href="/review-rules">Правила</a></li>
+                <li><a href="/agreement">Соглашение</a></li>
+                <li><a href="/business">Бизнес-аккаунт</a></li>
                 <li><a href="/feedback">Обратная связь</a></li>
             </ul>
             <div class="block-social-icons">
                 <div class="block-social">
-                    <a class="social-btn-vk"></a>
-                    <a class="social-btn-fb"></a>
-                    <a class="social-btn-tw"></a>
+                    <a href="https://vk.com/postimby" class="social-btn-vk"></a>
+                    <a href="https://www.facebook.com/postimby" class="social-btn-fb"></a>
+                    <a href="https://twitter.com/postimby" class="social-btn-tw"></a>
                 </div>
                 <div class="block-social">
-                    <a class="social-btn-ok"></a>
-                    <a class="social-btn-inst"></a>
-                    <a class="social-btn-viber"></a>
+                    <a href="https://www.ok.ru/postimby" class="social-btn-ok"></a>
+                    <a href="https://www.instagram.com/postimby" class="social-btn-inst"></a>
+                    <a href="https://chats.viber.com/postimby/ru" class="social-btn-viber"></a>
                 </div>
             </div>
         </div>

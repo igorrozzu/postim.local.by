@@ -270,7 +270,8 @@ class Posts extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        if(!$this->coordinates){
+
+        if($this->lat && $this->lon){
             $this->coordinates = '(' . $this->lat . ',' . $this->lon . ')';
         }
 
@@ -317,5 +318,15 @@ class Posts extends \yii\db\ActiveRecord
 
     public function getUrl(){
         return   '/'.$this->url_name.'-p'.$this->id;
+    }
+
+    public function getUrls(){
+
+        $urls = [
+            '/Fotografii-' . $this->url_name . '-p' . $this->id,
+            '/Otzyvy-' . $this->url_name . '-p' . $this->id,
+        ];
+
+        return  $urls;
     }
 }

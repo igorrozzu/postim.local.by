@@ -40,7 +40,7 @@ class Features extends \yii\db\ActiveRecord
         return [
             [['id', 'name', 'filter_status'], 'required'],
             [['type', 'filter_status'], 'integer'],
-            [['id', 'name', 'main_features'], 'string', 'max' => 30],
+            [['id', 'name', 'main_features'], 'string', 'max' => 100],
             [['id'], 'unique'],
         ];
     }

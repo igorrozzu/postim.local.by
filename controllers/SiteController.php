@@ -12,6 +12,7 @@ use app\components\MailSender;
 use app\components\Pagination;
 use app\models\entities\Complaints;
 use app\models\Feedback;
+use app\models\Geocoding;
 use app\models\LoginModel;
 use app\models\News;
 use app\models\OtherPage;
@@ -237,10 +238,8 @@ class SiteController extends MainController
     }
 
     public function actionGetCoordsByAddress(){
+
     	$address = Yii::$app->request->get('address');
-    	$address = str_replace(' ','+',$address);
-
-
 
 		Yii::$app->response->format = Response::FORMAT_JSON;
 		$response = new \stdClass();
@@ -250,15 +249,15 @@ class SiteController extends MainController
 			$response->zoom = 7;
 		}
 
-		if ($address) {
-			$curl = new Curl();
-			$response->data = $curl->get('http://maps.googleapis.com/maps/api/geocode/json?address=Беларусь+'.$address);
-			$response->data = Json::decode($response->data);
-			if($response->data['status'] == 'OK'){
-				$response->error = false;
-				$response->location = $response->data['results'][0]['geometry']['location'];
-			}
-		}
+		$query = Geocoding::buildQuery($address);
+		$geo = Geocoding::find()->where(['query'=>$query])->one();
+
+		if($geo){
+		    $response->data = Json::decode($geo->data);
+            $response->error = false;
+            $response->location = $response->data['results'][0]['geometry']['location'];
+        }
+
 
 		return $response;
 

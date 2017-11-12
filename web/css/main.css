@@ -1497,6 +1497,11 @@ a.btn-show-more{
 .icon-filter {
     margin: 0;
 }
+
+.hide-dp{
+    display: none;
+}
+
 .btn-filter:hover.icon-filter:after,
 .btn-filter.active.icon-filter:after {
     background-position: 392px 902px;
@@ -3130,7 +3135,6 @@ a .btn-sort-reviews.active
 .btn-bb:hover,
 .btn-bb.active{
     color: #4b98df;
-    height: 52px;
 }
 
 .btn-bb.active .under-line,

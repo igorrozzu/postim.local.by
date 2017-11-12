@@ -175,13 +175,6 @@ class TaskController extends Controller
 
     public function actionCreatingSiteMap(){
 
-        //достаем список городов
-        //цикл по всем городам
-        //в цекле создаем подразделы и находим самую большую цифру в дате
-        // после добавляем секцию
-        // после цикла рендарим секции
-
-
         $cities = City::find()->all();
         $siteMapMain = new SiteMap();
         $host = Yii::$app->params['site.hostName'];
@@ -192,7 +185,12 @@ class TaskController extends Controller
 
             $isIssetSection = false;
 
-            $pathToCitySiteMap = '/sitemap_city_'.$city['id'].'.xml';
+            $pathToCitySiteMap = '/sitemaps/sitemap_city_'.$city['id'].'.xml';
+
+            if (!is_dir(Yii::getAlias('@webroot').'/sitemaps')) {
+                FileHelper::createDirectory(Yii::getAlias('@webroot').'/sitemaps');
+            }
+
             $newDate = 0;
 
             $underCategoryCityQuery = PostUnderCategory::find()

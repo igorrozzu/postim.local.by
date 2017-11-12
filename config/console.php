@@ -23,6 +23,19 @@ $config = [
         'category'=>[
             'class' => 'app\components\Category',
         ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'fileMap' => [
+                        'app'       => 'app.php',
+                        'app/locativus' =>'locativus.php',
+                        'app/parental_slope' =>'parental_slope.php',
+                        'app/singular' =>'singular.php',
+                    ],
+                ],
+            ],
+        ],
         'db' => $db,
         'mailer' => require(__DIR__ . '/mailer.php'),
     ],

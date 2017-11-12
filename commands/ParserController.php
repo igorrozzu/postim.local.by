@@ -2,19 +2,23 @@
 
 namespace app\commands;
 
+use app\models\City;
 use app\models\Features;
+use app\models\Geocoding;
 use app\models\News;
 use app\models\PostFeatures;
 use app\models\PostInfo;
 use app\models\Posts;
 use app\models\PostUnderCategory;
 use app\models\TotalView;
+use app\models\UnderCategory;
 use app\models\UnderCategoryFeatures;
 use app\models\WorkingHours;
 use dosamigos\transliterator\TransliteratorHelper;
 use linslin\yii2\curl\Curl;
 use yii\base\ErrorException;
 use yii\base\Exception;
+use yii\base\InvalidParamException;
 use yii\console\Controller;
 use yii\helpers\FileHelper;
 use yii\helpers\Json;
@@ -30,45 +34,93 @@ class ParserController extends Controller{
     private $post_features=[];
     private $under_category;
 
-    public function actionIndex($text,$under_category){
-        $this->under_category =$under_category;
-        $this->nameFile= str_replace('/','',TransliteratorHelper::process(trim($text)).'.txt');
+    private $currentCity = null;
+    private $currentName = null;
+    private $skip = 0;
 
-        $curl = new Curl();
-        $responseJson = $curl->setGetParams([
-            'text' => $text,
-            'type' => 'biz',
-            'lang' => 'ru_RU',
-            'results' => 500,
-            'skip' => 1,
-            'bbox'=>'53.839823,27.413641~53.977871,27.669759',
-            'rspn'=>1,
-            'apikey' => '146ee555-76f9-47b3-a871-37bb1180da02',
-        ])
-            ->get('https://search-maps.yandex.ru/v1/');
-        $response = Json::decode($responseJson);
+    public function actionIndex(){
 
-        $this->parser($response);
-    }
+
+
+            $this->currentCity = 142;
+
+            $under_category = UnderCategory::find()
+                ->where(['IN','id',[21,41,77,81,80,66,74,67,75,69,70,56,72,71,13,10,54,64,50,51,62,57,53,58,56,59]])
+                ->orderBy(['name'=>SORT_ASC])
+                ->offset(0)
+                ->limit(12)
+                ->all();
+
+
+            foreach ($under_category as $item) {
+
+                $this->under_category = $item->id;
+                $text = $item->name;
+                $this->currentName = $text;
+
+
+                $has_place = true;
+                $skip = 0;
+
+                while ($has_place) {
+
+                    $curl = new Curl();
+                    $responseJson = $curl->setGetParams([
+                        'text' => "{$text} в Бресте, Беларусь",
+                        'lang' => 'ru_RU',
+                        'results' => 500,
+                        'skip' => $skip,
+                        'apikey' => '146ee555-76f9-47b3-a871-37bb1180da02',
+                    ])
+                        ->get('https://search-maps.yandex.ru/v1/');
+                    $response = Json::decode($responseJson);
+
+                    $this->skip = $skip;
+
+                    $this->parser($response);
+
+                    $skip += 500;
+
+
+                    if (!count($response['features'])) {
+                        $has_place = false;
+                    }
+
+                }
+            }
+
+        }
+
 
     private function parser($data){
 
         $number=0;
         foreach ($data['features'] as $feature){
-            echo "Обработана :".$number++."\n\r";
+
+
+            echo "Обработана :" . $number++ . "\n\r";
+            echo "Пропуск номер " . $this->skip . "\n\r";
+            echo "category " . $this->currentName . "\n\r";
+
+            if (!isset($feature['properties']['CompanyMetaData'])) {
+                continue;
+            }
+
             $dataInfoPlace = $feature['properties']['CompanyMetaData'];
-            $dataLatLon=$feature['geometry']['coordinates']??null;
+            $dataLatLon = $feature['geometry']['coordinates'] ?? null;
 
-            $this->post= new Posts();
+            $this->post = new Posts();
             $this->post_info = new PostInfo();
-            $this->working_hours=[];
-            $this->post_features=[];
+            $this->working_hours = [];
+            $this->post_features = [];
 
-            foreach ($dataInfoPlace as $key=>$value){
-                if(method_exists($this,$key)){
+            foreach ($dataInfoPlace as $key => $value) {
+                if (method_exists($this, $key)) {
                     $this->{$key}($value);
                 }
             }
+
+
 
             $this->save($dataLatLon);
         }
@@ -90,11 +142,12 @@ class ParserController extends Controller{
             }else{
                 $total_view = new TotalView(['count'=>0]);
                 if($total_view->save()){
-                    $this->post->city_id=90;
+                    $this->post->city_id= $this->currentCity;
                     $this->post->date=time();
                     $this->post->status=1;
-                    $this->post->user_id=15;
-                    $this->post->latlon=$latLon;
+                    $this->post->user_id=16;
+                    $this->post->lat=$latLon[1] + 0.0000003;
+                    $this->post->lon=$latLon[0] + 0.00000009;
                     $this->post->cover='/post-img/default.png';
                     $this->post->rating=0;
                     $this->post->count_favorites=0;
@@ -102,9 +155,16 @@ class ParserController extends Controller{
                     $this->post->total_view_id=$total_view->id;
                     try{
 
-                        if($this->post->save()){
+                        /*$this->working_hours = [];
 
-                            $post_under_category =  new PostUnderCategory(['post_id'=>$this->post->id,'under_category_id'=>$under_category]);
+                        for($i=0; $i < 7; $i++){
+                            $this->working_hours[$i] = new WorkingHours(['day_type'=>$i+1,'time_start'=>0,'time_finish'=>3600*24]);
+                        }*/
+
+
+                        if($this->working_hours && $this->post->save()){
+
+                            $post_under_category =  new PostUnderCategory(['post_id'=>$this->post->id,'under_category_id'=>$under_category,'priority'=>1]);
                             $post_under_category->save();
 
                             foreach ($this->post_features as $feature){
@@ -113,7 +173,7 @@ class ParserController extends Controller{
                             }
 
                             $this->post_info->post_id=$this->post->id;
-                            $this->post_info->editors=[15];
+                            $this->post_info->editors=[16];
                             if($this->post_info->save()){
                                 foreach ($this->working_hours as $working_hour){
                                     $working_hour->post_id = $this->post->id;
@@ -227,19 +287,28 @@ class ParserController extends Controller{
         $arrayFeatures=[];
 
         foreach ($values as $value){
-            if($value['type']=='bool' && $value['value']){
-                $this->saveFeatures($value,1);
-            }
-            if($value['type']=='text'){
-                $this->saveFeatures($value,2);
-            }
-            if($value['type']=='enum'){
-                if(in_array($value['id'],['type_public_catering'])){
-                    continue;
-                }
-               $this->saveFeaturesArray($value);
 
+            try{
+
+                if($value['type']=='bool' && $value['value']){
+                    $this->saveFeatures($value,1);
+                }
+                if($value['type']=='text'){
+                    $this->saveFeatures($value,2);
+                }
+                if($value['type']=='enum'){
+                    if(in_array($value['id'],['type_public_catering'])){
+                        continue;
+                    }
+                    $this->saveFeaturesArray($value);
+
+                }
+
+            }catch (\yii\db\Exception $exception){
+                continue;
             }
+
+
 
         }
 

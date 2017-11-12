@@ -131,6 +131,11 @@
 .left-menu.filter .btn-filter{
     display: flex;
 }
+
+.hide-dp{
+    display: flex;
+}
+
 .btn2-menu:nth-child(2n){
     margin-right: 0px;
 }

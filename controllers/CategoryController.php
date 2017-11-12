@@ -32,7 +32,12 @@ class CategoryController extends MainController
         $searchModel = new PostsSearch();
 
         $selfParams=['sort'=>true,'open'=>true,'filters'=>true];
-        $selfFilterParams = Yii::$app->request->get('filters',false)?$this->getSelfFilters($this->category,$this->under_category):[];
+        if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false)){
+            $selfFilterParams = Yii::$app->request->get('filters',false)?$this->getSelfFilters($this->category,$this->under_category):[];
+        }else{
+            $selfFilterParams = $this->getSelfFilters($this->category,$this->under_category)??[];
+        }
+
         $selfParams = ArrayHelper::merge($selfParams,$selfFilterParams);
 
         $pagination = new Pagination([
@@ -66,7 +71,8 @@ class CategoryController extends MainController
             'breadcrumbParams'=>$breadcrumbParams,
             'loadTime' => $loadTime,
             'loadGeolocation'=>$loadGeolocation,
-            'keyForMap'=>$searchModel->getKeyForPlacesOnMap()
+            'keyForMap'=>$searchModel->getKeyForPlacesOnMap(),
+            'issetFilters' => !!$selfFilterParams
         ];
 
         if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
