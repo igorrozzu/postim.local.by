@@ -6120,11 +6120,11 @@ form .field-input:first-child{
     flex-direction: column;
 }
 .nf-gif{
-    width: 450px;
-    height: 411px;
+    width: 284px;
+    height: 280px;
     background-image: url("/img/404.gif");
     background-repeat: no-repeat;
-    margin: -20px 0 40px -75px;
+    margin: 24px 0 19px 0;
 }
 .nf-desc{
     font-family: PT_Sans;
