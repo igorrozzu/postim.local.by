@@ -7,3 +7,5 @@ web/post_photo/
 web/*.xml
 runtime
 web/assets/
+web/sitemaps/
+web/download/

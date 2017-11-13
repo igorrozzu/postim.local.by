@@ -21,6 +21,11 @@ class Reviews extends ParentReviews
         ];
     }
 
+    public function behaviors()
+    {
+        return [];
+    }
+
     public function scenarios()
     {
         return Model::scenarios();

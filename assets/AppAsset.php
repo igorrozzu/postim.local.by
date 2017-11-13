@@ -18,20 +18,21 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
+        'css/reset.css',
         'js/libs/leaflet/leaflet.css',
         'js/libs/leaflet/markercluster/dist/MarkerCluster.Default.css',
         'js/libs/leaflet/markercluster/dist/MarkerCluster.css',
 		'js/libs/medium-editor/dist/css/medium-editor.css',
 		'js/libs/medium-editor/dist/css/themes/default.css',
         'css/main.css',
-        ['css/jquery.mCustomScrollbar.css','media'=>'all'],
+        'css/jquery.mCustomScrollbar.css',
         'css/jquery-ui.css',
-        ['css/min-1260px.css','media'=>'(min-width: 1320px)'],
-        ['css/min-1190px.css','media'=>'(max-width:1319px)'],
-        ['css/min-950px.css','media'=>'(max-width:949px)'],
-        ['css/min-710px.css','media'=>'(max-width:770px)'],
-        ['css/min-540px.css','media'=>'(max-width:540px)'],
-        ['css/max-480px.css','media'=>'(max-width:480px)'],
+        'css/min-1260px.css',
+        'css/min-1190px.css',
+        'css/min-950px.css',
+        'css/min-710px.css',
+        'css/min-540px.css',
+        'css/max-480px.css',
         'css/main-media.css',
     ];
     public $js = [

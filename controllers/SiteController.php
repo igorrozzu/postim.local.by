@@ -284,6 +284,7 @@ class SiteController extends MainController
 			}
 
 			if($reviews->load( Yii::$app->request->post(),'reviews')){
+                $reviews->isLimit = true;
 				if($reviews->save()){
 					$response->success = true;
 					$response->message = 'Ваш отзыв успешно добавлен';

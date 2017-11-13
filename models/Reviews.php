@@ -46,10 +46,19 @@ class Reviews extends \yii\db\ActiveRecord
         return 'tbl_reviews';
     }
 
+    public $isLimit = false;
+
     public function behaviors()
     {
         return [
             NewReview::className(),
+            'restrictionActions' => [
+                'class' => 'app\behaviors\RestrictionActions',
+                'in_attribute' => 'id',
+                'type' => 'reviews',
+                'message' => 'Вы слишком часто пишите отзывы',
+                'limitPerMinute' => 3,
+            ],
         ];
     }
 

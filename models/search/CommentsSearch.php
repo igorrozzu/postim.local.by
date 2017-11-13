@@ -70,10 +70,6 @@ class CommentsSearch extends Comments
 
         $this->load($params);
 
-        if (!$this->validate()) {
-            return $dataProvider;
-        }
-
         return $dataProvider;
     }
 

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\behaviors\RestrictionActions;
 use app\components\commentsWidget\CommentsNewsWidget;
 use app\components\commentsWidget\CommentsPostsWidget;
 use app\components\MainController;
@@ -120,7 +121,8 @@ class CommentsController extends MainController
 
             $model->user_id = Yii::$app->user->id;
             $model->load(Yii::$app->request->post(), '');
-            if ($model->validate() && $model->save()) {
+            $model->isLimit = true;
+            if ($model->save()) {
                 return $response;
             } else {
                 $name_attribute = key($model->getErrors());

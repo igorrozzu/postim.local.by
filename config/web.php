@@ -6,9 +6,20 @@ $config = [
     'id' => 'basic',
     'timeZone' => 'UTC',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','assetMinifier'],
     'language' => 'ru-RU',
     'components' => [
+        'assetMinifier' => [
+            'class' => \lajax\assetminifier\Component::className(),
+            'minifyCss' => true,
+            'minifyJs' => true,
+            'combine' =>true,
+            'createGz' => true,
+            'combiner' => [
+                'class' => 'lajax\assetminifier\Combiner',
+                'combinedFilesPath' => '/lajax-asset-minifier'
+            ],
+        ],
         'session' => [
             'class' => 'yii\web\DbSession', //'yii\web\DbSession',
             'sessionTable' => 'tbl_session',

@@ -86,11 +86,20 @@ class Comments extends \yii\db\ActiveRecord
         ];
     }
 
+    public $isLimit = false;
+
     public function behaviors()
     {
         return [
             NewUnderComment::className(),
             NewCommentToReview::className(),
+            'restrictionActions' => [
+                'class' => 'app\behaviors\RestrictionActions',
+                'in_attribute' => 'id',
+                'type' => 'comments',
+                'message' => 'Вы слишком часто пишите комментарии',
+                'limitPerMinute' => 7,
+            ],
         ];
     }
 
