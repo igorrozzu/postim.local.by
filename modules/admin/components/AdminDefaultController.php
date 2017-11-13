@@ -2,7 +2,9 @@
 
 namespace app\modules\admin\components;
 
+use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\Cookie;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -15,10 +17,23 @@ class AdminDefaultController extends Controller
     {
         parent::init();
 
-        if (\Yii::$app->user->isGuest ||
-            \Yii::$app->user->identity->role < 2 ||
-            !in_array(\Yii::$app->user->getId(),[15,16])
-        ){
+        if(!\Yii::$app->user->isModerator()){
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
+        $secretCookies = \Yii::$app->request->cookies->getValue('tokenWewefwf');
+
+        if (\Yii::$app->user->generationSecretToken() === $secretCookies){
+
+        }elseIf($tokenWewefwf = \Yii::$app->request->get('tokenWewefwf',false)){
+
+            $currentUrl = \Yii::$app->request->getPathInfo();
+            if($currentUrl != 'admin/default/set-wewefwf'){
+
+                throw new NotFoundHttpException('Cтраница не найдена');
+            }
+
+        }else{
             throw new NotFoundHttpException('Cтраница не найдена');
         }
 

@@ -46,4 +46,19 @@ class User extends \yii\web\User{
         }
     }
 
+    public function generationSecretToken(){
+
+	    if($this->isModerator()){
+            $date =Yii::$app->formatter->asDate(time(),'dd:mm::yyy');
+            $key = 'ueqrwtSDCFVHBJNKrupiopo,nmcxYTUGHJNMhnuhumjmii,kool,.79846523,.mnbv[OP;ILJKHftyrefgrertfgb';
+
+            $token = mb_substr(md5($this->getId().$date),0,100). mb_substr(md5($key),0,100);
+
+            return $token;
+        }
+
+        return false;
+
+    }
+
 }

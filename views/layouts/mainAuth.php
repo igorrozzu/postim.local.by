@@ -137,6 +137,11 @@ $countNotif = NotificationUser::getCountNotifications();
                 <span class="icon-settings"></span>Настройки
             </a>
         </div>
+        <?php if(Yii::$app->user->isModerator()):?>
+            <div class="container-item-menu visible">
+                <a href="<?=Url::to(['admin/default/set-wewefwf','tokenWewefwf'=>Yii::$app->user->generationSecretToken()])?>"><span></span>Админка</a>
+            </div>
+        <?php endif;?>
         <div class="container-item-menu visible">
             <a href="<?=Url::to(['site/logout'])?>"><span></span>Выход</a>
         </div>
