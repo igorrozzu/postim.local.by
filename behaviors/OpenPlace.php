@@ -38,8 +38,9 @@ class OpenPlace extends Behavior
                         ];
                         $currentTimestamp = Yii::$app->formatter->asTimestamp(Yii::$app->formatter->asTime(time() + Yii::$app->user->getTimezoneInSeconds(), 'short'));
                         $currentTime = idate('H', $currentTimestamp) * 3600 + idate('i', $currentTimestamp) * 60 + idate('s', $currentTimestamp);
+                        $currentTimePlus = $currentTime+ 24*3600;
 
-                        if ($currentTime >= $currentWorkingHours['time_start'] && $currentTime <= $currentWorkingHours['time_finish']) {
+                        if (($currentTime >= $currentWorkingHours['time_start'] && $currentTime <= $currentWorkingHours['time_finish']) ||($currentTimePlus >= $currentWorkingHours['time_start'] && $currentTimePlus <= $currentWorkingHours['time_finish'])) {
                             $this->owner->is_open = true;
 
                             if (!$this->only_is_open) {
