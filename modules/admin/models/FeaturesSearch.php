@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\models;
 
+use phpDocumentor\Reflection\Types\Null_;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;

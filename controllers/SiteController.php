@@ -69,7 +69,7 @@ class SiteController extends MainController
             ]);
         }
 
-        return $this->renderAjax('login', [
+        return $this->renderPartial('login', [
             'model' => $model,
         ]);
     }

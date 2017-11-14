@@ -31,7 +31,7 @@ class FeaturesController extends AdminDefaultController
         $searchModel = new FeaturesSearch();
 
         $pagination = new Pagination([
-            'pageSize' => Yii::$app->request->get('per-page', 8),
+            'pageSize' => Yii::$app->request->get('per-page', 30),
             'page' => Yii::$app->request->get('page', 1) - 1,
             'route' => '/admin/features/index',
             'selfParams' => [
@@ -58,7 +58,7 @@ class FeaturesController extends AdminDefaultController
         $searchModel = new FeaturesSearch();
 
         $pagination = new Pagination([
-            'pageSize' => Yii::$app->request->get('per-page', 8),
+            'pageSize' => Yii::$app->request->get('per-page', 30),
             'page' => Yii::$app->request->get('page', 1) - 1,
             'route' => '/admin/features/index',
             'selfParams' => [
