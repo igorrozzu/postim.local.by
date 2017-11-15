@@ -1,6 +1,6 @@
 <?php
 
-$params = [
+$paramsDb = [
     'class' => 'yii\db\Connection',
     'dsn' => 'pgsql:host=localhost;dbname=postim_db',
     'username' => 'postim_user',
@@ -15,4 +15,4 @@ if(YII_ENV == 'prod'){
     $params['dsn'] = 'pgsql:host=docker49872-postimdb.mycloud.by;dbname=postim_db';
 }
 
-return $params;
+return $paramsDb;
