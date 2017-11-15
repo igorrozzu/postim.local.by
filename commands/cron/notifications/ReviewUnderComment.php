@@ -20,8 +20,8 @@ class ReviewUnderComment extends BaseCronNotificationHandler
             ->where([Comments::tableName() . '.id' => $this->params->receiver_comment_id])
             ->one();
 
-        $redirectLink = 'Otzyvy-' . $comment->review->post->url_name . '-p' . $comment->review->post->id .
-            '?review_id=' . $comment->review->id . '&comment_id='. $comment->id;
+        $redirectLink = $comment->review->post->url_name . '-p' . $comment->review->post->id .
+            '?review_id=' . $comment->review->id;
 
         NotificationHandler::sendNotification($comment->user_id, [
             'type' => '',

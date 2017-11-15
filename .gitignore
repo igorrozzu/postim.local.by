@@ -9,3 +9,5 @@ runtime
 web/assets/
 web/sitemaps/
 web/download/
+config/params.php
+config/db.php

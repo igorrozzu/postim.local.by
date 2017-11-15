@@ -19,7 +19,7 @@ class NewCommentToReview extends BaseCronNotificationHandler
             return false;
         }
 
-        $redirectLink = 'Otzyvy-' . $review->post->url_name . '-p' . $review->post->id;
+        $redirectLink = $review->post->url_name . '-p' . $review->post->id . '?review_id=' . $review->id;
 
         NotificationHandler::sendNotification($review->user_id, [
             'type' => '',
