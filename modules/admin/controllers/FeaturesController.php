@@ -177,6 +177,7 @@ class FeaturesController extends AdminDefaultController
                         'filter_status' => Features::$FILTER_STATUS['no'],
                         'type' => Features::$TYPE['regular']
                     ]);
+                    $model->setScenario(Features::$SCENARIO['main']);
                     $params['toastMessage'] = [
                         'type' => 'success',
                         'message' => 'Особенность добавлена',
@@ -190,6 +191,8 @@ class FeaturesController extends AdminDefaultController
                         'filter_status' => Features::$FILTER_STATUS['no'],
                         'type' => Features::$TYPE['regular']
                     ]);
+                    $modelUnder->setFormName('FeaturesUnder');
+                    $modelUnder->setScenario(Features::$SCENARIO['under']);
                     $params['toastMessage'] = [
                         'type' => 'success',
                         'message' => 'Подособенность добавлена',
