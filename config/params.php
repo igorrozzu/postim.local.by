@@ -1,6 +1,7 @@
 <?php
 
-return [
+
+$params = [
     'notificationTemplates' => require 'notifications.php',
     'adminEmail' => 'admin@example.com',
     'mail.supportEmail' => 'info@postim.by',
@@ -19,3 +20,9 @@ return [
     'mainPage.postCount' => 4,
     'mainPage.newsCount' => 4,
 ];
+
+if(YII_ENV == 'prod'){
+    $params['site.hostName'] = 'https://postim.by';
+}
+
+return $params;
