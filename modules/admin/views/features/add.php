@@ -138,11 +138,11 @@ Pjax::begin([
             <div class="selectorFields" data-is-many="false" data-id="FeaturesUnder[filter_status]" data-max="1"
                  data-info='<?= \yii\helpers\Json::encode([['id'=>0,'name'=>'Нет'],['id'=>1,'name'=>'Да']]) ?>'>
                 <div class="block-inputs" style="display: none">
-                    <div class="btn-selected-option"><span class="option-text"><?=$model->filter_status?></span> <span class="close-selected-option"></span> <input name="FeaturesUnder[filter_status]" value="<?=$model->filter_status?>" style="display: none"> </div>
+                    <div class="btn-selected-option"><span class="option-text"><?=$modelUnder->filter_status?></span> <span class="close-selected-option"></span> <input name="FeaturesUnder[filter_status]" value="<?=$modelUnder->filter_status?>" style="display: none"> </div>
                 </div>
                 <div class="between-selected-field btn-open-field" data-open=false>
-                    <input class="search-selected-field" type="button" data-value="<?=$model->getLabelFilterStatus()?>"
-                           value="<?=$model->getLabelFilterStatus()?>" placeholder="Выберите">
+                    <input class="search-selected-field" type="button" data-value="<?=$modelUnder->getLabelFilterStatus()?>"
+                           value="<?=$modelUnder->getLabelFilterStatus()?>" placeholder="Выберите">
                     <div class="open-select-field2"></div>
                 </div>
                 <div class="container-scroll-fields">
