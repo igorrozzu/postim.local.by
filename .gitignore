@@ -11,3 +11,5 @@ web/sitemaps/
 web/download/
 config/params.php
 config/db.php
+web/js/*.min.js
+web/js/admin/*.min.js
