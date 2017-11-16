@@ -13,7 +13,11 @@ foreach ($model as $item):
                 <?php if($item->is_official_answer):?>
                     <div class="official-sign">Официальный ответ</div>
                 <?php endif;?>
-                <div class="user-level"><?=$item->user->userInfo->level?> <span>&nbsp;уровень</span></div>
+                <div class="user-level"><?=$item->user->userInfo->level?>
+                    <noindex>
+                        <span>&nbsp;уровень</span>
+                    </noindex>
+                </div>
             </div>
             <span class="comment-time"><?=Yii::$app->formatter->printDate($item->date)?></span>
         </div>
@@ -28,10 +32,14 @@ foreach ($model as $item):
         </div>
         <div class="btns-comment">
             <div class="btn-comment btn-like <?=$item->is_like?'active':''?>"><?=$item->like?></div>
-            <div class="btn-comment btn-comm reply">Ответить</div>
+            <div class="btn-comment btn-comm reply">
+                <noindex>Ответить</noindex>
+            </div>
             <?php if(Yii::$app->user->isGuest || $item->user->id!=Yii::$app->user->id):?>
                 <?php if(!$item->is_complaint):?>
-                    <div class="btn-comment cplt">Пожаловаться</div>
+                    <div class="btn-comment cplt">
+                        <noindex>Пожаловаться</noindex>
+                    </div>
                 <?php endif;?>
             <?php elseif($item->status == 0):?>
                 <div class="btn-comment delete">Удалить</div>

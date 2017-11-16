@@ -27,7 +27,11 @@ $reviews = $dataProvider->getModels();
                             <a href="/id<?=$review->user->id?>">
                                 <p class="user-name"><?=$review->user->name . ' ' . $review->user->surname;?></p>
                             </a>
-                            <div class="user-level"><?=$review->user->userInfo->level?> <span>&nbsp;уровень</span></div>
+                            <div class="user-level"><?=$review->user->userInfo->level?>
+                                <noindex>
+                                    <span>&nbsp;уровень</span>
+                                </noindex>
+                            </div>
                         </div>
                     </div>
                     <div class="date-time-review">
@@ -38,12 +42,12 @@ $reviews = $dataProvider->getModels();
         </div>
         <div class="block-review-content">
             <div class="rating-r bg-r<?=$review->rating?>"><?=$review->rating?></div>
-            <div class="review-help-text">Оценка</div>
+            <div class="review-help-text">
+                <noindex>Оценка</noindex>
+            </div>
             <div class="review-text"><?=$review->data?></div>
         </div>
-        <?php
-			$photo = $review->getLastPhoto();
-        ?>
+        <?php $photo = $review->getLastPhoto(); ?>
         <?php if($photo && $review->count_photos):?>
             <div class="review-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="0">
                 <div class="block-total-photo-review"><?=$review->count_photos?></div>
@@ -60,7 +64,9 @@ $reviews = $dataProvider->getModels();
             <div class="review-footer-btn btn-comm" data-text="<?=$review->totalComments?>"><?=$textComm?></div>
             <?php if(Yii::$app->user->getId()!=$review['user_id']):?>
                 <?php if(!$review->is_complaint):?>
-                    <div class="review-footer-btn btn-complaint">Пожаловаться</div>
+                    <div class="review-footer-btn btn-complaint">
+                        <noindex>Пожаловаться</noindex>
+                    </div>
                 <?php endif;?>
             <?php elseif($settings['without_header']??false):?>
                 <div class="review-footer-btn btn-edit-reviews">Редактировать</div>

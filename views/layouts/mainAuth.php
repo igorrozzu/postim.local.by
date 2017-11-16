@@ -49,9 +49,11 @@ $countNotif = NotificationUser::getCountNotifications();
         <div class="menu-btn"></div>
         <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:'/'?>" class="logo"></a>
         <div class="select-city btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
-        <div class="main-pjax">
-            <a href="/add" class="btn_br">Добавить место</a>
-        </div>
+        <noindex>
+            <div class="main-pjax">
+                <a href="/add" class="btn_br" rel="nofollow">Добавить место</a>
+            </div>
+        </noindex>
         <div class="profile-icon-menu">
             <img class="round-img" src="<?=$user->getPhoto()?>">
         </div>
@@ -60,9 +62,11 @@ $countNotif = NotificationUser::getCountNotifications();
                 <span class="count-notice"><?=$countNotif?></span>
             <?php endif;?>
         </div>
-        <div class="main-pjax">
-            <a href="/add" class="btn_add_place"></a>
-        </div>
+        <noindex>
+            <div class="main-pjax">
+                <a href="/add" class="btn_add_place" rel="nofollow"></a>
+            </div>
+        </noindex>
         <div class="search_block">
             <div class="cancel"></div>
             <input class="search" type="text" placeholder="Поиск" value="<?=Yii::$app->request->get('text','')?>">
@@ -162,35 +166,36 @@ Pjax::end();
 
 ?>
 
-
-<div class="block-footer">
-    <div class="block-footer-content">
-        <div class="block-footer-btn">
-            <ul class="menu-inline main-pjax">
-                <li><a href="/about">О сайте</a></li>
-                <li><a href="/review-rules">Правила</a></li>
-                <li><a href="/agreement">Соглашение</a></li>
-                <li><a href="/business">Бизнес-аккаунт</a></li>
-                <li><a href="/feedback">Обратная связь</a></li>
-            </ul>
-            <div class="block-social-icons">
-                <div class="block-social">
-                    <a href="https://vk.com/postimby" class="social-btn-vk"></a>
-                    <a href="https://www.facebook.com/postimby" class="social-btn-fb"></a>
-                    <a href="https://twitter.com/postimby" class="social-btn-tw"></a>
-                </div>
-                <div class="block-social">
-                    <a href="https://www.ok.ru/postimby" class="social-btn-ok"></a>
-                    <a href="https://www.instagram.com/postimby" class="social-btn-inst"></a>
-                    <a href="https://chats.viber.com/postimby/ru" class="social-btn-viber"></a>
+<noindex>
+    <div class="block-footer">
+        <div class="block-footer-content">
+            <div class="block-footer-btn">
+                <ul class="menu-inline main-pjax">
+                    <li><a href="/about" rel="nofollow">О сайте</a></li>
+                    <li><a href="/review-rules" rel="nofollow">Правила</a></li>
+                    <li><a href="/agreement" rel="nofollow">Соглашение</a></li>
+                    <li><a href="/business" rel="nofollow">Бизнес-аккаунт</a></li>
+                    <li><a href="/feedback" rel="nofollow">Обратная связь</a></li>
+                </ul>
+                <div class="block-social-icons">
+                    <div class="block-social">
+                        <a href="https://vk.com/postimby" class="social-btn-vk" rel="nofollow"></a>
+                        <a href="https://www.facebook.com/postimby" class="social-btn-fb" rel="nofollow"></a>
+                        <a href="https://twitter.com/postimby" class="social-btn-tw" rel="nofollow"></a>
+                    </div>
+                    <div class="block-social">
+                        <a href="https://www.ok.ru/postimby" class="social-btn-ok" rel="nofollow"></a>
+                        <a href="https://www.instagram.com/postimby" class="social-btn-inst" rel="nofollow"></a>
+                        <a href="https://chats.viber.com/postimby/ru" class="social-btn-viber" rel="nofollow"></a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="text-footer">
-            ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы&nbsp;–&nbsp;9:00&nbsp;до&nbsp;18:00. Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span class="email-address">info@postim.by.</span> ©&nbsp;2016–2017&nbsp;Postim.by
+            <div class="text-footer">
+                ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы&nbsp;–&nbsp;9:00&nbsp;до&nbsp;18:00. Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span class="email-address">info@postim.by.</span> ©&nbsp;2016–2017&nbsp;Postim.by
+            </div>
         </div>
     </div>
-</div>
+</noindex>
 
 <div class="container-blackout-popup-window"
     <?php if (!isset($this->params['form-message'])):?>

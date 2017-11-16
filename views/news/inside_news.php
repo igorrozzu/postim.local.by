@@ -35,12 +35,14 @@ $this->registerMetaTag([
         </div>
     </div>
     <div class="block-content-between">
-        <div class="block-social-share">
-            <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk">0</span></div>
-            <div class="social-btn-share goodshare" data-type="fb"><p>Share</p><span data-counter="fb">0</span></div>
-            <div class="social-btn-share goodshare" data-type="tw"><p>Твитнуть</p></div>
-            <div class="social-btn-share goodshare" data-type="ok"><span data-counter="ok">0</span></div>
-        </div>
+        <noindex>
+            <div class="block-social-share">
+                <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk">0</span></div>
+                <div class="social-btn-share goodshare" data-type="fb"><p>Share</p><span data-counter="fb">0</span></div>
+                <div class="social-btn-share goodshare" data-type="tw"><p>Твитнуть</p></div>
+                <div class="social-btn-share goodshare" data-type="ok"><span data-counter="ok">0</span></div>
+            </div>
+        </noindex>
         <div class="block-count-views">
             <div class="elem-count-views"><?=$news->totalView['count']?></div>
         </div>
@@ -48,12 +50,14 @@ $this->registerMetaTag([
     <div class="comments_entity_container" data-entity_id="<?=$news['id']?>">
         <?=$this->render('/comments/comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$news->totalComments])?>
     </div>
-    <h2 class="h2-c">Последнии новости</h2>
-    <div class="block-news-container">
-        <div class="block-news">
-            <?= CardsNewsWidget::widget(['dataprovider' => $lastNews, 'settings' => ['replace-container-id' => 'feed-news','load-time'=>$loadTime]]) ?>
+    <noindex>
+        <h2 class="h2-c">Последние новости</h2>
+        <div class="block-news-container">
+            <div class="block-news">
+                <?= CardsNewsWidget::widget(['dataprovider' => $lastNews, 'settings' => ['replace-container-id' => 'feed-news','load-time'=>$loadTime]]) ?>
+            </div>
         </div>
-    </div>
+    </noindex>
 </div>
 <div class="clear-fix"></div>
 <div style="margin-bottom:30px;"></div>
