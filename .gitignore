@@ -13,3 +13,4 @@ config/params.php
 config/db.php
 web/js/*.min.js
 web/js/admin/*.min.js
+web/index.php
