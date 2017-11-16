@@ -17,12 +17,8 @@ var Post = (function (window, document, undefined,$) {
 					})
             },
             transitionToPostHandler: function () {
-                $(document).off('click','.card-block').on('click','.card-block', function (e) {
-                    if(!$(e.target).is('a')) {
-                        e.stopPropagation();
-                        $(this).find('.main-pjax a').trigger('click');
-                    }
-
+                $(document).off('click','.js-href-post').on('click','.js-href-post', function (e) {
+                    $(this).parent().find('.main-pjax a').trigger('click');
                 });
             },
 

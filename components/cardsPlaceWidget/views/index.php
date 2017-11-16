@@ -30,28 +30,30 @@
                 </div>
             </a>
         </div>
+        <div class="js-href-post">
+            <div class="card-block-info">
+                <p class="info-head"><?=CardsPlaceWidget::renderCategories($item->categories,$item->city)?></p>
+                <p class="card-info"><?=Html::encode($item['data'])?></p>
+            </div>
+            <div class="time-work">
+                <?=$item->is_open?'<p class="open">Открыто '.$item->timeOpenOrClosed.'</p>':
+                    '<p class="close">Закрыто '.$item->timeOpenOrClosed.'</p>'?>
+                <?php if($item->distanceText):?>
+                    <div class="distance-to-me">
+                        <?=$item->distanceText?>
+                    </div>
+                <?php endif;?>
 
-        <div class="card-block-info">
-            <p class="info-head"><?=CardsPlaceWidget::renderCategories($item->categories,$item->city)?></p>
-            <p class="card-info"><?=Html::encode($item['data'])?></p>
-        </div>
-        <div class="time-work">
-            <?=$item->is_open?'<p class="open">Открыто '.$item->timeOpenOrClosed.'</p>':
-                '<p class="close">Закрыто '.$item->timeOpenOrClosed.'</p>'?>
-            <?php if($item->distanceText):?>
-                 <div class="distance-to-me">
-                     <?=$item->distanceText?>
-                 </div>
-            <?php endif;?>
-
-        </div>
-        <hr class="hr-c">
-        <div class="info-address">
-            <div class="address-icon"></div>
-            <div class="address-block">
-                <div class="address-text"><?=$item->city['name'].', '.$item["address"]?></div>
+            </div>
+            <hr class="hr-c">
+            <div class="info-address">
+                <div class="address-icon"></div>
+                <div class="address-block">
+                    <div class="address-text"><?=$item->city['name'].', '.$item["address"]?></div>
+                </div>
             </div>
         </div>
+
     </div>
 <?php endforeach;?>
 
