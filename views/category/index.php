@@ -81,16 +81,18 @@ $this->registerMetaTag([
         <div class="btn-filter icon-filter <?=!$issetFilters?'hide-dp':''?>"><span>Все фильтры</span></div>
     </div>
 </div>
-<div id="map_block" class="block-map preload-map">
-    <div class="btns-map">
-        <div class="action-map" title="Открыть карту"></div>
-        <div class="find-me" title="Найти меня"></div>
-        <div class="zoom-plus"></div>
-        <div class="zoom-minus"></div>
-    </div>
+<noindex>
+    <div id="map_block" class="block-map preload-map">
+        <div class="btns-map">
+            <div class="action-map" title="Открыть карту"></div>
+            <div class="find-me" title="Найти меня"></div>
+            <div class="zoom-plus"></div>
+            <div class="zoom-minus"></div>
+        </div>
 
-    <div id="map" style="display: none"></div>
-</div>
+        <div id="map" style="display: none"></div>
+    </div>
+</noindex>
 
 
 <div class="block-content">

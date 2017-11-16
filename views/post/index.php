@@ -37,15 +37,17 @@ $this->registerMetaTag([
 ]);
 ?>
 <div class="margin-top60"></div>
-<div id="map_block" class="block-map preload-map">
-    <div class="btns-map">
-        <div class="action-map" title="Открыть карту"></div>
-        <div class="find-me" title="Найти меня"></div>
-        <div class="zoom-plus"></div>
-        <div class="zoom-minus"></div>
+<noindex>
+    <div id="map_block" class="block-map preload-map">
+        <div class="btns-map">
+            <div class="action-map" title="Открыть карту"></div>
+            <div class="find-me" title="Найти меня"></div>
+            <div class="zoom-plus"></div>
+            <div class="zoom-minus"></div>
+        </div>
+        <div id="map" style="display: none"></div>
     </div>
-    <div id="map" style="display: none"></div>
-</div>
+</noindex>
 
 <?php
 $js = <<<js
@@ -100,7 +102,7 @@ Pjax::begin([
     <div class="block-photos-container">
         <div class="block-photos" data-type="all">
             <?php foreach ($previewPhoto as $index => $photo):?>
-            <div class="photo n<?=$index+1?>" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>"></div>
+                <div class="photo n<?=$index+1?>" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>"></div>
             <?php endforeach;?>
             <?php for ($i = count($previewPhoto); $i < 4; $i++):?>
                 <div class="photo-not-found n<?=$i+1?>"></div>
@@ -115,9 +117,12 @@ Pjax::begin([
     </div>
     <div class="block-content-between cust">
         <h2 class="h2-v">Информация</h2>
-        <p class="text p-text main-pjax">
-            Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/edit/<?=$post['id']?>">исправьте&nbsp;или&nbsp;дополните&nbsp;информацию</a>
-        </p>
+        <noindex>
+            <p class="text p-text main-pjax">
+                Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/edit/<?=$post['id']?>" rel="nofollow">
+                    исправьте&nbsp;или&nbsp;дополните&nbsp;информацию</a>
+            </p>
+        </noindex>
     </div>
     <div class="block-info-card">
         <?php if($post['address']):?>
@@ -254,23 +259,25 @@ Pjax::begin([
         <?php endif;?>
         <?php if ($post->info && is_array($post->info->editors_users) && $post->info->editors_users): ?>
         <div class="info-row">
-            <div class="left-block-f">
-                <div class="title-info-card">Редакторы</div>
-                <div class="block-inside user-editor">
-                    <div class="container-user-editor">
-                        <ul>
-								<?php foreach ($post->info->editors_users as $editor): ?>
-                                    <li>
-                                        <a href="/id<?= $editor->id ?>">
-                                            <img src="<?= $editor->getPhoto() ?>">
-                                            <span><?=$editor->name.' '.$editor->surname?></span>
-                                        </a>
-                                    </li>
-								<?php endforeach; ?>
-                        </ul>
+            <noindex>
+                <div class="left-block-f">
+                    <div class="title-info-card">Редакторы</div>
+                    <div class="block-inside user-editor">
+                        <div class="container-user-editor">
+                            <ul>
+                            <?php foreach ($post->info->editors_users as $editor): ?>
+                                <li>
+                                    <a href="/id<?= $editor->id ?>" rel="nofollow">
+                                        <img src="<?= $editor->getPhoto() ?>">
+                                        <span><?=$editor->name.' '.$editor->surname?></span>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </noindex>
             <div class="right-block-f">
                 <div class="btn-info-card"></div>
             </div>
@@ -284,12 +291,14 @@ Pjax::begin([
     </div>
     <?php endif;?>
     <div class="block-content-between">
-        <div class="block-social-share">
-            <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk">0</span></div>
-            <div class="social-btn-share goodshare" data-type="fb"><p>Share</p><span data-counter="fb">0</span></div>
-            <div class="social-btn-share goodshare" data-type="tw"><p>Твитнуть</p></div>
-            <div class="social-btn-share goodshare" data-type="ok"><span data-counter="ok">0</span></div>
-        </div>
+        <noindex>
+            <div class="block-social-share">
+                <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk">0</span></div>
+                <div class="social-btn-share goodshare" data-type="fb"><p>Share</p><span data-counter="fb">0</span></div>
+                <div class="social-btn-share goodshare" data-type="tw"><p>Твитнуть</p></div>
+                <div class="social-btn-share goodshare" data-type="ok"><span data-counter="ok">0</span></div>
+            </div>
+        </noindex>
         <div class="block-count-views">
             <div class="elem-count-views"><?=$post->totalView['count']?></div>
         </div>
@@ -297,9 +306,11 @@ Pjax::begin([
 
     <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post_id'=>$post->id])?>
     <?php if(!$post->has_send_bs):?>
-    <div class="block-info-for-owner" data-post_id="<?=$post->id?>">
-        <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и получите доступ к эффективным инструментам для развития бизнеса.</p>
-    </div>
+        <noindex>
+            <div class="block-info-for-owner" data-post_id="<?=$post->id?>">
+                <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и получите доступ к эффективным инструментам для развития бизнеса.</p>
+            </div>
+        </noindex>
     <?php endif;?>
     <div class="margin-top60"></div>
 </div>
