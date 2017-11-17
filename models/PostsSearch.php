@@ -177,8 +177,6 @@ class PostsSearch extends Posts
        }
 
        if($self_filters){
-           $query->innerJoinWith('postFeatures');
-           $this->queryForPlaceOnMap->innerJoinWith('postFeatures');
 
            $queryFiltersBool=[0=>'or'];
            foreach ($params as $nameFilter => $value){
@@ -204,6 +202,10 @@ class PostsSearch extends Posts
            }
 
            if(count($queryFiltersBool)>1){
+
+               $query->innerJoinWith('postFeatures');
+               $this->queryForPlaceOnMap->innerJoinWith('postFeatures');
+
                $query->andWhere($queryFiltersBool);
                $query->having('count(distinct features_id) = '.$this->filters);
 
