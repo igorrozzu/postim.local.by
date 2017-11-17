@@ -45,7 +45,7 @@ class Features extends ParentsModel
             [['id', 'name', 'filter_status'], 'required'],
             [['type', 'filter_status'], 'integer'],
             [['main_features'],'required','message'=>'Выберите особенность','on'=>self::$SCENARIO['under']],
-            [['id', 'name', 'main_features'], 'string', 'max' => 30],
+            [['id', 'name', 'main_features'], 'string', 'max' => 100],
             [['id'], 'unique','message' => 'Название ID должно быть уникальным'],
         ];
     }
