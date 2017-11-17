@@ -15,4 +15,8 @@ if(YII_ENV == 'prod'){
     $paramsDb['dsn'] = 'pgsql:host=docker49872-postimdb.mycloud.by;dbname=postim_db';
 }
 
+if(YII_ENV == 'testing'){
+    $paramsDb['dsn'] = 'pgsql:host=docker49872-postimdb.mycloud.by;dbname=postim_db';
+}
+
 return $paramsDb;
