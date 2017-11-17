@@ -16,7 +16,7 @@ foreach ($model as $item):
                     </noindex>
                 </div>
             </div>
-            <span class="comment-time"><?=Yii::$app->formatter->printDate($item->date)?></span>
+            <span class="comment-time"><?=Yii::$app->formatter->printDate($item->date + (Yii::$app->user->getTimezoneInSeconds()))?></span>
         </div>
         <div class="comment-text">
             <?php

@@ -130,7 +130,7 @@ class Features extends \yii\db\ActiveRecord
             }
 
             $min_max =  $query->one();
-            Yii::$app->cache->set([$category,$under_category,$this->id,$city_url_name.'_city'],$min_max);
+            Yii::$app->cache->set([$category,$under_category,$this->id,$city_url_name.'_city'],$min_max,7200);
         }
 
         if($min_max){
