@@ -470,10 +470,10 @@ class ParserController extends Controller{
 
     public function actionConvertPrice(){
         $allModels = PostFeatures::find()
-            ->where(['>=','value',10000])
+            ->where(['>=','value',1000])
             ->all();
         foreach ($allModels as $model){
-            $model->value = $model->value / 10000;
+            $model->value = $model->value / 10;
             $model->update();
         }
     }
