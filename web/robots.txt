@@ -1,2 +1,20 @@
-User-agent: *
+User-Agent: YadirectBot
 Disallow:
+
+User-Agent: YandexDirect
+Disallow:
+
+User-agent: *
+Disallow: /id*
+Disallow: /*photo_id=*
+Disallow: /search/*
+Disallow: /?type=*
+Disallow: /user/
+Disallow: /?sort=*
+Disallow: /*?
+Disallow: /social-auth
+Disallow: /add
+Disallow: /site/
+
+Host: https://postim.by
+Sitemap: https://postim.by/sitemap.xml
