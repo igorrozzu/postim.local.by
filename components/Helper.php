@@ -96,7 +96,7 @@ class Helper{
 
     public static function getPriceFeature($feature){
 
-        $featurePrice = ['average_bill2','beer_price','price_per_hour_sauna2','price_rolls'];
+        $featurePrice = ['average_bill2','beer_price','price_per_hour_sauna2','price_rolls','price_per_month2','price_room','price_cup_cappuccino','price_evening'];
         if(in_array($feature['features_id'],$featurePrice)){
             return self::mb_ucasefirst($feature['value']) .' BYN';
         }
