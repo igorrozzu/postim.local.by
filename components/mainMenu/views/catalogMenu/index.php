@@ -19,6 +19,5 @@
             ?>
         </ul>
     </div>
-    <div class="right-block"></div>
 </div>
 <div class="clear-fix"></div>
