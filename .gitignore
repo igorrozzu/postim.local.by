@@ -14,8 +14,8 @@ config/db.php
 web/js/*.min.js
 web/css/*.min.css
 web/js/admin/*.min.js
-web/js/admin/*.min.css
-web/js/admin/pop-up/*.min.css
+web/css/admin/*.min.css
+web/css/admin/pop-up/*.min.css
 web/sitemap.xml
 web/index.php
 yii
