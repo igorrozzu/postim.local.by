@@ -24,7 +24,6 @@ $this->registerMetaTag([
 
 ?>
 <div class="margin-top60"></div>
-<noindex>
     <div id="map_block" class="block-map preload-map">
         <div class="btns-map">
             <div class="action-map" title="Открыть карту"></div>
@@ -35,7 +34,6 @@ $this->registerMetaTag([
 
         <div id="map" style="display: none"></div>
     </div>
-</noindex>
 
 <?php
 $js = <<<js

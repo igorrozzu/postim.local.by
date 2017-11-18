@@ -79,10 +79,12 @@ $reviews = $dataProvider->getModels();
 <?php if($settings['show-more-btn'] &&
     ($hrefNext = $dataProvider->pagination->getLinks()['next'] ?? false)):?>
     <div class="review-show-more" id="<?=$settings['replace-container-id']?>">
+        <noindex>
         <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>"
              data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time']?>">
             Показать больше отзывов
         </div>
+        </noindex>
     </div>
 <?php endif;?>
 

@@ -60,9 +60,11 @@
 <?php if($this->context->settings['show-more-btn']):?>
     <?php if ($hrefNext = $dataprovider->pagination->getLinks()['next'] ?? false): ?>
         <div class="replace-block mg-btm-30" id="<?=$settings['replace-container-id']?>">
+            <noindex>
             <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>"
                  data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?><?= isset($settings['load-geolocation'])&&is_array($settings['load-geolocation'])?'&'.http_build_query(array('load-geolocation'=>$settings['load-geolocation'])):''?>">
                 Показать больше мест</div>
+            </noindex>
         </div>
 
     <?php else:?>

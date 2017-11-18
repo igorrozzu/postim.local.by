@@ -22,9 +22,9 @@
                     'without_header'=>true
 				]
 			]);
-			echo '<div class="review-show-more">
+			echo '<noindex><div class="review-show-more">
 		            <div class="btn-show-more switch-reviews">Показать больше отзывов</div>
-	              </div>';
+	              </div></noindex>';
 		}
 	?>
 

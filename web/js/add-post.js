@@ -415,7 +415,7 @@ var Post_add = (function (window, document, undefined, $) {
 						case 'Веб-сайт':{
 							createBlock('/img/icon-link-min.png',
 								'Ссылка на сайт', 'contacts[web_site]',
-								'^(https?:\\/\\/)?([\\da-z\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$'
+								'^((https?:\\/\\/)?([\\da-z.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?)|((https?:\\/\\/)?([\\dа-я.-]+)\\.([а-я\\.]{2,6})([\\/а-я \\.-]*)*\\/?)$'
 							);
 						}break;
 						case 'Вконтакте':{

@@ -39,7 +39,6 @@ $this->registerMetaTag([
 ?>
 
 <div class="margin-top60"></div>
-<noindex>
     <div id="map_block" class="block-map preload-map">
         <div class="btns-map">
             <div class="action-map" title="Открыть карту"></div>
@@ -49,7 +48,6 @@ $this->registerMetaTag([
         </div>
         <div id="map" style="display: none"></div>
     </div>
-</noindex>
 
 <div class="block-content">
     <h1 class="h1-c center-mx"><?=$descriptionPage['h1']?></h1>
@@ -80,11 +78,13 @@ $this->registerMetaTag([
                         'show-more-btn' => false,
                     ]
                 ]); ?>
-                <div class="review-show-more main-pjax">
-                    <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:''?>/otzyvy">
-                        <div class="btn-show-more switch-all-reviews">Показать больше отзывов</div>
-                    </a>
-                </div>
+                <noindex>
+                    <div class="review-show-more main-pjax">
+                        <a href="<?= Yii::$app->city->Selected_city['url_name'] ? '/' . Yii::$app->city->Selected_city['url_name'] : '' ?>/otzyvy">
+                            <div class="btn-show-more switch-all-reviews">Показать больше отзывов</div>
+                        </a>
+                    </div>
+                </noindex>
             </div>
         </div>
     <?php endif;?>

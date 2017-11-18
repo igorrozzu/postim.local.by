@@ -37,7 +37,6 @@ $this->registerMetaTag([
 ]);
 ?>
 <div class="margin-top60"></div>
-<noindex>
     <div id="map_block" class="block-map preload-map">
         <div class="btns-map">
             <div class="action-map" title="Открыть карту"></div>
@@ -47,7 +46,6 @@ $this->registerMetaTag([
         </div>
         <div id="map" style="display: none"></div>
     </div>
-</noindex>
 
 <?php
 $js = <<<js
@@ -258,8 +256,8 @@ Pjax::begin([
         </div>
         <?php endif;?>
         <?php if ($post->info && is_array($post->info->editors_users) && $post->info->editors_users): ?>
+        <noindex>
         <div class="info-row">
-            <noindex>
                 <div class="left-block-f">
                     <div class="title-info-card">Редакторы</div>
                     <div class="block-inside user-editor">
@@ -277,11 +275,11 @@ Pjax::begin([
                         </div>
                     </div>
                 </div>
-            </noindex>
             <div class="right-block-f">
                 <div class="btn-info-card"></div>
             </div>
         </div>
+        </noindex>
         <?php endif; ?>
     </div>
     <?php if($post->info && $post->info->article):?>

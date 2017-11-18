@@ -10,7 +10,7 @@
 <?php endif;?>
 
 <?php if($postInfo->web_site):?>
-	<div class="block-input-contact"><span class="container-img"><img src="/img/icon-link-min.png"></span><input value="<?=$postInfo->web_site?>" class="validator" data-error-parents="block-input-contact" data-message="Некоректные данные для контактов" placeholder="Ссылка на сайт" name="contacts[web_site]" data-regex="^(https?:\/\/)?([\da-z.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$"><div class="close-input-contact"></div></div>
+	<div class="block-input-contact"><span class="container-img"><img src="/img/icon-link-min.png"></span><input value="<?=$postInfo->web_site?>" class="validator" data-error-parents="block-input-contact" data-message="Некоректные данные для контактов" placeholder="Ссылка на сайт" name="contacts[web_site]" data-regex="^((https?:\/\/)?([\da-z.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?)|((https?:\/\/)?([\dа-я.-]+)\.([а-я\.]{2,6})([\/а-я \.-]*)*\/?)$"><div class="close-input-contact"></div></div>
 <?php endif;?>
 
 <?php if($postInfo->social_networks && is_array($postInfo->social_networks)): ?>
