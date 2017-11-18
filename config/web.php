@@ -43,12 +43,10 @@ $config = [
         ],
         'mailer' => require(__DIR__ . '/mailer.php'),
         'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                'file' => [
+                [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['trace', 'info'],
-                    'categories' => ['yii\*'],
+                    'levels' => ['error', 'warning'],
                 ],
             ],
         ],
