@@ -38,6 +38,7 @@ class MainController extends Controller
         ]);
         $sort = [
             'rating' => SORT_DESC,
+            'date' => SORT_DESC,
             'count_reviews' => SORT_DESC
         ];
 
