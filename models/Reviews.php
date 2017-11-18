@@ -204,7 +204,9 @@ class Reviews extends \yii\db\ActiveRecord
 		parent::afterSave($insert, $changedAttributes);
 
 		$this->savePhotos();
-		$this->removeSomePhoto();
+		if($this->getScenario() == self::$SCENARIO_EDIT){
+            $this->removeSomePhoto();
+        }
 		$this->reCalcRatingPlace();
 		$this->reCalcCountReviews();
 
