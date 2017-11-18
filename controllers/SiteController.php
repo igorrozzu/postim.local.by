@@ -557,7 +557,7 @@ class SiteController extends MainController
 
         $currentUrl = Url::to();
 
-        if($currentUrl = '/post/4392'){
+        if($currentUrl === '/post/4392'){
             $this->redirect('/21vekby-besplatnaa-dostavka-po-belarusi-n24');
         }else{
             return $this->render('404');
