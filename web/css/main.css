@@ -597,7 +597,7 @@ body:not(.open-search) .search{
 }
 .preload-map{
     height: 100px;
-    background-image: url("../img/map.png");
+    background-image: url("../img/map.jpg");
     cursor: pointer;
     background-position: center;
 }
