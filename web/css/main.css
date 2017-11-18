@@ -3611,6 +3611,10 @@ a .btn-sort-reviews.active
 .insert-item h2{
     color: #444444;
     font-size: 30px;
+    margin-bottom: 20px;
+}
+insert-item h2:last-child{
+    margin-bottom: 0px;
 }
 .insert-item a{
     color: #4b98df;
@@ -4925,6 +4929,9 @@ input.search-selected-field{
     box-shadow: 0px 2px 0px 0px #3c5994;
     font-size: 16px;
     color: #ffffff;
+}
+.btn-add-photo-preview{
+    justify-content: center;
 }
 .btn-add-photos-gallery:hover,
 .btn-add-photo-preview:hover{

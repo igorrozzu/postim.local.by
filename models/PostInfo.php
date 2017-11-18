@@ -68,6 +68,10 @@ class PostInfo extends \yii\db\ActiveRecord
             'SaveJson' => [
                 'class' => 'app\behaviors\SaveJson',
                 'in_attributes' => ['phones','social_networks','editors'],
+            ],
+            'Purifier' => [
+                'class' => 'app\behaviors\Purifier',
+                'in_attribute' => 'article',
             ]
 
         ];
