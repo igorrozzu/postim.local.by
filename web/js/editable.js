@@ -335,7 +335,7 @@ var Editable = (function (window, document, undefined,$) {
 					if (RegExpLink.test(url)) {
 
 						var idToTheVideo = url.replace(RegExpLink, '');
-						that.video.renderVedio($('<iframe  type="text/html" src="http://www.youtube.com/embed/' + idToTheVideo + '?autoplay=0&origin=https://'+window.location.host+'" frameborder="0" allowfullscreen/>'));
+						that.video.renderVedio($('<iframe  type="text/html" src="https://www.youtube.com/embed/' + idToTheVideo + '?autoplay=0&origin=https://'+window.location.host+'" frameborder="0" allowfullscreen/>'));
 					}
 
 					//rutube
