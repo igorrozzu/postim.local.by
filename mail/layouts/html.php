@@ -43,37 +43,37 @@ $hostName = Yii::$app->request->getHostInfo();
             <span style="display: inline-block; width: 231px; margin-right: 54px;">
                 <span style="display: block; margin-bottom: 20px;">Присоединяйтесь к нам!</span>
 
-            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none;">
+            <a href="https://vk.com/postimby" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none;">
                 <img src="<?= $hostName ?>/img/vk-icon.png" alt="Vk" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
     height: 26px;" >
             </a>
-            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
+            <a href="https://www.facebook.com/postimby" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
                 <img src="<?= $hostName ?>/img/fb-icon.png" alt="Fb" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
     height: 26px;" >
             </a>
-            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
+            <a href="https://twitter.com/postimby" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
                 <img src="<?= $hostName ?>/img/tw-icon.png" alt="Tw" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
     height: 26px;" >
             </a>
-            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
+            <a href="https://www.ok.ru/postimby" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
                 <img src="<?= $hostName ?>/img/ok-icon.png" alt="Ok" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
     height: 26px;" >
             </a>
-            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
+            <a href="https://www.instagram.com/postimby" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
                 <img src="<?= $hostName ?>/img/inst-icon.png" alt="In" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
     height: 26px;" >
             </a>
-            <a href="#" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
+            <a href="https://chats.viber.com/postimby/ru" target="_blank" style="-webkit-text-size-adjust:none; text-decoration: none; ">
                 <img src="<?= $hostName ?>/img/viber-icon.png" alt="Vb" border="0" style="margin-right: 5px;
     display: inline-block;
     width: 30px;
