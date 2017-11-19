@@ -26,7 +26,7 @@ if(YII_ENV == 'prod'){
 }
 
 if(YII_ENV == 'testing'){
-    $params['site.hostName'] = 'https://postim.by';
+    $params['site.hostName'] = 'https://postim.testing.by';
 }
 
 return $params;
