@@ -27,8 +27,8 @@ return [
         ],
         'google' => [
             'class' => 'yii\authclient\clients\Google',
-            'clientId' => '746824588698-qokodc56kbfhnu81e2jif58ev5m03ac9.apps.googleusercontent.com',
-            'clientSecret' => 'pnl1lxNoCvPIOjMXXN2Gtc8Q',
+            'clientId' => '97736700830-fp66r4om3gqcovoqfnkbjahdp34m155i.apps.googleusercontent.com',
+            'clientSecret' => 'LO86E3tYzLNsEPnjf8gAJhUt',
         ],
         'facebook' => [
             'class' => 'yii\authclient\clients\Facebook',
