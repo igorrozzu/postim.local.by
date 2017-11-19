@@ -93,8 +93,10 @@ class SiteMap {
     public function renderSections()
     {
         $dom = new \DOMDocument('1.0', 'utf-8');
-        $urlset = $dom->createElement('urlset');
+        $urlset = $dom->createElement('sitemapindex');
         $urlset->setAttribute('xmlns','http://www.sitemaps.org/schemas/sitemap/0.9');
+        $urlset->setAttribute('xmlns:xsi','http://www.w3.org/2001/XMLSchema-instance');
+        $urlset->setAttribute('xsi:schemaLocation','http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd');
 
         foreach($this->sections as $item)
         {
@@ -124,6 +126,9 @@ class SiteMap {
         $dom = new \DOMDocument('1.0', 'utf-8');
         $urlset = $dom->createElement('urlset');
         $urlset->setAttribute('xmlns','http://www.sitemaps.org/schemas/sitemap/0.9');
+        $urlset->setAttribute('xmlns:xsi','http://www.w3.org/2001/XMLSchema-instance');
+        $urlset->setAttribute('xmlns:xhtml','http://www.w3.org/1999/xhtml');
+        $urlset->setAttribute('xsi:schemaLocation','http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
 
         foreach($this->items as $item)
         {
