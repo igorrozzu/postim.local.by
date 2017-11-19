@@ -19,7 +19,7 @@ class Register extends NotificationHandler
     public function run()
     {
         $user = User::find()
-            ->select(['name', 'email'])
+            ->select(['id', 'name', 'email'])
             ->where(['id' => $this->owner->getUserId()])
             ->one();
 
