@@ -28,7 +28,7 @@ $this->registerMetaTag([
             <div class="block-info-reviewsAndfavorites" data-item-id="<?=$news['id']?>" data-type="news">
                 <div class="add-favorite <?=$news['is_like']?'active':''?>"><?=$news->count_favorites?></div>
             </div>
-            <div class="date-time-text"><?=Yii::$app->formatter->printDate($news['date'])?></div>
+            <div class="date-time-text"><?=Yii::$app->formatter->printDate($news['date']+Yii::$app->user->getTimezoneInSeconds())?></div>
         </div>
         <div class="container-content-post">
             <?=$news['data']?>
