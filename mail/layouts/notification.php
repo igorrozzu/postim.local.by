@@ -25,7 +25,7 @@ $hostName = Yii::$app->params['site.hostName'];
         font-family: Tahoma, Verdana, Helvetica, sans-serif; color: #444444; font-size: 15px;" >
     <tr>
         <td style="background-color: #3c5994; height: 60px;">
-            <img style="display:block; margin-left: 20px; color: #FFFFFF;margin-top: 20px" alt="Postim.by" border="0"
+            <img style="display:block; margin-left: 20px; color: #FFFFFF;margin-top: 10px" alt="Postim.by" border="0"
                  src="<?= $hostName ?>/img/logo.png">
         </td>
     </tr>
