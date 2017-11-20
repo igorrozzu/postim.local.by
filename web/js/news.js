@@ -17,6 +17,7 @@ var News = (function (window, document, undefined,$) {
             init: function () {
                 $(document).ready(function () {
                     that.addToFavorite();
+                    that.transitionToNewsHandler();
                 });
             },
             addToFavorite: function () {
@@ -45,6 +46,12 @@ var News = (function (window, document, undefined,$) {
                     var url = methods.defineUrlByItemType($block.data('type'));
                     that.sendRequsetForStateItem($container_replace,url, item_id);
                 })
+            },
+
+            transitionToNewsHandler:function () {
+                $(document).off('click','.js-href-news').on('click','.js-href-news', function (e) {
+                    $(this).parent().find('.main-pjax a').trigger('click');
+                });
             },
 
             sendRequsetForStateItem: function ($container_replace,url, item_id) {

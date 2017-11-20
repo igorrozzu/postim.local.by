@@ -16,26 +16,28 @@ $data = $dataprovider->getModels();
                     </div>
                 </a>
             </div>
-            <?php
+            <div class="js-href-news">
+                <?php
                 $tag =['url_name'=>'','name'=>''];
 
                 if (isset($item->city)) {
                     $tag['name'] = $item->city['name'];
                     $tag['url_name'] = $item->city['url_name']?'/' .$item->city['url_name']. '/novosti':'/novosti';
                 }
-            ?>
-            <div class="card-block-info">
-                <p class="info-head"><?="<a href='{$tag["url_name"]}'>{$tag["name"]}</a>";?></p>
-                <p class="card-info"><?=$item->description?></p>
-            </div>
-            <div class="block-btn">
-                <div class="comments">
-                    <span class="icon icon-comments"></span>
-                    <span class="count-t"><?=$item->getTotalComments()?></span>
+                ?>
+                <div class="card-block-info">
+                    <p class="info-head"><?="<a href='{$tag["url_name"]}'>{$tag["name"]}</a>";?></p>
+                    <p class="card-info"><?=$item->description?></p>
                 </div>
-                <div class="views">
-                    <span class="icon icon-views"></span>
-                    <span class="count-t"><?=$item->totalView['count']?></span>
+                <div class="block-btn">
+                    <div class="comments">
+                        <span class="icon icon-comments"></span>
+                        <span class="count-t"><?=$item->getTotalComments()?></span>
+                    </div>
+                    <div class="views">
+                        <span class="icon icon-views"></span>
+                        <span class="count-t"><?=$item->totalView['count']?></span>
+                    </div>
                 </div>
             </div>
         </div>
