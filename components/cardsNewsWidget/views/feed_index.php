@@ -44,9 +44,8 @@ $data = $dataprovider->getModels();
 
 <?php if ($hrefNext = $dataprovider->pagination->getLinks()['next']??false): ?>
     <div class="replace-block mg-btm-30" id="<?=$settings['replace-container-id']?>">
-        <noindex>
         <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>"
-             data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?>">Показать больше новостей</div>
-        </noindex>
+             data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?>"><noindex>Показать больше новостей</noindex>
+        </div>
     </div>
 <?php endif; ?>
