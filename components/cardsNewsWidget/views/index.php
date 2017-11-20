@@ -44,7 +44,7 @@ $data = $dataprovider->getModels();
     <?php endforeach;?>
 </div>
 
-<?php if(count($data)==3):?>
+<?php if(count($data)==4):?>
     <div class="clear-fix"></div>
     <div class="main-pjax" style="max-width: 940px">
         <a href="<?=Yii::$app->city->getSelected_city()['url_name']?'/'.Yii::$app->city->getSelected_city()['url_name']:''?>/novosti" class="btn-show-more">Показать больше новостей</a>
