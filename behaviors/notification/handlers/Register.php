@@ -34,7 +34,7 @@ class Register extends NotificationHandler
             'level' => $newLevel - $oldLevel,
         ]);
 
-        $message = sprintf(Yii::$app->params['site.hostName'].'/bonus',$template['text'], $template['exp'], $template['money']);
+        $message = sprintf($template['text'],Yii::$app->params['site.hostName'].'/bonus', $template['exp'], $template['money']);
         if ($updateResult) {
             parent::sendNotification($this->owner->getUserId(), [
                 'type' => '',

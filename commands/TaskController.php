@@ -79,7 +79,7 @@ class TaskController extends Controller
             ->where(['>=', User::tableName() . '.last_visit', $dayBefore]);
 
         $template = Yii::$app->params['notificationTemplates']['reward.everyday'];
-        $message = sprintf(Yii::$app->params['site.hostName'].'/bonus',$template['text'], $template['exp'], $template['money']);
+        $message = sprintf($template['text'],Yii::$app->params['site.hostName'].'/bonus', $template['exp'], $template['money']);
 
         $userIds = new \stdClass();
         $transaction = Yii::$app->db->beginTransaction();
