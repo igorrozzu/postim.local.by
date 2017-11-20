@@ -242,6 +242,73 @@ class PostsSearch extends Posts
         return $dataProvider;
     }
 
+
+
+    public function searchSpotlight($params, Pagination $pagination){
+
+
+        $query = Posts::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => $pagination
+        ]);
+
+        $this->queryForPlaceOnMap=Posts::find()->select('tbl_posts.id,tbl_posts.coordinates');
+
+        if (!$this->load($params,'') && !$this->validate()) {
+            return $dataProvider;
+        }
+
+        $relations = ['city.region.coutries'];
+        if(!Yii::$app->user->isGuest) {
+            $query->joinWith('hasLike');
+        }
+        $query->innerJoinWith($relations);
+        $query->joinWith('categories.category');
+
+        $query->andWhere([Posts::tableName().'.status' => 1]);
+        $this->queryForPlaceOnMap->andWhere([Posts::tableName().'.status' => 1]);
+
+        if(!empty($this->city)){
+            $query->andWhere(['or',
+                ['tbl_region.url_name'=>$this->city['url_name']],
+                ['tbl_city.url_name'=>$this->city['url_name']],
+                ['tbl_countries.url_name'=>$this->city['url_name']],
+            ]);
+
+            $this->queryForPlaceOnMap->innerJoinWith('city.region.coutries');
+            $this->queryForPlaceOnMap->andWhere(['or',
+                ['tbl_region.url_name'=>$this->city['url_name']],
+                ['tbl_city.url_name'=>$this->city['url_name']],
+                ['tbl_countries.url_name'=>$this->city['url_name']],
+            ]);
+
+        }
+
+        $query->innerJoinWith('reviews');
+        $query->andWhere(['<>','tbl_reviews.status',Reviews::$STATUS['private']]);
+        $query->max('tbl_reviews.date');
+        $query->orderBy(['tbl_reviews.date'=>SORT_DESC]);
+
+        $query->groupBy(['tbl_posts.id','tbl_reviews.date']);
+        $this->queryForPlaceOnMap->groupBy(['tbl_posts.id']);
+
+        $this->key = Helper::saveQueryForMap($this->queryForPlaceOnMap
+            ->prepare(Yii::$app->db->queryBuilder)
+            ->createCommand()->rawSql);
+        $query->with('lastPhoto');
+
+
+        return $dataProvider;
+
+
+    }
+
+
+
+
+
     public function getAutoComplete(string $text){
         $query = Posts::find()->select(['tbl_posts.id','tbl_posts.data','tbl_posts.url_name','tbl_posts.city_id'])
             ->where(['like','upper(data)','%'.mb_strtoupper($text).'%',false]);

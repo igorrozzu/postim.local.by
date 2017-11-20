@@ -36,14 +36,9 @@ class MainController extends Controller
             'pageSize' => $request->get('per-page', $params['mainPage.postCount']),
             'page' => $request->get('page', 1) - 1,
         ]);
-        $sort = [
-            'date' => SORT_DESC,
-            'count_reviews' => SORT_DESC,
-            'rating' => SORT_DESC
-        ];
 
-        $dataProvider = $searchModel->search(
-            $request->queryParams, $pagination, $sort, time()
+        $dataProvider = $searchModel->searchSpotlight(
+            $request->queryParams, $pagination
         );
 
         $NewsSearchModel = new NewsSearch();
