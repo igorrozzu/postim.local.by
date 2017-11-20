@@ -286,7 +286,12 @@ class Reviews extends \yii\db\ActiveRecord
 			$sum+=$arrayRatings[$i];
 		}
 
-		$newRating = (float) number_format($sum/$number, 1);
+		if($number === 0){
+		    $newRating = 0;
+        }else{
+            $newRating = (float) number_format($sum/$number, 1);
+        }
+
 		Posts::updateAll(['rating'=>$newRating],'id='.$this->post_id);
 
 	}
