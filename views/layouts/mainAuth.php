@@ -33,6 +33,7 @@ $countNotif = NotificationUser::getCountNotifications();
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <?= Html::csrfMetaTags() ?>
     <title><?=$this->title?></title>
     <?php $this->head() ?>
