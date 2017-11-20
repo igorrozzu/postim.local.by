@@ -37,9 +37,9 @@ class MainController extends Controller
             'page' => $request->get('page', 1) - 1,
         ]);
         $sort = [
-            'rating' => SORT_DESC,
             'date' => SORT_DESC,
-            'count_reviews' => SORT_DESC
+            'count_reviews' => SORT_DESC,
+            'rating' => SORT_DESC
         ];
 
         $dataProvider = $searchModel->search(
