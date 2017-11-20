@@ -12,7 +12,7 @@ use yii\helpers\Html;
         <span style="display: block; margin: 0px 20px 20px 20px;">
             <?=$message?>
         </span>
-        <a href="<?= Yii::$app->params['site.hostName']?>/bonus?>"
+        <a href="<?= Yii::$app->params['site.hostName']?>/bonus"
            style="text-decoration: none; display: block;margin:0px 0px 2px 20px; height: 42px;
 width: 270px;" target="_blank">
             <span style="background-color: #CF4D43;
