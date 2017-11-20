@@ -41,7 +41,7 @@ class FillingProfile extends NotificationHandler
             'has_reward_for_filling_profile' => 1,
         ]);
 
-        $message = sprintf($template['text'], $template['exp'], $template['money']);
+        $message = sprintf(Yii::$app->params['site.hostName'].'/bonus',$template['text'], $template['exp'], $template['money']);
         if ($updateResult) {
             parent::sendNotification($this->owner->getUserId(), [
                 'type' => '',
