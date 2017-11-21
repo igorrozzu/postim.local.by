@@ -6231,3 +6231,24 @@ form .field-input:first-child{
     display: flex;
     flex-direction: column;
 }
+
+.btn-standard{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background-color: #cf4d43;
+    font-family: PT_Sans bold;
+    font-size: 14px;
+    width: 300px;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #fff;
+}
+.btn-standard:hover{
+    background-color: #bc3737;
+}
+
+.--top-50px{
+    margin-top: 50px;
+}

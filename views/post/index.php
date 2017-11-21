@@ -113,204 +113,217 @@ Pjax::begin([
                    accept="image/*,image/jpeg,image/gif,image/png" data-id="<?=$post->id?>">
         </div>
     </div>
-    <div class="block-content-between cust">
-        <h2 class="h2-v">Информация</h2>
-        <noindex>
-            <p class="text p-text main-pjax">
-                Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/edit/<?=$post['id']?>" rel="nofollow">
-                    исправьте&nbsp;или&nbsp;дополните&nbsp;информацию</a>
-            </p>
-        </noindex>
-    </div>
-    <div class="block-info-card">
-        <?php if($post['address']):?>
-            <div class="info-row">
-                <div class="left-block-f1">
-                    <div class="address-card"><span>Адрес</span></div>
-                    <div class="block-inside">
-                        <p class="info-card-text"><?=$post->city['name'].', '.$post['address']?></p>
-                        <?php if($post['additional_address']):?>
-                            <div class="dop-info"><?=$post['additional_address']?></div>
-                        <?php endif;?>
-                    </div>
-                </div>
-                <div class="right-block-f">
-                    <div class="btn-info-card"></div>
-                </div>
-            </div>
-        <?php endif;?>
+</div>
+<div class="block-content">
 
-        <?php if($post->metro):?>
-            <div class="info-row">
-                <div class="left-block-f1">
-                    <div class="metro-card">Метро</div>
-                    <div class="block-inside">
-                        <p class="info-card-text"><?=$post->metro?></p>
-                    </div>
-                </div>
-                <div class="right-block-f">
-                    <div class="btn-info-card"></div>
-                </div>
+    <div class="container-columns">
+        <div class="__first-column">
+            <div class="block-content-between cust">
+                <h2 class="h2-v">Информация</h2>
+                <noindex>
+                    <p class="text p-text main-pjax">
+                        Нашли неточность или ошибку,&nbsp;<a class="href-edit" href="/edit/<?=$post['id']?>" rel="nofollow">
+                            исправьте&nbsp;или&nbsp;дополните&nbsp;информацию</a>
+                    </p>
+                </noindex>
             </div>
-        <?php endif;?>
-
-        <?php if($post->info['phones']):?>
-
-            <div class="info-row">
-                <div class="left-block-f1">
-                    <div class="phone-card"><span><?=substr($post->info['phones'][0],0,8)?>...</span></div>
-                    <div class="block-inside">
-                        <p class="info-card-text">
-                            Показать телефон
-                        </p>
-                        <ul class="lists-phones">
-                            <?php foreach ($post->info['phones'] as $phone): ?>
-                                <li><?= $phone ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                </div>
-                <div class="right-block-f">
-                    <div class="btn-info-card"></div>
-                </div>
-            </div>
-        <?php endif;?>
-        <?php if($post->info['web_site']):?>
-            <div class="info-row">
-                <div class="left-block-f1">
-                    <div class="web-site-card">Веб-сайт</div>
-                    <div class="block-inside">
-                        <p class="info-card-text">
-                            <a target="_blank" rel="nofollow noopener" href="<?=$post->info['web_site']?>"><?=Helper::getDomainNameByUrl($post->info['web_site'])?></a>
-                        </p>
-                    </div>
-                </div>
-                <div class="right-block-f">
-                    <div class="btn-info-card"></div>
-                </div>
-            </div>
-        <?php endif;?>
-        <?php if($post->info['social_networks']):?>
-            <div class="info-row">
-                <div class="left-block-f">
-                    <div class="title-info-card">Социальные&nbsp;сети</div>
-                    <div class="block-inside social-info">
-                        <div class="block-social-info">
-                            <?php foreach ($post->info['social_networks'] as $key => $social_network):?>
-                                <?php if(is_array($social_network)):?>
-                                    <?php foreach ($social_network as $keyItem => $valueItem):?>
-                                        <a target="_blank" rel="nofollow noopener" href="<?=$valueItem?>" class="<?=$keyItem?>-icon"></a>
-                                    <?php endforeach;?>
-								<?php else:?>
-                                    <a target="_blank" rel="nofollow noopener" href="<?=$social_network?>" class="<?=$key?>-icon"></a>
+            <div class="block-info-card">
+                <?php if($post['address']):?>
+                    <div class="info-row">
+                        <div class="left-block-f1">
+                            <div class="address-card"><span>Адрес</span></div>
+                            <div class="block-inside">
+                                <p class="info-card-text"><?=$post->city['name'].', '.$post['address']?></p>
+                                <?php if($post['additional_address']):?>
+                                    <div class="dop-info"><?=$post['additional_address']?></div>
                                 <?php endif;?>
-                            <?php endforeach;?>
+                            </div>
+                        </div>
+                        <div class="right-block-f">
+                            <div class="btn-info-card"></div>
                         </div>
                     </div>
-                </div>
-                <div class="right-block-f">
-                    <div class="btn-info-card"></div>
-                </div>
-            </div>
-        <?php endif;?>
-        <div class="info-row">
-            <div class="left-block-f">
-                <div class="title-info-card">Режим&nbsp;работы</div>
-                <div class="block-inside">
-                    <div class="block-time-work">
-                        <?php if($post->is_open):?>
-                            <div class="open"> Открыто <?=$post->timeOpenOrClosed?></div>
-                        <?php else:?>
-                            <div class="close"> Закрыто <?=$post->timeOpenOrClosed?></div>
-                        <?php endif;?>
-                        <?php if($post->is_open || $post->timeOpenOrClosed!==null):?>
-                        <div class="block-schedules">
-                            <?php foreach ($post->workingHours as $workingHour):?>
-                                <div class="sh-day">
-                                    <div class="sh-title-day"><?=Helper::getShortNameDayById($workingHour['day_type'])?></div>
-                                    <div class="sh-time-start"><?=Yii::$app->formatter->asTime($workingHour['time_start'], 'HH:mm')?></div>
-                                    <div class="sh-time-finish"><?=Yii::$app->formatter->asTime($workingHour['time_finish'], 'HH:mm')?></div>
+                <?php endif;?>
+
+                <?php if($post->metro):?>
+                    <div class="info-row">
+                        <div class="left-block-f1">
+                            <div class="metro-card">Метро</div>
+                            <div class="block-inside">
+                                <p class="info-card-text"><?=$post->metro?></p>
+                            </div>
+                        </div>
+                        <div class="right-block-f">
+                            <div class="btn-info-card"></div>
+                        </div>
+                    </div>
+                <?php endif;?>
+
+                <?php if($post->info['phones']):?>
+
+                    <div class="info-row">
+                        <div class="left-block-f1">
+                            <div class="phone-card"><span><?=substr($post->info['phones'][0],0,8)?>...</span></div>
+                            <div class="block-inside">
+                                <p class="info-card-text">
+                                    Показать телефон
+                                </p>
+                                <ul class="lists-phones">
+                                    <?php foreach ($post->info['phones'] as $phone): ?>
+                                        <li><?= $phone ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="right-block-f">
+                            <div class="btn-info-card"></div>
+                        </div>
+                    </div>
+                <?php endif;?>
+                <?php if($post->info['web_site']):?>
+                    <div class="info-row">
+                        <div class="left-block-f1">
+                            <div class="web-site-card">Веб-сайт</div>
+                            <div class="block-inside">
+                                <p class="info-card-text">
+                                    <a target="_blank" rel="nofollow noopener" href="<?=$post->info['web_site']?>"><?=Helper::getDomainNameByUrl($post->info['web_site'])?></a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="right-block-f">
+                            <div class="btn-info-card"></div>
+                        </div>
+                    </div>
+                <?php endif;?>
+                <?php if($post->info['social_networks']):?>
+                    <div class="info-row">
+                        <div class="left-block-f">
+                            <div class="title-info-card">Социальные&nbsp;сети</div>
+                            <div class="block-inside social-info">
+                                <div class="block-social-info">
+                                    <?php foreach ($post->info['social_networks'] as $key => $social_network):?>
+                                        <?php if(is_array($social_network)):?>
+                                            <?php foreach ($social_network as $keyItem => $valueItem):?>
+                                                <a target="_blank" rel="nofollow noopener" href="<?=$valueItem?>" class="<?=$keyItem?>-icon"></a>
+                                            <?php endforeach;?>
+                                        <?php else:?>
+                                            <a target="_blank" rel="nofollow noopener" href="<?=$social_network?>" class="<?=$key?>-icon"></a>
+                                        <?php endif;?>
+                                    <?php endforeach;?>
                                 </div>
-                            <?php endforeach;?>
+                            </div>
                         </div>
-                        <?php endif;?>
-                    </div>
-                </div>
-            </div>
-            <div class="right-block-f">
-                <div class="btn-info-card"></div>
-            </div>
-        </div>
-            <?php Helper::getFeature($post->getFeatures())?>
-        <?php if($post->requisites):?>
-        <div class="info-row">
-            <div class="left-block-f">
-                <div class="title-info-card">Реквизиты</div>
-                <div class="block-inside">
-                    <p class="info-card-text"><?=$post->requisites?></p>
-                </div>
-            </div>
-            <div class="right-block-f">
-                <div class="btn-info-card"></div>
-            </div>
-        </div>
-        <?php endif;?>
-        <?php if ($post->info && is_array($post->info->editors_users) && $post->info->editors_users): ?>
-        <noindex>
-        <div class="info-row">
-                <div class="left-block-f">
-                    <div class="title-info-card">Редакторы</div>
-                    <div class="block-inside user-editor">
-                        <div class="container-user-editor">
-                            <ul>
-                            <?php foreach ($post->info->editors_users as $editor): ?>
-                                <li>
-                                    <a href="/id<?= $editor->id ?>" rel="nofollow">
-                                        <img src="<?= $editor->getPhoto() ?>">
-                                        <span><?=$editor->name.' '.$editor->surname?></span>
-                                    </a>
-                                </li>
-                            <?php endforeach; ?>
-                            </ul>
+                        <div class="right-block-f">
+                            <div class="btn-info-card"></div>
                         </div>
                     </div>
+                <?php endif;?>
+                <div class="info-row">
+                    <div class="left-block-f">
+                        <div class="title-info-card">Режим&nbsp;работы</div>
+                        <div class="block-inside">
+                            <div class="block-time-work">
+                                <?php if($post->is_open):?>
+                                    <div class="open"> Открыто <?=$post->timeOpenOrClosed?></div>
+                                <?php else:?>
+                                    <div class="close"> Закрыто <?=$post->timeOpenOrClosed?></div>
+                                <?php endif;?>
+                                <?php if($post->is_open || $post->timeOpenOrClosed!==null):?>
+                                    <div class="block-schedules">
+                                        <?php foreach ($post->workingHours as $workingHour):?>
+                                            <div class="sh-day">
+                                                <div class="sh-title-day"><?=Helper::getShortNameDayById($workingHour['day_type'])?></div>
+                                                <div class="sh-time-start"><?=Yii::$app->formatter->asTime($workingHour['time_start'], 'HH:mm')?></div>
+                                                <div class="sh-time-finish"><?=Yii::$app->formatter->asTime($workingHour['time_finish'], 'HH:mm')?></div>
+                                            </div>
+                                        <?php endforeach;?>
+                                    </div>
+                                <?php endif;?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-block-f">
+                        <div class="btn-info-card"></div>
+                    </div>
                 </div>
-            <div class="right-block-f">
-                <div class="btn-info-card"></div>
+                <?php Helper::getFeature($post->getFeatures())?>
+                <?php if($post->requisites):?>
+                    <div class="info-row">
+                        <div class="left-block-f">
+                            <div class="title-info-card">Реквизиты</div>
+                            <div class="block-inside">
+                                <p class="info-card-text"><?=$post->requisites?></p>
+                            </div>
+                        </div>
+                        <div class="right-block-f">
+                            <div class="btn-info-card"></div>
+                        </div>
+                    </div>
+                <?php endif;?>
+                <?php if ($post->info && is_array($post->info->editors_users) && $post->info->editors_users): ?>
+                    <noindex>
+                        <div class="info-row">
+                            <div class="left-block-f">
+                                <div class="title-info-card">Редакторы</div>
+                                <div class="block-inside user-editor">
+                                    <div class="container-user-editor">
+                                        <ul>
+                                            <?php foreach ($post->info->editors_users as $editor): ?>
+                                                <li>
+                                                    <a href="/id<?= $editor->id ?>" rel="nofollow">
+                                                        <img src="<?= $editor->getPhoto() ?>">
+                                                        <span><?=$editor->name.' '.$editor->surname?></span>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-block-f">
+                                <div class="btn-info-card"></div>
+                            </div>
+                        </div>
+                    </noindex>
+                <?php endif; ?>
             </div>
+            <?php if($post->info && $post->info->article):?>
+                <h2 class="h2-c">Описание</h2>
+                <div class="block-description-card">
+                    <?=$post->info->article?>
+                </div>
+            <?php endif;?>
+            <div class="block-content-between">
+                <noindex>
+                    <div class="block-social-share">
+                        <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk">0</span></div>
+                        <div class="social-btn-share goodshare" data-type="fb"><p>Share</p><span data-counter="fb">0</span></div>
+                        <div class="social-btn-share goodshare" data-type="tw"><p>Твитнуть</p></div>
+                        <div class="social-btn-share goodshare" data-type="ok"><span data-counter="ok">0</span></div>
+                    </div>
+                </noindex>
+                <div class="block-count-views">
+                    <div class="elem-count-views"><?=$post->totalView['count']?></div>
+                </div>
+            </div>
+
+            <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post_id'=>$post->id])?>
+            <?php if(!$post->has_send_bs):?>
+                <noindex>
+                    <div class="block-info-for-owner" data-post_id="<?=$post->id?>">
+                        <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и получите доступ к эффективным инструментам для развития бизнеса.</p>
+                    </div>
+                </noindex>
+            <?php endif;?>
+            <div class="margin-top60"></div>
+
         </div>
-        </noindex>
-        <?php endif; ?>
-    </div>
-    <?php if($post->info && $post->info->article):?>
-    <h2 class="h2-c">Описание</h2>
-    <div class="block-description-card">
-        <?=$post->info->article?>
-    </div>
-    <?php endif;?>
-    <div class="block-content-between">
-        <noindex>
-            <div class="block-social-share">
-                <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk">0</span></div>
-                <div class="social-btn-share goodshare" data-type="fb"><p>Share</p><span data-counter="fb">0</span></div>
-                <div class="social-btn-share goodshare" data-type="tw"><p>Твитнуть</p></div>
-                <div class="social-btn-share goodshare" data-type="ok"><span data-counter="ok">0</span></div>
-            </div>
-        </noindex>
-        <div class="block-count-views">
-            <div class="elem-count-views"><?=$post->totalView['count']?></div>
+        <div class="__second-column">
+            <div class="--top-50px"></div>
+            <?= \app\components\rightBlock\RightBlockWidget::widget()?>
         </div>
     </div>
 
-    <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post_id'=>$post->id])?>
-    <?php if(!$post->has_send_bs):?>
-        <noindex>
-            <div class="block-info-for-owner" data-post_id="<?=$post->id?>">
-                <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и получите доступ к эффективным инструментам для развития бизнеса.</p>
-            </div>
-        </noindex>
-    <?php endif;?>
-    <div class="margin-top60"></div>
 </div>
 <?php if(Yii::$app->request->get('review_id',false)):?>
     <script>

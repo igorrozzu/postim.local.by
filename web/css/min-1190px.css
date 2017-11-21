@@ -97,6 +97,21 @@
         width: calc(100% - 40px);
     }
 
+    .__first-column .block-info-for-owner{
+        width: calc(100% - 30px);
+    }
+
+    .__first-column .container-settings,
+    .__first-column .block-сomments-post,
+    .__first-column .block-content-between,
+    .__first-column .block-news-container,
+    .__first-column .block-write-reviews,
+    .__first-column .block-reviews,
+    .__first-column .review-show-more,
+    .__first-column .block-info-card{
+        width: 100%;
+    }
+
     .card-block,
     .card-block-discount{
         width: calc((100% - 20px)/2 );

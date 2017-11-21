@@ -19,5 +19,8 @@
             ?>
         </ul>
     </div>
+    <div class="right-block">
+        <?= \app\components\rightBlock\RightBlockWidget::widget()?>
+    </div>
 </div>
 <div class="clear-fix"></div>

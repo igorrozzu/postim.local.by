@@ -70,23 +70,35 @@ Pjax::begin([
 </div>
 
 <div class="block-content">
-    <?php if($dataProvider->getTotalCount()):?>
-        <div class="">
-            <?= CardsReviewsWidget::widget([
-                'dataProvider' => $dataProvider,
-                'settings' => [
-                    'show-more-btn' => true,
-                    'replace-container-id' => 'feed-all-reviews',
-                    'load-time' => $loadTime,
-                ]
-            ]); ?>
-    <?php else:?>
-        <div class="card-promo">
-            <p class="card-text-notice">Отзывов не найдено</p>
-        </div>
-    <?php endif;?>
 
+    <div class="container-columns">
+        <div class="__first-column">
+
+            <?php if($dataProvider->getTotalCount()):?>
+            <div class="">
+                <?= CardsReviewsWidget::widget([
+                    'dataProvider' => $dataProvider,
+                    'settings' => [
+                        'show-more-btn' => true,
+                        'replace-container-id' => 'feed-all-reviews',
+                        'load-time' => $loadTime,
+                    ]
+                ]); ?>
+                <?php else:?>
+                    <div class="card-promo">
+                        <p class="card-text-notice">Отзывов не найдено</p>
+                    </div>
+                <?php endif;?>
+
+            </div>
+
+        </div>
+        <div class="__second-column">
+            <div style="margin-top: 30px"></div>
+            <?= \app\components\rightBlock\RightBlockWidget::widget()?>
+        </div>
     </div>
+
 </div>
 <div class="clear-fix"></div>
 <div class="mg-btm-30"></div>

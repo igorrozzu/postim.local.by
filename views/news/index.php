@@ -36,9 +36,19 @@ $this->registerMetaTag([
     <h1 class="h1-v"><?=$h1?></h1>
 </div>
 <div class="block-content">
-    <div class="block-news-container">
-        <div class="block-news">
-            <?= CardsNewsWidget::widget(['dataprovider' => $dataProvider, 'settings' => ['replace-container-id' => 'feed-news','load-time'=>$loadTime]]) ?>
+    <div class="container-columns">
+        <div class="__first-column">
+
+            <div class="block-news-container">
+                <div class="block-news">
+                    <?= CardsNewsWidget::widget(['dataprovider' => $dataProvider, 'settings' => ['replace-container-id' => 'feed-news','load-time'=>$loadTime]]) ?>
+                </div>
+            </div>
+
+        </div>
+        <div class="__second-column">
+            <div style="margin-top: 30px"></div>
+            <?= \app\components\rightBlock\RightBlockWidget::widget()?>
         </div>
     </div>
 </div>
