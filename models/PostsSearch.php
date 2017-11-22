@@ -286,13 +286,21 @@ class PostsSearch extends Posts
 
         }
 
-        $query->innerJoinWith('reviews');
+        $query->innerJoin('(SELECT main_reviews.post_id,main_reviews.status,main_reviews.date
+              FROM tbl_reviews as main_reviews
+                INNER JOIN (SELECT post_id, max(date) as date
+                            FROM tbl_reviews
+                            GROUP BY tbl_reviews.post_id) as tbl_reviews1 ON tbl_reviews1.post_id = main_reviews.post_id
+              WHERE main_reviews.date = tbl_reviews1.date) as tbl_reviews','tbl_reviews.post_id = tbl_posts.id');
+
         $query->andWhere(['<>','tbl_reviews.status',Reviews::$STATUS['private']]);
-        $query->max('tbl_reviews.date');
         $query->orderBy(['tbl_reviews.date'=>SORT_DESC]);
 
         $query->groupBy(['tbl_posts.id','tbl_reviews.date']);
         $this->queryForPlaceOnMap->groupBy(['tbl_posts.id']);
+
+        $lol = $query->prepare(Yii::$app->db->queryBuilder)
+            ->createCommand()->rawSql;
 
         $this->key = Helper::saveQueryForMap($this->queryForPlaceOnMap
             ->prepare(Yii::$app->db->queryBuilder)
