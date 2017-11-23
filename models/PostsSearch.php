@@ -299,8 +299,9 @@ class PostsSearch extends Posts
         $query->groupBy(['tbl_posts.id','tbl_reviews.date']);
         $this->queryForPlaceOnMap->groupBy(['tbl_posts.id']);
 
-        $lol = $query->prepare(Yii::$app->db->queryBuilder)
-            ->createCommand()->rawSql;
+        $query->with(['workingHours'=>function ($query) {
+            $query->orderBy(['day_type'=>SORT_ASC]);
+        }]);
 
         $this->key = Helper::saveQueryForMap($this->queryForPlaceOnMap
             ->prepare(Yii::$app->db->queryBuilder)
