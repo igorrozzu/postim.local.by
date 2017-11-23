@@ -12,44 +12,27 @@ $this->registerMetaTag([
     'content'=> $news['key_word_s']
 ]);
 
-$this->registerMetaTag([
-    'property' => 'og:locale',
-    'content'=> 'ru_RU'
-]);
 
-$this->registerMetaTag([
-    'property' => 'og:type',
-    'content'=> 'article'
-]);
-
-$this->registerMetaTag([
-    'property' => 'og:title',
-    'content'=> $news['title_s']
-]);
-
-$this->registerMetaTag([
-    'property' => 'og:description',
-    'content'=> $news['description_s']
-]);
+$paramsMetaTagsOg = [
+    'og:locale'=>'ru_RU',
+    'og:type'=>'article',
+    'og:title'=>$news['title_s'],
+    'twitter:title'=>$news['title_s'],
+    'og:description'=>$news['description_s'],
+    'twitter:description'=>$news['description_s'],
+    'og:url'=>\yii\helpers\Url::to('',true),
+    'og:site_name'=>'Postim.by',
+    'twitter:site'=>'Postim.by',
+];
 
 preg_match('/(?<=div class="block-photo-post"><img src=")\/.+?(?=")/',$news['data'],$match);
 
 if($match){
-    $this->registerMetaTag([
-        'property' => 'og:image',
-        'content'=> $match[0]
-    ]);
+    $paramsMetaTagsOg['og:image'] = Yii::$app->params['site.hostName'].$match[0];
+    $paramsMetaTagsOg['twitter:image:src'] = Yii::$app->params['site.hostName']. $match[0];
 }
 
-$this->registerMetaTag([
-    'property' => 'og:url',
-    'content'=> \yii\helpers\Url::to('',true)
-]);
-
-$this->registerMetaTag([
-    'property' => 'og:site_name',
-    'content'=> 'Postim.by'
-]);
+\app\components\MetaTagsSocialNetwork::initOg($this,$paramsMetaTagsOg);
 
 
 ?>
