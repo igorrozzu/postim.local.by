@@ -11,6 +11,47 @@ $this->registerMetaTag([
     'name' => 'keywords',
     'content'=> $news['key_word_s']
 ]);
+
+$this->registerMetaTag([
+    'property' => 'og:locale',
+    'content'=> 'ru_RU'
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:type',
+    'content'=> 'article'
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:title',
+    'content'=> $news['title_s']
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:description',
+    'content'=> $news['description_s']
+]);
+
+preg_match('/(?<=div class="block-photo-post"><img src=")\/.+?(?=")/',$news['data'],$match);
+
+if($match){
+    $this->registerMetaTag([
+        'property' => 'og:image',
+        'content'=> $match[0]
+    ]);
+}
+
+$this->registerMetaTag([
+    'property' => 'og:url',
+    'content'=> \yii\helpers\Url::to('',true)
+]);
+
+$this->registerMetaTag([
+    'property' => 'og:site_name',
+    'content'=> 'Postim.by'
+]);
+
+
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
