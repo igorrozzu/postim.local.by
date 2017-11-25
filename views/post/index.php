@@ -127,7 +127,7 @@ Pjax::begin([
                     </p>
                 </noindex>
             </div>
-            <div class="block-info-card">
+            <div itemscope itemtype="http://schema.org/Article" class="block-info-card">
                 <?php if($post['address']):?>
                     <div class="info-row">
                         <div class="left-block-f1">
