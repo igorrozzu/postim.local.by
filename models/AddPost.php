@@ -13,9 +13,10 @@
 	use yii\db\Exception;
 	use yii\helpers\ArrayHelper;
 	use yii\helpers\FileHelper;
+    use yii\helpers\Html;
 
 
-	class AddPost extends Model
+    class AddPost extends Model
 	{
 		public $name,
 			$article, $address_text,
@@ -118,9 +119,9 @@
 					$post->lon = $latLng[1];
 
 					$post->rating = 0;
-					$post->data = $this->name;
-					$post->address = $this->address_text;
-					$post->additional_address = $this->comments_to_address;
+					$post->data = Html::encode($this->name);
+					$post->address = Html::encode($this->address_text);
+					$post->additional_address = Html::encode($this->comments_to_address);
 					$post->user_id = Yii::$app->user->getId();
 					$post->status = Yii::$app->user->identity->role > 1 ? 1 : 0;
 					$post->date = time();
@@ -129,7 +130,7 @@
 					$post->count_reviews = 0;
 					$post->priority = 0;
 					$post->metro = $this->metro;
-					$post->requisites = $this->requisites;
+					$post->requisites = Html::encode($this->requisites);
 
 					$oldPost = null;
 					$oldPostInfo = null;
@@ -141,9 +142,9 @@
 					}
 
 					if (Yii::$app->user->identity->role > 1) {
-						$post->title = $this->engine['title'];
-						$post->description = $this->engine['description'];
-						$post->key_word = $this->engine['key_word'];
+						$post->title = Html::encode($this->engine['title']);
+						$post->description = Html::encode($this->engine['description']);
+						$post->key_word = Html::encode($this->engine['key_word']);
 					}
 
 
@@ -211,17 +212,17 @@
 				$post->lat = $latLng[0];
 				$post->lon = $latLng[1];
 
-				$post->data = $this->name;
-				$post->address = $this->address_text;
-				$post->additional_address = $this->comments_to_address;
+				$post->data = Html::encode($this->name);
+				$post->address = Html::encode($this->address_text);
+				$post->additional_address = Html::encode($this->comments_to_address);
 				$post->priority = 0;
-                $post->requisites = $this->requisites;
+                $post->requisites = Html::encode($this->requisites);
                 $post->metro = $this->metro;
 
 				if(Yii::$app->user->identity->role > 1){
-					$post->title = $this->engine['title'];
-					$post->description = $this->engine['description'];
-					$post->key_word = $this->engine['key_word'];
+					$post->title = Html::encode($this->engine['title']);
+					$post->description = Html::encode($this->engine['description']);
+					$post->key_word = Html::encode($this->engine['key_word']);
 				}
 
 				for ($i = 1; $i < 8; $i++) {
