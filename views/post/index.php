@@ -102,11 +102,13 @@ Pjax::begin([
     <div class="block-photos-container">
         <div class="block-photos" data-type="all">
             <?php foreach ($previewPhoto as $index => $photo):?>
-                <meta itemprop="image" content="<?=$photo->getPhotoPath()?>">
+                <meta itemprop="image" content="<?=Yii::$app->params['site.hostName'].$photo->getPhotoPath()?>">
                 <div class="photo n<?=$index+1?>" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>"></div>
             <?php endforeach;?>
-            <?php for ($i = count($previewPhoto); $i < 4; $i++):?>
+            <?php if(count($previewPhoto) == 0):?>
                 <meta itemprop="image" content="<?=Yii::$app->params['site.hostName']?>/default_img.jpg">
+            <?php endif;?>
+            <?php for ($i = count($previewPhoto); $i < 4; $i++):?>
                 <div class="photo-not-found n<?=$i+1?>"></div>
             <?php endfor;?>
         </div>
