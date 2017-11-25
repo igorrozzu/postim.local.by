@@ -35,6 +35,30 @@ $this->registerMetaTag([
     'name' => 'keywords',
     'content'=> $post['key_word']
 ]);
+
+$paramsMetaTagsOg = [
+    'og:locale'=>'ru_RU',
+    'og:type'=>'article',
+    'og:title'=>$this->title,
+    'twitter:title'=>$this->title,
+    'og:description'=>$post->description,
+    'twitter:description'=>$post->description,
+    'og:url'=>\yii\helpers\Url::to('',true),
+    'og:site_name'=>'Postim.by',
+    'twitter:site'=>'Postim.by',
+];
+
+
+if($previewPhoto[0]??false){
+    $paramsMetaTagsOg['og:image'] = Yii::$app->params['site.hostName'].$previewPhoto[0]->getPhotoPath();
+    $paramsMetaTagsOg['twitter:image:src'] = Yii::$app->params['site.hostName']. $previewPhoto[0]->getPhotoPath();
+}else{
+    $paramsMetaTagsOg['og:image'] = Yii::$app->params['site.hostName'].'/default_img.jpg';
+    $paramsMetaTagsOg['twitter:image:src'] = Yii::$app->params['site.hostName']. '/default_img.jpg';
+}
+
+\app\components\MetaTagsSocialNetwork::initOg($this,$paramsMetaTagsOg);
+
 ?>
 <div class="margin-top60"></div>
     <div id="map_block" class="block-map preload-map">
