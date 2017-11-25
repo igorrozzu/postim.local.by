@@ -22,7 +22,7 @@
         <div class="js-href-post">
             <div class="card-block-info">
                 <p class="info-head"><?=CardsPlaceWidget::renderCategories($item['categories'],$item['city'])?></p>
-                <p class="card-info"><?=Html::encode($item['data'])?></p>
+                <p class="card-info"><?=Html::encode(Html::decode($item['data']))?></p>
             </div>
             <div class="time-work">
                 <?=$item['is_open']?'<p class="open">Открыто</p>':
