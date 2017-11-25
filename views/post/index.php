@@ -65,21 +65,10 @@ Pjax::begin([
     'formSelector' => false,
 ])
 ?>
-<div itemscope itemtype="http://schema.org/LocalBusiness" class="block-content">
+<div itemscope itemtype="http://schema.org/LocalBusiness">
+<div class="block-content">
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 itemprop="name" class="h1-v"><?=$post->data?></h1>
-
-    <?php if($post['address']):?>
-        <meta itemprop="address" content="<?=$post->city['name'].', '.$post['address']?>">
-    <?php endif;?>
-
-    <?php if($post->info['phones']):?>
-
-        <?php foreach ($post->info['phones'] as $phone): ?>
-            <meta itemprop="telephone" content="<?= $phone ?>">
-        <?php endforeach; ?>
-
-    <?php endif;?>
 
     <div class="block-info-reviewsAndfavorites" data-item-id="<?=$post->id?>" data-type="post">
         <div class="rating-b bg-r<?=$post['rating']?>" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
@@ -113,6 +102,7 @@ Pjax::begin([
     <div class="block-photos-container">
         <div class="block-photos" data-type="all">
             <?php foreach ($previewPhoto as $index => $photo):?>
+                <meta itemprop="image" content="<?=$photo->getPhotoPath()?>">
                 <div class="photo n<?=$index+1?>" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>"></div>
             <?php endforeach;?>
             <?php for ($i = count($previewPhoto); $i < 4; $i++):?>
@@ -146,7 +136,7 @@ Pjax::begin([
                         <div class="left-block-f1">
                             <div class="address-card"><span>Адрес</span></div>
                             <div class="block-inside">
-                                <p class="info-card-text"><?=$post->city['name'].', '.$post['address']?></p>
+                                <p itemprop="address" class="info-card-text"><?=$post->city['name'].', '.$post['address']?></p>
                                 <?php if($post['additional_address']):?>
                                     <div class="dop-info"><?=$post['additional_address']?></div>
                                 <?php endif;?>
@@ -183,7 +173,7 @@ Pjax::begin([
                                 </p>
                                 <ul class="lists-phones">
                                     <?php foreach ($post->info['phones'] as $phone): ?>
-                                        <li><?= $phone ?></li>
+                                        <li itemprop="telephone"><?= $phone ?></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
@@ -337,6 +327,7 @@ Pjax::begin([
         </div>
     </div>
 
+</div>
 </div>
 <?php if(Yii::$app->request->get('review_id',false)):?>
     <script>
