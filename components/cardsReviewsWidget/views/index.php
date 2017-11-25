@@ -13,7 +13,7 @@ $reviews = $dataProvider->getModels();
                 <div class="block-review-post" style="border-bottom: solid 1px #D3E4FF; padding: 20px;">
                     <div class="rating-r bg-r<?=$review->post->rating?>"><?=$review->post->rating?></div>
                     <div class="block-info-review main-pjax">
-                        <p class="user-name"><?=\yii\helpers\Html::encode($review->post->data)?></p>
+                        <p class="user-name"><?=\yii\helpers\Html::encode(\yii\helpers\Html::decode($review->post->data))?></p>
                         <div class="date-time-review"><?=implode(', ',ArrayHelper::getColumn($review['post']['categories'],'name')) ?></div>
                     </div>
                 </div>

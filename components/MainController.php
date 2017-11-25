@@ -60,7 +60,10 @@ class MainController extends Controller
             'page' => $request->get('page', 1) - 1,
         ]);
 
-        $reviewsDataProvider = $reviewsModel->search(['onlyConfirm'=>true],
+        $paramsReviews = Yii::$app->request->queryParams;
+        $paramsReviews['onlyConfirm'] = true;
+
+        $reviewsDataProvider = $reviewsModel->search($paramsReviews,
             $pagination,
             time()
         );
