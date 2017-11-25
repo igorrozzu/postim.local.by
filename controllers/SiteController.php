@@ -106,7 +106,7 @@ class SiteController extends MainController
                 return $this->renderAjax('confirm-email');
             }
         }
-        return $this->renderAjax('register', [
+        return $this->renderPartial('register', [
             'model' => $model,
         ]);
 
@@ -180,6 +180,7 @@ class SiteController extends MainController
         if($model->createUser($tempUser)){
             $tempUser->delete();
             Yii::$app->session->setFlash('render-form-view', 'success-confirmation');
+            return $this->redirect('/?NewUser');
         }
         return $this->goHome();
     }
