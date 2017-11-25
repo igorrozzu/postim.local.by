@@ -25,7 +25,7 @@ var Reviews = (function (window, document, undefined,$) {
 					'</div> ' +
 					'<div class="block-btns-textarea-review"> ' +
 						'<div class="btn-add-photo-review"><p>Добавить фото</p></div> ' +
-						'<div class="btn-rule"><a href="#">Правила размещения отзывов</a></div>' +
+						'<div class="btn-rule"><a href="/review-rules">Правила размещения отзывов</a></div>' +
 					'</div> ' +
 				'</div> ' +
 			'</form>'+
