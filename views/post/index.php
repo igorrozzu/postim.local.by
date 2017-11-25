@@ -67,10 +67,20 @@ Pjax::begin([
 ?>
 <div itemscope itemtype="http://schema.org/LocalBusiness" class="block-content">
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
-    <h1 itemprop="headline" class="h1-v"><?=$post->data?></h1>
-    <meta itemprop="author" content="Ксения Постим">
-    <meta itemprop="datePublished" content="<?= date(DATE_W3C, $post->date)?>">
-    <meta itemprop="publisher" content="Postim.by">
+    <h1 itemprop="name" class="h1-v"><?=$post->data?></h1>
+
+    <?php if($post['address']):?>
+        <meta itemprop="address" content="<?=$post->city['name'].', '.$post['address']?>">
+    <?php endif;?>
+
+    <?php if($post->info['phones']):?>
+
+        <?php foreach ($post->info['phones'] as $phone): ?>
+            <meta itemprop="telephone" content="<?= $phone ?>">
+        <?php endforeach; ?>
+
+    <?php endif;?>
+
     <div class="block-info-reviewsAndfavorites" data-item-id="<?=$post->id?>" data-type="post">
         <div class="rating-b bg-r<?=$post['rating']?>" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
             <?=$post['rating']?>
