@@ -98,7 +98,7 @@ $this->registerMetaTag([
 
         </div>
         <div class="__second-column">
-            <div class="only-mobile">
+            <div class="--100px-30px">
                 <?= \app\components\rightBlock\RightBlockWidget::widget()?>
             </div>
 
