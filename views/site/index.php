@@ -11,13 +11,12 @@ $descriptionPage = DescriptionPage::initMetaTags(function ()use ($spotlight){
         'title' => "Карта ".Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])." — лучшие места по отзывам посетителей - Postim.by",
 
         'description' => 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']).
-        ', лучшие места по отзывам посетителей. Найдено '.$spotlight->totalCount.' — удобный поиск на карте Postim.by!',
+        ', лучшие места по отзывам посетителей — удобный поиск на карте Postim.by!',
 
         'keywords' => 'карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']),
 
         'descriptionText' => 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
-            .', лучшие места по отзывам посетителей. Найдено '.$spotlight->totalCount
-            .' — удобный поиск на карте Postim.by!</br> Время работы и прочую информацию смотрите у нас на сайте.',
+            .', лучшие места по отзывам посетителей — удобный поиск на карте Postim.by!</br> Время работы и прочую информацию смотрите у нас на сайте.',
 
         'h1' => 'Рекомендательный сервис лучших мест в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).' по отзывам посетителей',
     ];
