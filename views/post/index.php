@@ -106,6 +106,7 @@ Pjax::begin([
                 <div class="photo n<?=$index+1?>" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>"></div>
             <?php endforeach;?>
             <?php for ($i = count($previewPhoto); $i < 4; $i++):?>
+                <meta itemprop="image" content="/default_img.jpg">
                 <div class="photo-not-found n<?=$i+1?>"></div>
             <?php endfor;?>
         </div>
