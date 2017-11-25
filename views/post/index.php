@@ -65,9 +65,12 @@ Pjax::begin([
     'formSelector' => false,
 ])
 ?>
-<div itemscope itemtype="http://schema.org/Article" class="block-content">
+<div itemscope itemtype="http://schema.org/LocalBusiness" class="block-content">
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
-    <h1 class="h1-v"><?=$post->data?></h1>
+    <h1 itemprop="headline" class="h1-v"><?=$post->data?></h1>
+    <meta itemprop="author" content="Ксения Постим">
+    <meta itemprop="datePublished" content="<?= date(DATE_W3C, $post->date)?>">
+    <meta itemprop="publisher" content="Postim.by">
     <div class="block-info-reviewsAndfavorites" data-item-id="<?=$post->id?>" data-type="post">
         <div class="rating-b bg-r<?=$post['rating']?>" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
             <?=$post['rating']?>
