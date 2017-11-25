@@ -23,6 +23,10 @@ class Config{
                         'url' => '/admin/post/other-page'
                     ],
                     [
+                        'name' => 'Добавить банер',
+                        'url' => '/admin/post/add-baner'
+                    ],
+                    [
                         'name' => 'Удалить место',
                         'url' => '/admin/post/delete-post'
                     ],
