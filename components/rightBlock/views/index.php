@@ -1,13 +1,10 @@
-<div class="baner">
-    <a href="/cto-daet-registracia-na-postmby-n31"><img src="/postim_baner.png"></a>
-    <?php if(Yii::$app->user->isGuest):?>
-        <div class="btn-standard js-btn-register --btn-red">Регистрация</div>
-        <script>
-            $(document).ready(function () {
-                $('.js-btn-register').off('click').on('click',function () {
-                    $( ".sign_in_btn" ).trigger( "click" );
-                })
-            })
-        </script>
-    <?php endif;?>
-</div>
+<?php if($data):?>
+    <div class="baner">
+        <a rel="nofollow noindex" href="<?=$data['href']?>"><noindex><img src="/baners/<?=$data['src']?>"></noindex></a>
+    </div>
+<?php else:?>
+    <div class="baner">
+        <a rel="nofollow noindex" href="/cto-daet-registracia-na-postmby-n31"><noindex><img src="/postim_baner.png"></noindex></a>
+    </div>
+<?php endif;?>
+

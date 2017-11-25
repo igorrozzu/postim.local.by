@@ -67,27 +67,43 @@ $this->registerMetaTag([
         </div>
     </div>
     <?php endif;?>
-    <?php if($reviews->totalCount):?>
-        <div class="clear-fix"></div>
-        <h2 class="h2-c">Новые отзывы</h2>
-        <div class="container-news">
-            <div class="block-news block-new-reviews">
-                <?= CardsReviewsWidget::widget([
-                    'dataProvider' => $reviews,
-                    'settings'=>[
-                        'show-more-btn' => false,
-                    ]
-                ]); ?>
-                <noindex>
-                    <div class="review-show-more main-pjax">
-                        <a href="<?= Yii::$app->city->Selected_city['url_name'] ? '/' . Yii::$app->city->Selected_city['url_name'] : '' ?>/otzyvy">
-                            <div class="btn-show-more switch-all-reviews">Показать больше отзывов</div>
-                        </a>
+
+</div>
+<div class="block-content">
+
+    <div class="container-columns">
+        <div class="__first-column">
+
+            <?php if($reviews->totalCount):?>
+                <div class="clear-fix"></div>
+                <h2 class="h2-c">Новые отзывы</h2>
+                <div class="container-news">
+                    <div class="block-news block-new-reviews">
+                        <?= CardsReviewsWidget::widget([
+                            'dataProvider' => $reviews,
+                            'settings'=>[
+                                'show-more-btn' => false,
+                            ]
+                        ]); ?>
+                        <noindex>
+                            <div class="review-show-more main-pjax">
+                                <a href="<?= Yii::$app->city->Selected_city['url_name'] ? '/' . Yii::$app->city->Selected_city['url_name'] : '' ?>/otzyvy">
+                                    <div class="btn-show-more switch-all-reviews">Показать больше отзывов</div>
+                                </a>
+                            </div>
+                        </noindex>
                     </div>
-                </noindex>
-            </div>
+                </div>
+            <?php endif;?>
+
         </div>
-    <?php endif;?>
+        <div class="__second-column">
+            <div class="only-mobile">
+                <?= \app\components\rightBlock\RightBlockWidget::widget()?>
+            </div>
+
+        </div>
+    </div>
 
 </div>
 <div class="clear-fix"></div>

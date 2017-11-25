@@ -11,6 +11,7 @@ use app\modules\admin\models\OtherPage;
 use app\modules\admin\models\OtherPageSearch;
 use app\modules\admin\models\post\Posts;
 use app\modules\admin\models\post\PostsSearch;
+use app\modules\admin\models\RightBaner;
 use app\modules\admin\models\UnderCategory;
 use app\modules\admin\models\UnderCategorySearch;
 use yii\db\Exception;
@@ -324,6 +325,35 @@ class PostController extends AdminDefaultController
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel
         ]);
+
+    }
+
+    public function actionAddBaner(){
+
+        $params = [];
+
+        if(\Yii::$app->request->isPost){
+            $baner = new RightBaner();
+
+            if($baner->load(\Yii::$app->request->post()) && $baner->save()){
+                $params['toastMessage'] = [
+                    'type' => 'success',
+                    'message' => 'Банер изменен',
+                ];
+            }
+
+        }else{
+            $baner = RightBaner::find()->orderBy(['id'=>SORT_DESC])->one();
+
+            if(!$baner){
+                $baner = new RightBaner();
+            }
+        }
+
+        $params['baner'] = $baner;
+
+
+        return $this->render('addBaner',$params);
 
     }
 

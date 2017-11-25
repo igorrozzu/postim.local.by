@@ -47,7 +47,7 @@ $this->registerMetaTag([
 
         </div>
         <div class="__second-column">
-            <div style="margin-top: 30px"></div>
+            <div class="--top-30px"></div>
             <?= \app\components\rightBlock\RightBlockWidget::widget()?>
         </div>
     </div>

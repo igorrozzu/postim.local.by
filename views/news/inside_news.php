@@ -89,7 +89,7 @@ if($match){
 
         </div>
         <div class="__second-column">
-            <div style="margin-top: 20px"></div>
+            <div class="--top-20px"></div>
             <?= \app\components\rightBlock\RightBlockWidget::widget()?>
         </div>
     </div>

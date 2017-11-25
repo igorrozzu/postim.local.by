@@ -6252,3 +6252,24 @@ form .field-input:first-child{
 .--top-50px{
     margin-top: 50px;
 }
+
+.--top-30px{
+    margin-top: 30px;
+}
+
+.--top-20px{
+    margin-top: 20px;
+}
+
+.--top-30px-30px{
+    margin-top: 30px;
+}
+
+.baner img{
+    max-width: 300px;
+    max-height: 500px;
+}
+
+.only-mobile{
+    display: none;
+}

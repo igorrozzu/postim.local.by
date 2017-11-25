@@ -18,4 +18,5 @@ web/css/admin/*.min.css
 web/css/admin/pop-up/*.min.css
 web/sitemap.xml
 web/index.php
+web/baners/*
 yii
