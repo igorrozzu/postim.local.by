@@ -30,6 +30,9 @@ preg_match('/(?<=div class="block-photo-post"><img src=")\/.+?(?=")/',$news['dat
 if($match){
     $paramsMetaTagsOg['og:image'] = Yii::$app->params['site.hostName'].$match[0];
     $paramsMetaTagsOg['twitter:image:src'] = Yii::$app->params['site.hostName']. $match[0];
+}else{
+    $paramsMetaTagsOg['og:image'] = Yii::$app->params['site.hostName'].'/default_img.jpg';
+    $paramsMetaTagsOg['twitter:image:src'] = Yii::$app->params['site.hostName']. '/default_img.jpg';
 }
 
 \app\components\MetaTagsSocialNetwork::initOg($this,$paramsMetaTagsOg);
