@@ -65,7 +65,7 @@ Pjax::begin([
     'formSelector' => false,
 ])
 ?>
-<div class="block-content">
+<div itemscope itemtype="http://schema.org/Article" class="block-content">
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v"><?=$post->data?></h1>
     <div class="block-info-reviewsAndfavorites" data-item-id="<?=$post->id?>" data-type="post">
@@ -127,7 +127,7 @@ Pjax::begin([
                     </p>
                 </noindex>
             </div>
-            <div itemscope itemtype="http://schema.org/Article" class="block-info-card">
+            <div class="block-info-card">
                 <?php if($post['address']):?>
                     <div class="info-row">
                         <div class="left-block-f1">
