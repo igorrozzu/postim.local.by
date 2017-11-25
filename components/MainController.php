@@ -60,7 +60,7 @@ class MainController extends Controller
             'page' => $request->get('page', 1) - 1,
         ]);
 
-        $reviewsDataProvider = $reviewsModel->search($request->queryParams,
+        $reviewsDataProvider = $reviewsModel->search(['onlyConfirm'=>true],
             $pagination,
             time()
         );

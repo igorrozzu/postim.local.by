@@ -83,6 +83,10 @@ class ReviewsSearch extends Reviews
             ['=','tbl_reviews.user_id',Yii::$app->user->getId()]
         ]);
 
+        if($params['onlyConfirm']??false){
+            $query->andWhere(['=','tbl_reviews.status',self::$STATUS['confirm']]);
+        }
+
         if(!empty($this->city)) {
             $query->innerJoinWith(['post.city.region.coutries'], false)
 				 ->andWhere(['or',
