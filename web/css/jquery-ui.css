@@ -188,10 +188,8 @@
 	color: #333333;
 }
 .ui-widget-header {
-	border: 1px solid #dddddd;
-	background: #A7C9FF;
+
 	color: #333333;
-	font-weight: bold;
 }
 .ui-widget-header a {
 	color: #333333;
@@ -208,7 +206,6 @@
 works properly when clicked or hovered */
 html .ui-button.ui-state-disabled:hover,
 html .ui-button.ui-state-disabled:active {
-	background: #A7C9FF;
 	font-weight: normal;
 	color: #454545;
 	cursor: pointer;
@@ -259,7 +256,7 @@ a.ui-button:focus {
 .ui-state-highlight,
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
-	border: 1px solid #dad55e;
+
 	background: #fffa90;
 	color: #777620;
 }
@@ -503,7 +500,7 @@ a.ui-button:focus {
 .ui-icon-circle-plus { background-position: 0 -192px; }
 .ui-icon-circle-minus { background-position: -16px -192px; }
 .ui-icon-circle-close { background-position: -32px -192px; }
-.ui-icon-circle-triangle-e { background-position: -48px -192px; }
+
 .ui-icon-circle-triangle-s { background-position: -64px -192px; }
 .ui-icon-circle-triangle-w { background-position: -80px -192px; }
 .ui-icon-circle-triangle-n { background-position: -96px -192px; }

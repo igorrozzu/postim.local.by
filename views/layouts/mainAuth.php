@@ -19,9 +19,9 @@ use \app\components\ListCityWidget\ListCityWidget;
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
 AuthUserAsset::register($this);
-//условие проверки роли
+
 BusinessAccountAsset::register($this);
-//конец условия
+
 $user = Yii::$app->user->identity;
 $countNotif = NotificationUser::getCountNotifications();
 ?>

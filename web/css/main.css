@@ -106,6 +106,7 @@ body{
 .close-select-field:before,
 .close-block-field:before,
 .close-input-contact,
+.close-input-custom,
 .btn-time_work:after,
 .sign-official-answer:after,
 .btn-time_work.active:after,
@@ -4795,7 +4796,7 @@ input.search-selected-field{
 .auto-height.open-select{
     height: auto;
 }
-
+.block-input-custom,
 .block-input-contact{
     display: flex;
     height: 30px;
@@ -4804,17 +4805,25 @@ input.search-selected-field{
     margin-top: 20px;
     align-items: center;
 }
+
+.block-input-custom input,
 .block-input-contact input{
     outline: none;
     border: none;
     width: calc(100% - 62px);
     color: #444444;
 }
+.block-input-custom input {
+    margin-left: 20px;
+    width: calc(100% - 47px);
+}
+.block-input-custom input::-webkit-input-placeholder,
 .block-input-contact input::-webkit-input-placeholder{
     font-family: PT_Sans;
     color: #6b778f;
     font-size: 15px;
 }
+.close-input-custom,
 .close-input-contact{
     display: flex;
     justify-content: center;
@@ -4825,13 +4834,18 @@ input.search-selected-field{
     background-position: 486px 761px;
     cursor: pointer;
 }
+.close-input-custom {
+    margin-top: 0;
+}
+.close-input-custom:hover,
 .close-input-contact:hover{
     background-position: 464px 761px;
 }
-
+.block-input-custom.error,
 .block-input-contact.error{
     border: 1px solid #ff4148;
 }
+.block-input-custom.error input,
 .block-input-contact.error input{
     color: #ff4148;
 }
