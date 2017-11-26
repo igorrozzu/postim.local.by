@@ -4161,7 +4161,7 @@ insert-item h2:last-child{
     height: 45px;
     width: 75px;
     border-radius: 3px;
-    box-shadow: 0 1px 0 #314662;
+    box-shadow: 0 2px 0 #314662;
 }
 .block-social-authentication .social-btn-vkontakte:hover{
     background-color: #3c6083;
@@ -4177,7 +4177,7 @@ insert-item h2:last-child{
     height: 45px;
     width: 75px;
     border-radius: 3px;
-    box-shadow: 0 1px 0 #1d1e3c;
+    box-shadow: 0 2px 0 #1d1e3c;
 }
 .block-social-authentication .social-btn-facebook:hover{
     background-color: #274071;
@@ -4194,7 +4194,7 @@ insert-item h2:last-child{
     height: 45px;
     width: 75px;
     border-radius: 3px;
-    box-shadow: 0 1px 0 #005376;
+    box-shadow: 0 2px 0 #005376;
 }
 .block-social-authentication .social-btn-twitter:hover{
     background-color: #009bd6;
@@ -4210,7 +4210,7 @@ insert-item h2:last-child{
     height: 45px;
     width: 75px;
     border-radius: 3px;
-    box-shadow: 0 1px 0 #934e23;
+    box-shadow: 0 2px 0 #934e23;
 }
 .block-social-authentication .social-btn-odnoklassniki:hover{
     background-color: #d16f32;
@@ -4226,7 +4226,7 @@ insert-item h2:last-child{
     height: 45px;
     width: 75px;
     border-radius: 3px;
-    box-shadow: 0 1px 0 #891a1a;
+    box-shadow: 0 2px 0 #891a1a;
 }
 .block-social-authentication .social-btn-google:before {
     content: url('../img/big-icon-google.png');
