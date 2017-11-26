@@ -82,6 +82,7 @@ $this->registerMetaTag([
                             'dataProvider' => $reviews,
                             'settings'=>[
                                 'show-more-btn' => false,
+                                'noIndexData' => true
                             ]
                         ]); ?>
                         <noindex>

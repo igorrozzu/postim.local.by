@@ -45,7 +45,12 @@ $reviews = $dataProvider->getModels();
             <div class="review-help-text">
                 <noindex>Оценка</noindex>
             </div>
-            <div class="review-text"><?=$review->data?></div>
+            <?php if($settings['noIndexData']??false):?>
+                <div class="review-text"><noindex><?=$review->data?></noindex></div>
+            <?php else:?>
+                <div class="review-text"><?=$review->data?></div>
+            <?php endif; ?>
+
         </div>
         <?php $photo = $review->getLastPhoto(); ?>
         <?php if($photo && $review->count_photos):?>
