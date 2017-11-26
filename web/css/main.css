@@ -4005,6 +4005,66 @@ insert-item h2:last-child{
     align-items: center;
 }
 
+/*---------- form sign with message BEGIN----------------*/
+
+.--with-message{
+    width: 780px;
+    left: calc(50% - 390px);
+}
+
+.block-columns-popup-authentication{
+    display: flex;
+    justify-content: space-between;
+}
+.left-column{
+    display: flex;
+    flex-direction: column;
+    width: 480px;
+    background-color: #f2f4fd;
+}
+
+.body-popup-message{
+    padding: 20px;
+}
+.text-sign{
+    font-size: 16px;
+    font-family: PT_Sans;
+    color: #6b778f;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.--favorites:before{
+    display: flex;
+    content: url("../img/icons-sign-message/favorite.png");
+    margin-right: 10px;
+}
+
+
+.--reviews:before{
+    display: flex;
+    content: url("../img/icons-sign-message/reviews.png");
+    margin-right: 10px;
+}
+
+.--bonus:before{
+    display: flex;
+    content: url("../img/icons-sign-message/bonus.png");
+    margin-right: 10px;
+}
+.--12-font-size{
+    font-size: 12px;
+}
+
+
+.right-column{
+    display: flex;
+    flex-direction: column;
+}
+
+/*---------- form sign whith message END ----------------*/
+
 .day-name,
 .day-name-min{
     font-size: 16px;

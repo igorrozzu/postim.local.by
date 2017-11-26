@@ -54,6 +54,22 @@ var loginForms = (function (window, document, undefined, $) {
                    scope.closeForm();
                 });
 
+
+                if(($.cookie('showForm') || null) === null){
+                    var showForm = setTimeout(function () {
+
+                        var date = new Date();
+                        var minutes = 3600;
+                        date.setTime(date.getTime() + (minutes * 60 * 1000));
+                        $.cookie('showForm', JSON.stringify({value:'true'}), {expires: date, path: '/', domain: main.getDomainName(), secure: true});
+
+                        scope.resetForm();
+                        var $html = scope.getForm('login?with-message=true');
+                        __$containerForms.html($html).show();
+
+                    },20000)
+                }
+
                 this.initSendFormHandlers();
             },
             getForm: function (formType) {

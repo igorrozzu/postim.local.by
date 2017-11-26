@@ -68,10 +68,14 @@ class SiteController extends MainController
                 'redirect' => Yii::$app->getHomeUrl()
             ]);
         }
+        if(Yii::$app->request->get('with-message',false)){
+            return $this->renderPartial('login_whith_message',['model'=>$model]);
+        }else{
+            return $this->renderPartial('login', [
+                'model' => $model,
+            ]);
+        }
 
-        return $this->renderPartial('login', [
-            'model' => $model,
-        ]);
     }
 
     /**
