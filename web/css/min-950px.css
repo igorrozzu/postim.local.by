@@ -37,7 +37,8 @@
     .block-news-container,
     .container-cards-promo,
     .container-promo-statistic,
-    .block-flex-white.inside{
+    .block-flex-white.inside,
+    .std-container{
         width: 100%
     }
     .block-info-for-owner{
