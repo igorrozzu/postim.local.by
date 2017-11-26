@@ -4035,6 +4035,10 @@ insert-item h2:last-child{
     align-items: center;
 }
 
+.text-sign:last-child{
+    margin-bottom: 0px;
+}
+
 .--favorites:before{
     display: flex;
     content: url("../img/icons-sign-message/favorite.png");
