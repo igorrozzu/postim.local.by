@@ -6371,5 +6371,6 @@ form .field-input:first-child{
     margin-top:10px;
     padding: 10px;
     border-radius: 3px;
+    cursor: pointer;
 }
 
