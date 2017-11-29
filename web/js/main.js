@@ -60,6 +60,7 @@ var Main = (function (window, document, undefined,$) {
                 });
                 that.shareSocialButtonsInit();
 
+                that.showWindowsPush();
 
             },
             getDomainName:function () {
@@ -279,6 +280,41 @@ var Main = (function (window, document, undefined,$) {
                     $elem.mCustomScrollbar(settings);
                 }else {
                     $elem.removeClass('h_scroll').addClass('h_scroll');
+                }
+
+            },
+
+            showWindowsPush:function () {
+
+                var date = new Date();
+                var currentTime = date.getTime();
+                var expires = currentTime + (3600 * 60 * 1000);
+
+                var params = null;
+
+                if (params = localStorage.getItem('showWindowsPush')) {
+                    params = JSON.parse(params);
+                } else {
+                    params = {value: false, expires: currentTime};
+                }
+
+                if (!params.value && currentTime >= params.expires) {
+
+                    var html = '<div class="push-message-request"><div class="push-message-text">Вы не против подписаться на<br><span>важные </span>новости от Postim.by</div><div class="push-message-btn sp_notify_prompt">Нет, не против</div></div>';
+
+                    setTimeout(function () {
+                        $().toastmessage('showToast', {
+                            text: html,
+                            stayTime: 1500000,
+                            type: 'success'
+                        });
+
+                        params.expires = expires;
+
+                        localStorage.setItem('showWindowsPush', JSON.stringify(params));
+
+                    }, 3000);
+
                 }
 
             }
