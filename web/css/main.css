@@ -6337,3 +6337,9 @@ form .field-input:first-child{
 .--100px-30px{
     margin-top: 100px;
 }
+
+.origin-photo-feed{
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+}
