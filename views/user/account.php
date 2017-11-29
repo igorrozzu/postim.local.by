@@ -16,7 +16,7 @@ Pjax::begin([
     'formSelector' => false,
 ])
 ?>
-<div class="block-content" style="margin-top: 100px">
+<div class="block-content" style="margin-top: 80px">
     <div class="bread-crumb">
         <a class="pre" href="#">Главная</a>
         <span class="separator"></span>
@@ -48,7 +48,7 @@ Pjax::begin([
             <div style="margin-bottom: 35px;">
                 <span>Сумма</span>
                 <input type="text" class="custom-text-input"
-                       style="display: inline-block; width: 180px; margin: 0 10px;"
+                       style="display: inline-block; width: 159px; margin: 0 10px;"
                        name="money" placeholder="Укажите сумму">
                 <span>руб</span>
             </div>

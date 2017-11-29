@@ -17,7 +17,9 @@
 div{
     font-family: PT_Sans;
 }
-
+.bold {
+    font-family: PT_Sans bold;
+}
 body{
     min-width: 340px;
     background-color: #f1f2f4;
@@ -4290,6 +4292,7 @@ insert-item h2:last-child{
     cursor: pointer;
     font-size: 16px;
     font-family: PT_Sans bold;
+    text-decoration: none;
 }
 .btn-red:hover{
     background-color: #b62c2c;
@@ -6351,3 +6354,222 @@ form .field-input:first-child{
 .--100px-30px{
     margin-top: 100px;
 }
+
+/*start discounts*/
+.custom-text-input {
+    background-color: #F2F4FD;
+    color: #444;
+    font-size: 14px;
+    height: 20px;
+
+    outline: medium none;
+    border: 1px solid #d3e4ff;
+    padding: 10px;
+}
+.std-container {
+    background-color: #fff;
+    box-shadow: 0px 2px 0px 0px #bbbeb3;
+    width: calc(100% - 315px);
+}
+
+.fill-account-header {
+    display: flex;
+    background-color: #626e88;
+    height: 60px;
+    align-items: center;
+    padding: 0px 20px;
+    margin-top: 20px;
+    color: #fff;
+    font-family: PT_Sans;
+    font-size: 16px;
+}
+.fill-account-header:before {
+    margin-right: 10px;
+    width: 15px;
+    height: 15px;
+    background-position: 256px 397px;
+}
+.fill-account-content,
+.discount-order-content {
+    color: #444;
+    padding: 20px;
+}
+.fill-account-text {
+    color: #444444;
+    font-family: PT_Sans bold;
+    font-size: 22px;
+}
+.fill-account-agreement {
+    color: #6b778f;
+    text-align: center;
+    font-size: 14px;
+    max-width: 330px;
+}
+.payment-methods {
+    color: #6b778f;
+    display: flex;
+    flex-flow: row;
+    margin: 30px 0 20px 0;
+}
+.payment-methods div {
+    text-align: center;
+    width: 130px;
+    height: 142px;
+    cursor: pointer;
+}
+.payment-methods .erip:before,
+.payment-methods .bank:before
+{
+    background-image: url("../img/payments.png");
+    content: '';
+    display: block;
+    height: 62px;
+}
+.payment-methods .erip:before {
+    background-position: 90px 62px;
+    width: 90px;
+    margin: 20px calc(100%/2 - 45px) 13px calc(100%/2 - 45px);
+}
+.payment-methods .bank:before {
+    background-position: 172px 62px;
+    width: 82px;
+    margin: 20px calc(100%/2 - 41px) 13px calc(100%/2 - 41px);
+}
+.payment-methods .purse:before,
+.product-counter .add,
+.product-counter .remove {
+    background-image: url("../img/icons.png");
+    content: '';
+    display: block;
+}
+.payment-methods .purse:before {
+    height: 26px;
+    width: 26px;
+    background-position: 405px 114px;
+    margin: 43px calc(100%/2 - 13px) 25px calc(100%/2 - 13px);
+}
+
+.payment-methods div:hover{
+    background-color: #F2F4FD;
+}
+
+.filter-menu{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+.filter-menu a{
+    text-decoration: none;
+}
+.filter-menu-btn {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 16px;
+    font-family: PT_Sans;
+    color: #788399;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.filter-menu-btn:last-child{
+    margin-right: 0px;
+}
+.filter-menu-btn:hover {
+    color: #4b98df;
+}
+.filter-menu-btn:hover .under-line,
+.filter-menu-btn.active .under-line{
+    box-shadow: 0px 2px 0px 0px #4b98df;
+}
+
+.statistic-table {
+    width: 100%;
+    color: #788399;
+    min-width: 940px;
+}
+.statistic-table tr {
+    border-top: 1px solid #D3E4FF ;
+}
+.statistic-table tr td {
+    padding: 20px
+}
+.statistic-table tr td:nth-child(2) {
+    min-width: 120px;
+}
+.statistic-table .money-minus {
+    color: #FFC200;
+}
+.statistic-table .money-plus {
+    color: #26B76C;
+}
+.statistic-content #mCSB_1_scrollbar_horizontal {
+    bottom: -6px;
+}
+
+
+.order-info {
+    display: flex;
+    flex-flow: row;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #a7c9ff;
+    color: #6b778f;
+}
+.product-picture {
+    min-width: 282px;
+    height: 138px;
+    background-position: center;
+    margin-right: 20px;
+}
+.product-header {
+    color: #444444;
+    font-family: PT_Sans;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+.product-select-count {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+}
+.product-total-cost .cost {
+    font-family: PT_Sans bold;
+    color: #444444;
+}
+.product-total-cost {
+    margin-top: 22px;
+}
+.product-counter{
+    display: inline-flex;
+    height: 42px;
+
+}
+.product-counter .counter{
+   line-height: 42px;
+   padding: 0 9px;
+   font-family: PT_Sans bold;
+    color: #444444;
+}
+.product-counter .add,
+.product-counter .remove {
+    width: 44px;
+    height: 42px;
+    cursor: pointer;
+}
+.product-counter .remove {
+    background-position: 652px 605px;
+}
+.product-counter .remove:hover {
+    background-position: 608px 605px;
+}
+.product-counter .add {
+    background-position: 652px 647px;
+}
+.product-counter .add:hover {
+    background-position: 608px 647px;
+}
+.busket-popup-message {
+    top:calc(50% - 240px);
+}
+
+/*end discounts*/

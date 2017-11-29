@@ -196,4 +196,13 @@
     .insert-item h2{
         font-size: 26px;
     }
+
+    /*start discounts*/
+    .order-info {
+        flex-direction: column;
+    }
+    .product-picture {
+        margin: 0 0 20px 0;
+    }
+    /*end discounts*/
 }

@@ -9,13 +9,28 @@
 namespace app\controllers;
 
 
+use app\components\MainController;
 use yii\web\Controller;
 
-class DiscountController extends Controller
+class DiscountController extends MainController
 {
     public function actionAdd()
     {
-        $this->layout = 'mainAuth';
         return $this->render('add');
+    }
+
+    public function actionOrder()
+    {
+        return $this->render('order');
+    }
+
+    public function actionMegamoney()
+    {
+        return $this->render('basket-lack-of-mega-money');
+    }
+
+    public function actionMoney()
+    {
+        return $this->render('basket-lack-of-money');
     }
 }

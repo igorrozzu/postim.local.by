@@ -308,6 +308,11 @@
     }
     /*loader finish*/
 
+    /*disounts start*/
+    .discount-order-content .payment-methods {
+        flex-flow: column;
+    }
+    /*disounts finish*/
 }
 
 

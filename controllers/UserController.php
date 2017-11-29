@@ -602,4 +602,14 @@ class UserController extends MainController
             return $this->asJson($response);
         }
     }
+
+    public function actionHistory()
+    {
+        return $this->render('account-history');
+    }
+
+    public function actionAccount()
+    {
+        return $this->render('account');
+    }
 }
