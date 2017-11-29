@@ -310,6 +310,7 @@ var Main = (function (window, document, undefined,$) {
                         });
 
                         params.expires = expires;
+                        params.value = true;
 
                         localStorage.setItem('showWindowsPush', JSON.stringify(params));
                         
