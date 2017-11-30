@@ -68,6 +68,12 @@ class GallerySearch extends Gallery
             $query->andWhere(['user_status' => Gallery::USER_STATUS['user']]);
         }
 
+        if($params['hasTitle']??false){
+            $query->with(['post'=>function ($query) {
+                $query->select(['data','id']);
+            }]);
+        }
+
         return $dataProvider;
     }
 

@@ -89,6 +89,7 @@ Pjax::begin([
                     <a href="<?=Url::to(['user/index', 'id' => $photo->user->id])?>">
                         <img class="avatar-user" src="<?=$photo->user->getPhoto()?>">
                     </a>
+                    <img class="origin-photo-feed" alt="<?=$post->data?>" title="<?=$post->data?>" src="<?=$photo->getPhotoPath()?>">
                 </div>
             </div>
         <?php endforeach;?>
@@ -105,6 +106,7 @@ Pjax::begin([
             'dataProvider' => $dataProvider,
             'loadTime' => $loadTime,
             'sequence' => isset($index) ? $index + 1 : 0,
+            'title' => $post->data
         ])?>
     </div>
 

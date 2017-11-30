@@ -108,7 +108,6 @@ body{
 .close-select-field:before,
 .close-block-field:before,
 .close-input-contact,
-.close-input-custom,
 .btn-time_work:after,
 .sign-official-answer:after,
 .btn-time_work.active:after,
@@ -4292,7 +4291,6 @@ insert-item h2:last-child{
     cursor: pointer;
     font-size: 16px;
     font-family: PT_Sans bold;
-    text-decoration: none;
 }
 .btn-red:hover{
     background-color: #b62c2c;
@@ -4799,7 +4797,7 @@ input.search-selected-field{
 .auto-height.open-select{
     height: auto;
 }
-.block-input-custom,
+
 .block-input-contact{
     display: flex;
     height: 30px;
@@ -4808,25 +4806,17 @@ input.search-selected-field{
     margin-top: 20px;
     align-items: center;
 }
-
-.block-input-custom input,
 .block-input-contact input{
     outline: none;
     border: none;
     width: calc(100% - 62px);
     color: #444444;
 }
-.block-input-custom input {
-    margin-left: 20px;
-    width: calc(100% - 47px);
-}
-.block-input-custom input::-webkit-input-placeholder,
 .block-input-contact input::-webkit-input-placeholder{
     font-family: PT_Sans;
     color: #6b778f;
     font-size: 15px;
 }
-.close-input-custom,
 .close-input-contact{
     display: flex;
     justify-content: center;
@@ -4837,18 +4827,13 @@ input.search-selected-field{
     background-position: 486px 761px;
     cursor: pointer;
 }
-.close-input-custom {
-    margin-top: 0;
-}
-.close-input-custom:hover,
 .close-input-contact:hover{
     background-position: 464px 761px;
 }
-.block-input-custom.error,
+
 .block-input-contact.error{
     border: 1px solid #ff4148;
 }
-.block-input-custom.error input,
 .block-input-contact.error input{
     color: #ff4148;
 }
@@ -6354,6 +6339,44 @@ form .field-input:first-child{
 .--100px-30px{
     margin-top: 100px;
 }
+
+.origin-photo-feed{
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+}
+
+.push-message-request{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.push-message-text{
+    font-size: 16px;
+    font-family: PT_Sans;
+}
+.push-message-text span{
+    color: #fe4c5a;
+}
+
+.push-message-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: PT_Sans;
+    font-size: 14px;
+    background-color:#fe4c5a;
+    height: 20px;
+    box-shadow: 0 2px 0 #a82828;
+    margin-top:10px;
+    padding: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+
 
 /*start discounts*/
 .custom-text-input {
