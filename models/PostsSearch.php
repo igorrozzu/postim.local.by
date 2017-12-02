@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\Helper;
+use app\models\entities\Gallery;
 use dosamigos\transliterator\TransliteratorHelper;
 use Yii;
 use yii\base\Model;
@@ -65,10 +66,11 @@ class PostsSearch extends Posts
         if(Yii::$app->request->get('sort',false)=='nigh' && $loadGeolocation){
            $coordinates='POINT('.$loadGeolocation["lat"].' '.$loadGeolocation["lon"].')';
            $query->select('tbl_posts.*,ST_distance_sphere(st_point("coordinates"[0],"coordinates"[1]),ST_GeomFromText(\''.$coordinates.'\')) as distance');
+           $query->addSelect(['COUNT('.Gallery::tableName().'.post_id) as number']);
            $query->addOrderBy(['distance'=>SORT_ASC]);
         }else{
+            $query->select(['tbl_posts.*','COUNT('.Gallery::tableName().'.post_id) as number']);
             $query->addOrderBy($sort);
-            $query->addOrderBy(['data'=>SORT_ASC]);
         }
 
 
@@ -229,6 +231,10 @@ class PostsSearch extends Posts
         if(isset($params['text'])){
             $query->andWhere(['like','upper(data)','%'.mb_strtoupper($params['text']).'%',false]);
         }
+
+        $query->leftJoin(Gallery::tableName(),Posts::tableName().'.id = '.Gallery::tableName().'.post_id');
+        $query->addOrderBy(['number'=>SORT_DESC]);
+        $query->addOrderBy(['data'=>SORT_ASC]);
 
         $query->groupBy(['tbl_posts.id']);
         $this->queryForPlaceOnMap->groupBy(['tbl_posts.id']);
