@@ -10,6 +10,10 @@ namespace app\components;
 
 
 use app\models\User;
+use Imagine\Gd\Imagine;
+use Imagine\Image\ManipulatorInterface;
+use Imagine\Image\Palette\RGB;
+use Imagine\Image\Point;
 use Yii;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
@@ -72,13 +76,30 @@ class ImageHelper
 
             $info = getimagesize($from);
 
+            $newWidth = $info[0];
+            $newHeight = $info[1];
+
             if($info[0] > 2000){
                 $dif = 2000/$info[0];
                 $newWidth = $info[0] * $dif;
                 $newHeight = $info[1] * $dif;
-
-                Image::thumbnail($from,$newWidth,$newHeight)->save($to,['quality' => $quality]);
             }
+
+            $imagine = new Imagine();
+            $palette = new RGB();
+            $color = $palette->color('#fff', 100);
+            $topLeft = new Point(0,0);
+
+            $image = Image::thumbnail($from,$newWidth,$newHeight,ManipulatorInterface::THUMBNAIL_INSET)
+                ->strip();
+
+            $canvas = $imagine->create($image->getSize(), $color);
+
+            $canvas->paste($image,$topLeft)
+                ->save($to,[
+                        'quality' => $quality
+                    ]
+                );
 
         }catch (\Exception $e){
             return false;
