@@ -62,4 +62,28 @@ class ImageHelper
         }
     }
 
+    public static function MaxImg2000( string $from, string $to = null, int $quality = 80){
+
+        if($to === null) {
+            $to = $from;
+        }
+
+        try{
+
+            $info = getimagesize($from);
+
+            if($info[0] > 2000){
+                $dif = 2000/$info[0];
+                $newWidth = $info[0] * $dif;
+                $newHeight = $info[1] * $dif;
+
+                Image::thumbnail($from,$newWidth,$newHeight)->save($to,['quality' => $quality]);
+            }
+
+        }catch (\Exception $e){
+            return false;
+        }
+
+    }
+
 }
