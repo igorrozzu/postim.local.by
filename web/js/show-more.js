@@ -17,6 +17,7 @@ var ShowMore = (function (window, document, undefined,$) {
                     async:false,
                     success: function (response) {
                         $(selectorContainerReplace).replaceWith(response);
+                        $(document).trigger('lazyLoad:check');
                     }
                 });
 

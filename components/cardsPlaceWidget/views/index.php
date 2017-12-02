@@ -17,7 +17,7 @@
                 <a href="/<?=$item['url_name']?>-p<?=$item['id']?>">
             <?php endif;?>
 
-                <div class="card-photo" style="background-image: url('<?=$item["cover"]?>')">
+                <div class="card-photo lazy" data-src="<?=$item["cover"]?>" style="background-image: url('/post-img/default.png')">
                     <div class="glass">
                         <div class="reviews-btn-icn">
                             <div class="rating bg-r<?=$item["rating"]?>"><?=$item["rating"]?></div>
