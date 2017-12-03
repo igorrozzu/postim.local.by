@@ -17,7 +17,7 @@
             var elemTop = $(this).offset().top;
             var elemBottom = elemTop + $(this).height();
 
-            if((docViewTop < elemTop) && (docViewBottom > elemBottom+-200)){
+            if((docViewTop < elemTop) && (docViewBottom > elemBottom+-300)){
                 $(this).trigger('lazyLoad:isVisible');
             }
 
@@ -30,7 +30,9 @@
         var src = $elem.data('src') || undefined;
 
         if(src != undefined){
-            $elem.css({backgroundImage:'url(\''+src+'\')'});
+            $(new Image()).attr('src', src).load(function() {
+                $elem.css({backgroundImage:'url(\''+src+'\')'});
+            });
         }
 
         $elem.removeClass('lazy');
