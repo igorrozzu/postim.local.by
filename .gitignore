@@ -12,6 +12,7 @@ web/download/
 config/params.php
 config/db.php
 web/js/*.min.js
+web/js/libs/*.min.js
 web/css/*.min.css
 web/js/admin/*.min.js
 web/css/admin/*.min.css

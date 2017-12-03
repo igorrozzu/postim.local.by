@@ -44,8 +44,6 @@ class PostsModeration extends ParentsModel
         $mainPost->metro = $this->metro;
         $mainPost->requisites = Html::encode(Html::decode($this->requisites));
 
-        $lol = $mainPost->validate();
-
         if($mainPost->update()){
 
             $postInfo = new PostInfo();
@@ -82,7 +80,7 @@ class PostsModeration extends ParentsModel
             if($this->postFeatures){
                 foreach ($this->postFeatures as $feature){
                     $postFeatures = new PostFeatures([
-                        'post_id' => $feature->post_id,
+                        'post_id' => $mainPost->id,
                         'features_id' => $feature->features_id,
                         'value' => $feature->value,
                         'features_main_id' => $feature->features_main_id,
