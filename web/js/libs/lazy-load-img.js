@@ -38,6 +38,10 @@
         $elem.removeClass('lazy');
     });
 
+    $(document).on('click','.menu-btns-card a,.block-sort a',function () {
+        $(document).trigger('lazyLoad:check');
+    });
+
     $(document).trigger('lazyLoad:check');
 
 
