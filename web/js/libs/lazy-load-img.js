@@ -31,7 +31,9 @@
 
         if(src != undefined){
             $(new Image()).attr('src', src).load(function() {
-                $elem.css({backgroundImage:'url(\''+src+'\')'});
+                setTimeout(function () {
+                    $elem.css({backgroundImage:'url(\''+src+'\')'});
+                },100)
             });
         }
 
