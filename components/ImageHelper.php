@@ -82,15 +82,15 @@ class ImageHelper
             if($info[0] > 2000){
                 $dif = 2000/$info[0];
                 $newWidth = $info[0] * $dif;
-                $newHeight = $info[1] * $dif;
+                $newHeight = floor($info[1] * $dif);
             }
 
-            $imagine = new Imagine();
+            $imagine = new \Imagine\Imagick\Imagine();
             $palette = new RGB();
             $color = $palette->color('#fff', 100);
             $topLeft = new Point(0,0);
 
-            $image = Image::thumbnail($from,$newWidth,$newHeight,ManipulatorInterface::THUMBNAIL_INSET)
+            $image = Image::thumbnail($from,$newWidth,$newHeight)
                 ->strip();
 
             $canvas = $imagine->create($image->getSize(), $color);
