@@ -250,14 +250,13 @@ class PostsSearch extends Posts
 
 
 
-    public function searchSpotlight($params, Pagination $pagination){
-
+    public function searchSpotlight($params){
 
         $query = Posts::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => false,
         ]);
 
         $this->queryForPlaceOnMap=Posts::find()->select('tbl_posts.id,tbl_posts.coordinates');
@@ -292,17 +291,12 @@ class PostsSearch extends Posts
 
         }
 
-        $query->innerJoin('(SELECT main_reviews.post_id,main_reviews.status,main_reviews.date
-              FROM tbl_reviews as main_reviews
-                INNER JOIN (SELECT post_id, max(date) as date
-                            FROM tbl_reviews
-                            GROUP BY tbl_reviews.post_id) as tbl_reviews1 ON tbl_reviews1.post_id = main_reviews.post_id
-              WHERE main_reviews.date = tbl_reviews1.date) as tbl_reviews','tbl_reviews.post_id = tbl_posts.id');
+        $query->select('tbl_posts.*, MAX(tbl_reviews.date) as last_review');
+        $query->innerJoin(Reviews::tableName(),'tbl_posts.id = tbl_reviews.post_id');
+        $query->orderBy(['last_review'=>SORT_DESC]);
 
-        $query->andWhere(['<>','tbl_reviews.status',Reviews::$STATUS['private']]);
-        $query->orderBy(['tbl_reviews.date'=>SORT_DESC]);
-
-        $query->groupBy(['tbl_posts.id','tbl_reviews.date']);
+        $query->groupBy(['tbl_posts.id']);
+        $query->limit(4);
         $this->queryForPlaceOnMap->groupBy(['tbl_posts.id']);
 
         $query->with(['workingHours'=>function ($query) {
