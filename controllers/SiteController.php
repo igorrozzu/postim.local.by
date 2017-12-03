@@ -268,6 +268,31 @@ class SiteController extends MainController
 
 	}
 
+	public function actionSearchCoordsByAddress(string $address){
+
+        $curl = new Curl();
+        $responseJson = $curl->setGetParams([
+            'geocode' => $address,
+            'lang' => 'ru_RU',
+            'format' => 'json',
+            'results' => 1,
+        ])
+            ->get('https://geocode-maps.yandex.ru/1.x/');
+        $response = Json::decode($responseJson);
+
+        $pointsText = $response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos']??'';
+
+        $points = explode(' ',$pointsText);
+
+        if(is_array($points) && isset($points[1])){
+
+            return $this->asJson(['error'=>false,'response'=>['lat'=>$points[1],'lng'=>$points[0]]]);
+        }else{
+            return $this->asJson(['error'=>true]);
+        }
+
+    }
+
 	public function actionSaveReviews(){
 
 		$response = new \stdClass();

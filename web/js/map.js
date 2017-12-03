@@ -216,7 +216,7 @@ var Map = (function (window, document, undefined,$) {
             },
 
             setMarkerOnMap:function (latlng,fCallBack) {
-				console.log('21212');
+
 				if(that.map_block != null){
 					if(__marker_place!= null){
 						that.map_block.clearLayer(__marker_place);

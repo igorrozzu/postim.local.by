@@ -63,6 +63,10 @@ $this->title = 'Добавить место на Postim.by';
                     </div>
                 </div>
             </div>
+            <div class="block-field-setting" style="margin-bottom: -20px;border-bottom: 0px">
+                <label class="label-field-setting">Поиск по карте</label>
+                <input class="input-field-setting js-search-on-map" placeholder="Введите адрес, чтобы отметить место" value="">
+            </div>
             <div id="map_block" class="block-map">
                 <div class="btns-map">
                     <div class="find-me" title="Найти меня"></div>
