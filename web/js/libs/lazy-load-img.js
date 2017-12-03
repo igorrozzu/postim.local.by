@@ -38,7 +38,7 @@
         $elem.removeClass('lazy');
     });
 
-    $(document).on('click','.menu-btns-card a,.block-sort a',function () {
+    $(document).on('pjax:end', function(data, status, xhr, options) {
         $(document).trigger('lazyLoad:check');
     });
 
