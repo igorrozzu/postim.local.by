@@ -204,5 +204,8 @@
     .product-picture {
         margin: 0 0 20px 0;
     }
+    .discount-order-content .payment-methods {
+        flex-flow: column;
+    }
     /*end discounts*/
 }

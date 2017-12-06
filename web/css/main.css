@@ -4800,6 +4800,7 @@ input.search-selected-field{
     height: auto;
 }
 .block-input-custom,
+.block-textarea-custom,
 .block-input-contact{
     display: flex;
     height: 30px;
@@ -4808,7 +4809,18 @@ input.search-selected-field{
     margin-top: 20px;
     align-items: center;
 }
-
+.block-textarea-custom {
+    height: auto;
+    overflow: hidden;
+    padding: 2px;
+}
+.block-textarea-custom:last-child {
+    margin: 0;
+}
+.block-input-custom {
+    margin: 0;
+}
+.block-textarea-custom textarea,
 .block-input-custom input,
 .block-input-contact input{
     outline: none;
@@ -4816,10 +4828,19 @@ input.search-selected-field{
     width: calc(100% - 62px);
     color: #444444;
 }
+.block-textarea-custom textarea,
 .block-input-custom input {
     margin-left: 20px;
     width: calc(100% - 47px);
+    resize: none;
+    overflow: auto;
 }
+.block-textarea-custom textarea {
+    font-family: PT_Sans;
+    font-size: 16px;
+    margin-bottom: -20px;
+}
+.block-textarea-custom textarea::-webkit-input-placeholder,
 .block-input-custom input::-webkit-input-placeholder,
 .block-input-contact input::-webkit-input-placeholder{
     font-family: PT_Sans;
@@ -4845,12 +4866,22 @@ input.search-selected-field{
     background-position: 464px 761px;
 }
 .block-input-custom.error,
-.block-input-contact.error{
+.block-input-contact.error,
+.block-textarea-custom.error {
     border: 1px solid #ff4148;
 }
 .block-input-custom.error input,
-.block-input-contact.error input{
+.block-input-contact.error input,
+.block-textarea-custom.error textarea {
     color: #ff4148;
+}
+
+.block-textarea-custom.hidden .close-input-custom {
+    display: none;
+}
+.block-textarea-custom.hidden textarea[readonly]
+{
+    cursor: pointer;
 }
 
 .block-features .error input{
@@ -6378,7 +6409,7 @@ form .field-input:first-child{
     height: 60px;
     align-items: center;
     padding: 0px 20px;
-    margin-top: 20px;
+    margin-top: 30px;
     color: #fff;
     font-family: PT_Sans;
     font-size: 16px;
@@ -6401,9 +6432,18 @@ form .field-input:first-child{
 }
 .fill-account-agreement {
     color: #6b778f;
-    text-align: center;
     font-size: 14px;
-    max-width: 330px;
+}
+.fill-account-agreement a {
+    text-decoration: underline;
+    color: #6b778f;
+}
+.fill-account-agreement a:hover {
+    text-decoration: none;
+}
+.payment-block {
+    display: flex;
+    flex-flow: row;
 }
 .payment-methods {
     color: #6b778f;
@@ -6411,12 +6451,17 @@ form .field-input:first-child{
     flex-flow: row;
     margin: 30px 0 20px 0;
 }
-.payment-methods div {
+.payment-methods .payment-block div {
     text-align: center;
     width: 130px;
     height: 142px;
     cursor: pointer;
 }
+
+.payment-methods .payment-block div:hover{
+    background-color: #F2F4FD;
+}
+
 .payment-methods .erip:before,
 .payment-methods .bank:before
 {
@@ -6435,10 +6480,14 @@ form .field-input:first-child{
     width: 82px;
     margin: 20px calc(100%/2 - 41px) 13px calc(100%/2 - 41px);
 }
-.payment-methods .purse:before,
+.payment-methods .purse:before{
+    background-image: url("../img/icons.png");
+    content: '';
+    display: block;
+}
 .product-counter .add,
 .product-counter .remove {
-    background-image: url("../img/icons.png");
+    background-image: url("../img/counter-buttons.png");
     content: '';
     display: block;
 }
@@ -6447,10 +6496,6 @@ form .field-input:first-child{
     width: 26px;
     background-position: 405px 114px;
     margin: 43px calc(100%/2 - 13px) 25px calc(100%/2 - 13px);
-}
-
-.payment-methods div:hover{
-    background-color: #F2F4FD;
 }
 
 .filter-menu{
@@ -6553,20 +6598,20 @@ form .field-input:first-child{
 .product-counter .add,
 .product-counter .remove {
     width: 44px;
-    height: 42px;
+    height: 44px;
     cursor: pointer;
 }
 .product-counter .remove {
-    background-position: 652px 605px;
+    background-position: 88px 44px;
 }
 .product-counter .remove:hover {
-    background-position: 608px 605px;
+    background-position: 88px 87px;
 }
 .product-counter .add {
-    background-position: 652px 647px;
+    background-position: 44px 44px;
 }
 .product-counter .add:hover {
-    background-position: 608px 647px;
+    background-position: 44px 87px;
 }
 .busket-popup-message {
     top:calc(50% - 240px);

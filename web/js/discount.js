@@ -2,13 +2,6 @@
 var Discount = (function (window, document, undefined, $) {
 
     return function () {
-        var customInput = `<div class="block-input-custom">
-                    <input class="validator" data-error-parents="block-input-custom"
-                           data-message="Неккоректные данные для условия"
-                           placeholder="Укажите условие" name="condition[]"
-                           data-regex="^\\S.{3,}">
-                    <div class="close-input-custom"></div>
-                </div>`;
 
         var discount = {
 
@@ -16,12 +9,55 @@ var Discount = (function (window, document, undefined, $) {
 
                 $(document).off('click', '.close-input-custom')
                     .on('click', '.close-input-custom', function () {
-                        $(this).parents('.block-input-custom').remove();
+
+                        var $field = $(this).closest('.option-select-field');
+
+                        if ($field.hasClass('another-condition')) {
+                            $field.remove();
+                        } else {
+                            var $textarea = $(this).prev();
+
+                            $field.children().addClass('hidden');
+                            $textarea.attr('readonly', '');
+                            $textarea.removeAttr('name');
+                            $textarea.val($textarea.data('preview-text'));
+
+                            if ($field.children().hasClass('error')) {
+                                $field.children().removeClass('error')
+                            }
+                            $textarea.css('height', 'auto');
+
+                            $('#select-condition').prepend($field);
+                            $textarea.trigger('input');
+                        }
                     });
 
-                $(document).off('click', '#add-share-condition')
-                    .on('click', '#add-share-condition', function () {
-                        $(this).before(customInput);
+                $(document).off('click', '#select-condition .option-select-field')
+                    .on('click', '#select-condition .option-select-field', function () {
+                        var $this;
+
+                        if ($(this).hasClass('another-condition')) {
+                            $this = $(this).clone();
+                        } else {
+                            $this = $(this);
+                        }
+
+                        var $textarea = $this.find('textarea');
+                        var $btnAddCondition = $('#add-share-condition');
+
+                        $this.children().removeClass('hidden');
+                        $textarea.attr('name', 'condition[]');
+                        $textarea.removeAttr('readonly');
+                        $textarea.val($textarea.data('preview-text') +
+                            $textarea.data('continue-text'));
+
+                        $('#select-condition-value').trigger('click');
+                        $textarea.trigger('input');
+                        $btnAddCondition.before($this);
+
+                        if ($this.hasClass('another-condition')) {
+                            $textarea.autosize();
+                        }
                     });
             },
         };

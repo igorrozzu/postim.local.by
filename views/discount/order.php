@@ -44,17 +44,21 @@ $this->title = 'Покупка сертификата на Postim.by';
 
             <div class="fill-account-text">Выберите способ оплаты</div>
             <div class="payment-methods" style="margin-bottom: 0;">
-                <div class="erip">
-                    <span>Система "Расчет"<br>(ЕРИП)</span>
+                <div class="payment-block">
+                    <div class="erip">
+                        <span>Система "Расчет"<br>(ЕРИП)</span>
+                    </div>
+                    <div class="bank">
+                        <span>Банковская<br>карта</span>
+                    </div>
                 </div>
-                <div class="bank">
-                    <span>Банковская<br>карта</span>
-                </div>
-                <div class="purse">
-                    <span>Кошелек<br>(рубли)</span>
-                </div>
-                <div class="purse">
-                    <span>Кошелек<br>(мега-рубли)</span>
+                <div class="payment-block">
+                    <div class="purse">
+                        <span>Кошелек<br>(рубли)</span>
+                    </div>
+                    <div class="purse">
+                        <span>Кошелек<br>(мега-рубли)</span>
+                    </div>
                 </div>
             </div>
         </div>

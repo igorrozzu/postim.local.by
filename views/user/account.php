@@ -54,18 +54,19 @@ Pjax::begin([
             </div>
             <div class="fill-account-text">Выберите способ оплаты</div>
             <div class="payment-methods">
-                <div class="erip">
-                    <span>Система "Расчет"<br>(ЕРИП)</span>
-                </div>
-                <div class="bank">
-                    <span>Банковская<br>карта</span>
+                <div class="payment-block">
+                    <div class="erip">
+                        <span>Система "Расчет"<br>(ЕРИП)</span>
+                    </div>
+                    <div class="bank">
+                        <span>Банковская<br>карта</span>
+                    </div>
                 </div>
             </div>
             <div class="fill-account-agreement">
-                Пополняя счет, вы соглашаетесь во всеми правилами<br>
-                и условиями пользовательского соглашения на 100%.<br>
-                Если у вас возникли вопросы по оплате,<br>
-                ознакомьтесь с инструкцией.
+                Пополняя счет, вы соглашаетесь во всеми правилами
+                и условиями <a href="/agreement">пользовательского соглашения</a> на 100%.<br>
+                Если у вас возникли вопросы по оплате, ознакомьтесь с инструкцией.
             </div>
         </div>
 

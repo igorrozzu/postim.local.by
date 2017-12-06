@@ -9,7 +9,7 @@ $this->title = 'Добавить скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Название скидки</label>
                 <input name="name" class="input-field-setting validator" data-error-parents="block-field-setting"
-                       data-message="Введите название" data-regex="^\S.{3,}" placeholder="Введите название" value="">
+                       data-message="Введите название" data-regex="^.+$" placeholder="Введите название" value="">
             </div>
 
             <div class="block-field-setting">
@@ -53,9 +53,109 @@ $this->title = 'Добавить скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Условия акции</label>
 
-                <div class="selected-field" style="margin-bottom: 20px;" id="add-share-condition">
-                    <div id="add-condition-value" class="select-value">
+                <div class="selected-field" id="add-share-condition">
+                    <div id="select-condition-value" class="select-value">
                         <span class="placeholder-select">Добавить условие</span>
+                    </div>
+                    <div data-open-id="select-condition" class="open-select-field"></div>
+                </div>
+                <div id="select-condition" class="container-scroll auto-height" style="max-height: none;">
+
+                    <div class="option-select-field">
+                        <div class="block-textarea-custom hidden">
+                            <textarea class="validator"
+                                   data-error-parents="block-textarea-custom"
+                                   data-message="Неккоректные данные для условия"
+                                   data-preview-text="Воспользоваться промокодом вы можете до"
+                                   data-continue-text=" 00.00.2018."
+                                   placeholder="Укажите условие"
+                                   data-regex="^.+$" readonly>Воспользоваться промокодом вы можете до</textarea>
+                            <div class="close-input-custom" ></div>
+                        </div>
+                    </div>
+                    <div class="option-select-field">
+                        <div class="block-textarea-custom hidden">
+                            <textarea class="validator"
+                                      data-error-parents="block-textarea-custom"
+                                      data-message="Неккоректные данные для условия"
+                                      data-preview-text="Промокод действует на одного человека"
+                                      data-continue-text=". Если идете компанией, необходимо приобретать промокоды на каждого."
+                                      placeholder="Укажите условие"
+                                      data-regex="^.+$" readonly>Промокод действует на одного человека</textarea>
+                            <div class="close-input-custom" ></div>
+                        </div>
+                    </div>
+                    <div class="option-select-field">
+                        <div class="block-textarea-custom hidden">
+                            <textarea class="validator"
+                                      data-error-parents="block-textarea-custom"
+                                      data-message="Неккоректные данные для условия"
+                                      data-preview-text="Необходимо предъявлять промокод до заказа"
+                                      data-continue-text=". Скидка предоставляется только при наличии неиспользованного ранее промокода, вы можете его назвать по телефону, предъявить в распечатанном или в электронном виде."
+                                      placeholder="Укажите условие"
+                                      data-regex="^.+$" readonly>Необходимо предъявлять промокод до заказа</textarea>
+                            <div class="close-input-custom" ></div>
+                        </div>
+                    </div>
+                    <div class="option-select-field">
+                        <div class="block-textarea-custom hidden">
+                            <textarea class="validator"
+                                      data-error-parents="block-textarea-custom"
+                                      data-message="Неккоректные данные для условия"
+                                      data-preview-text="Обязателен предварительный заказ"
+                                      data-continue-text=" или бронь по телефонам, указанным в купоне на скидку."
+                                      placeholder="Укажите условие"
+                                      data-regex="^.+$" readonly>Обязателен предварительный заказ</textarea>
+                            <div class="close-input-custom" ></div>
+                        </div>
+                    </div>
+                    <div class="option-select-field">
+                        <div class="block-textarea-custom hidden">
+                            <textarea class="validator"
+                                      data-error-parents="block-textarea-custom"
+                                      data-message="Неккоректные данные для условия"
+                                      data-preview-text="Скидка по промокоду не суммируется"
+                                      data-continue-text=" с другими акциями и спецпредложениями."
+                                      placeholder="Укажите условие"
+                                      data-regex="^.+$" readonly>Скидка по промокоду не суммируется</textarea>
+                            <div class="close-input-custom" ></div>
+                        </div>
+                    </div>
+                    <div class="option-select-field">
+                        <div class="block-textarea-custom hidden">
+                            <textarea class="validator"
+                                      data-error-parents="block-textarea-custom"
+                                      data-message="Неккоректные данные для условия"
+                                      data-preview-text="Поставщик несет полную ответственность"
+                                      data-continue-text=" перед потребителем за достоверность информации."
+                                      placeholder="Укажите условие"
+                                      data-regex="^.+$" readonly>Поставщик несет полную ответственность</textarea>
+                            <div class="close-input-custom" ></div>
+                        </div>
+                    </div>
+                    <div class="option-select-field">
+                        <div class="block-textarea-custom hidden">
+                            <textarea class="validator"
+                                      data-error-parents="block-textarea-custom"
+                                      data-message="Неккоректные данные для условия"
+                                      data-preview-text='Услуги (товары) предоставляются ООО "Рестгорсервис" УНП 191206305.'
+                                      data-continue-text=""
+                                      placeholder="Укажите условие"
+                                      data-regex="^.+$" readonly>Услуги (товары) предоставляются ООО "Рестгорсервис" УНП 191206305.</textarea>
+                            <div class="close-input-custom" ></div>
+                        </div>
+                    </div>
+                    <div class="option-select-field another-condition">
+                        <div class="block-textarea-custom hidden">
+                            <textarea class="validator"
+                                      data-error-parents="block-textarea-custom"
+                                      data-message="Неккоректные данные для условия"
+                                      data-preview-text=""
+                                      data-continue-text=""
+                                      placeholder="Укажите условие"
+                                      data-regex="^.+$" readonly>Другие условия</textarea>
+                            <div class="close-input-custom" ></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,29 +166,15 @@ $this->title = 'Добавить скидку на Postim.by';
                 <label class="label-field-setting">Стоимость товара или услуги (руб)</label>
                 <input name="cost" class="input-field-setting validator"
                        data-error-parents="block-field-setting"
+                       data-message="Введите название"
                        placeholder="Укажите цену, если это возможно" value="">
             </div>
 
-            <!--<div class="block-field-setting">
-                <label class="label-field-setting">Скидка (%)</label>
-                <div class="selectorFields" id="discount" data-is-many="false" data-id="discount" data-max="1"
-                     data-info='[{"id":10,"name":"10"},{"id":20,"name":"20"}]'>
-                    <div class="block-inputs"></div>
-                    <div class="between-selected-field btn-open-field" data-open=false>
-                        <input class="search-selected-field" type="button" data-value="Укажите скидку"
-                               value="Укажите скидку" placeholder="Укажите скидку">
-                        <div class="open-select-field2"></div>
-                    </div>
-                    <div class="container-scroll-fields" style="height: auto;">
-                        <div class="container-options"></div>
-                    </div>
-                </div>
-            </div>-->
             <div class="block-field-setting">
                 <label class="label-field-setting">Скидка (%)</label>
                 <input name="discount" class="input-field-setting validator"
                        data-error-parents="block-field-setting"
-                       data-message="Укажите скидку" data-regex="^\S.{3,}"
+                       data-message="Укажите скидку"
                        placeholder="Укажите скидку" value="">
             </div>
 
@@ -175,7 +261,7 @@ $this->title = 'Добавить скидку на Postim.by';
                 text: true
             }
         });
-
+        $('textarea').autosize();
         $("#datepicker").datepicker({
             onSelect: function(dateText, inst) {
                 $('#end-share-date').text(dateText);

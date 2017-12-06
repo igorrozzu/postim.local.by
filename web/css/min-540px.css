@@ -307,12 +307,6 @@
         margin-top: calc((100% + 150px)/2);
     }
     /*loader finish*/
-
-    /*disounts start*/
-    .discount-order-content .payment-methods {
-        flex-flow: column;
-    }
-    /*disounts finish*/
 }
 
 

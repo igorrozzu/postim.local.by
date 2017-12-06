@@ -69,12 +69,13 @@ Pjax::begin([
                     <td>02.02.201702.02702.02 .201702.02.201702.02.201702.02.2017</td>
                 </tr>
             </table>
-            <div class="large-wide-button non-border btn-load-more" id="" style="height: 50px;"
-                 data-selector_replace="#"
-                 data-href="">
-                <p>Показать больше</p>
-            </div>
         </div>
+        <div class="large-wide-button non-border btn-load-more" id="" style="height: 50px;"
+             data-selector_replace="#"
+             data-href="">
+            <p>Показать больше</p>
+        </div>
+
 
 
     </div>
