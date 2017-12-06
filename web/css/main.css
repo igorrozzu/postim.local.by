@@ -6587,7 +6587,6 @@ form .field-input:first-child{
 .product-counter{
     display: inline-flex;
     height: 42px;
-
 }
 .product-counter .counter{
    line-height: 42px;
