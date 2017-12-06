@@ -69,7 +69,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                    data-preview-text="Воспользоваться промокодом вы можете до"
                                    data-continue-text=" 00.00.2018."
                                    placeholder="Укажите условие"
-                                   data-regex="^.+$" readonly>Воспользоваться промокодом вы можете до</textarea>
+                                   readonly>Воспользоваться промокодом вы можете до</textarea>
                             <div class="close-input-custom" ></div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-preview-text="Промокод действует на одного человека"
                                       data-continue-text=". Если идете компанией, необходимо приобретать промокоды на каждого."
                                       placeholder="Укажите условие"
-                                      data-regex="^.+$" readonly>Промокод действует на одного человека</textarea>
+                                      readonly>Промокод действует на одного человека</textarea>
                             <div class="close-input-custom" ></div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-preview-text="Необходимо предъявлять промокод до заказа"
                                       data-continue-text=". Скидка предоставляется только при наличии неиспользованного ранее промокода, вы можете его назвать по телефону, предъявить в распечатанном или в электронном виде."
                                       placeholder="Укажите условие"
-                                      data-regex="^.+$" readonly>Необходимо предъявлять промокод до заказа</textarea>
+                                      readonly>Необходимо предъявлять промокод до заказа</textarea>
                             <div class="close-input-custom" ></div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-preview-text="Обязателен предварительный заказ"
                                       data-continue-text=" или бронь по телефонам, указанным в купоне на скидку."
                                       placeholder="Укажите условие"
-                                      data-regex="^.+$" readonly>Обязателен предварительный заказ</textarea>
+                                      readonly>Обязателен предварительный заказ</textarea>
                             <div class="close-input-custom" ></div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-preview-text="Скидка по промокоду не суммируется"
                                       data-continue-text=" с другими акциями и спецпредложениями."
                                       placeholder="Укажите условие"
-                                      data-regex="^.+$" readonly>Скидка по промокоду не суммируется</textarea>
+                                      readonly>Скидка по промокоду не суммируется</textarea>
                             <div class="close-input-custom" ></div>
                         </div>
                     </div>
@@ -129,7 +129,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-preview-text="Поставщик несет полную ответственность"
                                       data-continue-text=" перед потребителем за достоверность информации."
                                       placeholder="Укажите условие"
-                                      data-regex="^.+$" readonly>Поставщик несет полную ответственность</textarea>
+                                      readonly>Поставщик несет полную ответственность</textarea>
                             <div class="close-input-custom" ></div>
                         </div>
                     </div>
@@ -141,7 +141,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-preview-text='Услуги (товары) предоставляются ООО "Рестгорсервис" УНП 191206305.'
                                       data-continue-text=""
                                       placeholder="Укажите условие"
-                                      data-regex="^.+$" readonly>Услуги (товары) предоставляются ООО "Рестгорсервис" УНП 191206305.</textarea>
+                                      readonly>Услуги (товары) предоставляются ООО "Рестгорсервис" УНП 191206305.</textarea>
                             <div class="close-input-custom" ></div>
                         </div>
                     </div>
@@ -153,7 +153,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-preview-text=""
                                       data-continue-text=""
                                       placeholder="Укажите условие"
-                                      data-regex="^.+$" readonly>Другие условия</textarea>
+                                      readonly>Другие условия</textarea>
                             <div class="close-input-custom" ></div>
                         </div>
                     </div>
