@@ -8,6 +8,7 @@ use app\models\PostInfo;
 use app\models\Posts;
 use app\models\PostUnderCategory;
 use app\models\WorkingHours;
+use yii\helpers\Html;
 
 
 class PostsModeration extends ParentsModel
@@ -34,13 +35,14 @@ class PostsModeration extends ParentsModel
 
         $mainPost->city_id = $this->city_id;
         $mainPost->cover = $this->cover;
-        $mainPost->data = $this->data;
+        $mainPost->data = Html::encode(Html::decode($this->data));
         $mainPost->status = self::$STATUS['confirm'];
-        $mainPost->address = $this->address;
-        $mainPost->additional_address = $this->additional_address;
+        $mainPost->address = Html::encode(Html::decode($this->address));
+        $mainPost->additional_address = Html::encode(Html::decode($this->additional_address));
+        $mainPost->date = time();
         $mainPost->coordinates = $this->coordinates;
         $mainPost->metro = $this->metro;
-        $mainPost->requisites = $this->requisites;
+        $mainPost->requisites = Html::encode(Html::decode($this->requisites));
 
         if($mainPost->update()){
 
@@ -78,7 +80,7 @@ class PostsModeration extends ParentsModel
             if($this->postFeatures){
                 foreach ($this->postFeatures as $feature){
                     $postFeatures = new PostFeatures([
-                        'post_id' => $feature->post_id,
+                        'post_id' => $mainPost->id,
                         'features_id' => $feature->features_id,
                         'value' => $feature->value,
                         'features_main_id' => $feature->features_main_id,

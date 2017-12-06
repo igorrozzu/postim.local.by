@@ -7,6 +7,7 @@
 
 namespace app\commands;
 use app\components\Helper;
+use app\components\ImageHelper;
 use app\models\City;
 use app\models\Geocoding;
 use app\models\PostInfo;
@@ -15,6 +16,7 @@ use linslin\yii2\curl\Curl;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 
 
 /**
@@ -109,6 +111,20 @@ class CovertController extends Controller
         }
 
 
+
+
+    }
+
+    public function actionResizeImg(){
+
+        $dir = Yii::getAlias('@webroot/post_photo/');
+
+        $files =  FileHelper::findFiles($dir);
+
+        foreach ($files as $key => $file){
+            ImageHelper::MaxImg2000($file);
+            echo "{$key}\n";
+        }
 
 
     }

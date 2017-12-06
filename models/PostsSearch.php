@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\Helper;
+use app\models\entities\Gallery;
 use dosamigos\transliterator\TransliteratorHelper;
 use Yii;
 use yii\base\Model;
@@ -65,10 +66,11 @@ class PostsSearch extends Posts
         if(Yii::$app->request->get('sort',false)=='nigh' && $loadGeolocation){
            $coordinates='POINT('.$loadGeolocation["lat"].' '.$loadGeolocation["lon"].')';
            $query->select('tbl_posts.*,ST_distance_sphere(st_point("coordinates"[0],"coordinates"[1]),ST_GeomFromText(\''.$coordinates.'\')) as distance');
+           $query->addSelect(['COUNT('.Gallery::tableName().'.post_id) as number']);
            $query->addOrderBy(['distance'=>SORT_ASC]);
         }else{
+            $query->select(['tbl_posts.*','COUNT('.Gallery::tableName().'.post_id) as number']);
             $query->addOrderBy($sort);
-            $query->addOrderBy(['data'=>SORT_ASC]);
         }
 
 
@@ -230,6 +232,10 @@ class PostsSearch extends Posts
             $query->andWhere(['like','upper(data)','%'.mb_strtoupper($params['text']).'%',false]);
         }
 
+        $query->leftJoin(Gallery::tableName(),Posts::tableName().'.id = '.Gallery::tableName().'.post_id');
+        $query->addOrderBy(['number'=>SORT_DESC]);
+        $query->addOrderBy(['data'=>SORT_ASC]);
+
         $query->groupBy(['tbl_posts.id']);
         $this->queryForPlaceOnMap->groupBy(['tbl_posts.id']);
 
@@ -244,14 +250,13 @@ class PostsSearch extends Posts
 
 
 
-    public function searchSpotlight($params, Pagination $pagination){
-
+    public function searchSpotlight($params){
 
         $query = Posts::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => false,
         ]);
 
         $this->queryForPlaceOnMap=Posts::find()->select('tbl_posts.id,tbl_posts.coordinates');
@@ -286,17 +291,12 @@ class PostsSearch extends Posts
 
         }
 
-        $query->innerJoin('(SELECT main_reviews.post_id,main_reviews.status,main_reviews.date
-              FROM tbl_reviews as main_reviews
-                INNER JOIN (SELECT post_id, max(date) as date
-                            FROM tbl_reviews
-                            GROUP BY tbl_reviews.post_id) as tbl_reviews1 ON tbl_reviews1.post_id = main_reviews.post_id
-              WHERE main_reviews.date = tbl_reviews1.date) as tbl_reviews','tbl_reviews.post_id = tbl_posts.id');
+        $query->select('tbl_posts.*, MAX(tbl_reviews.date) as last_review');
+        $query->innerJoin(Reviews::tableName(),'tbl_posts.id = tbl_reviews.post_id');
+        $query->orderBy(['last_review'=>SORT_DESC]);
 
-        $query->andWhere(['<>','tbl_reviews.status',Reviews::$STATUS['private']]);
-        $query->orderBy(['tbl_reviews.date'=>SORT_DESC]);
-
-        $query->groupBy(['tbl_posts.id','tbl_reviews.date']);
+        $query->groupBy(['tbl_posts.id']);
+        $query->limit(4);
         $this->queryForPlaceOnMap->groupBy(['tbl_posts.id']);
 
         $query->with(['workingHours'=>function ($query) {
@@ -353,7 +353,7 @@ class PostsSearch extends Posts
     public static function getSortArray($paramSort){
         switch ($paramSort){
             case 'new':{return ['date'=>SORT_DESC];}break;
-            default:{return ['rating'=>SORT_DESC];}break;
+            default:{return ['rating'=>SORT_DESC,'count_reviews'=>SORT_DESC];}break;
         }
     }
 }

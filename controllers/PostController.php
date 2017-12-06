@@ -513,6 +513,8 @@ class PostController extends MainController
             ->where(['id' => $postId])
             ->one();
 
+        Helper::addViews($post->totalView);
+
         $user_id = Yii::$app->user->isGuest ? null : Yii::$app->user->getId();
 
         if ($post && ($post['status'] != 0 ? true : $post['user_id'] == $user_id)) {
@@ -609,6 +611,9 @@ class PostController extends MainController
             'hasLike', 'categories.category'
         ])->where(['id' => $postId])
             ->one();
+
+        Helper::addViews($post->totalView);
+
         $photoCount = Gallery::find()
             ->where(['post_id' => $postId])
             ->count();

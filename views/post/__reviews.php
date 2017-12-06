@@ -19,7 +19,8 @@
 				'dataProvider' => $reviewsDataProvider,
 				'settings'=>[
 					'show-more-btn' => false,
-                    'without_header'=>true
+                    'without_header'=>true,
+                    'noIndexData' => true
 				]
 			]);
 			echo '<noindex><div class="review-show-more">

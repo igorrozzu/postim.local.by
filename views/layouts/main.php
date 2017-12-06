@@ -37,6 +37,10 @@ LoginFormsAsset::register($this);
         })(window,document,'script','dataLayer','GTM-NJT875T');</script>
     <!-- End Google Tag Manager -->
 
+    <!--push start-->
+    <script charset="UTF-8" src="//cdn.sendpulse.com/28edd3380a1c17cf65b137fe96516659/js/push/8112939af3b63172ed5cc9252b64b0d9_1.js" async></script>
+    <!--push end-->
+
     <?php $this->head() ?>
 </head>
 <body>

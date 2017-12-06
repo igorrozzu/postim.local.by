@@ -10,6 +10,10 @@ namespace app\components;
 
 
 use app\models\User;
+use Imagine\Gd\Imagine;
+use Imagine\Image\ManipulatorInterface;
+use Imagine\Image\Palette\RGB;
+use Imagine\Image\Point;
 use Yii;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
@@ -60,6 +64,47 @@ class ImageHelper
         } catch(\Exception $e){
             return false;
         }
+    }
+
+    public static function MaxImg2000( string $from, string $to = null, int $quality = 80){
+
+        if($to === null) {
+            $to = $from;
+        }
+
+        try{
+
+            $info = getimagesize($from);
+
+            $newWidth = $info[0];
+            $newHeight = $info[1];
+
+            if($info[0] > 2000){
+                $dif = 2000/$info[0];
+                $newWidth = $info[0] * $dif;
+                $newHeight = floor($info[1] * $dif);
+            }
+
+            $imagine = new \Imagine\Imagick\Imagine();
+            $palette = new RGB();
+            $color = $palette->color('#fff', 100);
+            $topLeft = new Point(0,0);
+
+            $image = Image::thumbnail($from,$newWidth,$newHeight)
+                ->strip();
+
+            $canvas = $imagine->create($image->getSize(), $color);
+
+            $canvas->paste($image,$topLeft)
+                ->save($to,[
+                        'quality' => $quality
+                    ]
+                );
+
+        }catch (\Exception $e){
+            return false;
+        }
+
     }
 
 }

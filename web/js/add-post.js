@@ -140,6 +140,9 @@ var Post_add = (function (window, document, undefined, $) {
 
 						}
 					});
+				$(document).ready(function () {
+                    $(document).on('keydown','.js-search-on-map', $.debounce(1400,that.searchOnMap));
+                });
 
 				that.workTime.initInputEvents();
 
@@ -149,6 +152,29 @@ var Post_add = (function (window, document, undefined, $) {
 				$block_coords_address.val(latlng.lat + ',' + latlng.lng);
 				$block_coords_address.attr('value',latlng.lat + ',' + latlng.lng);
 			},
+
+			searchOnMap:function () {
+
+            	var inputSearchText = $(this).val();
+            	var zoom = /(ул\.?(ица)?)/.test(inputSearchText)?17:12;
+
+                $.ajax({
+                    url: '/site/search-coords-by-address',
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        address: inputSearchText
+                    },
+                    success: function (response) {
+                        if(response.error == false){
+                            map.moveToMap({lat:response.response.lat,lon:response.response.lng},zoom)
+                        }
+                    }
+                });
+
+
+            },
+
             selectorFields: {
                 $selectedFieldContainer: null,
 				$containerOptions: null,

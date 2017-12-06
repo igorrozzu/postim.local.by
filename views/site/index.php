@@ -51,7 +51,7 @@ $this->registerMetaTag([
 <div class="block-content">
     <h1 class="h1-c center-mx"><?=$descriptionPage['h1']?></h1>
     <?= MainMenuWidget::widget(['typeMenu' => MainMenuWidget::$catalogMenu]) ?>
-    <?php if ($spotlight->totalCount): ?>
+        <?php if($spotlight->getModels()):?>
         <h2 class="h2-c">В центре внимания</h2>
         <div class="cards-block">
             <?= CardsPlaceWidget::widget(['dataprovider' => $spotlight, 'settings' => ['show-more-btn' => false]]) ?>

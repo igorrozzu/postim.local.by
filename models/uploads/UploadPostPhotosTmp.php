@@ -42,9 +42,12 @@ class UploadPostPhotosTmp extends Model
                 }
                 $rows = [];
                 foreach ($this->files as $file) {
-                    $photoName = Yii::$app->security->generateRandomString(8).time().'.png';
+                    $photoName = Yii::$app->security->generateRandomString(8).time().'.jpg';
 
                     if ($file->saveAs($dir . $photoName)) {
+
+                        ImageHelper::MaxImg2000($dir . $photoName);
+
                         $rows[] = [
                             'link' => $photoName,
                         ];

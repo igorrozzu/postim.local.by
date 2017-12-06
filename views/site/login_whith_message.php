@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
                 <p class="text-sign --favorites">Возможность сохранять места и новости, чтобы не потерять</p>
                 <p class="text-sign --reviews">Возможность оставлять отзывы и комментарии</p>
                 <p class="text-sign --bonus">Возможность участвовать в бонусной программе</p>
-                <p class="text-sign --12-font-size">Возможность избавится от всплывающего окна “Возможностей” :)</p>
+                <p class="text-sign --12-font-size">Возможность избавиться от всплывающего окна “Возможностей” :)</p>
             </div>
         </div>
         <div class="right-column">

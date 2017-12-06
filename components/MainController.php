@@ -32,13 +32,9 @@ class MainController extends Controller
         }
 
         $searchModel = new PostsSearch();
-        $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', $params['mainPage.postCount']),
-            'page' => $request->get('page', 1) - 1,
-        ]);
 
         $dataProvider = $searchModel->searchSpotlight(
-            $request->queryParams, $pagination
+            $request->queryParams
         );
 
         $NewsSearchModel = new NewsSearch();
