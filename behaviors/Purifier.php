@@ -18,9 +18,9 @@ class Purifier extends \yii\base\Behavior{
         if($this->owner->{$this->in_attribute}){
 
             $config = \HTMLPurifier_Config::createDefault();
-            $config->set('HTML.AllowedElements', ['div','p','b','i','br','a','blockquote','h2','iframe']);
-            $config->set('HTML.AllowedAttributes', ['div.class','a.href', 'a.target', 'a.rel','iframe.src','iframe.allowfullscreen']);
-            $config->set('Attr.AllowedClasses', ['insert-item','video']);
+            $config->set('HTML.AllowedElements', ['div','p','b','i','br','a','blockquote','h2','iframe','img']);
+            $config->set('HTML.AllowedAttributes', ['div.class','img.src','a.href', 'a.target', 'a.rel','iframe.src','iframe.allowfullscreen']);
+            $config->set('Attr.AllowedClasses', ['insert-item','video','block-photo-post','photo-desc','']);
             $config->set('Attr.AllowedRel', ['nofollow','noopener']);
             $config->set('Attr.AllowedFrameTargets', ['_blank']);
 
