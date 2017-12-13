@@ -55,7 +55,7 @@ var loginForms = (function (window, document, undefined, $) {
                 });
 
 
-                if(($.cookie('showForm') || null) === null){
+                /*if(($.cookie('showForm') || null) === null){
                     var showForm = setTimeout(function () {
 
                         var date = new Date();
@@ -68,7 +68,7 @@ var loginForms = (function (window, document, undefined, $) {
                         __$containerForms.html($html).show();
 
                     },20000)
-                }
+                }*/
 
                 this.initSendFormHandlers();
             },
