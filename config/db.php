@@ -12,11 +12,11 @@ $paramsDb = [
 ];
 
 if(YII_ENV == 'prod'){
-    $paramsDb['dsn'] = 'pgsql:host=docker49872-postimdb.mycloud.by;dbname=postim_db';
+    $paramsDb['dsn'] = 'pgsql:host=87.252.241.14;dbname=postim_db';
 }
 
 if(YII_ENV == 'testing'){
-    $paramsDb['dsn'] = 'pgsql:host=docker49872-postimdb.mycloud.by;dbname=postim_testing_db';
+    $paramsDb['dsn'] = 'pgsql:host=87.252.241.14;dbname=postim_testing_db';
 }
 
 return $paramsDb;
