@@ -482,7 +482,8 @@
 			}
 		}
 
-		private function addPhotos(int $post_id){
+		private function addPhotos(int $post_id)
+        {
 
 			if ($this->photos) {
 				$dir = Yii::getAlias('@webroot/post_photo/' . $post_id . '/');

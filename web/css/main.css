@@ -3157,6 +3157,9 @@ a .btn-sort-reviews.active
     box-shadow: 0 2px 0 0 #cdced0;
     border-radius: 0 0 3px 3px;
 }
+.card-block-discount .discount-link {
+    text-decoration: none;
+}
 .card-block-discount:nth-child(4n){
     margin-right: 0px;
 }
@@ -6401,6 +6404,9 @@ form .field-input:first-child{
     background-color: #fff;
     box-shadow: 0px 2px 0px 0px #bbbeb3;
     width: calc(100% - 315px);
+}
+.std-container a.large-wide-button {
+    text-decoration: none;
 }
 
 .fill-account-header {

@@ -105,7 +105,7 @@ var Post_add = (function (window, document, undefined, $) {
 						that.features.getFeatures()
 					});
 				$(document).off('change','.photo-add').on('change','.photo-add',function (e) {
-					that.photos.addPhotos.call(this, e);
+					that.photos.addPhotos.call(this, e, '/post/upload-tmp-photo');
 				});
 				$(document).off('click','.btn-add-photos-gallery')
 					.on('click','.btn-add-photos-gallery',function () {
@@ -684,13 +684,13 @@ var Post_add = (function (window, document, undefined, $) {
 				}
 			},
 			photos:{
-				addPhotos: function (e) {
+				addPhotos: function (e, url) {
 					if (uploads.validatePhotos(e.target.files)) {
 						var form = new FormData();
 						$.each(e.target.files, function (key, value) {
 							form.append('photos[]', value);
 						});
-						uploads.uploadFiles('/post/upload-tmp-photo', form, that.photos.renderPhotos);
+						uploads.uploadFiles(url, form, that.photos.renderPhotos);
 						$(this).val('');
 
 					}else {
@@ -716,9 +716,10 @@ var Post_add = (function (window, document, undefined, $) {
 					if(response.success){
 
 						var number = response.data.length;
+                        var folder = response.folder;
 
 						for (var i = 0; i < number; i++) {
-							$tmp.css('background-image', 'url("/post_photo/tmp/' + response.data[i].link + '")');
+							$tmp.css('background-image', 'url("/' + folder + '/tmp/' + response.data[i].link + '")');
 							$tmp.attr('id', that.photos.getHashCode(response.data[i].link));
 							$containerNewPhoto.append($tmp.clone());
 

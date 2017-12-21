@@ -3,63 +3,128 @@ var Discount = (function (window, document, undefined, $) {
 
     return function () {
 
+
         var discount = {
 
-            initHandlers: function () {
+            Adding: function (){
 
-                $(document).off('click', '.close-input-custom')
-                    .on('click', '.close-input-custom', function () {
+                var previewInputs = {
+                    price: $('#price'),
+                    discount: $('#discount'),
+                    economy: $('#economy'),
+                    priceWithDiscount: $('#price-with-discount'),
+                };
 
-                        var $field = $(this).closest('.option-select-field');
+                var scope = {
+                    initHandlers: function () {
 
-                        if ($field.hasClass('another-condition')) {
-                            $field.remove();
-                        } else {
-                            var $textarea = $(this).prev();
+                        $(document).off('click', '.close-input-custom')
+                            .on('click', '.close-input-custom', function () {
 
-                            $field.children().addClass('hidden');
-                            $textarea.attr('readonly', '');
-                            $textarea.removeAttr('name');
-                            $textarea.val($textarea.data('preview-text'));
+                                var $field = $(this).closest('.option-select-field');
 
-                            if ($field.children().hasClass('error')) {
-                                $field.children().removeClass('error')
-                            }
-                            $textarea.css('height', 'auto');
+                                if ($field.hasClass('another-condition')) {
+                                    $field.remove();
+                                } else {
+                                    var $textarea = $(this).prev();
 
-                            $('#select-condition').prepend($field);
-                            $textarea.trigger('input');
-                        }
-                    });
+                                    $field.children().addClass('hidden');
+                                    $textarea.attr('readonly', '');
+                                    $textarea.removeAttr('name');
+                                    $textarea.val($textarea.data('preview-text'));
 
-                $(document).off('click', '#select-condition .option-select-field')
-                    .on('click', '#select-condition .option-select-field', function () {
-                        var $this;
+                                    if ($field.children().hasClass('error')) {
+                                        $field.children().removeClass('error')
+                                    }
+                                    $textarea.css('height', 'auto');
 
-                        if ($(this).hasClass('another-condition')) {
-                            $this = $(this).clone();
-                        } else {
-                            $this = $(this);
-                        }
+                                    $('#select-condition').prepend($field);
+                                    $textarea.trigger('input');
+                                }
+                            });
 
-                        var $textarea = $this.find('textarea');
-                        var $btnAddCondition = $('#add-share-condition');
+                        $(document).off('click', '#select-condition .option-select-field')
+                            .on('click', '#select-condition .option-select-field', function () {
+                                var $this;
 
-                        $this.children().removeClass('hidden');
-                        $textarea.attr('name', 'condition[]');
-                        $textarea.removeAttr('readonly');
-                        $textarea.val($textarea.data('preview-text') +
-                            $textarea.data('continue-text'));
+                                if ($(this).hasClass('another-condition')) {
+                                    $this = $(this).clone();
+                                } else {
+                                    $this = $(this);
+                                }
 
-                        $('#select-condition-value').trigger('click');
-                        $textarea.trigger('input');
-                        $btnAddCondition.before($this);
+                                var $textarea = $this.find('textarea');
+                                var $btnAddCondition = $('#add-share-condition');
 
-                        if ($this.hasClass('another-condition')) {
-                            $textarea.autosize();
-                        }
-                    });
+                                $this.children().removeClass('hidden');
+                                $textarea.attr('name', 'discount[conditions][]');
+                                $textarea.removeAttr('readonly');
+                                $textarea.val($textarea.data('preview-text') +
+                                    $textarea.data('continue-text'));
+
+                                $('#select-condition-value').trigger('click');
+                                $textarea.trigger('input');
+                                $btnAddCondition.before($this);
+
+                                if ($this.hasClass('another-condition')) {
+                                    $textarea.autosize();
+                                }
+                            });
+
+                        $(document).off('click','#add-discount')
+                            .on('click','#add-discount', function () {
+                                if (editable.parserEditable()) {
+                                    $('#discount-form').submit();
+                                }
+                            });
+
+                        $(document).off('change','#discount-gallery')
+                            .on('change','#discount-gallery',function (e) {
+                                post_add.photos.addPhotos.call(this, e, '/discount/upload-tmp-photo');
+                            });
+
+                        $(document).off('change','#discount-gallery')
+                            .on('change','#discount-gallery',function (e) {
+                                post_add.photos.addPhotos.call(this, e, '/discount/upload-tmp-photo');
+                            });
+
+                        $(document).off('input','#price,#discount')
+                            .on('input','#price,#discount',function () {
+                                var price = parseFloat(previewInputs.price.val());
+                                var discount = parseInt(previewInputs.discount.val());
+
+                                if (!isNaN(price) && !isNaN(discount) && price > 0
+                                    && discount >= 0 && discount <= 100) {
+
+                                    var economy = (discount / 100) * price;
+                                    previewInputs.economy.val(economy.toFixed(2));
+                                    previewInputs.priceWithDiscount
+                                        .val((price - economy).toFixed(2));
+                                } else {
+                                    previewInputs.economy.val('');
+                                    previewInputs.priceWithDiscount.val('');
+                                }
+                            });
+                    },
+                };
+
+                return scope;
             },
+
+            Feed: function() {
+
+                var scope = {
+                    initHandlers: function () {
+                        $(document).off('click','.block-discount').
+                        on('click','.block-discount', function () {
+                            $(this).parent().find('a.discount-link').trigger('click');
+                            console.log(23);
+                        });
+                    }
+                };
+
+                return scope;
+            }
         };
 
         return discount;
@@ -68,6 +133,6 @@ var Discount = (function (window, document, undefined, $) {
 } (window, document, undefined, jQuery));
 
 var discount = Discount();
-discount.initHandlers();
-
+discount.Adding().initHandlers();
+discount.Feed().initHandlers();
 

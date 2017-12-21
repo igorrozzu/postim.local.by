@@ -23,6 +23,10 @@ class UploadPostPhotosTmp extends Model
 
     private $savedFiles = [];
 
+    /**
+     * @var string
+     */
+    private $directory;
 
     public function rules()
     {
@@ -36,7 +40,7 @@ class UploadPostPhotosTmp extends Model
     {
         try {
             if ($this->validate()) {
-                $dir = Yii::getAlias('@webroot/post_photo/tmp/');
+                $dir = Yii::getAlias($this->directory);
                 if (!is_dir($dir)) {
                     FileHelper::createDirectory($dir);
                 }
@@ -64,8 +68,24 @@ class UploadPostPhotosTmp extends Model
         }
     }
 
-    public function getSavedFiles(){
+    public function getSavedFiles()
+    {
     	return $this->savedFiles;
 	}
 
+    /**
+     * @return string
+     */
+    public function getDirectory(): string
+    {
+        return $this->directory;
+    }
+
+    /**
+     * @param string $directory
+     */
+    public function setDirectory(string $directory)
+    {
+        $this->directory = $directory;
+    }
 }

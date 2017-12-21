@@ -9,6 +9,7 @@ use app\components\Pagination;
 use app\models\AddPost;
 use app\models\City;
 use app\models\Comments;
+use app\models\Discounts;
 use app\models\entities\BusinessOrder;
 use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
@@ -18,6 +19,7 @@ use app\models\Posts;
 use app\models\Reviews;
 use app\models\ReviewsSearch;
 use app\models\search\CommentsSearch;
+use app\models\search\DiscountSearch;
 use app\models\search\GallerySearch;
 use app\models\UnderCategory;
 use app\models\UnderCategoryFeatures;
@@ -25,6 +27,7 @@ use app\models\uploads\UploadPhotos;
 use app\models\uploads\UploadPhotosByUrl;
 use app\models\uploads\UploadPostPhotos;
 use app\models\uploads\UploadPostPhotosTmp;
+use app\widgets\cardsDiscounts\CardsDiscounts;
 use linslin\yii2\curl\Curl;
 use Yii;
 use yii\db\Exception;
@@ -322,9 +325,15 @@ class PostController extends MainController
 
         if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             $model = new UploadPostPhotosTmp();
+            $model->setDirectory("@webroot/post_photos/tmp/");
+
             $model->files = UploadedFile::getInstancesByName('photos');
             if ($model->upload()) {
-                return $this->asJson(['success' => true, 'data' => $model->getSavedFiles()]);
+                return $this->asJson([
+                    'success' => true,
+                    'data' => $model->getSavedFiles(),
+                    'folder' => 'post_photos',
+                ]);
             } else {
                 return $this->asJson([
                     'success' => false,
@@ -342,7 +351,9 @@ class PostController extends MainController
 
         if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             $model = new UploadPhotos();
+            $model->directory = '/post-img/' . time() . '/';
             $model->files = UploadedFile::getInstancesByName('photos');
+
             if ($model->upload()) {
                 return $this->asJson(['success' => true, 'data' => $model->getSavedFiles()]);
             } else {
@@ -361,6 +372,7 @@ class PostController extends MainController
 
         if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             $model = new UploadPhotosByUrl();
+            $model->directory = '/post-img/' . time() . '/';
             $model->urlToImg = Yii::$app->request->post('url');
             if ($model->upload()) {
                 return $this->asJson(['success' => true, 'data' => $model->getSavedFiles()]);
@@ -953,4 +965,57 @@ class PostController extends MainController
 
     }
 
+    public function actionGetDiscountsByPost(string $name, int $postId)
+    {
+        $request = Yii::$app->request;
+        $model = new DiscountSearch();
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 8),
+            'page' => $request->get('page', 1) - 1,
+            'route' => Url::to(['discount/load-more-discounts']),
+            'selfParams' => [
+                'postId' => true,
+            ],
+        ]);
+
+        $dataProvider = $model->searchByPost(
+            $request->queryParams,
+            $pagination,
+            time()
+        );
+
+        $post = Posts::find()->with([
+            'city', 'hasLike', 'onlyOnceCategories'
+        ])->where(['id' => $postId])
+            ->one();
+
+        $breadcrumbParams = $this->getParamsForBreadcrumb($post);
+        $breadcrumbParams[] = [
+            'name' => 'Скидки',
+            'url_name' => $request->getUrl(),
+            'pjax' => 'class="main-pjax a"'
+        ];
+
+        $queryPost = Posts::find()->where(['tbl_posts.id' => $postId])
+            ->prepare(Yii::$app->db->queryBuilder)
+            ->createCommand()->rawSql;
+        $keyForMap = Helper::saveQueryForMap($queryPost);
+
+        $photoCount = Gallery::find()
+            ->where(['post_id' => $postId])
+            ->count();
+
+        $discountCount = Discounts::find()
+            ->where(['post_id' => $postId])
+            ->count();
+
+        return $this->render('feed-discounts', [
+            'post' => $post,
+            'keyForMap' => $keyForMap,
+            'breadcrumbParams' => $breadcrumbParams,
+            'dataProvider' => $dataProvider,
+            'photoCount' => $photoCount,
+            'discountCount' => $discountCount,
+        ]);
+    }
 }

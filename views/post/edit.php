@@ -151,7 +151,9 @@
 			<div class="container-description">
 				<div class="description-header">Описание места</div>
 				<div class="block-write-editors">
-					<input id="article" name="article" value="<?=$params['post']->info->article?\yii\helpers\Html::encode($params['post']->info->article):''?>" type="text" style="display: none">
+					<input id="article" name="article" value="<?=$params['post']->info->article?\yii\helpers\Html::encode($params['post']->info->article):''?>" type="text" style="display: none"
+                           data-upload-by-url="/post/upload-new-photo-by-url"
+                           data-upload-by-file="/post/upload-new-photo">
                     <?php if($params['post']->info->article):?>
 						<?=\app\components\Helper::parserForEditor($params['post']->info->article,true);?>
                     <?php else:?>

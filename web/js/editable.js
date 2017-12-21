@@ -217,7 +217,8 @@ var Editable = (function (window, document, undefined,$) {
                         that.photo.$containerReplace = $(this).parents('.container-insert');
 						setTimeout(function () {
 							var linkToPhoto = $input.val();
-                            uploads.uploadByURL('/post/upload-new-photo-by-url', linkToPhoto, that.photo.renderPhotos);
+							var url = $('#article').data('upload-by-url');
+                            uploads.uploadByURL(url, linkToPhoto, that.photo.renderPhotos);
                         },10)
                     })
 
@@ -277,7 +278,9 @@ var Editable = (function (window, document, undefined,$) {
                         $.each(e.target.files, function (key, value) {
                             form.append('photos[]', value);
                         });
-                        uploads.uploadFiles('/post/upload-new-photo', form, that.photo.renderPhotos);
+
+                        var url = $('#article').data('upload-by-file');
+                        uploads.uploadFiles(url, form, that.photo.renderPhotos);
                         $(this).val('');
 
                     }else {

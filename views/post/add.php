@@ -206,7 +206,9 @@ $this->title = 'Добавить место на Postim.by';
             <div class="container-description">
                 <div class="description-header">Описание места</div>
                 <div class="block-write-editors">
-                    <input id="article" name="article" type="text" style="display: none">
+                    <input id="article" name="article" type="text" style="display: none"
+                           data-upload-by-url="/post/upload-new-photo-by-url"
+                           data-upload-by-file="/post/upload-new-photo">
                     <div class="item item-editor-default container-editor">
                         <div class="editable"></div>
                     </div>

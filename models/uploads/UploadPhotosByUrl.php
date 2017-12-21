@@ -19,6 +19,7 @@ class UploadPhotosByUrl extends Model
 {
 
     public $urlToImg = null;
+    public $directory;
 
     private $savedFiles = [];
 
@@ -36,8 +37,8 @@ class UploadPhotosByUrl extends Model
     {
         try {
             if ($this->validate()) {
-                $dir = '/post-img/'.time().'/';
-                $full_path = Yii::getAlias('@webroot'.$dir);
+
+                $full_path = Yii::getAlias('@webroot' . $this->directory);
 
                 if (!is_dir($full_path)) {
                     FileHelper::createDirectory($full_path);
@@ -53,7 +54,7 @@ class UploadPhotosByUrl extends Model
 
                 if(file_exists($full_path.$photoName)){
                     $rows[] = [
-                        'link' => $dir.$photoName,
+                        'link' => $this->directory . $photoName,
                     ];
                 }
 
@@ -68,8 +69,8 @@ class UploadPhotosByUrl extends Model
         }
     }
 
-    public function getSavedFiles(){
+    public function getSavedFiles()
+    {
     	return $this->savedFiles;
 	}
-
 }
