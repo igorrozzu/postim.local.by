@@ -2,13 +2,9 @@
 
 namespace app\controllers;
 
-use app\components\AuthController;
-use app\models\entities\NotificationUser;
-use app\models\NotificationSearch;
-use Yii;
-use yii\data\Pagination;
+use app\components\MainController;
 
-class TestController extends AuthController
+class TestController extends MainController
 {
     public function actionIndex()
     {
