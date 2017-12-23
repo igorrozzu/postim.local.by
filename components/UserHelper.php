@@ -97,6 +97,29 @@ class UserHelper{
         $task->save();
     }
 
+    public static function sendMessageToEmail($user,$emailMessage,$emailLink){
+        $task = new Task([
+            'data' => json_encode([
+                'class' => 'SendMessageToEmail',
+                'params' => [
+                    'view' => ['html' => 'emailMessage'],
+                    'params' => [
+                        'name' => $user->name,
+                        'message' => $emailMessage,
+                        'url' => $emailLink
+                    ],
+                    'toEmail' => $user->email,
+                    'subject'=>'Уведомление Postim.by'
+                ],
+            ]),
+            'type' => Task::TYPE['notification'],
+        ]);
+
+        $task->save();
+
+        $lol =3 ;
+    }
+
 
 
 

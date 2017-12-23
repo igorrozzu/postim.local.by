@@ -3995,6 +3995,7 @@ insert-item h2:last-child{
     top:calc(50% - 180px);
 }
 .form-complaint,
+.modal-window,
 .form-cancels{
     top:calc(50% - 125px);
 }
@@ -4007,6 +4008,18 @@ insert-item h2:last-child{
     justify-content: space-between;
     align-items: center;
 }
+
+.body-modal{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.body-modal .message{
+    font-size: 16px;
+    color: #6b778f;
+    text-align: center;
+}
+
 
 /*---------- form sign with message BEGIN----------------*/
 

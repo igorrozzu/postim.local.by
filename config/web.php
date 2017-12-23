@@ -64,6 +64,7 @@ $config = [
             'rules' => [
 				'Otzyvy-<name:.+>-p<postId:\d+>' => 'post/reviews',
                 'Fotografii-<name:.+>-p<postId:\d+>' => 'post/gallery',
+                'Sushi-sety-rolly-ot-sluzhby-dostavki-Sushi-Nashi' => 'test/index',
 				'<url:.+>-p<id:\d+>/moderation'=>'post/post-moderation',//модерируемая информация о месте
                 '<url:.+>-p<id:\d+>'=>'post/index',//информация о месте
                 'id<id:\d+>' => 'user/index',
