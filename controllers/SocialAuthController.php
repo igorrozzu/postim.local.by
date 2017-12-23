@@ -62,11 +62,10 @@ class SocialAuthController extends MainController
 
                         } else {
                             $user = $model->createUser($attrClient);
-                            if($user) {
+                            if ($user) {
                                 Yii::$app->user->login($user, Yii::$app->params['user.loginDuration']);
                             }
                         }
-                        return $this->redirect('/?NewUser');
                     }
                 }
             } else { // Пользователь уже зарегистрирован
@@ -81,9 +80,10 @@ class SocialAuthController extends MainController
                 return $this->redirect(['user/settings']);
             }
         } catch (Exception $e){
-            return $this->goHome();
+            return $this->redirect(Yii::$app->request->referrer);
         }
-        return $this->goHome();
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     public function actionSetRequiredFields(string $key)

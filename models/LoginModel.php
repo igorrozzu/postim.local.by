@@ -114,18 +114,18 @@ class LoginModel extends Model
             'city_id' => -1,
             'last_visit' => time(),
         ]);
+
         $transaction = $user->getDb()->beginTransaction();
-        if($user->save()) {
+        $success = false;
+
+        if ($user->save()) {
             $userInfo = new UserInfo(['user_id' => $user->id]);
-            if($userInfo->save()) {
-                $transaction->commit();
-            } else {
-                return false;
+            if ($userInfo->save()) {
+                $success = true;
             }
-        } else {
-            return false;
         }
-        return $user;
+        $success ? $transaction->commit() : $transaction->rollBack();
+        return $success ? $user : null;
     }
 
     public function createTempUser()
