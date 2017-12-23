@@ -6,6 +6,7 @@ use app\components\Helper;
 use app\components\MainController;
 use app\components\Pagination;
 use app\models\Discounts;
+use app\models\entities\DiscountOrder;
 use app\models\entities\Gallery;
 use app\models\Posts;
 use app\models\search\DiscountSearch;
@@ -187,6 +188,9 @@ class DiscountController extends MainController
         $discountCount = Discounts::find()
             ->where(['post_id' => $discount->post->id])
             ->count();
+        $orderCount = DiscountOrder::find()
+            ->where(['discount_id' => $discountId])
+            ->count();
 
         $economy = $discount->price ?
             round($discount->price * $discount->discount / 100, 2) : null;
@@ -198,6 +202,7 @@ class DiscountController extends MainController
             'keyForMap' => $keyForMap,
             'photoCount' => $photoCount,
             'discountCount' => $discountCount,
+            'orderCount' => $orderCount,
             'economy' => $economy
         ]);
     }
@@ -253,9 +258,28 @@ class DiscountController extends MainController
         return $breadcrumbParams;
     }
 
-    public function actionOrder()
+    public function actionOrder(int $discountId)
     {
-        return $this->render('order');
+        $discount = Discounts::find()
+            ->where([Discounts::tableName() . '.id' => $discountId])
+            ->one();
+
+        if (Yii::$app->request->isPost) {
+            $model = new DiscountOrder();
+
+            /*if ($model->validate()) {
+                return $this->asJson(['success' => true, 'data' => $model->getSavedFiles()]);
+            } else {
+                return $this->asJson([
+                    'success' => false,
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+                ]);
+            }*/
+        }
+
+        return $this->render('order', [
+            'discount' => $discount
+        ]);
     }
 
     public function actionMegamoney()

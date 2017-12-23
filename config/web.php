@@ -67,6 +67,7 @@ $config = [
                 'Skidki-<name:.+>-p<postId:\d+>' => 'post/get-discounts-by-post',
                 'add/discount/<postId:\d+>' => 'discount/add',
                 'd<discountId:\d+>' => 'discount/read',
+                'discount/<discountId:\d+>/order' => 'discount/order',
 				'<url:.+>-p<id:\d+>/moderation'=>'post/post-moderation',//модерируемая информация о месте
                 '<url:.+>-p<id:\d+>'=>'post/index',//информация о месте
                 'id<id:\d+>' => 'user/index',

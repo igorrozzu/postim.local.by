@@ -1852,12 +1852,12 @@ a.btn-show-more{
     color: #788399;
     font-size: 14px;
 }
-.btn-add-photo{
+.btn-add-photo,
+.btn-order-discount {
     font-family: PT_Sans bold;
     background-color: #5f8dd8;
     font-size: 14px;
     color: #ffffff;
-    width: 300px;
     height: 40px;
     display: flex;
     align-items: center;
@@ -1866,7 +1866,11 @@ a.btn-show-more{
     cursor: pointer;
     box-shadow: 0px 2px 0px 0px #3c5994;
 }
-.btn-add-photo:hover{
+.btn-add-photo {
+    width: 300px;
+}
+.btn-add-photo:hover,
+.btn-order-discount:hover {
     background-color: #456dad;
 }
 .block-content-between{
@@ -3495,6 +3499,11 @@ a .btn-sort-reviews.active
     margin-left: -20px;
     margin-right: -20px;
     margin-bottom: -22px;
+}
+.container-bottom-btn .order-discount {
+    text-decoration: none;
+    color: #ffffff;
+    width: 100%;
 }
 .blue-btn-40{
     display: flex;
@@ -6463,7 +6472,10 @@ form .field-input:first-child{
     height: 142px;
     cursor: pointer;
 }
-
+.payment-methods .payment-block div.disable {
+    cursor: not-allowed;
+}
+.payment-methods .payment-block div.selected,
 .payment-methods .payment-block div:hover{
     background-color: #F2F4FD;
 }
@@ -6599,6 +6611,9 @@ form .field-input:first-child{
    padding: 0 9px;
    font-family: PT_Sans bold;
     color: #444444;
+    outline: none;
+    border: none;
+    width: 15px;
 }
 .product-counter .add,
 .product-counter .remove {

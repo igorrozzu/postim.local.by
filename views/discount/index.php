@@ -44,7 +44,7 @@ Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => true,
     'id' => 'post-feeds',
-    'linkSelector' => '#post-feeds .menu-btns-card a',
+    'linkSelector' => '#post-feeds .menu-btns-card a,.container-discount-info .container-bottom-btn a',
     'formSelector' => false,
 ])
 ?>
@@ -94,7 +94,10 @@ Pjax::begin([
         </div>
         <div class="container-discount-info">
             <div class="discount-info-time-left">
-                До конца акции 09:22:20
+                Акция действует до
+                <?=Yii::$app->formatter->asDate(
+                        $discount->date_finish + Yii::$app->user->identity->getTimezoneInSeconds(),
+                    'dd.MM.yyyy');?>
             </div>
             <?php if (isset($discount->price)):?>
                 <div class="discount-info-text">
@@ -124,19 +127,23 @@ Pjax::begin([
             <div class="discount-info-text before-icon-user">
                 Купили
                 <span class="discount-info-bold-text">
-                    0 из <?=$discount->number_purchases?>
+                    <?=$orderCount?> из <?=$discount->number_purchases?>
                 </span>
             </div>
-            <div class="discount-info-text before-icon-purse">
-                Цена промокода
-                <span class="discount-info-bold-text">
-                    1.12 руб
+            <?php if (isset($discount->price_promo)):?>
+                <div class="discount-info-text before-icon-purse">
+                    Цена промокода
+                    <span class="discount-info-bold-text">
+                    <?=round($discount->price_promo, 2)?> руб
                 </span>
-            </div>
-            <div class="container-bottom-btn">
-                <div class="blue-btn-40">
-                    <p>Получить скидку <?=$discount->discount?>%</p>
                 </div>
+            <?php endif;?>
+            <div class="container-bottom-btn">
+                <a href="<?=Url::to(['discount/order', 'discountId' => $discount->id])?>" class="order-discount">
+                    <div class="blue-btn-40">
+                        <p>Получить скидку <?=$discount->discount?>%</p>
+                    </div>
+                </a>
             </div>
         </div>
     </div>

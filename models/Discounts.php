@@ -29,6 +29,7 @@ use yii\helpers\FileHelper;
  * @property string $title
  * @property string $description
  * @property string $key_word
+ * @property string $price_promo
  *
  * @property Posts $post
  * @property TotalView $totalView
@@ -65,8 +66,9 @@ class Discounts extends \yii\db\ActiveRecord
             [['post_id', 'total_view_id', 'status', 'date_start', 'date_finish', 'type'], 'integer'],
             [['data', 'header', 'cover', 'conditions', 'title', 'description', 'key_word'], 'string'],
             ['price', 'number', 'min' => 0],
-            ['number_purchases', 'integer', 'min' => 1],
             ['discount', 'number', 'min' => 0, 'max' => 100],
+            ['price_promo', 'number', 'min' => 0],
+            ['number_purchases', 'integer', 'min' => 1],
             ['date_finish', 'validateDateFinish'],
             ['type', 'in', 'range' => array_values(self::TYPE)],
             ['status', 'in', 'range' => array_values(self::STATUS)],
@@ -88,6 +90,7 @@ class Discounts extends \yii\db\ActiveRecord
             'header' => 'Название скидки',
             'cover' => 'Cover',
             'price' => 'Стоимость товара или услуги',
+            'price_promo' => 'Цена промокода',
             'number_purchases' => 'Колличество промокодов',
             'discount' => 'Скидка',
             'total_view_id' => 'Total View ID',

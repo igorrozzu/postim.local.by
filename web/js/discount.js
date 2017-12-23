@@ -16,7 +16,7 @@ var Discount = (function (window, document, undefined, $) {
                 };
 
                 var scope = {
-                    initHandlers: function () {
+                    init: function () {
 
                         $(document).off('click', '.close-input-custom')
                             .on('click', '.close-input-custom', function () {
@@ -114,12 +114,50 @@ var Discount = (function (window, document, undefined, $) {
             Feed: function() {
 
                 var scope = {
-                    initHandlers: function () {
+                    init: function () {
                         $(document).off('click','.block-discount').
                         on('click','.block-discount', function () {
                             $(this).parent().find('a.discount-link').trigger('click');
-                            console.log(23);
                         });
+                    }
+                };
+
+                return scope;
+            },
+
+            DiscountOrder: function() {
+
+                var scope = {
+                    init: function () {
+                        $(document).off('click','.payment-methods .payment-block div').
+                        on('click','.payment-methods .payment-block div', function () {
+                            if ($(this).hasClass('disable')) {
+                                return;
+                            }
+
+                            $('.payment-methods .payment-block div').removeClass('selected');
+                            $(this).addClass('selected');
+                        });
+
+                        $(document).off('click','.product-counter .add,.product-counter .remove').
+                        on('click','.product-counter .add,.product-counter .remove', function () {
+                            var $counter = $('.counter');
+                            var $totalCostField = $('.product-total-cost #total-cost');
+                            var counterValue = parseInt($counter.val());
+
+                            if ($(this).hasClass('add')) {
+                                $counter.val(++counterValue);
+                            } else if ($(this).hasClass('remove') && counterValue > 1) {
+                                $counter.val(--counterValue);
+                            }
+
+                            $totalCostField.text($totalCostField.data('start-value') * counterValue);
+                        });
+
+                        $(document).off('click','.btn-order-discount')
+                            .on('click','.btn-order-discount', function () {
+                                $('#discount-order-form').submit();
+                            });
                     }
                 };
 
@@ -133,6 +171,6 @@ var Discount = (function (window, document, undefined, $) {
 } (window, document, undefined, jQuery));
 
 var discount = Discount();
-discount.Adding().initHandlers();
-discount.Feed().initHandlers();
-
+discount.Adding().init();
+discount.Feed().init();
+discount.DiscountOrder().init();

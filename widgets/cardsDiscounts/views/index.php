@@ -36,7 +36,7 @@ $discounts = $dataProvider->getModels();
                 </div>
                 <div class="discount-footer">
                     <div class="promo-code-price">Цена 1,60 руб</div>
-                    <div class="ava">123</div>
+                    <div class="ava"><?=$discount->number_purchases?></div>
                 </div>
             </div>
         </div>
