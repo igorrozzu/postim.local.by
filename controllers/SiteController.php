@@ -643,4 +643,10 @@ class SiteController extends MainController
 
     }
 
+    public function actionGetModalWindow(){
+
+        return $this->renderPartial('modal_window.php');
+
+    }
+
 }

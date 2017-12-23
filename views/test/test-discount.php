@@ -49,7 +49,7 @@ $this->registerMetaTag([
             <div class="discount-info-text before-icon-user">Взяли<span class="discount-info-bold-text">0 промокодов</span></div>
             <div class="discount-info-text before-icon-purse">Цена<span class="discount-info-bold-text">бесплатно</span></div>
             <div class="container-bottom-btn">
-                <div class="blue-btn-40"><p>Получить скидку 66%</p></div>
+                <div class="blue-btn-40 js-gain-promo"><p>Получить скидку 66%</p></div>
             </div>
         </div>
     </div>
@@ -216,4 +216,53 @@ $this->registerMetaTag([
 </div>
 
 <script>
+    $(document).ready(function () {
+
+        $(document).on('click','.js-gain-promo',function(){
+
+            if (main.User.is_guest) {
+                main.showErrorAut('Незарегистрированные пользователи не могут получить скидку');
+                return false;
+            }
+
+            $.ajax({
+                url: '/test/gain-promo',
+                type: 'POST',
+                dataType: "json",
+                async:false,
+                success:function (response) {
+
+                    if(response.error){
+
+                        $().toastmessage('showToast', {
+                            text: response.message,
+                            stayTime:5000,
+                            type:'error'
+                        });
+
+                    }else {
+
+                        (function($){
+
+                            var modal = ModalWindow({
+                                actionUrl : '/site/get-modal-window',
+                                closeBtn : '.close-modal-btn',
+
+                                renderBodyCallback: function ($form) {
+                                    $form.find('.body-modal').html('<div class="message">'+response.message+'</div>')
+                                }
+                            });
+
+                            modal.init();
+
+                        })(jQuery)
+
+                    }
+
+                }
+            });
+
+        })
+
+    })
 </script>
