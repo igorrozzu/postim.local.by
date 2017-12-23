@@ -17,16 +17,6 @@ $this->registerMetaTag([
 ]);
 ?>
 <div class="margin-top60"></div>
-<div id="map_block" class="block-map preload-map">
-    <div class="btns-map">
-        <div class="action-map" title="Открыть карту"></div>
-        <div class="find-me" title="Найти меня"></div>
-        <div class="zoom-plus"></div>
-        <div class="zoom-minus"></div>
-    </div>
-
-    <div id="map" style="display: none"></div>
-</div>
 
 <div class="block-content">
 
@@ -44,9 +34,9 @@ $this->registerMetaTag([
         </div>
         <div class="container-discount-info">
             <div class="discount-info-time-left">Акция действует до 30.12.17</div>
-            <div class="discount-info-text">Стоимость<span class="discount-info-bold-text">17.20 руб</span></div>
+            <div class="discount-info-text">Стоимость<span class="through">38.80</span><span class="discount-info-bold-text">17.20 руб</span></div>
             <div class="discount-info-text">Скидка<span class="discount-info-bold-text">до 66%</span></div>
-            <div class="discount-info-text before-icon-user">Взяли<span class="discount-info-bold-text">0 промокодов</span></div>
+            <div class="discount-info-text">Осталось<span class="discount-info-bold-text">24 промокода</span></div>
             <div class="discount-info-text before-icon-purse">Цена<span class="discount-info-bold-text">бесплатно</span></div>
             <div class="container-bottom-btn">
                 <div class="blue-btn-40 js-gain-promo"><p>Получить скидку 66%</p></div>
@@ -59,14 +49,14 @@ $this->registerMetaTag([
             <li><span>С промокодом вы получаете скидку до 66% на суши-сеты. Воспользоваться скидкой вы можете до 31.12.2017.</span></li>
             <li><span>Расчет банковской картой возможен только при условии, что при заказе Вы указали. что желаете рассчитаться в безналичном расчете.</span></li>
             <li><span>Необходимо предъявлять промокод до заказа. Вы можете его назвать по телефону.</span></li>
-            <li><span>Акция распространяется на заказы на вынос. с доставкой и в кафе.</span></li>
+            <li><span>Акция распространяется на заказы на вынос с доставкой и в кафе.</span></li>
             <li><span>Минимальная сумма заказа на доставку: 18 руб.</span></li>
             <li><span>Стоимость доставки в пределах МКАД (включая Уручье): 3 руб.</span></li>
             <li><span>При заказе от 30 руб. доставка в пределах МКАД (включая Уручье) бесплатно.</span></li>
             <li><span>Доставка за пределы МКАД (Тарасово, Ждановичи, Копище, Боровая. пос. Боровляны, Валерьяново, Б.Стиклево. Шабаны, Колядичи, Сенница, Юбилейный. Щoмыслица) стоимость:</span></li>
             <li><span>Доставка за пределы МКАД (дальше указанных зон) осуществляется при минимальной сумме заказа 50 руб. (согласовывается с администратором).</span></li>
             <li><span>Поставщик несет полную ответственность перед потребителем за достоверность информации.</span></li>
-            <li><span>Телефоны:<br>
+            <li><span>Телефоны для заказа:<br>
             (033) 365-11-16 (MTS)<br>
             (025) 665-11-16 (Life)<br>
             (029) 361-11-16 (Velcom)<br>
@@ -77,6 +67,8 @@ $this->registerMetaTag([
 
     <h2 class="h2-c">Описание акции</h2>
     <div class="block-description-card">
+        Японский гарнир 60 г. включен в стоимость сетов: соевый соус 30 г, имбирь 20 г, васаби 10 г
+        <br><br>
         <div style="color: #444444;font-family: PT_Sans bold;">
             Сет "Четвертый" (684 г) 17,20 руб. вместо 38,80 руб.
         </div>
@@ -217,6 +209,17 @@ $this->registerMetaTag([
 
 <script>
     $(document).ready(function () {
+
+        $(window).resize(function () {
+            var startWidth=900,
+                startHgt=440,
+                proportion=startWidth/startHgt;
+
+            var container = $('.container-discount-photos');
+            var width=$(container).width();
+            $('.container-discount-photos').css({height:width/proportion+'px'});
+        });
+        $(window).resize();
 
         $(document).on('click','.js-gain-promo',function(){
 
