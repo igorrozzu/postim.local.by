@@ -28,7 +28,6 @@ class DiscountController extends MainController
             'date_start' => time(),
             'status' => Discounts::STATUS['active'],
             'post_id' => $postId,
-            'cover' => 'default.png',
         ]);
 
         if (Yii::$app->request->isPost && !Yii::$app->user->isGuest) {
@@ -89,6 +88,7 @@ class DiscountController extends MainController
             $model = new UploadPhotos();
             $model->directory = '/discount-img/' . $postId . '/';
             $model->files = UploadedFile::getInstancesByName('photos');
+
             if ($model->upload()) {
                 return $this->asJson(['success' => true, 'data' => $model->getSavedFiles()]);
             } else {
@@ -110,6 +110,7 @@ class DiscountController extends MainController
             $model = new UploadPhotosByUrl();
             $model->directory = '/discount-img/' . $postId . '/';
             $model->urlToImg = Yii::$app->request->post('url');
+
             if ($model->upload()) {
                 return $this->asJson(['success' => true, 'data' => $model->getSavedFiles()]);
             } else {
@@ -182,12 +183,6 @@ class DiscountController extends MainController
             ->createCommand()->rawSql;
         $keyForMap = Helper::saveQueryForMap($queryPost);
 
-        $photoCount = Gallery::find()
-            ->where(['post_id' => $discount->post->id])
-            ->count();
-        $discountCount = Discounts::find()
-            ->where(['post_id' => $discount->post->id])
-            ->count();
         $orderCount = DiscountOrder::find()
             ->where(['discount_id' => $discountId])
             ->count();
@@ -200,8 +195,6 @@ class DiscountController extends MainController
             'post' => $discount->post,
             'breadcrumbParams' => $breadcrumbParams,
             'keyForMap' => $keyForMap,
-            'photoCount' => $photoCount,
-            'discountCount' => $discountCount,
             'orderCount' => $orderCount,
             'economy' => $economy
         ]);
