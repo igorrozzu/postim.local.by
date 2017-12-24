@@ -126,10 +126,6 @@ class PostController extends MainController
 
     }
 
-    public function actionReviews (string $name, int $postId){
-        $this->redirect(Url::to(['post/index','url' => $name, 'id'=> $postId]));
-    }
-
 
     public function actionGetReviews(int $postId){
 
