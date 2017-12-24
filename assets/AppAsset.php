@@ -63,7 +63,8 @@ class AppAsset extends AssetBundle
         'js/map.js',
         'js/add-post.js',
         'js/search.js',
-        'js/libs/jquery.ui.touch-punch.min.js'
+        'js/libs/jquery.ui.touch-punch.min.js',
+        'js/modalWindow.js'
 
     ];
     public $depends = [
