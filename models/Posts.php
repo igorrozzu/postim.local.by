@@ -324,7 +324,6 @@ class Posts extends \yii\db\ActiveRecord
 
         $urls = [
             '/Fotografii-' . $this->url_name . '-p' . $this->id,
-            '/Otzyvy-' . $this->url_name . '-p' . $this->id,
         ];
 
         return  $urls;

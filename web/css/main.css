@@ -2635,7 +2635,7 @@ a.btn-show-more{
 }
 .block-info-for-owner{
     max-width: 910px;
-    margin-top: 30px;
+    margin-top: -30px;
     padding: 15px;
     display: flex;
     justify-content: center;

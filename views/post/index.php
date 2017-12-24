@@ -116,9 +116,6 @@ Pjax::begin([
             <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                 <div class="btn2-menu "><span class="under-line">Фотографии <?=$photoCount?></span></div>
             </a>
-            <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu"><span class="under-line">Отзывы <?=$post['count_reviews']?></span></div>
-            </a>
         </div>
     </div>
 </div>
@@ -337,7 +334,7 @@ Pjax::begin([
                 </div>
             </div>
 
-            <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post_id'=>$post->id])?>
+            <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post'=>$post, 'type' => $type, 'loadTime' => $loadTime])?>
             <?php if(!$post->has_send_bs):?>
                 <noindex>
                     <div class="block-info-for-owner" data-post_id="<?=$post->id?>">
@@ -356,10 +353,10 @@ Pjax::begin([
 
 </div>
 </div>
-<?php if(Yii::$app->request->get('review_id',false)):?>
+<?php if($review_id = Yii::$app->request->get('review_id',false)):?>
     <script>
         $(document).ready(function() {
-            reviews.scrollToFirstReviews();
+            reviews.scrollToFirstReviews(<?=$review_id?>);
         });
     </script>
 <?php endif;?>

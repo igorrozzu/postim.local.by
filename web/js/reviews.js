@@ -71,16 +71,6 @@ var Reviews = (function (window, document, undefined,$) {
 						that.sendReviews.call(this);
 					});
 
-				$(document).off('click','.switch-reviews')
-					.on('click','.switch-reviews',function () {
-						$.pjax.reload({
-							container: '#post-feeds',
-							url: $('.menu-btns-card a:eq(2)').attr('href'),
-							push: true,
-							replace: true,
-							scrollTo:0
-						});
-					});
 
 				$(document).off('click','.review-footer-btn.btn-like')
 					.on('click','.review-footer-btn.btn-like',function () {
@@ -354,9 +344,9 @@ var Reviews = (function (window, document, undefined,$) {
 				$('.block-reviews.hide').removeClass('hide');
 			},
 
-			scrollToFirstReviews:function () {
+			scrollToFirstReviews:function (id) {
 				setTimeout(function () {
-                    var scrollTop = $('.block-reviews').offset().top - 100;
+                    var scrollTop = $('.block-reviews[data-reviews_id='+id+']').offset().top - 100;
                     $(document).scrollTop(scrollTop);
                 },500);
 
