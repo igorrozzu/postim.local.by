@@ -83,7 +83,9 @@ $this->registerMetaTag([
 </div>
     <div id="map_block" class="block-map preload-map">
         <div class="btns-map">
-            <div class="action-map" title="Открыть карту"></div>
+            <div class="action-map" title="Открыть карту">
+                <div class="preview-map-text">Открыть карту</div>
+            </div>
             <div class="find-me" title="Найти меня"></div>
             <div class="zoom-plus"></div>
             <div class="zoom-minus"></div>

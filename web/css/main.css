@@ -596,7 +596,7 @@ body:not(.open-search) .search{
     max-height: 500px;
 }
 .preload-map{
-    height: 100px;
+    height: 60px;
     background-image: url("../img/map.jpg");
     cursor: pointer;
     background-position: center;
@@ -616,9 +616,32 @@ body:not(.open-search) .search{
     background-image: url("../img/icons.png");
     background-position: 364px 915px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 8px;
     position: relative;
     z-index: 11;
+}
+.preview-map-text {
+    display: none;
+}
+.preload-map .preview-map-text {
+    margin: 2px 0 0 -108px;
+    width: 101px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #F0F2F4;
+    color: #788399;
+    display: block;
+    padding-left: 10px;
+    box-shadow:
+        0px 1px 0px 0px #cdced0,
+        0px -1px 0px 0px #cdced0,
+        -1px 0px 0px 0px #cdced0;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+.preload-map .action-map:hover .preview-map-text{
+    color: #ffffff;
+    background-color: #92A5C7;
 }
 .action-map:hover{
     background-position: 320px 915px;
