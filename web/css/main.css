@@ -649,6 +649,7 @@ body:not(.open-search) .search{
 .preload-map .action-map{
     background-image: url("../img/icons.png");
     background-position: 509px 628px;
+    right: calc(50% - 75px);
 }
 .preload-map .action-map:hover{
     background-position: 465px 628px;
