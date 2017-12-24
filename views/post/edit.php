@@ -196,7 +196,7 @@
                     if(!$params['post']->title){
                         $params['post']->title = $params['post']->data.', '.
                             mb_strtolower(Yii::t('app/singular',$params['post']->onlyOnceCategories[0]->name)).' в '.
-                            Yii::t('app/locativus',$params['post']->city->name).', '.
+                            Yii::t('app/locativus',$params['post']->city->name).
                             ': отзывы, адрес, телефоны и карта проезда';
                     }
 
