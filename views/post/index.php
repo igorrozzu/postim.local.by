@@ -8,20 +8,19 @@ use yii\widgets\Pjax;
 if(!$post->title){
     $post->title = $post->data.', '.
         mb_strtolower(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)).' в '.
-        Yii::t('app/locativus',$post->city->name).', '.
-        $post->address.': адрес, телефоны и карта проезда';
+        Yii::t('app/locativus',$post->city->name).
+        ': отзывы, адрес, телефоны и карта проезда';
 }
 
 if(!$post->description){
     $post->description = Yii::t('app/singular',$post->onlyOnceCategories[0]->name).' '.
         $post->data.' в '.
         Yii::t('app/locativus',$post->city->name).', '.
-        $post->address.'. Адрес, телефоны и время работы — удобный поиск на карте Postim.by!';
+        $post->address.'. Отзывы посетителей, адрес и время работы — удобный поиск на карте Postim.by!';
 }
 
 if(!$post->key_word){
-    $post->key_word = mb_strtolower(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)).' '.
-        $post->data.' '.
+    $post->key_word = $post->data.', '.
         $post->city->name;
 }
 
