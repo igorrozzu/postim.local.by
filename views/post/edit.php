@@ -197,19 +197,19 @@
                         $params['post']->title = $params['post']->data.', '.
                             mb_strtolower(Yii::t('app/singular',$params['post']->onlyOnceCategories[0]->name)).' в '.
                             Yii::t('app/locativus',$params['post']->city->name).', '.
-                            $params['post']->address.': адрес, телефоны и карта проезда';
+                            ': отзывы, адрес, телефоны и карта проезда';
                     }
 
                     if(!$params['post']->description){
                         $params['post']->description = Yii::t('app/singular',$params['post']->onlyOnceCategories[0]->name).' '.
                             $params['post']->data.' в '.
                             Yii::t('app/locativus',$params['post']->city->name).', '.
-                            $params['post']->address.'. Адрес, телефоны и время работы — удобный поиск на карте Postim.by!';
+                            $params['post']->address.'. Отзывы посетителей, адрес и время работы — удобный поиск на карте Postim.by!';
                     }
 
                     if(!$params['post']->key_word){
                         $params['post']->key_word = mb_strtolower(Yii::t('app/singular',$params['post']->onlyOnceCategories[0]->name)).' '.
-                            $params['post']->data.' '.
+                            $params['post']->data.', '.
                             $params['post']->city->name;
                     }
 
