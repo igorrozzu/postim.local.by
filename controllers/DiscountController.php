@@ -2,12 +2,12 @@
 
 namespace app\controllers;
 
+use app\components\discountOrder\Order;
 use app\components\Helper;
 use app\components\MainController;
 use app\components\Pagination;
 use app\models\Discounts;
 use app\models\entities\DiscountOrder;
-use app\models\entities\Gallery;
 use app\models\Posts;
 use app\models\search\DiscountSearch;
 use app\models\uploads\UploadPhotos;
@@ -26,7 +26,7 @@ class DiscountController extends MainController
     {
         $model = new Discounts([
             'date_start' => time(),
-            'status' => Discounts::STATUS['active'],
+            'status' => Discounts::STATUS['inactive'],
             'post_id' => $postId,
         ]);
 
@@ -156,6 +156,7 @@ class DiscountController extends MainController
     {
         $discount = Discounts::find()
             ->innerJoinWith(['post', 'totalView'])
+            ->joinWith(['gallery'])
             ->where([Discounts::tableName() . '.id' => $discountId])
             ->one();
 
@@ -253,35 +254,33 @@ class DiscountController extends MainController
 
     public function actionOrder(int $discountId)
     {
-        $discount = Discounts::find()
-            ->where([Discounts::tableName() . '.id' => $discountId])
-            ->one();
+        $discount = Discounts::findOne($discountId);
 
         if (Yii::$app->request->isPost) {
-            $model = new DiscountOrder();
+            $model = new \app\models\forms\DiscountOrder([
+                'discount' => $discount,
+            ]);
+            $model->load(Yii::$app->request->post(), 'discountOrder');
 
-            /*if ($model->validate()) {
-                return $this->asJson(['success' => true, 'data' => $model->getSavedFiles()]);
+            if ($model->validate()) {
+                $provider = Order::createProviderByType($model);
+
+                if (isset($provider)) {
+                    $provider->createOrder();
+                    $resultViewName = $provider->getRenderView();
+                    $this->view->params['form-message'] = $this->renderPartial($resultViewName);
+                }
             } else {
-                return $this->asJson([
-                    'success' => false,
-                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+
+                return $this->render('order', [
+                    'discount' => $discount,
+                    'errors' => array_values($model->getFirstErrors()),
                 ]);
-            }*/
+            }
         }
 
         return $this->render('order', [
             'discount' => $discount
         ]);
-    }
-
-    public function actionMegamoney()
-    {
-        return $this->render('basket-lack-of-mega-money');
-    }
-
-    public function actionMoney()
-    {
-        return $this->render('basket-lack-of-money');
     }
 }

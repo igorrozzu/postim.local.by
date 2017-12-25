@@ -25,6 +25,7 @@ class DiscountOrder extends \yii\db\ActiveRecord
 {
     const TYPE = ['promoCode' => 1, 'certificate' => 2];
     const STATUS = ['active' => 1, 'inactive' => 0];
+
     /**
      * @inheritdoc
      */

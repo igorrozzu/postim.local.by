@@ -18,12 +18,13 @@ class AuthUserAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-
+        'css/admin/pop-up/pop-up.css',
     ];
     public $js = [
         'js/auth-user-menu.js',
         'js/user-settings.js',
 		'js/keyword-app.js',
+        'js/admin/pop-up.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

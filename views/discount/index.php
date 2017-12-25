@@ -56,11 +56,11 @@ Pjax::begin([
 <div class="block-content">
     <div class="container-discount">
         <div class="container-discount-photos">
-            <div class="discount-photos" style="background-image: url('testP.png')">
-                <div class="container-photos-inside">
-                    <div class="pre-photo"></div>
-                    <div class="next-photo"></div>
-                </div>
+            <div class="discount-photos">
+                <?php foreach ($discount->gallery as $photo):?>
+                    <img href="<?=$discount->getPathToPicture($photo->link)?>"
+                         src="<?=$discount->getPathToPicture($photo->link)?>">
+                <?php endforeach;?>
             </div>
         </div>
         <div class="container-discount-info">
@@ -101,14 +101,13 @@ Pjax::begin([
                     <?=$orderCount?> из <?=$discount->number_purchases?>
                 </span>
             </div>
-            <?php if (isset($discount->price_promo)):?>
-                <div class="discount-info-text before-icon-purse">
-                    Цена промокода
-                    <span class="discount-info-bold-text">
-                    <?=round($discount->price_promo, 2)?> руб
-                </span>
-                </div>
-            <?php endif;?>
+
+            <div class="discount-info-text before-icon-purse">
+                Цена промокода
+                <span class="discount-info-bold-text">
+                <?=round($discount->price_promo, 2)?> руб
+            </span>
+            </div>
             <div class="container-bottom-btn">
                 <a href="<?=Url::to(['discount/order', 'discountId' => $discount->id])?>" class="order-discount">
                     <div class="blue-btn-40">
@@ -147,6 +146,13 @@ Pjax::begin([
 
 </div>
 <script>
+    $(document).ready(function () {
+        $('.discount-photos').magnificPopup({
+            delegate: 'img', // child items selector, by clicking on it popup will open
+            type: 'image',
+            gallery: {enabled: true}
+        });
+    });
 </script>
 <?php
 Pjax::end();

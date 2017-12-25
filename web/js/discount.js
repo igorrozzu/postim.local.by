@@ -137,21 +137,31 @@ var Discount = (function (window, document, undefined, $) {
 
                             $('.payment-methods .payment-block div').removeClass('selected');
                             $(this).addClass('selected');
+
+                            $('#discount-order-paymentType').val($(this).data('payment-type'));
                         });
 
                         $(document).off('click','.product-counter .add,.product-counter .remove').
                         on('click','.product-counter .add,.product-counter .remove', function () {
-                            var $counter = $('.counter');
-                            var $totalCostField = $('.product-total-cost #total-cost');
-                            var counterValue = parseInt($counter.val());
+                            var scope = {
+                                totalCostField: $('.product-total-cost #total-cost'),
+                                counter: $('.counter'),
+                                inputCounter: $('#discount-order-count'),
+                                inputPaymentType: $('#discount-order-paymentType'),
+                            };
+
+                            var counterValue = parseInt(scope.counter.text());
 
                             if ($(this).hasClass('add')) {
-                                $counter.val(++counterValue);
+                                ++counterValue;
                             } else if ($(this).hasClass('remove') && counterValue > 1) {
-                                $counter.val(--counterValue);
+                                --counterValue;
                             }
+                            scope.counter.text(counterValue);
+                            scope.inputCounter.val(counterValue);
 
-                            $totalCostField.text($totalCostField.data('start-value') * counterValue);
+                            var totalCost = scope.totalCostField.data('start-value') * counterValue;
+                            scope.totalCostField.text(totalCost.toFixed(2));
                         });
 
                         $(document).off('click','.btn-order-discount')

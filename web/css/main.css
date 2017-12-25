@@ -3434,6 +3434,18 @@ a .btn-sort-reviews.active
     background-position: center;
     background-size: cover;
 }
+.discount-photos img {
+    display: none;
+
+}
+.discount-photos img:first-child {
+    display: block;
+    cursor: pointer;
+    width: 100%; height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    object-position: center;
+}
 .container-photos-inside{
     width: 100%;
     height: 100%;
@@ -6611,9 +6623,6 @@ form .field-input:first-child{
    padding: 0 9px;
    font-family: PT_Sans bold;
     color: #444444;
-    outline: none;
-    border: none;
-    width: 15px;
 }
 .product-counter .add,
 .product-counter .remove {

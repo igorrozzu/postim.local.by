@@ -154,11 +154,28 @@ class Discounts extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGallery()
+    {
+        return $this->hasMany(GalleryDiscount::className(), ['discount_id' => 'id']);
+    }
+
+    /**
      * @return string
      */
     public function getCover(): string
     {
         return '/discount_photo/' . $this->post_id . '/' . $this->cover;
+    }
+
+    /**
+     * @return string
+     * @param string $pictureName
+     */
+    public function getPathToPicture(string $pictureName): string
+    {
+        return '/discount_photo/' . $this->post_id . '/' . $pictureName;
     }
 
     public function create()
