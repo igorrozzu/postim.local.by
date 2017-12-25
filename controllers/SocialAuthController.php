@@ -66,6 +66,7 @@ class SocialAuthController extends MainController
                                 Yii::$app->user->login($user, Yii::$app->params['user.loginDuration']);
                             }
                         }
+                        return $this->redirect(Url::to([Yii::$app->request->referrer,'NewUser'=> 'new']));
                     }
                 }
             } else { // Пользователь уже зарегистрирован
