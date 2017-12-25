@@ -76,9 +76,11 @@ Pjax::begin([
             <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                 <div class="btn2-menu"><span class="under-line">Отзывы <?=$post['count_reviews']?></span></div>
             </a>
-            <a href="<?=Url::to(['post/get-discounts-by-post', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu active"><span class="under-line">Скидки <?=$discountCount?></span></div>
-            </a>
+            <?php if ($discountCount > 0 || isset($post->isCurrentUserOwner)):?>
+                <a href="<?=Url::to(['post/get-discounts-by-post', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
+                    <div class="btn2-menu"><span class="under-line">Скидки <?=$discountCount?></span></div>
+                </a>
+            <?php endif;?>
         </div>
     </div>
 </div>
@@ -108,9 +110,8 @@ Pjax::begin([
         <div style="margin-top: 10px; display: flex"></div>
         <div class="container-message">
             <div class="message-filter">
-                <div class="icon-favorite"></div>
-                <p>Вы пока ничего не добавили в Избранное</p>
-                <span>Добавляйте в Избранное, нажав на значок «сердечко», чтобы не потерять!</span>
+                <p>Вы пока ничего не добавили в Скидки</p>
+                <span>Добавляйте свои скидки, нажав на кнопку «Добавить скидку».</span>
             </div>
         </div>
     <?php endif;?>

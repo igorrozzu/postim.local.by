@@ -104,6 +104,17 @@ class Discounts extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            'slug' => [
+                'class' => 'app\behaviors\Slug',
+                'in_attribute' => 'header',
+                'out_attribute' => 'url_name',
+            ],
+        ];
+    }
+
     public function validateDateFinish($attribute, $params)
     {
         if (!$this->hasErrors()) {

@@ -7,7 +7,8 @@ $discounts = $dataProvider->getModels();
 <?php foreach ($discounts as $discount):?>
 
         <div class="card-block-discount">
-            <a href="<?=Url::to(['discount/read', 'discountId' => $discount->id])?>" class="discount-link">
+            <a href="<?=Url::to(['discount/read', 'url' => $discount->url_name,
+                'discountId' => $discount->id])?>" class="discount-link">
                 <div class="block-discount-photo" style="background-image: url('<?=$discount->getCover();?>')">
                     <div class="block-blackout-discount">
                         <div class="discount-block">

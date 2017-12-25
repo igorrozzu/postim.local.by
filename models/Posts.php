@@ -179,6 +179,15 @@ class Posts extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getIsCurrentUserOwner()
+    {
+        return $this->hasOne(OwnerPost::className(), ['post_id' => 'id'])
+            ->onCondition([OwnerPost::tableName() . '.owner_id' => Yii::$app->user->id]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getOwners()
     {
         return $this->hasMany(User::className(), ['id' => 'owner_id'])

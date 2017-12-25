@@ -48,7 +48,8 @@ class PostController extends MainController
             'workingHours'=>function ($query) {
                 $query->orderBy(['day_type'=>SORT_ASC]);
             },
-            'city', 'totalView','onlyOnceCategories.category'];
+            'city', 'totalView','onlyOnceCategories.category', 'isCurrentUserOwner'
+        ];
 
         if(!Yii::$app->user->isGuest){
             $with[]='hasLike';
@@ -95,6 +96,9 @@ class PostController extends MainController
                 $loadTime
             );
 
+            $discountCount = Discounts::find()
+                ->where(['post_id' => $id])
+                ->count();
 
             return $this->render('index', [
                 'post' => $post,
@@ -103,6 +107,7 @@ class PostController extends MainController
                 'photoCount' => Gallery::getPostPhotoCount($id),
                 'previewPhoto' => Gallery::getPreviewPostPhoto($id, 4),
                 'keyForMap'=>$keyForMap,
+                'discountCount' => $discountCount,
                 'initPhotoSliderParams' => [
                     'photoId' => $photo_id,
                     'reviewId' => $review_id,
@@ -620,7 +625,7 @@ class PostController extends MainController
         $post = Posts::find()->with([
             'info', 'workingHours',
             'city', 'totalView',
-            'hasLike', 'categories.category'
+            'hasLike', 'categories.category', 'isCurrentUserOwner'
         ])->where(['id' => $postId])
             ->one();
 
@@ -642,6 +647,10 @@ class PostController extends MainController
             ->createCommand()->rawSql;
         $keyForMap = Helper::saveQueryForMap($queryPost);
 
+        $discountCount = Discounts::find()
+            ->where(['post_id' => $postId])
+            ->count();
+
         return $this->render('feed-photos.php', [
             'dataProvider' => $dataProvider,
             'ownerPhotos' => $searchModel->getAllOnwerPhotos(),
@@ -650,6 +659,7 @@ class PostController extends MainController
             'photoCount' => $photoCount,
             'loadTime' => $loadTime,
             'keyForMap' => $keyForMap,
+            'discountCount' => $discountCount,
             'initPhotoSliderParams' => [
                 'photoId' => $photo_id
             ]
@@ -985,7 +995,7 @@ class PostController extends MainController
         );
 
         $post = Posts::find()->with([
-            'city', 'hasLike', 'onlyOnceCategories'
+            'city', 'onlyOnceCategories', 'isCurrentUserOwner'
         ])->where(['id' => $postId])
             ->one();
 
