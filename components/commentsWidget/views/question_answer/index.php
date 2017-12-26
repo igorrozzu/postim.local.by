@@ -10,7 +10,7 @@
             <?php endif;?>
 
         </div>
-        <textarea placeholder="Опишите вопрос подробнее и мы поможем" class="textarea-comment textarea-main-comment"></textarea>
+        <textarea placeholder="Опишите вопрос подробнее" class="textarea-comment textarea-main-comment"></textarea>
     </div>
     <div class="large-wide-button main"><p>Задать вопрос</p></div>
 </div>

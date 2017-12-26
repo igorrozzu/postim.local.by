@@ -36,7 +36,7 @@ var Comments = (function (window, document, undefined,$) {
 					$(document).off('click','.textarea-main-comment')
 						.on('click','.textarea-main-comment',function (event) {
 							if(main.User.is_guest){
-								main.showErrorAut('Неавторизованные пользователи не могут оставлять комментарии');
+								main.showErrorAut('Неавторизованные пользователи не могут оставлять вопросы и комментарии');
 							}else {
 								comments.closeUnderCommentForm();
 							}
@@ -45,7 +45,7 @@ var Comments = (function (window, document, undefined,$) {
 					$(document).off('click','.container-comment .btn-comment.btn-comm.reply')
 						.on('click','.container-comment .btn-comment.btn-comm.reply',function () {
 							if(main.User.is_guest){
-								main.showErrorAut('Неавторизованные пользователи не могут оставлять комментарии');
+								main.showErrorAut('Неавторизованные пользователи не могут оставлять вопросы и комментарии');
 							}else {
 								comments.openUnderCommentForm.apply(this);
 							}
