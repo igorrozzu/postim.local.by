@@ -94,7 +94,7 @@ Pjax::begin([
 
 
     <?php if ($dataProvider->getTotalCount()):?>
-        <div class="cards-block-discount">
+        <div class="cards-block-discount" data-favorites-state-url="/discount/favorite-state">
             <?= CardsDiscounts::widget([
                 'dataProvider' => $dataProvider,
                 'settings' => [

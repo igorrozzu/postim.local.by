@@ -8,6 +8,7 @@ use app\components\MainController;
 use app\components\Pagination;
 use app\models\Discounts;
 use app\models\entities\DiscountOrder;
+use app\models\entities\FavoritesDiscount;
 use app\models\Posts;
 use app\models\search\DiscountSearch;
 use app\models\uploads\UploadPhotos;
@@ -28,6 +29,7 @@ class DiscountController extends MainController
             'date_start' => time(),
             'status' => Discounts::STATUS['inactive'],
             'post_id' => $postId,
+            'count_favorites' => 0,
         ]);
 
         if (Yii::$app->request->isPost && !Yii::$app->user->isGuest) {
@@ -158,6 +160,7 @@ class DiscountController extends MainController
             ->innerJoinWith(['post', 'totalView'])
             ->joinWith(['gallery'])
             ->where([Discounts::tableName() . '.id' => $discountId])
+            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
             ->one();
 
         $breadcrumbParams = $this->getParamsForBreadcrumb($discount->post);
@@ -282,5 +285,44 @@ class DiscountController extends MainController
         return $this->render('order', [
             'discount' => $discount
         ]);
+    }
+
+    public function actionFavoriteState()
+    {
+        $response = new \stdClass();
+
+        $request = Yii::$app->request;
+        if ($request->isAjax && !Yii::$app->user->isGuest) {
+            $itemId = (int)$request->post('itemId');
+
+            $discount = Discounts::find()
+                ->select(['count_favorites', 'id'])
+                ->with('hasLike')
+                ->where(['id' => $itemId])
+                ->one();
+
+            if ($discount->hasLike) {
+                if ($discount->updateCounters(['count_favorites' => -1])) {
+                    if ($discount->hasLike->delete()) {
+                        $response->status = 'remove';
+                    }
+                }
+            } else {
+                if ($discount->updateCounters(['count_favorites' => 1])) {
+                    $model = new FavoritesDiscount([
+                        'user_id' => Yii::$app->user->id,
+                        'discount_id' => $discount->id
+                    ]);
+                    if ($model->save()) {
+                        $response->status = 'add';
+                    }
+                }
+
+            }
+            $response->count = $discount->count_favorites;
+
+        }
+
+        return $this->asJson($response);
     }
 }

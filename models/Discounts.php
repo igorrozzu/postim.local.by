@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\entities\DiscountOrder;
+use app\models\entities\FavoritesDiscount;
 use app\models\entities\GalleryDiscount;
 use app\models\entities\OwnerPost;
 use Yii;
@@ -31,6 +32,8 @@ use yii\helpers\FileHelper;
  * @property string $description
  * @property string $key_word
  * @property string $price_promo
+ * @property integer $count_favorites
+ * @property string $url_name
  *
  * @property Posts $post
  * @property TotalView $totalView
@@ -62,12 +65,13 @@ class Discounts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['post_id', 'data', 'header', 'number_purchases', 'discount', 'total_view_id',
-                'status', 'date_start', 'date_finish', 'type', 'conditions'], 'required'],
+            [['post_id', 'data', 'header', 'number_purchases', 'discount', 'total_view_id', 'status', 'date_start',
+                'date_finish', 'type', 'conditions', 'count_favorites', 'url_name'], 'required'],
             ['cover', 'required',
                 'message' => 'Необходимо добавить хотя бы одну фотографию и пометить ее как фоновую'],
-            [['post_id', 'total_view_id', 'status', 'date_start', 'date_finish', 'type'], 'integer'],
-            [['data', 'header', 'cover', 'conditions', 'title', 'description', 'key_word'], 'string'],
+            [['post_id', 'total_view_id', 'status', 'date_start',
+                'date_finish', 'type', 'count_favorites'], 'integer'],
+            [['data', 'header', 'cover', 'conditions', 'title', 'description', 'key_word', 'url_name'], 'string'],
             ['price', 'number', 'min' => 0],
             ['discount', 'number', 'min' => 0, 'max' => 100],
             ['price_promo', 'number', 'min' => 0],
@@ -75,8 +79,10 @@ class Discounts extends \yii\db\ActiveRecord
             ['date_finish', 'validateDateFinish'],
             ['type', 'in', 'range' => array_values(self::TYPE)],
             ['status', 'in', 'range' => array_values(self::STATUS)],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
-            [['total_view_id'], 'exist', 'skipOnError' => true, 'targetClass' => TotalView::className(), 'targetAttribute' => ['total_view_id' => 'id']],
+            [['post_id'], 'exist', 'skipOnError' => true,
+                'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
+            [['total_view_id'], 'exist', 'skipOnError' => true,
+                'targetClass' => TotalView::className(), 'targetAttribute' => ['total_view_id' => 'id']],
         ];
     }
 
@@ -170,6 +176,12 @@ class Discounts extends \yii\db\ActiveRecord
     public function getGallery()
     {
         return $this->hasMany(GalleryDiscount::className(), ['discount_id' => 'id']);
+    }
+
+    public function getHasLike()
+    {
+        return $this->hasOne(FavoritesDiscount::className(), ['discount_id' => 'id'])
+            ->onCondition([FavoritesDiscount::tableName() . '.user_id' => Yii::$app->user->id]);
     }
 
     /**

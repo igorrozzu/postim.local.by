@@ -6,7 +6,7 @@ $discounts = $dataProvider->getModels();
 
 <?php foreach ($discounts as $discount):?>
 
-        <div class="card-block-discount">
+        <div class="card-block-discount" data-item-id="<?=$discount->id?>">
             <a href="<?=Url::to(['discount/read', 'url' => $discount->url_name,
                 'discountId' => $discount->id])?>" class="discount-link">
                 <div class="block-discount-photo" style="background-image: url('<?=$discount->getCover();?>')">
@@ -18,7 +18,9 @@ $discounts = $dataProvider->getModels();
                             <div class="go_to_view">Посмотреть</div>
                         </div>
                         <div class="btn-like-block">
-                            <div class="btn-like"></div>
+                            <div class="btn-like <?=isset($discount->hasLike) ? 'active' : ''?>">
+                                <?=$discount->count_favorites?>
+                            </div>
                         </div>
                     </div>
                 </div>

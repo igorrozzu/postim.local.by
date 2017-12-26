@@ -1,8 +1,6 @@
-
 var Discount = (function (window, document, undefined, $) {
 
     return function () {
-
 
         var discount = {
 
@@ -116,9 +114,28 @@ var Discount = (function (window, document, undefined, $) {
                 var scope = {
                     init: function () {
                         $(document).off('click','.block-discount').
-                        on('click','.block-discount', function () {
+                            on('click','.block-discount', function () {
                             $(this).parent().find('a.discount-link').trigger('click');
                         });
+
+                        $(document).off('click','.card-block-discount a.discount-link').
+                            on('click','.card-block-discount a.discount-link', function () {
+                            if ($(this).find('.btn-like').length > 0) {
+                                return false;
+                            }
+                        });
+
+                        $(document).on('click','.card-block-discount .btn-like',function () {
+                            if (main.User.is_guest) {
+                                main.showErrorAut('Неавторизованные пользователи не могут сохранять в Избранное понравившиеся');
+                                return false;
+                            }
+                            var $this = $(this);
+                            var $block = $this.closest('.card-block-discount');
+                            var itemId = $block.data('item-id');
+                            var url = $block.closest('.cards-block-discount').data('favorites-state-url');
+                            news.sendRequsetForStateItem($this, url, itemId);
+                        })
                     }
                 };
 
@@ -130,7 +147,7 @@ var Discount = (function (window, document, undefined, $) {
                 var scope = {
                     init: function () {
                         $(document).off('click','.payment-methods .payment-block div').
-                        on('click','.payment-methods .payment-block div', function () {
+                            on('click','.payment-methods .payment-block div', function () {
                             if ($(this).hasClass('disable')) {
                                 return;
                             }
@@ -142,7 +159,7 @@ var Discount = (function (window, document, undefined, $) {
                         });
 
                         $(document).off('click','.product-counter .add,.product-counter .remove').
-                        on('click','.product-counter .add,.product-counter .remove', function () {
+                            on('click','.product-counter .add,.product-counter .remove', function () {
                             var scope = {
                                 totalCostField: $('.product-total-cost #total-cost'),
                                 counter: $('.counter'),

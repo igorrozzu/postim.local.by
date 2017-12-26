@@ -75,7 +75,7 @@ body{
 .user-level-profile:before,
 .btn-comment.btn-like:before,
 .btn-comment.btn-comm:before,
-.btn-like-block .btn-like:after,
+.btn-like-block .btn-like:before,
 .distance-to-me:before,
 .promo-code-price:before,
 .time-left:before,
@@ -3225,6 +3225,9 @@ a .btn-sort-reviews.active
     margin-left: 20px;
     display: flex;
     cursor: pointer;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 23px;
 }
 .block-discount-photo:hover .go_to_view-block{
     display: flex;
@@ -3232,12 +3235,14 @@ a .btn-sort-reviews.active
 .block-discount-photo:hover .btn-like-block{
     display: flex;
 }
-.btn-like-block .btn-like:after{
+.btn-like-block .btn-like:before{
     height: 23px;
     width: 26px;
     background-position: 418px 761px;
+    margin-right: 10px;
 }
-.btn-like-block .btn-like:hover:after{
+.btn-like-block .btn-like:hover:before,
+.btn-like-block .btn-like.active:before {
     background-position: 392px 761px;
 }
 .go_to_view:hover{
