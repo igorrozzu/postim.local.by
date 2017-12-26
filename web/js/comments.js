@@ -164,6 +164,9 @@ var Comments = (function (window, document, undefined,$) {
 
 				object_send.data= $(this).parents('.container-write-comments').find('textarea').val();
 				object_send.entity_id = parseInt($(this).parents('.comments_entity_container').data('entity_id'));
+				if(!!$(this).parents('.comments_entity_container').data('entity_type')){
+				    object_send.type_entity = __id_controller = parseInt($(this).parents('.comments_entity_container').data('entity_type'));
+				}
 
 				var $container_replace = $(this).parents('.comments_entity_container');
 				if(__id_comment_to_which!=null){

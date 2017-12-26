@@ -80,16 +80,23 @@ class CommentsController extends MainController
 
         $view = 'comments';
         $is_official_user = false;
-        if (Yii::$app->request->get('type_entity', 1) == 2) {
 
-            $is_official_user = OwnerPost::find()
-                ->innerJoin(Posts::tableName(), Posts::tableName() . '.id = ' . OwnerPost::tableName() . '.post_id')
-                ->innerJoin(Reviews::tableName(), Reviews::tableName() . '.post_id = ' . Posts::tableName() . '.id')
-                ->where(['owner_id' => Yii::$app->user->getId(),
-                    Reviews::tableName() . '.id' => $id
-                ])->one();
+        switch (Yii::$app->request->get('type_entity', 1)) {
+            case Comments::TYPE['reviews']: {
+                $is_official_user = OwnerPost::find()
+                    ->innerJoin(Posts::tableName(), Posts::tableName() . '.id = ' . OwnerPost::tableName() . '.post_id')
+                    ->innerJoin(Reviews::tableName(), Reviews::tableName() . '.post_id = ' . Posts::tableName() . '.id')
+                    ->where(['owner_id' => Yii::$app->user->getId(),
+                        Reviews::tableName() . '.id' => $id
+                    ])->one();
 
-            $view = 'reviews_comments';
+                $view = 'reviews_comments';
+            }
+                break;
+            case Comments::TYPE['posts']: {
+                $view = 'post_comments';
+            }
+                break;
         }
 
         if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax', false)) {

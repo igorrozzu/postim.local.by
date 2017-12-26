@@ -78,7 +78,7 @@ if($match){
                     <div class="elem-count-views"><?=$news->totalView['count']?></div>
                 </div>
             </div>
-            <div class="comments_entity_container" data-entity_id="<?=$news['id']?>">
+            <div class="comments_entity_container" data-entity_type="1" data-entity_id="<?=$news['id']?>">
                 <?=$this->render('/comments/comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$news->totalComments])?>
             </div>
             <noindex>

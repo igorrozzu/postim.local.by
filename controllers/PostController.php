@@ -105,6 +105,28 @@ class PostController extends MainController
             );
 
 
+
+            $commentsSearch = new CommentsSearch();
+
+            $defaultLimit = isset($comment_id) ? 1000 : 16;
+            $_GET['type_entity'] = Comments::TYPE['posts'];
+            $paginationComments= new Pagination([
+                'pageSize' => Yii::$app->request->get('per-page', $defaultLimit),
+                'page' => Yii::$app->request->get('page', 1) - 1,
+                'route' => '/comments/get-comments',
+                'selfParams'=>[
+                    'id'=>true,
+                    'type_entity'=>true
+                ]
+            ]);
+
+            $dataProviderComments = $commentsSearch->search( Yii::$app->request->queryParams,
+                $paginationComments,
+                $post['id'],
+                CommentsSearch::getSortArray('old')
+            );
+
+
             return $this->render('index', [
                 'post' => $post,
                 'reviewsDataProvider' => $dataProvider,
@@ -117,7 +139,8 @@ class PostController extends MainController
                 'initPhotoSliderParams' => [
                     'photoId' => $photo_id,
                     'reviewId' => $review_id,
-                ]
+                ],
+                'dataProviderComments' => $dataProviderComments
             ]);
 
         } else {

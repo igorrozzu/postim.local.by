@@ -1016,6 +1016,13 @@ body:not(.open-search) .search{
     display: flex;
     width: 100%;
 }
+
+.container-comments .replace-block{
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-bottom: -1px;
+}
+
 .mg-btm-30{
     margin-bottom: 30px;
 }

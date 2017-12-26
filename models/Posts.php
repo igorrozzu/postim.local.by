@@ -193,6 +193,10 @@ class Posts extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    public function getTotalComments(){
+        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['posts']])->count();
+    }
+
     public function getHasLike()
     {
         return $this->hasOne(FavoritesPost::className(), ['post_id' => 'id'])

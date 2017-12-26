@@ -333,6 +333,10 @@ Pjax::begin([
                 </div>
             </div>
 
+            <div class="comments_entity_container" data-entity_type="3" data-entity_id="<?=$post['id']?>">
+                <?=$this->render('/comments/post_comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$post->totalComments])?>
+            </div>
+
             <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post'=>$post, 'type' => $type, 'loadTime' => $loadTime])?>
             <?php if(!$post->has_send_bs):?>
                 <noindex>
@@ -384,6 +388,8 @@ Pjax::begin([
         });
 		menu_control.fireMethodClose();
         search.clear();
+        comments.init(3);
+        comments.setAutoResize('.textarea-main-comment');
     })
 </script>
 
