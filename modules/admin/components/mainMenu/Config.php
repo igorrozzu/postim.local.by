@@ -88,6 +88,10 @@ class Config{
                         'name' => 'Жалобы',
                         'url' => '/admin/moderation/complaints'
                     ],
+                    [
+                        'name' => 'Вопросы и ответы',
+                        'url' => '/admin/moderation/ask-place'
+                    ],
 
                 ],
             ],
