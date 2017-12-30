@@ -29,8 +29,24 @@ class SocialAuthController extends MainController
         ];
     }
 
+    public function beforeAction($action)
+    {
+
+        $baseUrl = Url::toRoute('/','https');
+
+        if($action->id === 'auth' && stripos(Yii::$app->request->referrer, $baseUrl) !== false){
+
+            Yii::$app->session->setFlash('beforeAuthReferrer',Yii::$app->request->referrer);
+
+        }
+
+        return parent::beforeAction($action);
+    }
+
     public function onAuthSuccess($client)
     {
+        $referrer = Yii::$app->session->hasFlash('beforeAuthReferrer') ? Yii::$app->session->getFlash('beforeAuthReferrer') : Yii::$app->request->referrer;
+
         try {
             $attributes = $client->getUserAttributes();
             $socialAuthFactory = new SocialAuthAttributesFactory();
@@ -66,7 +82,7 @@ class SocialAuthController extends MainController
                                 Yii::$app->user->login($user, Yii::$app->params['user.loginDuration']);
                             }
                         }
-                        return $this->redirect(Url::toRoute([Yii::$app->request->referrer,'NewUser'=> 'new'],'https'));
+                        return $this->redirect(Url::toRoute([$referrer,'NewUser'=> 'new'],'https'));
                     }
                 }
             } else { // Пользователь уже зарегистрирован
@@ -81,10 +97,10 @@ class SocialAuthController extends MainController
                 return $this->redirect(['user/settings']);
             }
         } catch (Exception $e){
-            return $this->redirect(Yii::$app->request->referrer);
+            return $this->redirect($referrer);
         }
 
-        return $this->redirect(Yii::$app->request->referrer);
+        return $this->redirect($referrer);
     }
 
     public function actionSetRequiredFields(string $key)
