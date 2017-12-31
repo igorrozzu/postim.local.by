@@ -45,6 +45,8 @@ class SocialRegister extends Model
         $user->generatePassword(Yii::$app->params['user.socialAuthGeneratePasswordLength']);
 
         $transaction = $user->getDb()->beginTransaction();
+        $success = false;
+
         if ($user->save()) {
             $auth = new SocialAuth([
                 'user_id' => $user->id,
@@ -54,13 +56,15 @@ class SocialRegister extends Model
             ]);
             if ($auth->save()) {
                 $userInfo = new UserInfo(['user_id' => $user->id]);
-                if($userInfo->save()){
-                    $transaction->commit();
+                if ($userInfo->save()){
+                    $success = true;
                     ImageHelper::saveUserPhoto($attrClient->getUserPhoto(), $user);
                 }
             }
         }
-        return $user;
+
+        $success ? $transaction->commit() : $transaction->rollBack();
+        return $success ? $user : null;
     }
 
     public function createTempSocialUser(SocialAuthAttr $attrClient)

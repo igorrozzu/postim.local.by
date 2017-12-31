@@ -89,6 +89,10 @@ class Config{
                         'url' => '/admin/moderation/complaints'
                     ],
                     [
+                        'name' => 'Вопросы и ответы',
+                        'url' => '/admin/moderation/ask-place'
+                    ],
+                    [
                         'name' => 'Скидки',
                         'url' => '/admin/discount/index'
                     ],

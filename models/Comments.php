@@ -47,8 +47,9 @@ class Comments extends \yii\db\ActiveRecord
     public $official_answer = null;
 
     const TYPE = [
-        'news' => 1,
-        'reviews' => 2,
+        'news'      => 1,
+        'reviews'   => 2,
+        'posts'     => 3
     ];
 
     public function isRelatedWithNews(): bool

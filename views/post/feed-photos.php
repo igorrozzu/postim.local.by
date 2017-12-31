@@ -74,9 +74,6 @@ Pjax::begin([
             <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                 <div class="btn2-menu active"><span class="under-line">Фотографии <?=$photoCount?></span></div>
             </a>
-            <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu"><span class="under-line">Отзывы <?=$post['count_reviews']?></span></div>
-            </a>
             <?php if ($discountCount > 0 || isset($post->isCurrentUserOwner)):?>
                 <a href="<?=Url::to(['post/get-discounts-by-post', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                     <div class="btn2-menu"><span class="under-line">Скидки <?=$discountCount?></span></div>

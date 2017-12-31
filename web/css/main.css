@@ -1019,6 +1019,13 @@ body:not(.open-search) .search{
     display: flex;
     width: 100%;
 }
+
+.container-comments .replace-block{
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-bottom: -1px;
+}
+
 .mg-btm-30{
     margin-bottom: 30px;
 }
@@ -2129,12 +2136,17 @@ a.btn-show-more{
 .lists-phones {
     display: flex;
     flex-direction: column;
+    padding-right: 20px;
 }
-.lists-phones li{
+.lists-phones li a{
+    text-decoration: none;
     color: #838da1;
     font-size: 16px;
     display: flex;
     line-height: 30px;
+}
+.lists-phones li a:hover{
+    text-decoration: underline;
 }
 .fb-icon:after,
 .facebook-icon:after,
@@ -2642,7 +2654,7 @@ a.btn-show-more{
 }
 .block-info-for-owner{
     max-width: 910px;
-    margin-top: 30px;
+    margin-top: -30px;
     padding: 15px;
     display: flex;
     justify-content: center;
@@ -4024,6 +4036,7 @@ insert-item h2:last-child{
     top:calc(50% - 180px);
 }
 .form-complaint,
+.modal-window,
 .form-cancels{
     top:calc(50% - 125px);
 }
@@ -4036,6 +4049,18 @@ insert-item h2:last-child{
     justify-content: space-between;
     align-items: center;
 }
+
+.body-modal{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.body-modal .message{
+    font-size: 16px;
+    color: #6b778f;
+    text-align: center;
+}
+
 
 /*---------- form sign with message BEGIN----------------*/
 
@@ -5698,11 +5723,29 @@ form .field-input:first-child{
 /*end Cтили toastMessage*/
 
 /*loader start*/
+.main-preload{
+    display: flex;
+    position: fixed;
+    background-color: rgba(52,56,67,0.4);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 400;
+    align-items: center;
+}
+
 #loader-box{
     width: 100%;
     text-align: center;
     position: relative;
     margin-top: calc((100% + 28px)/2);
+}
+
+#loader-box2{
+    width: 100%;
+    text-align: center;
+    position: relative;
 }
 
 #loader-box span{

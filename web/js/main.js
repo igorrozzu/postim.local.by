@@ -205,6 +205,15 @@ var Main = (function (window, document, undefined,$) {
             getLoadBlock:function () {
                 return $('<div id="loader-box"><div class="loader"></div></div>');
             },
+            initMainLoadBlock:function () {
+                that.stopMainLoadBlock();
+                var $html = $('<div class="main-preload"><div id="loader-box2"><div class="loader"></div></div></div>');
+                $('body').append($html);
+            },
+
+            stopMainLoadBlock: function(){
+                $('.main-preload').remove();
+            },
 
             UserGeolocation:function () {
                 var __userCoords = {};

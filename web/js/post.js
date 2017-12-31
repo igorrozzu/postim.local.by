@@ -41,10 +41,14 @@ var Post = (function (window, document, undefined,$) {
 
                             });
 
-                            $(document).off('click','.info-row.show-open').on('click','.info-row.show-open',function () {
+                            $(document).off('click','.info-row.show-open').on('click','.info-row.show-open',function (e) {
                                 $container = $(this);
+                                var $elemClick = $(e.target);
                                 if($container.hasClass('active')){
-                                    info.closeInfoBlock($container);
+                                    if(!$elemClick.hasClass('lists-phones') && !$elemClick.parents('.lists-phones').length){
+                                        info.closeInfoBlock($container);
+                                    }
+
                                 }else {
                                     info.openInfoBlock($container);
                                 }

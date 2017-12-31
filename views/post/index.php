@@ -8,20 +8,19 @@ use yii\widgets\Pjax;
 if(!$post->title){
     $post->title = $post->data.', '.
         mb_strtolower(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)).' в '.
-        Yii::t('app/locativus',$post->city->name).', '.
-        $post->address.': адрес, телефоны и карта проезда';
+        Yii::t('app/locativus',$post->city->name).
+        ': отзывы, адрес, телефоны и карта проезда';
 }
 
 if(!$post->description){
     $post->description = Yii::t('app/singular',$post->onlyOnceCategories[0]->name).' '.
         $post->data.' в '.
         Yii::t('app/locativus',$post->city->name).', '.
-        $post->address.'. Адрес, телефоны и время работы — удобный поиск на карте Postim.by!';
+        $post->address.'. Отзывы посетителей, адрес и время работы — удобный поиск на карте Postim.by!';
 }
 
 if(!$post->key_word){
-    $post->key_word = mb_strtolower(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)).' '.
-        $post->data.' '.
+    $post->key_word = $post->data.', '.
         $post->city->name;
 }
 
@@ -116,9 +115,6 @@ Pjax::begin([
             <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                 <div class="btn2-menu "><span class="under-line">Фотографии <?=$photoCount?></span></div>
             </a>
-            <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu"><span class="under-line">Отзывы <?=$post['count_reviews']?></span></div>
-            </a>
             <?php if ($discountCount > 0 || isset($post->isCurrentUserOwner)):?>
                 <a href="<?=Url::to(['post/get-discounts-by-post', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                     <div class="btn2-menu"><span class="under-line">Скидки <?=$discountCount?></span></div>
@@ -205,7 +201,7 @@ Pjax::begin([
                                 </p>
                                 <ul class="lists-phones">
                                     <?php foreach ($post->info['phones'] as $phone): ?>
-                                        <li itemprop="telephone"><?= $phone ?></li>
+                                        <li itemprop="telephone"><a href="tel:<?=$phone?>"><?= $phone ?></a></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
@@ -342,11 +338,15 @@ Pjax::begin([
                 </div>
             </div>
 
-            <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post_id'=>$post->id])?>
+            <div class="comments_entity_container" data-entity_type="3" data-entity_id="<?=$post['id']?>">
+                <?=$this->render('/comments/post_comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$post->totalComments])?>
+            </div>
+
+            <?=$this->render('__reviews',['reviewsDataProvider'=>$reviewsDataProvider,'post'=>$post, 'type' => $type, 'loadTime' => $loadTime])?>
             <?php if(!$post->has_send_bs):?>
                 <noindex>
                     <div class="block-info-for-owner" data-post_id="<?=$post->id?>">
-                        <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и получите доступ к эффективным инструментам для развития бизнеса.</p>
+                        <p>Вы владелец этого места? Зарегистрируйте бесплатный бизнес-аккаунт и отвечайте на отзывы и вопросы от имени компании.</p>
                     </div>
                 </noindex>
             <?php endif;?>
@@ -361,10 +361,10 @@ Pjax::begin([
 
 </div>
 </div>
-<?php if(Yii::$app->request->get('review_id',false)):?>
+<?php if($review_id = Yii::$app->request->get('review_id',false)):?>
     <script>
         $(document).ready(function() {
-            reviews.scrollToFirstReviews();
+            reviews.scrollToFirstReviews(<?=$review_id?>);
         });
     </script>
 <?php endif;?>
@@ -393,6 +393,8 @@ Pjax::begin([
         });
 		menu_control.fireMethodClose();
         search.clear();
+        comments.init(3);
+        comments.setAutoResize('.textarea-main-comment');
     })
 </script>
 

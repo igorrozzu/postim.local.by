@@ -65,7 +65,7 @@ class SiteController extends MainController
 
             return $this->asJson([
                 'success' => true,
-                'redirect' => Yii::$app->getHomeUrl()
+                'redirect' => Yii::$app->request->referrer,
             ]);
         }
         if(Yii::$app->request->get('with-message',false)){
@@ -87,7 +87,7 @@ class SiteController extends MainController
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     public function actionRegister()
@@ -640,6 +640,12 @@ class SiteController extends MainController
         }
 
         return $this->render('otherPage',['page'=>$page]);
+
+    }
+
+    public function actionGetModalWindow(){
+
+        return $this->renderPartial('modal_window.php');
 
     }
 

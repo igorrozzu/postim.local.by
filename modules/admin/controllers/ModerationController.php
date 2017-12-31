@@ -15,6 +15,7 @@ use app\components\Pagination;
 use app\modules\admin\models\Gallery;
 use app\modules\admin\models\GallerySearch;
 use app\modules\admin\models\ReviewsSearch;
+use app\modules\admin\models\SearchModels\AskPlaceSearch;
 use yii\db\ActiveRecord;
 use yii\web\Controller;
 
@@ -541,6 +542,25 @@ class ModerationController extends AdminDefaultController
 
     }
 
+    public function actionAskPlace(){
 
+        $searchModel = new AskPlaceSearch();
+        $pagination = new Pagination([
+            'pageSize' => \Yii::$app->request->get('per-page', 8),
+            'page' => \Yii::$app->request->get('page', 1)-1,
+            'route'=>'/admin/moderation/ask-place',
+            'selfParams'=>[
+                'sort'=>true,
+            ]
+        ]);
+        $dataProvider = $searchModel->search(\Yii::$app->request->get(),$pagination);
+
+        return $this->render('ask_place',[
+            'searchModel'=>$searchModel,
+            'dataProvider'=>$dataProvider
+        ]);
+
+
+    }
 
 }

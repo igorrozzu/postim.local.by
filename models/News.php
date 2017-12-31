@@ -74,11 +74,11 @@ class News extends \yii\db\ActiveRecord
      */
     public function getComments()
     {
-        return $this->hasMany(Comments::className(), ['entity_id' => 'id']);
+        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['news']]);
     }
 
     public function getTotalComments(){
-        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->count();
+        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['news']])->count();
     }
 
     public function getTotalView(){

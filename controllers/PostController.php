@@ -78,19 +78,31 @@ class PostController extends MainController
             $keyForMap = Helper::saveQueryForMap($queryPost);
 
             $reviewsModel = new ReviewsSearch();
+            $_GET['postId'] = $id;
+            $reviewPageSize = Yii::$app->request->get('per-page', 5);
+
+            if($review_id){
+                $newReviewsPageSize = ReviewsSearch::getNumberReviews($id, $review_id);
+                if($reviewPageSize < $newReviewsPageSize){
+                    $reviewPageSize = $newReviewsPageSize;
+                }
+            }
+
             $pagination = new Pagination([
-                'pageSize' => 1,
-                'page' => 0,
+                'pageSize' => $reviewPageSize,
+                'page' => Yii::$app->request->get('page', 1) - 1,
+                'route' => 'post/get-reviews',
                 'selfParams' => [
-                    'id' => true,
+                    'postId' => true,
+                    'type' => true
                 ],
             ]);
-
+            $type = Yii::$app->request->get('type', 'all');
             $loadTime = time();
             $dataProvider = $reviewsModel->search(
                 [
                     'post_id' => $id,
-                    'review_id' => Yii::$app->request->get('review_id', 0)
+                    'type' => $type
                 ],
                 $pagination,
                 $loadTime
@@ -100,6 +112,28 @@ class PostController extends MainController
                 ->where(['post_id' => $id])
                 ->count();
 
+
+            $commentsSearch = new CommentsSearch();
+
+            $defaultLimit = isset($comment_id) ? 1000 : 16;
+            $_GET['type_entity'] = Comments::TYPE['posts'];
+            $paginationComments= new Pagination([
+                'pageSize' => Yii::$app->request->get('per-page', $defaultLimit),
+                'page' => Yii::$app->request->get('page', 1) - 1,
+                'route' => '/comments/get-comments',
+                'selfParams'=>[
+                    'id'=>true,
+                    'type_entity'=>true
+                ]
+            ]);
+
+            $dataProviderComments = $commentsSearch->search( Yii::$app->request->queryParams,
+                $paginationComments,
+                $post['id'],
+                CommentsSearch::getSortArray('old')
+            );
+
+
             return $this->render('index', [
                 'post' => $post,
                 'reviewsDataProvider' => $dataProvider,
@@ -108,14 +142,56 @@ class PostController extends MainController
                 'previewPhoto' => Gallery::getPreviewPostPhoto($id, 4),
                 'keyForMap'=>$keyForMap,
                 'discountCount' => $discountCount,
+                'loadTime' => $loadTime,
+                'type' => $type,
                 'initPhotoSliderParams' => [
                     'photoId' => $photo_id,
                     'reviewId' => $review_id,
-                ]
+                ],
+                'dataProviderComments' => $dataProviderComments
             ]);
 
         } else {
             throw new NotFoundHttpException();
+        }
+
+    }
+
+
+    public function actionGetReviews(int $postId){
+
+
+        $reviewsModel = new ReviewsSearch();
+        $pagination = new Pagination([
+            'pageSize' => Yii::$app->request->get('per-page', 1),
+            'page' => Yii::$app->request->get('page', 1) - 1,
+            'route' => 'post/get-reviews',
+            'selfParams' => [
+                'postId' => true,
+                'type' => true
+            ],
+        ]);
+
+        $type = Yii::$app->request->get('type', 'all');
+
+        $loadTime = Yii::$app->request->get('loadTime', time());
+        $dataProvider = $reviewsModel->search(
+            ['post_id' => $postId,'type'=>$type],
+            $pagination,
+            $loadTime,
+            true
+        );
+
+        if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
+            echo  CardsReviewsWidget::widget([
+                'dataProvider' => $dataProvider,
+                'settings'=>[
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-reviews',
+                    'load-time' => $loadTime,
+                    'without_header'=>true
+                ]
+            ]);
         }
 
     }
@@ -522,83 +598,6 @@ class PostController extends MainController
 
     }
 
-    public function actionReviews(int $postId, int $photo_id = null, int $review_id = null)
-    {
-        $post = Posts::find()->with([
-            'city', 'totalView',
-            'hasLike', 'onlyOnceCategories.category'])
-            ->where(['id' => $postId])
-            ->one();
-
-        Helper::addViews($post->totalView);
-
-        $user_id = Yii::$app->user->isGuest ? null : Yii::$app->user->getId();
-
-        if ($post && ($post['status'] != 0 ? true : $post['user_id'] == $user_id)) {
-            Helper::addViews($post->totalView);
-            $breadcrumbParams = $this->getParamsForBreadcrumb($post);
-            $breadcrumbParams[] = [
-                'name' => 'Отзывы',
-                'url_name' => Yii::$app->getRequest()->getUrl(),
-                'pjax' => 'class="main-pjax a"'
-            ];
-
-            $queryPost = Posts::find()->where(['tbl_posts.id' => $postId])
-                ->prepare(Yii::$app->db->queryBuilder)
-                ->createCommand()->rawSql;
-            $keyForMap = Helper::saveQueryForMap($queryPost);
-
-            $reviewsModel = new ReviewsSearch();
-            $pagination = new Pagination([
-                'pageSize' => 8,
-                'page' => Yii::$app->request->get('page', 1) - 1,
-                'route' => 'post/reviews',
-                'selfParams' => [
-                    'postId' => true,
-                    'type' => true
-                ],
-            ]);
-
-            $type = Yii::$app->request->get('type', 'all');
-
-			$loadTime = Yii::$app->request->get('loadTime', time());
-			$dataProvider = $reviewsModel->search(
-				['post_id' => $postId,'type'=>$type],
-				$pagination,
-				$loadTime,
-				true
-			);
-			if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
-				echo  CardsReviewsWidget::widget([
-					'dataProvider' => $dataProvider,
-					'settings'=>[
-						'show-more-btn' => true,
-						'replace-container-id' => 'feed-reviews',
-						'load-time' => $loadTime,
-						'without_header'=>true
-					]
-				]);
-			}else{
-				return $this->render('feed-reviews', [
-					'post' => $post,
-					'reviewsDataProvider' => $dataProvider,
-					'photoCount' => Gallery::getPostPhotoCount($postId),
-					'breadcrumbParams' => $breadcrumbParams,
-					'loadTime'=>$loadTime,
-					'keyForMap' => $keyForMap,
-					'type'=>$type,
-                    'initPhotoSliderParams' => [
-                        'photoId' => $photo_id,
-                        'reviewId' => $review_id,
-                    ]
-				]);
-			}
-
-
-        } else {
-            throw new NotFoundHttpException();
-        }
-    }
 
     public function actionGallery(int $postId, string $photo_id = null)
     {
