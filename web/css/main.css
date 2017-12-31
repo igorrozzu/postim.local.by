@@ -2129,12 +2129,17 @@ a.btn-show-more{
 .lists-phones {
     display: flex;
     flex-direction: column;
+    padding-right: 100px;
 }
-.lists-phones li{
+.lists-phones li a{
+    text-decoration: none;
     color: #838da1;
     font-size: 16px;
     display: flex;
     line-height: 30px;
+}
+.lists-phones li a:hover{
+    text-decoration: underline;
 }
 .fb-icon:after,
 .facebook-icon:after,

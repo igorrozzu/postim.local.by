@@ -196,7 +196,7 @@ Pjax::begin([
                                 </p>
                                 <ul class="lists-phones">
                                     <?php foreach ($post->info['phones'] as $phone): ?>
-                                        <li itemprop="telephone"><?= $phone ?></li>
+                                        <li itemprop="telephone"><a href="tel:<?=$phone?>"><?= $phone ?></a></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
