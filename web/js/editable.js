@@ -94,7 +94,7 @@ var Editable = (function (window, document, undefined,$) {
 					anchor: {
 						aria: 'Ссылка',
 						linkValidation: true,
-						placeholderText: 'Вставте или введите ссылку'
+						placeholderText: 'Вставьте или введите ссылку'
 					},
 					placeholder: {
 						text: 'Введите текст',
