@@ -14,10 +14,18 @@ var Uploads = (function (window, document, undefined,$) {
                     type: "POST",
                     data: data,
                     cache: false,
+                    beforeSend: function () {
+                      main.initMainLoadBlock();
+                    },
+                    error: function () {
+                        main.stopMainLoadBlock();
+                    },
                     processData: false,
                     contentType: false,
                     dataType: 'json',
                     success: handler
+                }).done(function () {
+                    main.stopMainLoadBlock();
                 });
                 return true
             },
