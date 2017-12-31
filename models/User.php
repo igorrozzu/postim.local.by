@@ -318,4 +318,9 @@ class User extends ActiveRecord implements IdentityInterface
     public function hasOwner(){
         return (bool) OwnerPost::find()->where(['owner_id'=>$this->id])->one();
     }
+
+    public function getFullName(): string
+    {
+        return $this->name . ' ' . $this->surname;
+    }
 }

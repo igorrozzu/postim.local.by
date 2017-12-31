@@ -88,6 +88,10 @@ class Config{
                         'name' => 'Жалобы',
                         'url' => '/admin/moderation/complaints'
                     ],
+                    [
+                        'name' => 'Скидки',
+                        'url' => '/admin/discount/index'
+                    ],
 
                 ],
             ],

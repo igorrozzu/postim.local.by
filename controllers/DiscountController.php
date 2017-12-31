@@ -27,8 +27,9 @@ class DiscountController extends MainController
     {
         $model = new Discounts([
             'date_start' => time(),
-            'status' => Discounts::STATUS['inactive'],
+            'status' => Discounts::STATUS['moderation'],
             'post_id' => $postId,
+            'user_id' => Yii::$app->user->getId(),
             'count_favorites' => 0,
         ]);
 
@@ -156,12 +157,19 @@ class DiscountController extends MainController
 
     public function actionRead(int $discountId)
     {
-        $discount = Discounts::find()
-            ->innerJoinWith(['post', 'totalView'])
-            ->joinWith(['gallery'])
-            ->where([Discounts::tableName() . '.id' => $discountId])
-            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
-            ->one();
+        $searchModel = new DiscountSearch();
+        $discount = $searchModel->readDiscount($discountId);
+
+        if (!isset($discount)) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+        if ($discount->status === Discounts::STATUS['moderation'] ||
+            $discount->status === Discounts::STATUS['inactive']) {
+
+            if (!Yii::$app->user->isModerator() || Yii::$app->user->getId() !== $discount->user_id) {
+                throw new NotFoundHttpException('Cтраница не найдена');
+            }
+        }
 
         $breadcrumbParams = $this->getParamsForBreadcrumb($discount->post);
         $breadcrumbParams[] = [
@@ -258,6 +266,10 @@ class DiscountController extends MainController
     public function actionOrder(int $discountId)
     {
         $discount = Discounts::findOne($discountId);
+
+        if ($discount->status !== Discounts::STATUS['active']) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
 
         if (Yii::$app->request->isPost) {
             $model = new \app\models\forms\DiscountOrder([

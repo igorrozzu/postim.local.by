@@ -34,6 +34,7 @@ use yii\helpers\FileHelper;
  * @property string $price_promo
  * @property integer $count_favorites
  * @property string $url_name
+ * @property integer $user_id
  *
  * @property Posts $post
  * @property TotalView $totalView
@@ -46,7 +47,8 @@ class Discounts extends \yii\db\ActiveRecord
     ];
     const STATUS = [
         'active' => 1,
-        'inactive' => 0
+        'moderation' => 2,
+        'inactive' => 3,
     ];
 
     public $photos;
@@ -66,11 +68,11 @@ class Discounts extends \yii\db\ActiveRecord
     {
         return [
             [['post_id', 'data', 'header', 'number_purchases', 'discount', 'total_view_id', 'status', 'date_start',
-                'date_finish', 'type', 'conditions', 'count_favorites', 'url_name'], 'required'],
+                'date_finish', 'type', 'conditions', 'count_favorites', 'url_name', 'user_id'], 'required'],
             ['cover', 'required',
                 'message' => 'Необходимо добавить хотя бы одну фотографию и пометить ее как фоновую'],
             [['post_id', 'total_view_id', 'status', 'date_start',
-                'date_finish', 'type', 'count_favorites'], 'integer'],
+                'date_finish', 'type', 'count_favorites', 'user_id'], 'integer'],
             [['data', 'header', 'cover', 'conditions', 'title', 'description', 'key_word', 'url_name'], 'string'],
             ['price', 'number', 'min' => 0],
             ['discount', 'number', 'min' => 0, 'max' => 100],
@@ -136,6 +138,14 @@ class Discounts extends \yii\db\ActiveRecord
     public function getPost()
     {
         return $this->hasOne(Posts::className(), ['id' => 'post_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**

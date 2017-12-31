@@ -119,8 +119,8 @@ var Discount = (function (window, document, undefined, $) {
                         });
 
                         $(document).off('click','.card-block-discount a.discount-link').
-                            on('click','.card-block-discount a.discount-link', function () {
-                            if ($(this).find('.btn-like').length > 0) {
+                            on('click','.card-block-discount a.discount-link', function (e) {
+                            if ($(e.target).hasClass('btn-like')) {
                                 return false;
                             }
                         });

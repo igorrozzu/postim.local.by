@@ -31,6 +31,11 @@ Pjax::begin([
                     <span class="under-line">Новости</span>
                 </div>
             </a>
+            <a href="<?=Url::to(['user/izbrannoe', 'favorite' => 'discounts'])?>">
+                <div class="btn2-menu <?= $isNewsFeed ? 'active' : ''?>">
+                    <span class="under-line">Скидки</span>
+                </div>
+            </a>
         </div>
     </div>
 </div>
