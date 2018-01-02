@@ -25,7 +25,7 @@ class CityAndCategoryUrlRule extends CityUrlRule {
 
         $queryParams= explode('/',$pathInfo);
 
-        if(count($queryParams)>2){
+        if(count($queryParams) > 3){
             return false;
         }
 
@@ -60,6 +60,10 @@ class CityAndCategoryUrlRule extends CityUrlRule {
                 return false;
             }
 
+            if (isset($queryParams[2]) && $queryParams[2] === 'skidki') {
+                $route = '/category/get-discounts';
+            }
+
             return [$route,$params];
         }
 
@@ -79,6 +83,10 @@ class CityAndCategoryUrlRule extends CityUrlRule {
             }
 
             \Yii::$app->city->setDefault();
+
+            if (isset($queryParams[1]) && $queryParams[1] === 'skidki') {
+                $route = '/category/get-discounts';
+            }
 
             return [$route,$params];
         }

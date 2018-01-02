@@ -31,10 +31,13 @@ $discounts = $dataProvider->getModels();
                 </div>
                 <div class="block-discount-dopinfo">
                     <div class="time-left">
-                        Осталось <?=Yii::$app->formatter->asDuration($discount->date_finish - time())?>
+                        Осталось: <?=Yii::$app->formatter->asDuration($discount->date_finish - time()) ??
+                        'время истекло'?>
                     </div>
                     <?php if ($settings['show-distance']):?>
-                        <div class="distance-to-me">6.5км</div>
+                        <div class="distance-to-me">
+                            <?=$discount->post->distanceText?>
+                        </div>
                     <?php endif;?>
                 </div>
                 <div class="discount-footer">
@@ -50,7 +53,7 @@ $discounts = $dataProvider->getModels();
     <?php if ($nextLink = $dataProvider->pagination->getLinks()['next'] ?? false): ?>
         <div class="replace-block mg-btm-30" id="<?=$settings['replace-container-id']?>">
             <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>"
-                 data-href="<?=$nextLink?>&loadTime=<?=$settings['loadTime']?>&postId=<?=$settings['postId']?>">
+                 data-href="<?=$nextLink?>&loadTime=<?=$settings['loadTime']?>&postId=<?=$settings['postId'] ?? ''?>">
                 <noindex>Показать больше скидок</noindex>
             </div>
         </div>

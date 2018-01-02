@@ -246,6 +246,7 @@ $this->title = 'Добавить скидку на Postim.by';
         });
         $('textarea').autosize();
         $("#datepicker").datepicker({
+            minDate: 0,
             onSelect: function(dateText, inst) {
                 var date = $(this).datepicker("getDate");
 

@@ -59,9 +59,8 @@ class Formatter extends \yii\i18n\Formatter
             $parts[] = Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i], $this->locale);
         }
 
-        if ($interval->s === 0 && empty($parts)) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->locale);
-            $isNegative = false;
+        if ($isNegative) {
+            return null;
         }
 
         return empty($parts) ? $this->nullDisplay : (($isNegative ? $negativeSign : '') . implode($implodeString, $parts));

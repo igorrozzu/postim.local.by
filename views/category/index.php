@@ -3,6 +3,7 @@ use \app\components\mainMenu\MainMenuWidget;
 use \app\components\cardsPlaceWidget\CardsPlaceWidget;
 use \app\components\cardsNewsWidget\CardsNewsWidget;
 use \app\components\ListCityWidget\ListCityWidget;
+use yii\helpers\Url;
 use \yii\widgets\Pjax;
 use \app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
@@ -116,6 +117,12 @@ Pjax::begin([
             <?php else:?>
                 <a style="display: none" href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'nigh'])?>" class="btn-nigh btn-sort <?=$sort=='nigh'?'active':''?>"><span class="under-line">Рядом</span></a>
                 <a class="btn-sort no-geolocation"><span class="under-line">Рядом</span></a>
+            <?php endif;?>
+            <?php if($discountCount > 0):?>
+                <a href="/<?= Yii::$app->request->getPathInfo()?>/skidki"
+                   class="btn-sort">
+                    <span class="under-line">Скидки <?=$discountCount?></span>
+                </a>
             <?php endif;?>
         </div>
     </div>

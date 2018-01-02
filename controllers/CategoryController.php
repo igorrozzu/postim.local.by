@@ -8,7 +8,9 @@ use app\components\MainController;
 use app\models\CategoryFeatures;
 use app\models\Posts;
 use app\models\PostsSearch;
+use app\models\search\DiscountSearch;
 use app\models\UnderCategoryFeatures;
+use app\widgets\cardsDiscounts\CardsDiscounts;
 use Yii;
 use app\components\Pagination;
 use yii\helpers\Json;
@@ -64,6 +66,13 @@ class CategoryController extends MainController
 
         $breadcrumbParams = $this->getParamsForBreadcrumb();
 
+        $discountSearch = new DiscountSearch();
+        $discountCount = $discountSearch->searchByCityAndCategory(
+            Yii::$app->request->queryParams,
+            false,
+            time()
+        )->getTotalCount();
+
         $params=[
             'dataProvider'=>$dataProvider,
             'sort'=>$paramSort,
@@ -72,7 +81,8 @@ class CategoryController extends MainController
             'loadTime' => $loadTime,
             'loadGeolocation'=>$loadGeolocation,
             'keyForMap'=>$searchModel->getKeyForPlacesOnMap(),
-            'issetFilters' => !!$selfFilterParams
+            'issetFilters' => !!$selfFilterParams,
+            'discountCount' => $discountCount,
         ];
 
         if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
@@ -222,4 +232,57 @@ class CategoryController extends MainController
         return $filtersSelf;
     }
 
+    public function actionGetDiscounts()
+    {
+        $this->category = Yii::$app->request->get('category',false);
+        $this->under_category =Yii::$app->request->get('under_category',false);
+
+        $request = Yii::$app->request;
+        $model = new DiscountSearch();
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 8),
+            'page' => $request->get('page', 1) - 1,
+            'selfParams' => [
+                'city' => true,
+                'category' => true,
+            ],
+        ]);
+
+        $loadTime = Yii::$app->request->get('loadTime', time());
+        $dataProvider = $model->searchByCityAndCategory(
+            $request->queryParams,
+            $pagination,
+            $loadTime
+        );
+
+        $breadcrumbParams = $this->getParamsForBreadcrumb();
+        $breadcrumbParams[] = [
+            'name' => 'Скидки',
+            'url_name' => '/' . Yii::$app->getRequest()->getPathInfo(),
+            'pjax' => 'class="main-pjax a"'
+        ];
+
+        $selfParams = ['sort' => true];
+
+        if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ) {
+            return CardsDiscounts::widget([
+                'dataProvider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-discounts',
+                    'loadTime' => $loadTime,
+                    'postId' => false,
+                    'show-distance' => true,
+                ]
+            ]);
+        } else {
+            return $this->render('feed-discounts', [
+                'dataProvider' => $dataProvider,
+                'breadcrumbParams' => $breadcrumbParams,
+                'loadTime' => $loadTime,
+                'selfParams' => $selfParams,
+                'urlPost' => str_replace('/skidki', '', Yii::$app->request->getPathInfo())
+            ]);
+        }
+    }
 }

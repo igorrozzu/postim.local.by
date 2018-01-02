@@ -109,8 +109,10 @@ class PostController extends MainController
             );
 
             $discountCount = Discounts::find()
-                ->where(['post_id' => $id])
-                ->count();
+                ->where([
+                    'post_id' => $id,
+                    'status' => Discounts::STATUS['active']
+                ])->count();
 
 
             $commentsSearch = new CommentsSearch();
@@ -647,8 +649,10 @@ class PostController extends MainController
         $keyForMap = Helper::saveQueryForMap($queryPost);
 
         $discountCount = Discounts::find()
-            ->where(['post_id' => $postId])
-            ->count();
+            ->where([
+                'post_id' => $postId,
+                'status' => Discounts::STATUS['active']
+            ])->count();
 
         return $this->render('feed-photos.php', [
             'dataProvider' => $dataProvider,
@@ -1014,9 +1018,6 @@ class PostController extends MainController
             ->where(['post_id' => $postId])
             ->count();
 
-        $discountCount = Discounts::find()
-            ->where(['post_id' => $postId])
-            ->count();
 
         return $this->render('feed-discounts', [
             'post' => $post,
@@ -1024,7 +1025,6 @@ class PostController extends MainController
             'breadcrumbParams' => $breadcrumbParams,
             'dataProvider' => $dataProvider,
             'photoCount' => $photoCount,
-            'discountCount' => $discountCount,
         ]);
     }
 }

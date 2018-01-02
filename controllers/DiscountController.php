@@ -9,6 +9,7 @@ use app\components\Pagination;
 use app\models\Discounts;
 use app\models\entities\DiscountOrder;
 use app\models\entities\FavoritesDiscount;
+use app\models\entities\OwnerPost;
 use app\models\Posts;
 use app\models\search\DiscountSearch;
 use app\models\uploads\UploadPhotos;
@@ -25,11 +26,22 @@ class DiscountController extends MainController
 {
     public function actionAdd(int $postId)
     {
+        $currentUserId = Yii::$app->user->getId();
+        $isCurrentUserOwner = OwnerPost::find()
+            ->where([
+                OwnerPost::tableName() . '.owner_id' => $currentUserId,
+                OwnerPost::tableName() . '.post_id' => $postId,
+            ])->one();
+
+        if (!isset($isCurrentUserOwner)) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
         $model = new Discounts([
             'date_start' => time(),
             'status' => Discounts::STATUS['moderation'],
             'post_id' => $postId,
-            'user_id' => Yii::$app->user->getId(),
+            'user_id' => $currentUserId,
             'count_favorites' => 0,
         ]);
 

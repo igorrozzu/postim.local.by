@@ -3,6 +3,7 @@ use app\components\breadCrumb\BreadCrumb;
 use app\widgets\cardsDiscounts\CardsDiscounts;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+$discountCount = $dataProvider->getTotalCount();
 
 $categoryName = mb_strtolower(Yii::t('app/singular', $post->onlyOnceCategories[0]->name));
 $city = Yii::t('app/locativus', $post->city->name);
@@ -73,27 +74,25 @@ Pjax::begin([
             <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                 <div class="btn2-menu"><span class="under-line">Фотографии <?=$photoCount?></span></div>
             </a>
-            <a href="<?=Url::to(['post/reviews', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                <div class="btn2-menu"><span class="under-line">Отзывы <?=$post['count_reviews']?></span></div>
-            </a>
             <?php if ($discountCount > 0 || isset($post->isCurrentUserOwner)):?>
                 <a href="<?=Url::to(['post/get-discounts-by-post', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                    <div class="btn2-menu"><span class="under-line">Скидки <?=$discountCount?></span></div>
+                    <div class="btn2-menu active"><span class="under-line">Скидки <?=$discountCount?></span></div>
                 </a>
             <?php endif;?>
         </div>
     </div>
 </div>
 <div class="block-content">
-    <div class="std-container">
-        <a href="<?=Url::to(['discount/add', 'postId' => $post['id']]);?>"
-           class="large-wide-button non-border fx-bottom ">
-            <p>Добавить скидку</p>
-        </a>
-    </div>
+    <?php if (isset($post->isCurrentUserOwner)):?>
+        <div class="std-container">
+            <a href="<?=Url::to(['discount/add', 'postId' => $post['id']]);?>"
+               class="large-wide-button non-border fx-bottom ">
+                <p>Добавить скидку</p>
+            </a>
+        </div>
+    <?php endif;?>
 
-
-    <?php if ($dataProvider->getTotalCount()):?>
+    <?php if ($discountCount > 0):?>
         <div class="cards-block-discount" data-favorites-state-url="/discount/favorite-state">
             <?= CardsDiscounts::widget([
                 'dataProvider' => $dataProvider,
