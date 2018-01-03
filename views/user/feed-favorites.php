@@ -1,4 +1,6 @@
 <?php
+
+use app\components\breadCrumb\BreadCrumb;
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
@@ -6,7 +8,7 @@ $this->title = 'Избранное на Postim.by';
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
-    <?= \app\components\breadCrumb\BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
+    <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v">Избранное</h1>
 </div>
 <?php
@@ -29,11 +31,6 @@ Pjax::begin([
             <a href="<?=Url::to(['user/izbrannoe', 'favorite' => 'news'])?>">
                 <div class="btn2-menu <?= $isNewsFeed ? 'active' : ''?>">
                     <span class="under-line">Новости</span>
-                </div>
-            </a>
-            <a href="<?=Url::to(['user/izbrannoe', 'favorite' => 'discounts'])?>">
-                <div class="btn2-menu <?= $isNewsFeed ? 'active' : ''?>">
-                    <span class="under-line">Скидки</span>
                 </div>
             </a>
         </div>

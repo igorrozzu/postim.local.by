@@ -1,6 +1,7 @@
 <?php
 namespace app\components;
 
+use app\models\entities\OwnerPost;
 use Yii;
 
 class User extends \yii\web\User{
@@ -44,6 +45,22 @@ class User extends \yii\web\User{
         }else{
             return $this->identity->role >= 2 ?true :false;
         }
+    }
+
+    public function isOwnerPost()
+    {
+        if ($this->isGuest) {
+            return false;
+        }
+
+        $isUserOwner = OwnerPost::find()
+            ->where(['owner_id' => $this->getId()])
+            ->one();
+        if (!isset($isUserOwner)) {
+            return false;
+        }
+
+        return true;
     }
 
     public function generationSecretToken(){

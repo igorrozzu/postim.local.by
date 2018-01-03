@@ -1,15 +1,15 @@
 <?php
+
+use app\components\breadCrumb\BreadCrumb;
 use app\components\cardsPromoWidget\CardsPromoWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+
+$this->title = 'Мои промокоды на Postim.by';
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
-    <div class="bread-crumb">
-        <a class="pre" href="#">Главная</a>
-        <span class="separator"></span>
-        <p>Мои промокоды</p>
-    </div>
+    <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v">Мои промокоды</h1>
 </div>
 <?php
@@ -24,17 +24,17 @@ Pjax::begin([
 <div class="block-flex-white">
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
-            <a href="<?=Url::to(['user/promocody'])?>">
+            <a href="<?=Url::to(['user/get-promocodes'])?>">
                 <div class="btn2-menu <?=($status === 'active') ? 'active' : ''?>">
                     Действующие
                 </div>
             </a>
-            <a href="<?=Url::to(['user/promocody', 'status' => 'unactive', 'type' => 'promocode'])?>">
+            <a href="<?=Url::to(['user/get-promocodes', 'status' => 'unactive', 'type' => 'promocode'])?>">
                 <div class="btn2-menu <?=($status === 'unactive') ? 'active' : ''?>">
                     Использованые
                 </div>
             </a>
-            <a href="<?=Url::to(['user/promocody', 'status' => 'all', 'type' => 'promocode'])?>" >
+            <a href="<?=Url::to(['user/get-promocodes', 'status' => 'all', 'type' => 'promocode'])?>" >
                 <div class="btn2-menu <?=($status === 'all') ? 'active' : ''?>">
                     Все
                 </div>

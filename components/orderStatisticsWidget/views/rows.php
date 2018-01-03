@@ -18,13 +18,12 @@ $timezone = Yii::$app->user->identity->getTimezoneInSeconds();
     </div>
 <?php else:?>
     <div class="row-content-footer">
-        <span class="r1"> j.xnvsnldk jkdsjfiewo r</span>
+        <span class="r1">-</span>
         <span class="r2">-</span>
         <span class="r3">-</span>
         <span class="r4">-</span>
         <span class="r5">-</span>
-        <span class="r6">
-          </span>
+        <span class="r6">-</span>
     </div>
 <?php endif;?>
 

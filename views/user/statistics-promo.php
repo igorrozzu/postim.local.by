@@ -1,4 +1,6 @@
 <?php
+
+use app\components\breadCrumb\BreadCrumb;
 use app\components\orderStatisticsWidget\OrderStatisticsWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
@@ -10,15 +12,11 @@ $currentUrl = $dataProvider->pagination->createUrl($currentPage);
 $current_month = (int)date('n');
 $time_prev_month = mktime(0,0,0, $current_month !== 1 ? $current_month - 1 : 12, 1);
 
-
+$this->title = 'Заказы промокодов на Postim.by';
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
-    <div class="bread-crumb">
-        <a class="pre" href="#">Главная</a>
-        <span class="separator"></span>
-        <p>Заказы промокодов</p>
-    </div>
+    <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v">Заказы промокодов</h1>
 </div>
 <?php
@@ -33,17 +31,17 @@ Pjax::begin([
 <div class="block-flex-white">
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
-            <a href="<?=Url::to(['user/zakazy-promokodov'])?>" >
+            <a href="<?=Url::to(['user/order-promocodes'])?>" >
                 <div class="btn2-menu <?=($status === 'all') ? 'active' : ''?>">
                     Все <?=$countItems['all']?>
                 </div>
             </a>
-            <a href="<?=Url::to(['user/zakazy-promokodov', 'status' => 'unactive', 'type' => 'promocode'])?>">
+            <a href="<?=Url::to(['user/order-promocodes', 'status' => 'unactive', 'type' => 'promocode'])?>">
                 <div class="btn2-menu <?=($status === 'unactive') ? 'active' : ''?>">
                     Использованные <?=$countItems['inactive']?>
                 </div>
             </a>
-            <a href="<?=Url::to(['user/zakazy-promokodov', 'status' => 'active', 'type' => 'promocode'])?>">
+            <a href="<?=Url::to(['user/order-promocodes', 'status' => 'active', 'type' => 'promocode'])?>">
                 <div class="btn2-menu <?=($status === 'active') ? 'active' : ''?>">
                     Действующие <?=$countItems['active']?>
                 </div>

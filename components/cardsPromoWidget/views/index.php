@@ -7,7 +7,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
 ?>
 <?php foreach ($data as $item):?>
     <div class="card-promo">
-        <div class="card-promo-photo" style="background-image: url('/<?=$item->discount->cover?>')"></div>
+        <div class="card-promo-photo" style="background-image: url('<?=$item->discount->getCover()?>')"></div>
         <div class="block-promo-info">
             <h3 class="promo-info-header"><?=$item->discount->header?></h3>
             <div class="container-info-btn">

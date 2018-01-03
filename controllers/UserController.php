@@ -11,6 +11,7 @@ use app\components\orderStatisticsWidget\OrderStatisticsWidget;
 use app\models\City;
 use app\models\entities\DiscountOrder;
 use app\models\entities\Gallery;
+use app\models\entities\OwnerPost;
 use app\models\moderation_post\PostsModeration;
 use app\models\moderation_post\PostsModerationSearch;
 use app\models\PostsSearch;
@@ -290,12 +291,12 @@ class UserController extends MainController
         }
     }
 
-    public function actionPromocody()
+    public function actionGetPromocodes()
     {
         $searchModel = new DiscountOrderSearch();
         $request = Yii::$app->request;
         $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 2),
+            'pageSize' => $request->get('per-page', 8),
             'page' => $request->get('page', 1) - 1,
             'selfParams'=> [
                 'status' => true,
@@ -323,7 +324,15 @@ class UserController extends MainController
                 ]
             ]);
         } else {
+            $breadcrumbParams = $this->getParamsForBreadcrumb();
+            $breadcrumbParams[] = [
+                'name' => 'Мои промокоды',
+                'url_name' => Url::to(['user/get-promocodes']),
+                'pjax' => 'class="main-pjax a"'
+            ];
+
             return $this->render('feed-promo', [
+                'breadcrumbParams' => $breadcrumbParams,
                 'dataProvider' => $dataProvider,
                 'loadTime' => $loadTime,
                 'status' => $request->queryParams['status']
@@ -395,8 +404,12 @@ class UserController extends MainController
             $loadTime
         );
 
-        $breadcrumbParams = $this->getParamsForBreadcrumb('Избранное','/user/izbrannoe');
-
+        $breadcrumbParams = $this->getParamsForBreadcrumb();
+        $breadcrumbParams[] = [
+            'name' => 'Избранное',
+            'url_name' => Yii::$app->request->getUrl(),
+            'pjax' => 'class="main-pjax a"'
+        ];
         $widgetName = $isNewsFeed ? CardsNewsWidget::className() : CardsPlaceWidget::className();
         if($request->isAjax && !$request->get('_pjax',false)) {
             return $widgetName::widget([
@@ -418,7 +431,8 @@ class UserController extends MainController
         }
     }
 
-    private function getParamsForBreadcrumb($name,$url_name){
+    private function getParamsForBreadcrumb()
+    {
         $breadcrumbParams=[];
 
         $currentUrl = Yii::$app->getRequest()->getHostInfo();
@@ -439,20 +453,19 @@ class UserController extends MainController
             }
         }
 
-        $breadcrumbParams[]=[
-            'name'=>$name,
-            'url_name'=>$currentUrl.$url_name,
-            'pjax'=>'class="main-pjax a"'
-        ];
         return $breadcrumbParams;
     }
 
-    public function actionZakazyPromokodov()
+    public function actionOrderPromocodes()
     {
+        if (!Yii::$app->user->isOwnerPost()) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
         $searchModel = new DiscountOrderSearch();
         $request = Yii::$app->request;
         $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 2),
+            'pageSize' => $request->get('per-page', 8),
             'page' => $request->get('page', 1) - 1,
             'selfParams'=> [
                 'status' => true,
@@ -483,10 +496,18 @@ class UserController extends MainController
                 ]
             ]);
         } else {
+            $breadcrumbParams = $this->getParamsForBreadcrumb();
+            $breadcrumbParams[] = [
+                'name' => 'Заказы промокодов',
+                'url_name' => Url::to(['user/order-promocodes']),
+                'pjax' => 'class="main-pjax a"'
+            ];
+
             $allOrderCount = DiscountOrder::getAllCount(DiscountOrder::TYPE['promoCode']);
             $activeOrderCount = DiscountOrder::getActiveCount(DiscountOrder::TYPE['promoCode'],
                 DiscountOrder::STATUS['active']);
             return $this->render('statistics-promo', [
+                'breadcrumbParams' => $breadcrumbParams,
                 'dataProvider' => $dataProvider,
                 'loadTime' => $loadTime,
                 'status' => $request->queryParams['status'],
@@ -501,8 +522,12 @@ class UserController extends MainController
         }
     }
 
-    public function actionZakazySertifikatov()
+    public function actionOrderCertificates()
     {
+        if (!Yii::$app->user->isOwnerPost()) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
         $searchModel = new DiscountOrderSearch();
         $request = Yii::$app->request;
         $pagination = new Pagination([

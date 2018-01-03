@@ -129,9 +129,16 @@ class DiscountOrderSearch extends DiscountOrder
             $time = mktime(0, 0, 0);
             $current_month = (int)date('n');
             $time_current_month = mktime(0,0,0, $current_month, 1);
-            $time_prev_month = mktime(0,0,0, $current_month !== 1 ? $current_month - 1 : 12, 1);
+
+            if ($current_month === 1) {
+                $time_prev_month = mktime(0,0,0, 12, 1, (int) date('Y') - 1);
+            } else {
+                $time_prev_month = mktime(0,0,0, $current_month - 1, 1);
+            }
+
             $timeZone = Yii::$app->user->getTimezoneInSeconds();
             $timeForView = strtotime(date('d.m.Y', time() + $timeZone));
+
             switch ($this->order_time) {
                 case 'today': $query->andWhere(['>=', $table . '.date_buy', $time]);
                     $this->timeRange = date('d.m.Y', $timeForView);
@@ -155,7 +162,7 @@ class DiscountOrderSearch extends DiscountOrder
 
         if(isset($this->search_field)) {
             $query->andWhere(['or',
-                ['like', Discounts::tableName() . '.data', $this->search_field],
+                ['like', Discounts::tableName() . '.header', $this->search_field],
                 ['like', $table . '.promo_code', $this->search_field],
             ]);
         }

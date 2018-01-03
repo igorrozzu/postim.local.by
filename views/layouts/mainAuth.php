@@ -124,24 +124,19 @@ $countNotif = NotificationUser::getCountNotifications();
         </div>
 
         <?php if(Yii::$app->user->identity->hasOwner()):?>
-            <div class="container-item-menu active closed">
-                <a class="close-right-menu-list section" data-id-open="business">
-                    <span class="icon-business"></span>Бизнес акаунт
+            <div class="container-item-menu active">
+                <a class="close-right-menu-list" data-id-open="business">
+                    <span class="icon-business"></span>Бизнес аккаунт
                 </a>
                 <div class="menu-list open-list" id="business">
-                    <a><span></span>Заказы промокодов</a>
-                    <a><span></span>Заказы сертификатов</a>
+                    <a href="<?=Url::to(['user/order-promocodes'])?>"><span></span>Заказы промокодов</a>
                 </div>
             </div>
         <?php endif;?>
 
-        <div class="container-item-menu closed">
-            <a class="section">
-                <span class="icon-big-purse"></span>Пополнить счет
-            </a>
-        </div>
-        <div class="container-item-menu closed">
-            <a class="section">
+
+        <div class="container-item-menu visible">
+            <a href="<?=Url::to(['user/get-promocodes'])?>">
                 <span class="icon-promotional"></span>Мои промокоды
             </a>
         </div>
@@ -150,7 +145,11 @@ $countNotif = NotificationUser::getCountNotifications();
                 <span class="icon-certificates"></span>Мои сертификаты
             </a>
         </div>
-
+        <div class="container-item-menu closed">
+            <a class="section">
+                <span class="icon-big-purse"></span>Пополнить счет
+            </a>
+        </div>
         <div class="container-item-menu visible">
             <a href="<?=Url::to(['user/izbrannoe'])?>">
                 <span class="icon-favorites"></span>Избранное

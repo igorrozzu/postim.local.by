@@ -1,6 +1,6 @@
 <?php foreach ($data as $item):?>
     <div class="row-content">
-        <span class="r1"><?=$item->discount->data?></span>
+        <span class="r1"><?=$item->discount->header?></span>
         <span class="r2"><?=$item->promo_code?></span>
         <span class="r3"><?=Yii::$app->formatter->asDate($item->date_buy + $timezone,
                 'dd.MM.yyyy')?></span>
