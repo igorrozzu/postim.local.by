@@ -10,11 +10,7 @@ $this->title = 'Покупка промокода на Postim.by';
 ?>
 
 <div class="block-content" style="margin-top: 80px">
-    <div class="bread-crumb">
-        <a class="pre" href="#">Главная</a>
-        <span class="separator"></span>
-        <p>Покупка промокода</p>
-    </div>
+    <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v">Покупка промокода</h1>
 
 </div>

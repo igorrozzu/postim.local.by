@@ -12,11 +12,13 @@ namespace app\modules\admin\controllers;
 use app\components\Pagination;
 use app\components\UserHelper;
 use app\models\Discounts;
+use app\models\entities\GalleryDiscount;
 use app\models\search\DiscountSearch;
 use app\modules\admin\components\AdminDefaultController;
 use Yii;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use yii\web\NotFoundHttpException;
 
 class DiscountController extends AdminDefaultController
 {
@@ -39,7 +41,11 @@ class DiscountController extends AdminDefaultController
 
     public function actionEdit(int $id)
     {
-        /*$discount = Discounts::findOne($id);
+        $discount = Discounts::findOne($id);
+
+        if (!isset($discount)) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
 
         if (Yii::$app->request->isPost) {
 
@@ -47,15 +53,21 @@ class DiscountController extends AdminDefaultController
             $discount->conditions = Json::encode( $discount->conditions );
             $discount->photos = Yii::$app->request->post('photos');
 
-            if ($discount->create()) {
-                return $this->redirect(Yii::$app->request->referrer);
+            if ($discount->edit()) {
+                Yii::$app->session->setFlash('success', 'Редактирование скидки произведено успешно');
+                return $this->redirect(Url::to(['discount/index']));
             }
         }
 
+        $photos = GalleryDiscount::find()
+            ->where(['discount_id' => $discount->id])
+            ->all();
+
         return $this->render('edit', [
+            'photos' => $photos,
             'discount' => $discount,
             'errors' => array_values($discount->getFirstErrors()),
-        ]);*/
+        ]);
     }
 
     public function actionConfirm(int $id)
@@ -64,6 +76,8 @@ class DiscountController extends AdminDefaultController
 
         if ($result !== 1) {
             Yii::$app->session->setFlash('error', 'Подтверждение скидки не удалось');
+        } else {
+            Yii::$app->session->setFlash('success', 'Подтверждение скидки произведено успешно');
         }
 
         return $this->redirect(Yii::$app->request->referrer);

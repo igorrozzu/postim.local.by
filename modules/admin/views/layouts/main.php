@@ -3,13 +3,16 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use app\assets\AppAdmAsset;
+use app\assets\AuthUserAsset;
+use app\assets\CustomScrollbarAsset;
 use yii\helpers\Html;
 use \yii\widgets\Pjax;
 use \app\modules\admin\components\mainMenu\MainMenuWidget;
 
 
-\app\assets\AppAdmAsset::register($this);
-\app\assets\CustomScrollbarAsset::register($this);
+AppAdmAsset::register($this);
+CustomScrollbarAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

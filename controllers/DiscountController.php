@@ -183,16 +183,7 @@ class DiscountController extends MainController
             }
         }
 
-        $breadcrumbParams = $this->getParamsForBreadcrumb($discount->post);
-        $breadcrumbParams[] = [
-            'name' => 'Скидки',
-            'url_name' => Url::to([
-                'post/get-discounts-by-post',
-                'name' => $discount->post->url_name,
-                'postId' => $discount->post->id,
-            ]),
-            'pjax' => 'class="main-pjax a"'
-        ];
+        $breadcrumbParams = $this->getParamsForBreadcrumb($discount);
         $breadcrumbParams[] = [
             'name' => $discount->header,
             'url_name' => Yii::$app->request->getUrl(),
@@ -224,8 +215,9 @@ class DiscountController extends MainController
         ]);
     }
 
-    public function getParamsForBreadcrumb($post)
+    public function getParamsForBreadcrumb($discount)
     {
+        $post = $discount->post;
         $breadcrumbParams = [];
 
         $currentUrl = Yii::$app->getRequest()->getHostInfo();
@@ -266,9 +258,14 @@ class DiscountController extends MainController
             'url_name' => $post['url_name'] . '-p' . $post['id'],
             'pjax' => 'class="main-pjax a"'
         ];
+
         $breadcrumbParams[] = [
             'name' => 'Скидки',
-            'url_name' => $post['url_name'] . '-p' . $post['id'],
+            'url_name' => Url::to([
+                'post/get-discounts-by-post',
+                'name' => $post->url_name,
+                'postId' => $post->id,
+            ]),
             'pjax' => 'class="main-pjax a"'
         ];
 
@@ -306,8 +303,22 @@ class DiscountController extends MainController
             }
         }
 
+        $breadcrumbParams = $this->getParamsForBreadcrumb($discount);
+        $breadcrumbParams[] = [
+            'name' => $discount->header,
+            'url_name' => Url::to(['discount/read', 'url' => $discount->url_name,
+                'discountId' => $discount->id]),
+            'pjax' => 'class="main-pjax a"'
+        ];
+        $breadcrumbParams[] = [
+            'name' => 'Покупка промокода',
+            'url_name' => Yii::$app->request->getUrl(),
+            'pjax' => 'class="main-pjax a"'
+        ];
+
         return $this->render('order', [
-            'discount' => $discount
+            'discount' => $discount,
+            'breadcrumbParams' => $breadcrumbParams,
         ]);
     }
 

@@ -91,6 +91,13 @@ $(document).ready(function () {
             type: 'error'
         });
     <?php endif;?>
+    <?php if(Yii::$app->session->hasFlash('success')):?>
+        $().toastmessage('showToast', {
+            text: '<?=Yii::$app->session->getFlash('success')?>',
+            stayTime: 5000,
+            type: 'success'
+        });
+    <?php endif;?>
 
     $(document).off('click','.btn-moderation.--cancels')
         .on('click','.btn-moderation.--cancels',function () {

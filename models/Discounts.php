@@ -211,6 +211,16 @@ class Discounts extends \yii\db\ActiveRecord
         return '/discount_photo/' . $this->post_id . '/' . $pictureName;
     }
 
+    public function getNameType(): string
+    {
+        switch ($this->type)
+        {
+            case self::TYPE['promoCode']: return 'Промокод';
+            case self::TYPE['certificate']: return 'Сертификат';
+            default: return '';
+        }
+    }
+
     public function create()
     {
         $result = false;
@@ -224,6 +234,27 @@ class Discounts extends \yii\db\ActiveRecord
                 if ($this->save() && $this->addPhotos()) {
                     $result = true;
                 }
+            }
+
+        } catch (Exception $e){}
+
+        if ($result) {
+            $transaction->commit();
+        } else {
+            $transaction->rollBack();
+        }
+
+        return $result;
+    }
+
+    public function edit()
+    {
+        $result = false;
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+            if ($this->update() && $this->addPhotos() && $this->editPhotos()) {
+                $result = true;
             }
 
         } catch (Exception $e){}
@@ -285,6 +316,10 @@ class Discounts extends \yii\db\ActiveRecord
                         }
                     }
 
+                    if (empty($rows)) {
+                        return true;
+                    }
+
                     $result = Yii::$app->db->createCommand()
                         ->batchInsert(GalleryDiscount::tableName(), [
                             'discount_id',
@@ -297,6 +332,40 @@ class Discounts extends \yii\db\ActiveRecord
                     return $result > 0;
                 }
 
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function editPhotos()
+    {
+        try {
+            $discountPhotos = GalleryDiscount::find()
+                ->where(['discount_id' => $this->id])
+                ->all();
+
+            foreach ($discountPhotos as $discountPhoto){
+                $isset = false;
+
+                if ($this->photos && is_array($this->photos)) {
+                    foreach ($this->photos as $photo) {
+                        if ($photo['link'] === $discountPhoto['link']) {
+                            $isset = true;
+                        }
+                    }
+                }
+
+                if (!$isset) {
+                    $tmpLink = Yii::getAlias('@webroot/' . $this->getPathToPicture($discountPhoto['link']));
+
+                    if (file_exists($tmpLink)) {
+                        unlink($tmpLink);
+                    }
+                    $discountPhoto->delete();
+                }
             }
         } catch (Exception $e) {
             return false;
