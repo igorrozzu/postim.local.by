@@ -114,13 +114,17 @@ Pjax::begin([
             </div>
         </div>
     <?php endif;?>
-
-
 </div>
 
 <script>
     $(document).ready(function() {
-		menu_control.fireMethodClose();
+        <?php if(Yii::$app->session->hasFlash('success')):?>
+            $().toastmessage('showToast', {
+                text: '<?=Yii::$app->session->getFlash('success')?>',
+                stayTime: 5000,
+                type: 'success'
+            });
+        <?php endif;?>
     });
 </script>
 <?php

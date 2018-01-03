@@ -53,6 +53,8 @@ class DiscountController extends MainController
 
             if ($model->create()) {
                 $post = Posts::findOne($postId);
+                Yii::$app->session->setFlash('success',
+                    'Добавление скидки произведено успешно. Ваша скидка отправлена на модерацию.');
                 return $this->redirect(Url::to([
                     'post/get-discounts-by-post',
                     'name' => $post->url_name,
