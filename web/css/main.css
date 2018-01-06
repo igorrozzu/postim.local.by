@@ -616,7 +616,7 @@ body:not(.open-search) .search{
     background-image: url("../img/icons.png");
     background-position: 364px 915px;
     cursor: pointer;
-    margin-top: 18px;
+    margin-top: 10px;
     position: relative;
     z-index: 11;
 }
