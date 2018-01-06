@@ -36,8 +36,8 @@
         height: 300px;
     }
     .preload-map{
-        height: 100px;
-        background-image: url("../img/map.png");
+        height: 80px;
+        background-image: url("../img/map.jpg");
     }
 }
 
