@@ -13,16 +13,15 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class LoginFormsAsset extends AssetBundle
+class EnjoyhintAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-
+        'js/libs/enjoyhint/enjoyhint.css'
     ];
     public $js = [
-        'js/login-forms.js',
-        'js/enjoyhintMain.js',
+        'js/libs/enjoyhint/enjoyhint.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

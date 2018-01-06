@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use app\assets\LoginFormsAsset;
+use \app\assets\EnjoyhintAsset;
 use yii\helpers\Html;
 use app\assets\AppAsset;
 use app\assets\CustomScrollbarAsset;
@@ -15,6 +16,7 @@ use \yii\widgets\Pjax;
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
 LoginFormsAsset::register($this);
+EnjoyhintAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
