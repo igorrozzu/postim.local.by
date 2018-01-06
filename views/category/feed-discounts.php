@@ -6,7 +6,7 @@ use \yii\widgets\Pjax;
 use \app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
 
-$totalCount = $dataProvider->getTotalCount();
+$totalCount = $dataProvider->totalCount;
 $categoryText = $this->context->under_category?$this->context->under_category['name']:$this->context->category['name'];;
 $city_name = Yii::$app->city->getSelected_city()['name'];
 $cityUrl = Yii::$app->city->getSelected_city()['url_name'];

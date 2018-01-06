@@ -150,7 +150,8 @@ class PostController extends MainController
                     'photoId' => $photo_id,
                     'reviewId' => $review_id,
                 ],
-                'dataProviderComments' => $dataProviderComments
+                'dataProviderComments' => $dataProviderComments,
+                'isShowDiscounts' => $discountCount > 0 || Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner)
             ]);
 
         } else {
@@ -665,7 +666,8 @@ class PostController extends MainController
             'discountCount' => $discountCount,
             'initPhotoSliderParams' => [
                 'photoId' => $photo_id
-            ]
+            ],
+            'isShowDiscounts' => $discountCount > 0 || Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner)
         ]);
     }
 
@@ -1018,13 +1020,13 @@ class PostController extends MainController
             ->where(['post_id' => $postId])
             ->count();
 
-
         return $this->render('feed-discounts', [
             'post' => $post,
             'keyForMap' => $keyForMap,
             'breadcrumbParams' => $breadcrumbParams,
             'dataProvider' => $dataProvider,
             'photoCount' => $photoCount,
+            'isShowDiscounts' => $dataProvider->getTotalCount() > 0 || Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner)
         ]);
     }
 }

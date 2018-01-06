@@ -27,14 +27,17 @@ class DiscountController extends MainController
     public function actionAdd(int $postId)
     {
         $currentUserId = Yii::$app->user->getId();
-        $isCurrentUserOwner = OwnerPost::find()
-            ->where([
-                OwnerPost::tableName() . '.owner_id' => $currentUserId,
-                OwnerPost::tableName() . '.post_id' => $postId,
-            ])->one();
 
-        if (!isset($isCurrentUserOwner)) {
-            throw new NotFoundHttpException('Cтраница не найдена');
+        if (!Yii::$app->user->isModerator()) {
+            $isCurrentUserOwner = OwnerPost::find()
+                ->where([
+                    OwnerPost::tableName() . '.owner_id' => $currentUserId,
+                    OwnerPost::tableName() . '.post_id' => $postId,
+                ])->one();
+
+            if (!isset($isCurrentUserOwner)) {
+                throw new NotFoundHttpException('Cтраница не найдена');
+            }
         }
 
         $model = new Discounts([
@@ -45,7 +48,7 @@ class DiscountController extends MainController
             'count_favorites' => 0,
         ]);
 
-        if (Yii::$app->request->isPost && !Yii::$app->user->isGuest) {
+        if (Yii::$app->request->isPost) {
 
             $model->load(Yii::$app->request->post(), 'discount');
             $model->conditions = Json::encode( $model->conditions );
@@ -55,6 +58,7 @@ class DiscountController extends MainController
                 $post = Posts::findOne($postId);
                 Yii::$app->session->setFlash('success',
                     'Добавление скидки произведено успешно. Ваша скидка отправлена на модерацию.');
+
                 return $this->redirect(Url::to([
                     'post/get-discounts-by-post',
                     'name' => $post->url_name,
