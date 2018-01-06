@@ -62,17 +62,55 @@ class SiteMap {
                 $urls = $model->getUrls();
                 foreach ($urls as $url){
 
-                    $item = array(
-                        'loc' => $host . $url,
-                        'changefreq' => $changeFreq,
-                        'priority' => $priority
-                    );
+                    if(!is_array($url)){
+                        $item = array(
+                            'loc' => $host . $url,
+                            'changefreq' => $changeFreq,
+                            'priority' => $priority
+                        );
+                    }else{
+
+                        $elems = $url;
+                        $url = array_shift($elems);
+
+                        $item = array(
+                            'loc' => $host . $url,
+                            'changefreq' => $changeFreq,
+                            'priority' => $priority
+                        );
+
+                        foreach ($elems as $elemKey => $elem){
+
+                            $value = [];
+
+                            switch ($elemKey){
+                                case 'image:image': {
+
+                                    $itemImgs = [];
+
+                                    foreach ($elem as $linkImg){
+                                        $itemImg = [];
+                                        $itemImg['image:loc'] = $host . $linkImg['link'];
+
+                                        if($model->data){
+                                            $itemImg['image:title'] = $model->data;
+                                        }
+
+                                        $itemImgs[] = $itemImg;
+                                    }
+
+                                    $value = $itemImgs;
+
+                                }break;
+                            }
+
+                            $item[$elemKey] = $value;
+                        }
+                    }
 
                     $this->items[] = $item;
                 }
             }
-
-
         }
     }
 
@@ -128,6 +166,7 @@ class SiteMap {
         $urlset->setAttribute('xmlns','http://www.sitemaps.org/schemas/sitemap/0.9');
         $urlset->setAttribute('xmlns:xsi','http://www.w3.org/2001/XMLSchema-instance');
         $urlset->setAttribute('xmlns:xhtml','http://www.w3.org/1999/xhtml');
+        $urlset->setAttribute('xmlns:image','http://www.google.com/schemas/sitemap-image/1.1');
         $urlset->setAttribute('xsi:schemaLocation','http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
 
         foreach($this->items as $item)
@@ -136,9 +175,7 @@ class SiteMap {
 
             foreach ($item as $key=>$value)
             {
-                $elem = $dom->createElement($key);
-                $elem->appendChild($dom->createTextNode($value));
-                $url->appendChild($elem);
+                $this->renderBlock($key, $value, $url, $dom);
             }
 
             $urlset->appendChild($url);
@@ -146,6 +183,29 @@ class SiteMap {
         $dom->appendChild($urlset);
 
         return $dom->saveXML();
+    }
+
+    private function renderBlock($key, $value, \DOMElement $parent, \DOMDocument $dom){
+
+        if(!is_array($value)){
+            $elem = $dom->createElement($key);
+            $elem->appendChild($dom->createTextNode($value));
+            $parent->appendChild($elem);
+        }else{
+
+            foreach ($value as $item){
+                $block = $dom->createElement($key);
+
+                foreach ($item as $keyItem => $valueItem){
+                    $this->renderBlock($keyItem, $valueItem, $block, $dom);
+                }
+
+                $parent->appendChild($block);
+            }
+
+
+        }
+
     }
 
 

@@ -8,6 +8,7 @@ use app\models\entities\FavoritesPost;
 use app\models\entities\Gallery;
 use app\models\entities\OwnerPost;
 use Yii;
+use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -327,9 +328,24 @@ class Posts extends \yii\db\ActiveRecord
     public function getUrls(){
 
         $urls = [
-            '/Fotografii-' . $this->url_name . '-p' . $this->id,
+            [
+                'url' => '/Fotografii-' . $this->url_name . '-p' . $this->id,
+                'image:image' => $this->getImgsForSiteMap()
+            ]
         ];
 
         return  $urls;
     }
+
+    private function getImgsForSiteMap():array
+    {
+
+        $photos = Gallery::find()->select(new Expression("CONCAT('/post_photo/{$this->id}/', \"link\") as link"))
+            ->where(['post_id'=> $this->id])
+            ->asArray()->all();
+
+        return $photos;
+
+    }
+
 }
