@@ -48,6 +48,7 @@ class DiscountController extends AdminDefaultController
         }
 
         if (Yii::$app->request->isPost) {
+            $discount->scenario = Discounts::SCENARIO_MODERATOR;
 
             $discount->load(Yii::$app->request->post(), 'discount');
             $discount->conditions = Json::encode( $discount->conditions );

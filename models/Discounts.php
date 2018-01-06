@@ -61,6 +61,8 @@ class Discounts extends \yii\db\ActiveRecord
         return 'tbl_discounts';
     }
 
+    const SCENARIO_MODERATOR = 'moderator';
+
     /**
      * @inheritdoc
      */
@@ -74,9 +76,8 @@ class Discounts extends \yii\db\ActiveRecord
             [['post_id', 'total_view_id', 'status', 'date_start',
                 'date_finish', 'type', 'count_favorites', 'user_id'], 'integer'],
             [['data', 'header', 'cover', 'conditions', 'title', 'description', 'key_word', 'url_name'], 'string'],
-            ['price', 'number', 'min' => 0],
+            [['price', 'price_promo'], 'number', 'min' => 0],
             ['discount', 'number', 'min' => 0, 'max' => 100],
-            ['price_promo', 'number', 'min' => 0],
             ['number_purchases', 'integer', 'min' => 1],
             ['date_finish', 'validateDateFinish'],
             ['type', 'in', 'range' => array_values(self::TYPE)],
@@ -85,6 +86,7 @@ class Discounts extends \yii\db\ActiveRecord
                 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
             [['total_view_id'], 'exist', 'skipOnError' => true,
                 'targetClass' => TotalView::className(), 'targetAttribute' => ['total_view_id' => 'id']],
+            ['price_promo', 'required', 'on' => [self::SCENARIO_MODERATOR]]
         ];
     }
 

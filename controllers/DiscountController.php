@@ -48,7 +48,15 @@ class DiscountController extends MainController
             'count_favorites' => 0,
         ]);
 
-        if (Yii::$app->request->isPost) {
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+
+            if (Yii::$app->user->isModerator()) {
+                $model->scenario = Discounts::SCENARIO_MODERATOR;
+                $model->status = Discounts::STATUS['active'];
+            }
+
+            $response = new \stdClass();
+            $response->success = false;
 
             $model->load(Yii::$app->request->post(), 'discount');
             $model->conditions = Json::encode( $model->conditions );
@@ -56,20 +64,27 @@ class DiscountController extends MainController
 
             if ($model->create()) {
                 $post = Posts::findOne($postId);
-                Yii::$app->session->setFlash('success',
-                    'Добавление скидки произведено успешно. Ваша скидка отправлена на модерацию.');
 
-                return $this->redirect(Url::to([
+                $message = Yii::$app->user->isModerator() ? 'Добавление скидки произведено успешно.' :
+                    'Добавление скидки произведено успешно. Ваша скидка отправлена на модерацию.';
+                Yii::$app->session->setFlash('success', $message);
+
+                $response->success = true;
+                $response->redirectUrl = Url::to([
                     'post/get-discounts-by-post',
                     'name' => $post->url_name,
                     'postId' => $postId,
-                ]));
+                ]);
+
+            } else {
+                $response->message = array_values($model->getFirstErrors())[0];
             }
+
+            return $this->asJson($response);
         }
 
         return $this->render('add', [
             'model' => $model,
-            'errors' => array_values($model->getFirstErrors()),
         ]);
     }
 

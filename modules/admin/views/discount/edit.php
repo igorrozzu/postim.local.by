@@ -7,7 +7,7 @@ $this->title = 'Редактировать скидку на Postim.by';
 
 <div class="margin-top60"></div>
 <div class="block-content">
-    <form action="" id="discount-form" method="post">
+    <form action="" id="edit-discount-form" method="post">
         <div class="container-add-place">
             <div class="block-field-setting">
                 <label class="label-field-setting">Название скидки</label>
@@ -241,7 +241,7 @@ $this->title = 'Редактировать скидку на Postim.by';
                        value="<?=$discount->key_word?>">
             </div>
             <div class="btn-send">
-                <div id="add-discount" class="large-wide-button"><p>Редактировать</p></div>
+                <div id="edit-discount" class="large-wide-button"><p>Редактировать</p></div>
             </div>
         </div>
 
@@ -282,5 +282,12 @@ $this->title = 'Редактировать скидку на Postim.by';
         $('.block-inputs').sortable();
         $('textarea').autosize();
         $('#price').trigger('input');
+
+        $(document).off('click','#edit-discount')
+            .on('click','#edit-discount', function () {
+                if (editable.parserEditable()) {
+                    $('#edit-discount-form').submit();
+                }
+            });
     })
 </script>

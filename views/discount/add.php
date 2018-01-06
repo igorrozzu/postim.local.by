@@ -1,11 +1,13 @@
 <?php
 
+use yii\helpers\Url;
+
 $this->title = 'Добавить скидку на Postim.by';
 ?>
 
 <div class="margin-top60"></div>
 <div class="block-content">
-    <form action="" id="discount-form" method="post">
+    <form action="<?=Url::to(['discount/add', 'postId' => $model->post_id]);?>" id="discount-form" method="post">
         <div class="container-add-place">
             <div class="block-field-setting">
                 <label class="label-field-setting">Название скидки</label>
@@ -175,7 +177,7 @@ $this->title = 'Добавить скидку на Postim.by';
                 <input name="discount[number_purchases]" class="input-field-setting"
                        placeholder="Укажите колличество" value="">
             </div>
-            <?php if(Yii::$app->user->identity->role > 1):?>
+            <?php if (Yii::$app->user->isModerator()):?>
                 <div class="block-field-setting">
                     <label class="label-field-setting">Цена промокода</label>
                     <input name="discount[price_promo]" class="input-field-setting"
@@ -254,13 +256,5 @@ $this->title = 'Добавить скидку на Postim.by';
                 $('#date_finish').val(Math.round(date.getTime()/1000));
             }
         });
-
-        <?php if (isset($errors[0])):?>
-            $().toastmessage('showToast', {
-                text: '<?=$errors[0]?>',
-                stayTime: 5000,
-                type: 'error'
-            });
-        <?php endif;?>
     })
 </script>

@@ -72,7 +72,26 @@ var Discount = (function (window, document, undefined, $) {
                         $(document).off('click','#add-discount')
                             .on('click','#add-discount', function () {
                                 if (editable.parserEditable()) {
-                                    $('#discount-form').submit();
+                                    var $form = $('#discount-form');
+                                    var formData = $form.serialize();
+
+                                    $.ajax({
+                                        url: $form.attr('action'),
+                                        type: 'POST',
+                                        data: formData,
+                                        success: function (response) {
+                                            if (response.success) {
+                                                location.href = response.redirectUrl;
+                                            } else {
+                                                $().toastmessage('showToast', {
+                                                    text: response.message,
+                                                    stayTime: 8000,
+                                                    type: 'error'
+                                                });
+                                            }
+                                        }
+                                    })
+
                                 }
                             });
 
