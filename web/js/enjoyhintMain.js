@@ -53,6 +53,8 @@ var EnjoyhintTrunk = (function (window, document, undefined,$) {
 
 var enjoyhintTrunk = EnjoyhintTrunk();
 $(document).ready(function () {
-    enjoyhintTrunk.init();
+    setTimeout(function () {
+        enjoyhintTrunk.init();
+    },20000);
 });
 
