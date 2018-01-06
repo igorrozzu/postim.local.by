@@ -51,7 +51,7 @@ class GallerySearch extends Gallery
 
         $this->load($params);
         $query->orderBy(['status'=>SORT_ASC]);
-        $query->with('post');
+        $query->with(['post', 'user']);
         $query->leftJoin(ReviewsGallery::tableName(),ReviewsGallery::tableName().'.gallery_id = '.Gallery::tableName().'.id');
         $query->where(['review_id'=>null]);
 
