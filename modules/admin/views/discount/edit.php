@@ -178,16 +178,9 @@ $this->title = 'Редактировать скидку на Postim.by';
             </div>
             <div class="block-field-setting">
                 <label class="label-field-setting">Колличество промокодов</label>
-                <input name="discount[number_purchases]" class="input-field-setting"
+                <input id="product-count" name="discount[number_purchases]" class="input-field-setting"
                        placeholder="Укажите колличество" value="<?=$discount->number_purchases?>">
             </div>
-            <?php if(Yii::$app->user->identity->role > 1):?>
-                <div class="block-field-setting">
-                    <label class="label-field-setting">Цена промокода</label>
-                    <input name="discount[price_promo]" class="input-field-setting"
-                           placeholder="Укажите цену" value="<?=$discount->price_promo ?? ''?>">
-                </div>
-            <?php endif;?>
         </div>
 
         <div class="container-add-place">
@@ -278,6 +271,10 @@ $this->title = 'Редактировать скидку на Postim.by';
                 $('#date_finish').val(Math.round(date.getTime()/1000));
             }
         });
+
+        $('#price').mask("###0.00", {reverse: true});
+        $('#discount').mask("#0", {reverse: true});
+        $('#product-count').mask("#0", {reverse: true});
 
         $('.block-inputs').sortable();
         $('textarea').autosize();

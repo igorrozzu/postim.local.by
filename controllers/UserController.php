@@ -37,6 +37,7 @@ class UserController extends MainController
     {
         $user = User::find()
             ->with(['userInfo', 'city', 'socialBindings'])
+            ->joinWith(['isOwner'])
             ->where(['tbl_users.id' => $id])
             ->one();
 

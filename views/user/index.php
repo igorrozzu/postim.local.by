@@ -20,9 +20,12 @@ $experience = ExperienceCalc::getExperienceInfo($user->userInfo->level, $user->u
                     <div class="user-level-profile"><?=$user->userInfo->level;?> <span class="user-profile-points-text">уровень</span></div>
                     <?php if(Yii::$app->user->id === $user->id): ?>
                         <div class="user-profile-points">
-                            <?=$user->userInfo->virtual_money;?>
-                            <span class="user-profile-points-text" style="margin-right: 5px;">руб</span>
-                            и <?=$user->userInfo->mega_money?>
+                            <?php if (isset($user->isOwner)): ?>
+                                <?=$user->userInfo->virtual_money;?>
+                                <span class="user-profile-points-text" style="margin-right: 5px;">руб</span>
+                                и
+                            <?php endif;?>
+                            <?=$user->userInfo->mega_money?>
                             <span class="user-profile-points-text">мега-руб</span>
                         </div>
                     <?php endif;?>

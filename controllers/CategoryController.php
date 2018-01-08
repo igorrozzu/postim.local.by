@@ -67,11 +67,7 @@ class CategoryController extends MainController
         $breadcrumbParams = $this->getParamsForBreadcrumb();
 
         $discountSearch = new DiscountSearch();
-        $discountCount = $discountSearch->searchByCityAndCategory(
-            Yii::$app->request->queryParams,
-            false,
-            time()
-        )->getTotalCount();
+        $discountCount = $discountSearch->getCountByCityAndCategory(Yii::$app->request->queryParams);
 
         $params=[
             'dataProvider'=>$dataProvider,
@@ -242,6 +238,7 @@ class CategoryController extends MainController
         $pagination = new Pagination([
             'pageSize' => $request->get('per-page', 8),
             'page' => $request->get('page', 1) - 1,
+            'route' => Yii::$app->request->getPathInfo(),
             'selfParams' => [
                 'city' => true,
                 'category' => true,

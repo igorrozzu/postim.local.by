@@ -41,8 +41,8 @@ $discounts = $dataProvider->getModels();
                     <?php endif;?>
                 </div>
                 <div class="discount-footer">
-                    <div class="promo-code-price">Цена <?=round($discount->price_promo, 2)?> руб</div>
-                    <div class="ava"><?=$discount->number_purchases?></div>
+                    <div class="promo-code-price">Бесплатно</div>
+                    <div class="ava"><?=$discount->count_orders?></div>
                 </div>
             </div>
         </div>

@@ -35,8 +35,8 @@ $this->title = 'Покупка промокода на Postim.by';
                         <div class="product-total-cost">
                             Сумма
                             <span class="cost">
-                                <span id="total-cost" data-start-value="<?=$discount->price_promo?>">
-                                    <?=$discount->price_promo?>
+                                <span id="total-cost" data-start-value="">
+
                                 </span> руб.
                             </span>
                         </div>

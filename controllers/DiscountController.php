@@ -42,18 +42,15 @@ class DiscountController extends MainController
 
         $model = new Discounts([
             'date_start' => time(),
-            'status' => Discounts::STATUS['moderation'],
+            'status' => Yii::$app->user->isModerator() ? Discounts::STATUS['active'] :
+                Discounts::STATUS['moderation'],
             'post_id' => $postId,
             'user_id' => $currentUserId,
             'count_favorites' => 0,
+            'count_orders' => 0,
         ]);
 
         if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
-
-            if (Yii::$app->user->isModerator()) {
-                $model->scenario = Discounts::SCENARIO_MODERATOR;
-                $model->status = Discounts::STATUS['active'];
-            }
 
             $response = new \stdClass();
             $response->success = false;
@@ -219,9 +216,6 @@ class DiscountController extends MainController
             ->createCommand()->rawSql;
         $keyForMap = Helper::saveQueryForMap($queryPost);
 
-        $orderCount = DiscountOrder::find()
-            ->where(['discount_id' => $discountId])
-            ->count();
 
         $economy = $discount->price ?
             round($discount->price * $discount->discount / 100, 2) : null;
@@ -231,7 +225,6 @@ class DiscountController extends MainController
             'post' => $discount->post,
             'breadcrumbParams' => $breadcrumbParams,
             'keyForMap' => $keyForMap,
-            'orderCount' => $orderCount,
             'economy' => $economy
         ]);
     }

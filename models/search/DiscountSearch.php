@@ -12,6 +12,7 @@ use app\models\UnderCategory;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 
 
 class DiscountSearch extends Discounts
@@ -41,10 +42,11 @@ class DiscountSearch extends Discounts
      */
     public function searchByPost($params, Pagination $pagination, int $loadTime)
     {
-        $query = self::find()
+        $query = Discounts::find()
+            ->joinWith(['hasLike'])
             ->where(['post_id' => $params['postId']])
             ->andWhere(['<=', 'date_start', $loadTime])
-            ->andWhere(['status' => self::STATUS['active']])
+            ->andWhere(['status' => Discounts::STATUS['active']])
             ->orderBy(['date_start' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
@@ -59,10 +61,11 @@ class DiscountSearch extends Discounts
     {
         $this->load($params, '');
 
-        $query = self::find()
+        $query = Discounts::find()
+            ->joinWith(['hasLike'])
             ->innerJoinWith(['post.city.region.coutries', 'post.categories.category'])
             ->andWhere(['<=', 'date_start', $loadTime])
-            ->andWhere([self::tableName() . '.status' => self::STATUS['active']])
+            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
             ->orderBy(['date_start' => SORT_DESC]);
 
         if (isset($this->city)) {
@@ -88,6 +91,32 @@ class DiscountSearch extends Discounts
         return $dataProvider;
     }
 
+    public function getCountByCityAndCategory(array $params)
+    {
+        $this->load($params, '');
+
+        $query = Discounts::find()
+            ->innerJoinWith(['post.city.region.coutries', 'post.categories.category'])
+            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']]);
+
+        if (isset($this->city)) {
+            $query->andWhere(['or',
+                [Region::tableName() . '.url_name' => $this->city['url_name']],
+                [City::tableName() . '.url_name' => $this->city['url_name']],
+                [Countries::tableName() . '.url_name' => $this->city['url_name']],
+            ]);
+        }
+
+        if (isset($this->under_category)) {
+            $query->andWhere([UnderCategory::tableName() . '.url_name' => $this->under_category['url_name']]);
+
+        } else if (isset($this->category)) {
+            $query->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
+        }
+
+        return $query->count();
+    }
+
     public function readDiscount(int $discountId): ? Model
     {
         $query = Discounts::find()
@@ -100,9 +129,9 @@ class DiscountSearch extends Discounts
 
     public function getDiscountsInModeration(Pagination $pagination)
     {
-        $query = self::find()
+        $query = Discounts::find()
             ->innerJoinWith(['user'])
-            ->andWhere(['status' => self::STATUS['moderation']])
+            ->andWhere(['status' => Discounts::STATUS['moderation']])
             ->orderBy(['date_start' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([

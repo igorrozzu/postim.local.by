@@ -98,15 +98,13 @@ Pjax::begin([
             <div class="discount-info-text before-icon-user">
                 Купили
                 <span class="discount-info-bold-text">
-                    <?=$orderCount?> из <?=$discount->number_purchases?>
+                    <?=$discount->count_orders?> из <?=$discount->number_purchases?>
                 </span>
             </div>
 
             <div class="discount-info-text before-icon-purse">
-                Цена промокода
-                <span class="discount-info-bold-text">
-                <?=round($discount->price_promo, 2)?> руб
-            </span>
+                Цена промокода:
+                <span class="discount-info-bold-text">бесплатно</span>
             </div>
             <div class="container-bottom-btn">
                 <a href="<?=Url::to(['discount/order', 'discountId' => $discount->id])?>" class="order-discount">

@@ -31,10 +31,10 @@ use yii\helpers\FileHelper;
  * @property string $title
  * @property string $description
  * @property string $key_word
- * @property string $price_promo
  * @property integer $count_favorites
  * @property string $url_name
  * @property integer $user_id
+ * @property integer $count_orders
  *
  * @property Posts $post
  * @property TotalView $totalView
@@ -61,8 +61,6 @@ class Discounts extends \yii\db\ActiveRecord
         return 'tbl_discounts';
     }
 
-    const SCENARIO_MODERATOR = 'moderator';
-
     /**
      * @inheritdoc
      */
@@ -70,13 +68,13 @@ class Discounts extends \yii\db\ActiveRecord
     {
         return [
             [['post_id', 'data', 'header', 'number_purchases', 'discount', 'total_view_id', 'status', 'date_start',
-                'date_finish', 'type', 'conditions', 'count_favorites', 'url_name', 'user_id'], 'required'],
+                'date_finish', 'type', 'conditions', 'count_favorites', 'url_name', 'user_id', 'count_orders'], 'required'],
             ['cover', 'required',
                 'message' => 'Необходимо добавить хотя бы одну фотографию и пометить ее как фоновую'],
             [['post_id', 'total_view_id', 'status', 'date_start',
-                'date_finish', 'type', 'count_favorites', 'user_id'], 'integer'],
+                'date_finish', 'type', 'count_favorites', 'user_id', 'count_orders'], 'integer'],
             [['data', 'header', 'cover', 'conditions', 'title', 'description', 'key_word', 'url_name'], 'string'],
-            [['price', 'price_promo'], 'number', 'min' => 0],
+            [['price'], 'number', 'min' => 0],
             ['discount', 'number', 'min' => 0, 'max' => 100],
             ['number_purchases', 'integer', 'min' => 1],
             ['date_finish', 'validateDateFinish'],
@@ -86,7 +84,6 @@ class Discounts extends \yii\db\ActiveRecord
                 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
             [['total_view_id'], 'exist', 'skipOnError' => true,
                 'targetClass' => TotalView::className(), 'targetAttribute' => ['total_view_id' => 'id']],
-            ['price_promo', 'required', 'on' => [self::SCENARIO_MODERATOR]]
         ];
     }
 
@@ -102,7 +99,6 @@ class Discounts extends \yii\db\ActiveRecord
             'header' => 'Название скидки',
             'cover' => 'Cover',
             'price' => 'Стоимость товара или услуги',
-            'price_promo' => 'Цена промокода',
             'number_purchases' => 'Колличество промокодов',
             'discount' => 'Скидка',
             'total_view_id' => 'Total View ID',

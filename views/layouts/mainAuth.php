@@ -131,6 +131,9 @@ $countNotif = NotificationUser::getCountNotifications();
                 <div class="menu-list open-list" id="business">
                     <a href="<?=Url::to(['user/order-promocodes'])?>"><span></span>Заказы промокодов</a>
                 </div>
+                <div class="menu-list open-list" id="business">
+                    <a href="<?=Url::to(['user/account'])?>"><span></span>Пополнить счет</a>
+                </div>
             </div>
         <?php endif;?>
 
@@ -138,16 +141,6 @@ $countNotif = NotificationUser::getCountNotifications();
         <div class="container-item-menu visible">
             <a href="<?=Url::to(['user/get-promocodes'])?>">
                 <span class="icon-promotional"></span>Мои промокоды
-            </a>
-        </div>
-        <div class="container-item-menu closed">
-            <a class="section">
-                <span class="icon-certificates"></span>Мои сертификаты
-            </a>
-        </div>
-        <div class="container-item-menu closed">
-            <a class="section">
-                <span class="icon-big-purse"></span>Пополнить счет
             </a>
         </div>
         <div class="container-item-menu visible">
