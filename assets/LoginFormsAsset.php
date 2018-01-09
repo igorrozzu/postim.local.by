@@ -22,7 +22,6 @@ class LoginFormsAsset extends AssetBundle
     ];
     public $js = [
         'js/login-forms.js',
-        'js/enjoyhintMain.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',
