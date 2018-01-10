@@ -1,15 +1,24 @@
 <?php
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
+
 $data = $dataProvider->getModels();
 $count = count($data);
 $timezone = Yii::$app->user->getTimezoneInSeconds();
 ?>
-<?php foreach ($data as $item):?>
+<?php foreach ($data as $item):
+    $discountUrl = Url::to(['discount/read', 'url' => $item->discount->url_name,
+        'discountId' => $item->discount->id]);
+?>
     <div class="card-promo">
-        <div class="card-promo-photo" style="background-image: url('<?=$item->discount->getCover()?>')"></div>
+        <a href="<?=$discountUrl?>">
+            <div class="card-promo-photo" style="background-image: url('<?=$item->discount->getCover()?>')"></div>
+        </a>
         <div class="block-promo-info">
-            <h3 class="promo-info-header"><?=$item->discount->header?></h3>
+            <a href="<?=$discountUrl?>">
+                <h3 class="promo-info-header"><?=$item->discount->header?></h3>
+            </a>
             <div class="container-info-btn">
                 <div class="container-promo-info">
                     <div class="promo-info">Промокод<span><?=$item->promo_code?></span>
@@ -19,7 +28,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                     </div>
                     <div class="promo-info">Срок действия
                         <span>
-                            <?=Yii::$app->formatter->asDate($item->date_finish + $timezone,
+                            <?=Yii::$app->formatter->asDate($item->discount->date_finish + $timezone,
                                 'до dd.MM.yyyy')?>
                         </span>
                     </div>

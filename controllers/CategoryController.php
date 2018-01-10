@@ -234,7 +234,7 @@ class CategoryController extends MainController
         $this->under_category =Yii::$app->request->get('under_category',false);
 
         $request = Yii::$app->request;
-        $model = new DiscountSearch();
+        $discountSearch = new DiscountSearch();
         $pagination = new Pagination([
             'pageSize' => $request->get('per-page', 8),
             'page' => $request->get('page', 1) - 1,
@@ -242,11 +242,12 @@ class CategoryController extends MainController
             'selfParams' => [
                 'city' => true,
                 'category' => true,
+                'open' => true,
             ],
         ]);
 
         $loadTime = Yii::$app->request->get('loadTime', time());
-        $dataProvider = $model->searchByCityAndCategory(
+        $dataProvider = $discountSearch->searchByCityAndCategory(
             $request->queryParams,
             $pagination,
             $loadTime
@@ -273,11 +274,17 @@ class CategoryController extends MainController
                 ]
             ]);
         } else {
+
+            $postSearch = new PostsSearch();
+            $postCount = $postSearch->getCountByCityAndCategory(Yii::$app->request->queryParams);
+
             return $this->render('feed-discounts', [
                 'dataProvider' => $dataProvider,
                 'breadcrumbParams' => $breadcrumbParams,
                 'loadTime' => $loadTime,
                 'selfParams' => $selfParams,
+                'keyForMap' => $discountSearch->getKey(),
+                'postCount' => $postCount,
                 'urlPost' => str_replace('/skidki', '', Yii::$app->request->getPathInfo())
             ]);
         }

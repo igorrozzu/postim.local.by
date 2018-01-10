@@ -21,25 +21,6 @@ $this->registerMetaTag([
     'content'=> $post->data.' фотографии'
 ]);
 ?>
-<div class="margin-top60"></div>
-    <div id="map_block" class="block-map preload-map">
-        <div class="btns-map">
-            <div class="action-map" title="Открыть карту"></div>
-            <div class="find-me" title="Найти меня"></div>
-            <div class="zoom-plus"></div>
-            <div class="zoom-minus"></div>
-        </div>
-
-        <div id="map" style="display: none"></div>
-    </div>
-<?php
-$js = <<<js
-    $(document).ready(function() {
-      map.setIdPlacesOnMap("$keyForMap");
-    });
-js;
-echo "<script>$js</script>";
-?>
 <?php
 Pjax::begin([
     'timeout' => 60000,
@@ -49,6 +30,26 @@ Pjax::begin([
     'formSelector' => false,
 ])
 ?>
+<div class="margin-top60"></div>
+<div id="map_block" class="block-map preload-map">
+    <div class="btns-map">
+        <div class="action-map" title="Открыть карту"></div>
+        <div class="find-me" title="Найти меня"></div>
+        <div class="zoom-plus"></div>
+        <div class="zoom-minus"></div>
+    </div>
+
+    <div id="map" style="display: none"></div>
+</div>
+<?php
+$js = <<<js
+    $(document).ready(function() {
+      map.setIdPlacesOnMap("$keyForMap");
+    });
+js;
+echo "<script>$js</script>";
+?>
+
 <div class="block-content">
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v"><?=$post->data.' - фотографии'?></h1>

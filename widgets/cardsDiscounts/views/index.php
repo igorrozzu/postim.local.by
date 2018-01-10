@@ -31,8 +31,10 @@ $discounts = $dataProvider->getModels();
                 </div>
                 <div class="block-discount-dopinfo">
                     <div class="time-left">
-                        Осталось: <?=Yii::$app->formatter->asDuration($discount->date_finish - time()) ??
-                        'время истекло'?>
+                        <?php
+                        $duration = Yii::$app->formatter->asCustomDuration($discount->date_finish - time());
+                        echo $duration ? 'Осталось ' . $duration : 'Акция закончилась';
+                        ?>
                     </div>
                     <?php if ($settings['show-distance']):?>
                         <div class="distance-to-me">

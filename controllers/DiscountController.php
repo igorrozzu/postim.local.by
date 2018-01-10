@@ -17,7 +17,6 @@ use app\models\uploads\UploadPhotosByUrl;
 use app\models\uploads\UploadPostPhotosTmp;
 use app\widgets\cardsDiscounts\CardsDiscounts;
 use Yii;
-use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
@@ -56,7 +55,6 @@ class DiscountController extends MainController
             $response->success = false;
 
             $model->load(Yii::$app->request->post(), 'discount');
-            $model->conditions = Json::encode( $model->conditions );
             $model->photos = Yii::$app->request->post('photos');
 
             if ($model->create()) {
@@ -210,22 +208,12 @@ class DiscountController extends MainController
 
         Helper::addViews($discount->totalView);
 
-        $queryPost = Posts::find()
-            ->where([Posts::tableName() . '.id' => $discount->post->id])
-            ->prepare(Yii::$app->db->queryBuilder)
-            ->createCommand()->rawSql;
-        $keyForMap = Helper::saveQueryForMap($queryPost);
-
-
-        $economy = $discount->price ?
-            round($discount->price * $discount->discount / 100, 2) : null;
-
         return $this->render('index', [
             'discount' => $discount,
             'post' => $discount->post,
             'breadcrumbParams' => $breadcrumbParams,
-            'keyForMap' => $keyForMap,
-            'economy' => $economy
+            'economy' => $discount->calculateEconomy(),
+            'duration' => Yii::$app->formatter->asCustomDuration($discount->date_finish - time())
         ]);
     }
 
@@ -288,52 +276,55 @@ class DiscountController extends MainController
 
     public function actionOrder(int $discountId)
     {
-        $discount = Discounts::findOne($discountId);
+        if (Yii::$app->request->isPost) {
+            $discount = Discounts::findOne($discountId);
+            $response = new \stdClass();
+            $response->success = false;
 
-        if ($discount->status !== Discounts::STATUS['active']) {
+            if (!isset($discount) || $discount->date_finish < time() ||
+                $discount->status !== Discounts::STATUS['active']) {
+                $response->message = 'Скидка не найдена';
+                return $this->asJson($response);
+            }
+
+            if ($discount->count_orders === $discount->number_purchases) {
+                $response->message = 'К сожалению, все промокоды разобраны.';
+                return $this->asJson($response);
+            }
+
+            $lastOrderForDay = DiscountOrder::find()
+                ->where([
+                    'discount_id' => $discountId,
+                    'user_id' => Yii::$app->user->getId()
+                ])
+                ->andWhere(['>', 'date_buy', time() - 24 * 3600])
+                ->one();
+
+            if (isset($lastOrderForDay)) {
+                $response->message = 'В сутки имеется возможность приобретать только один промокод.';
+                return $this->asJson($response);
+            }
+
+            $order = new DiscountOrder([
+                'user_id' => Yii::$app->user->id,
+                'discount_id' => $discount->id,
+                'date_buy' => time(),
+                'promo_code' => (string) mt_rand(1000, 9999),
+                'pin_code' => null,
+                'status_promo' => Discounts::STATUS['active'],
+            ]);
+
+            if ($order->save()) {
+                $discount->updateCounters(['count_orders' => 1]);
+            }
+
+            $response->redirectUrl = Url::to(['user/get-promocodes']);
+            $response->success = true;
+            return $this->asJson($response);
+
+        } else {
             throw new NotFoundHttpException('Cтраница не найдена');
         }
-
-        if (Yii::$app->request->isPost) {
-            $model = new \app\models\forms\DiscountOrder([
-                'discount' => $discount,
-            ]);
-            $model->load(Yii::$app->request->post(), 'discountOrder');
-
-            if ($model->validate()) {
-                $provider = Order::createProviderByType($model);
-
-                if (isset($provider)) {
-                    $provider->createOrder();
-                    $resultViewName = $provider->getRenderView();
-                    $this->view->params['form-message'] = $this->renderPartial($resultViewName);
-                }
-            } else {
-
-                return $this->render('order', [
-                    'discount' => $discount,
-                    'errors' => array_values($model->getFirstErrors()),
-                ]);
-            }
-        }
-
-        $breadcrumbParams = $this->getParamsForBreadcrumb($discount);
-        $breadcrumbParams[] = [
-            'name' => $discount->header,
-            'url_name' => Url::to(['discount/read', 'url' => $discount->url_name,
-                'discountId' => $discount->id]),
-            'pjax' => 'class="main-pjax a"'
-        ];
-        $breadcrumbParams[] = [
-            'name' => 'Покупка промокода',
-            'url_name' => Yii::$app->request->getUrl(),
-            'pjax' => 'class="main-pjax a"'
-        ];
-
-        return $this->render('order', [
-            'discount' => $discount,
-            'breadcrumbParams' => $breadcrumbParams,
-        ]);
     }
 
     public function actionFavoriteState()

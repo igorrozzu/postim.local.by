@@ -20,25 +20,7 @@ $this->registerMetaTag([
     'content'=> $post->data . ' скидки'
 ]);
 ?>
-<div class="margin-top60"></div>
-    <div id="map_block" class="block-map preload-map">
-        <div class="btns-map">
-            <div class="action-map" title="Открыть карту"></div>
-            <div class="find-me" title="Найти меня"></div>
-            <div class="zoom-plus"></div>
-            <div class="zoom-minus"></div>
-        </div>
 
-        <div id="map" style="display: none"></div>
-    </div>
-<?php
-$js = <<<js
-    $(document).ready(function() {
-      map.setIdPlacesOnMap("$keyForMap");
-    });
-js;
-echo "<script>$js</script>";
-?>
 <?php
 Pjax::begin([
     'timeout' => 60000,
@@ -48,12 +30,27 @@ Pjax::begin([
     'formSelector' => false,
 ])
 ?>
+
+<div class="margin-top60"></div>
 <div class="block-content">
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v"><?=$discount->header?></h1>
 </div>
 
 <div class="block-content">
+
+    <?php if(Yii::$app->user->isModerator()):?>
+        <div class="block-content-between" style="margin-bottom: -10px">
+            <p class="text p-text">
+                Нашли неточность или ошибку,&nbsp;
+                <a class="href-edit" href="<?=Url::to(['/admin/discount/edit',
+                    'id' => $discount->id, 'redirect_back' => 'true']);?>">
+                    исправьте&nbsp;или&nbsp;дополните&nbsp;информацию
+                </a>
+            </p>
+        </div>
+    <?php endif;?>
+
     <div class="container-discount">
         <div class="container-discount-photos">
             <div class="discount-photos">
@@ -65,11 +62,15 @@ Pjax::begin([
         </div>
         <div class="container-discount-info">
             <div class="discount-info-time-left">
-                Акция действует до
-                <?=Yii::$app->formatter->asDate(
-                        $discount->date_finish + Yii::$app->user->identity->getTimezoneInSeconds(),
-                    'dd.MM.yyyy');?>
+                <?php
+                $dateFinish = Yii::$app->formatter->asDate(
+                    $discount->date_finish + Yii::$app->user->identity->getTimezoneInSeconds(),
+                    'dd.MM.yyyy');
+                echo $duration ? 'Акция действует до ' . $dateFinish :
+                    'Акция закончилась ' . $dateFinish;
+                ?>
             </div>
+
             <?php if (isset($discount->price)):?>
                 <div class="discount-info-text">
                     Стоимость
@@ -81,20 +82,21 @@ Pjax::begin([
                     </span>
                 </div>
             <?php endif;?>
+
             <div class="discount-info-text">
                 Скидка
                 <span class="discount-info-bold-text">
                     <?=$discount->discount?>%
                 </span>
             </div>
-            <?php if (isset($economy)):?>
-                <div class="discount-info-text">
-                    Экономия
-                    <span class="discount-info-bold-text">
-                        <?=$economy?> руб
-                    </span>
-                </div>
-            <?php endif;?>
+
+            <div class="discount-info-text">
+                Экономия
+                <span class="discount-info-bold-text">
+                    <?=isset($economy) ? $economy . ' руб' : 'Не ограничена'?>
+                </span>
+            </div>
+
             <div class="discount-info-text before-icon-user">
                 Купили
                 <span class="discount-info-bold-text">
@@ -103,22 +105,25 @@ Pjax::begin([
             </div>
 
             <div class="discount-info-text before-icon-purse">
-                Цена промокода:
-                <span class="discount-info-bold-text">бесплатно</span>
+                Цена промокода
+                <span class="discount-info-bold-text">Бесплатно</span>
             </div>
             <div class="container-bottom-btn">
-                <a href="<?=Url::to(['discount/order', 'discountId' => $discount->id])?>" class="order-discount">
-                    <div class="blue-btn-40">
-                        <p>Получить скидку <?=$discount->discount?>%</p>
-                    </div>
-                </a>
+                <div class="blue-btn-40 order-discount <?=$duration ? 'active' : 'inactive' ?>"
+                     data-href="<?=Url::to(['/discount/order', 'discountId' => $discount->id])?>">
+                    <p>Получить скидку <?=$discount->discount?>%</p>
+                </div>
             </div>
         </div>
     </div>
-    <h2 class="h2-c">Описание акции</h2>
-    <div class="block-description-card">
-        <?=$discount->data?>
-    </div>
+
+    <?php if (!empty($discount->data)):?>
+        <h2 class="h2-c">Описание акции</h2>
+        <div class="block-description-card">
+            <?=$discount->data?>
+        </div>
+    <?php endif;?>
+
     <h2 class="h2-c">Условия</h2>
     <div class="block-description-card">
         <ul>
@@ -145,11 +150,20 @@ Pjax::begin([
 </div>
 <script>
     $(document).ready(function () {
+        <?php if(Yii::$app->session->hasFlash('success')):?>
+            $().toastmessage('showToast', {
+                text: '<?=Yii::$app->session->getFlash('success')?>',
+                stayTime: 5000,
+                type: 'success'
+            });
+        <?php endif;?>
+
         $('.discount-photos').magnificPopup({
             delegate: 'img', // child items selector, by clicking on it popup will open
             type: 'image',
             gallery: {enabled: true}
         });
+        $('html').scrollTop(0);
     });
 </script>
 <?php

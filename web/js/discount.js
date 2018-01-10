@@ -161,49 +161,29 @@ var Discount = (function (window, document, undefined, $) {
                 return scope;
             },
 
-            DiscountOrder: function() {
+            Discount: function() {
 
                 var scope = {
                     init: function () {
-                        $(document).off('click','.payment-methods .payment-block div').
-                            on('click','.payment-methods .payment-block div', function () {
-                            if ($(this).hasClass('disable')) {
-                                return;
-                            }
+                        $(document).off('click','.order-discount.active')
+                        .on('click','.order-discount.active', function () {
 
-                            $('.payment-methods .payment-block div').removeClass('selected');
-                            $(this).addClass('selected');
-
-                            $('#discount-order-paymentType').val($(this).data('payment-type'));
+                            $.ajax({
+                                url: $(this).data('href'),
+                                type: 'POST',
+                                success: function (response) {
+                                    if (response.success) {
+                                        location.href = response.redirectUrl;
+                                    } else {
+                                        $().toastmessage('showToast', {
+                                            text: response.message,
+                                            stayTime: 8000,
+                                            type: 'error'
+                                        });
+                                    }
+                                }
+                            })
                         });
-
-                        $(document).off('click','.product-counter .add,.product-counter .remove').
-                            on('click','.product-counter .add,.product-counter .remove', function () {
-                            var scope = {
-                                totalCostField: $('.product-total-cost #total-cost'),
-                                counter: $('.counter'),
-                                inputCounter: $('#discount-order-count'),
-                                inputPaymentType: $('#discount-order-paymentType'),
-                            };
-
-                            var counterValue = parseInt(scope.counter.text());
-
-                            if ($(this).hasClass('add')) {
-                                ++counterValue;
-                            } else if ($(this).hasClass('remove') && counterValue > 1) {
-                                --counterValue;
-                            }
-                            scope.counter.text(counterValue);
-                            scope.inputCounter.val(counterValue);
-
-                            var totalCost = scope.totalCostField.data('start-value') * counterValue;
-                            scope.totalCostField.text(totalCost.toFixed(2));
-                        });
-
-                        $(document).off('click','.btn-order-discount')
-                            .on('click','.btn-order-discount', function () {
-                                $('#discount-order-form').submit();
-                            });
                     }
                 };
 
@@ -219,4 +199,4 @@ var Discount = (function (window, document, undefined, $) {
 var discount = Discount();
 discount.Adding().init();
 discount.Feed().init();
-discount.DiscountOrder().init();
+discount.Discount().init();

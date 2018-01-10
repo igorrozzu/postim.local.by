@@ -75,24 +75,36 @@ $this->registerMetaTag([
 <div class="margin-top60"></div>
 <div class="menu-info-cards-contener">
     <div class="menu-info-cards">
-        <div class="btns-filter">
-            <div class="btn-filter btn-bb active total-count"><span class="under-line">Места <?=$totalCount?></span></div>
-            <div class="btn-filter btn-bb open-now" data-name_filter="open" data-value="now"><span class="under-line">Открыто сейчас</span></div>
+        <div class="btns-filter main-pjax">
+            <div class="btn-division btn-bb active total-count">
+                <span class="under-line">Места <?=$totalCount?></span>
+            </div>
+            <?php if($discountCount > 0):?>
+                <a href="/<?= Yii::$app->request->getPathInfo()?>/skidki">
+                    <div id="discount-total-count" class="btn-division btn-bb">
+                        <span class="under-line">Скидки <?=$discountCount?></span>
+                    </div>
+                </a>
+            <?php endif;?>
+            <div class="btn-filter btn-bb open-now" data-name_filter="open" data-value="now">
+                <span class="under-line">Открыто сейчас</span>
+            </div>
         </div>
-        <div class="btn-filter icon-filter <?=!$issetFilters?'hide-dp':''?>"><span>Все фильтры</span></div>
+        <div class="btn-filter icon-filter <?=!$issetFilters?'hide-dp':''?>">
+            <span>Все фильтры</span>
+        </div>
     </div>
 </div>
-    <div id="map_block" class="block-map preload-map">
-        <div class="btns-map">
-            <div class="action-map" title="Открыть карту"></div>
-            <div class="find-me" title="Найти меня"></div>
-            <div class="zoom-plus"></div>
-            <div class="zoom-minus"></div>
-        </div>
-
-        <div id="map" style="display: none"></div>
+<div id="map_block" class="block-map preload-map">
+    <div class="btns-map">
+        <div class="action-map" title="Открыть карту"></div>
+        <div class="find-me" title="Найти меня"></div>
+        <div class="zoom-plus"></div>
+        <div class="zoom-minus"></div>
     </div>
 
+    <div id="map" style="display: none"></div>
+</div>
 
 <div class="block-content">
     <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
@@ -117,12 +129,6 @@ Pjax::begin([
             <?php else:?>
                 <a style="display: none" href="<?=Helper::createUrlWithSelfParams($selfParams,['sort'=>'nigh'])?>" class="btn-nigh btn-sort <?=$sort=='nigh'?'active':''?>"><span class="under-line">Рядом</span></a>
                 <a class="btn-sort no-geolocation"><span class="under-line">Рядом</span></a>
-            <?php endif;?>
-            <?php if($discountCount > 0):?>
-                <a href="/<?= Yii::$app->request->getPathInfo()?>/skidki"
-                   class="btn-sort">
-                    <span class="under-line">Скидки <?=$discountCount?></span>
-                </a>
             <?php endif;?>
         </div>
     </div>

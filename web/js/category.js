@@ -24,6 +24,10 @@ var Category = (function (window, document, undefined,$) {
                 $('.total-count','.menu-info-cards').html('<span class="under-line">Места '+totalCount+'</span>');
             },
 
+            refreshDiscountTotalCount: function (totalCount) {
+                $('#discount-total-count','.menu-info-cards').html(
+                    '<span class="under-line">Скидки '+ totalCount +'</span>');
+            },
 
             Filters:function () {
 

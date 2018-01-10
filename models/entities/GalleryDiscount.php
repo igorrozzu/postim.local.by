@@ -18,6 +18,11 @@ use Yii;
  */
 class GalleryDiscount extends \yii\db\ActiveRecord
 {
+    const STATUS = [
+        'inactive' => 0,
+        'active' => 1,
+    ];
+
     /**
      * @inheritdoc
      */

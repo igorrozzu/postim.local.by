@@ -243,6 +243,11 @@ class Posts extends \yii\db\ActiveRecord
             ->andWhere(Gallery::tableName() . '.id = max_record.max_id');
     }
 
+    public function getDiscounts()
+    {
+        return $this->hasMany(Discounts::className(), ['post_id' => 'id']);
+    }
+
     public function afterFind()
     {
         parent::afterFind();

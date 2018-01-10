@@ -2,11 +2,13 @@
 
 namespace app\models\search;
 
+use app\components\Helper;
 use app\components\Pagination;
 use app\models\Category;
 use app\models\City;
 use app\models\Countries;
 use app\models\Discounts;
+use app\models\Posts;
 use app\models\Region;
 use app\models\UnderCategory;
 use Yii;
@@ -20,6 +22,10 @@ class DiscountSearch extends Discounts
     public $category;
     public $under_category;
     public $city;
+    public $open;
+
+    private $queryForPlaceOnMap;
+    private $key;
 
     /**
      * @inheritdoc
@@ -27,7 +33,7 @@ class DiscountSearch extends Discounts
     public function rules()
     {
         return [
-            [['category', 'under_category', 'city'], 'safe'],
+            [['category', 'under_category', 'city', 'open'], 'safe'],
         ];
     }
 
@@ -68,8 +74,20 @@ class DiscountSearch extends Discounts
             ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
             ->orderBy(['date_start' => SORT_DESC]);
 
+        $this->queryForPlaceOnMap = Posts::find()
+            ->select([Posts::tableName() . '.id', Posts::tableName() . '.coordinates'])
+            ->innerJoinWith(['discounts'])
+            ->innerJoinWith(['city.region.coutries', 'categories.category'])
+            ->andWhere(['<=', 'date_start', $loadTime])
+            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']]);
+
         if (isset($this->city)) {
             $query->andWhere(['or',
+                [Region::tableName() . '.url_name' => $this->city['url_name']],
+                [City::tableName() . '.url_name' => $this->city['url_name']],
+                [Countries::tableName() . '.url_name' => $this->city['url_name']],
+            ]);
+            $this->queryForPlaceOnMap->andWhere(['or',
                 [Region::tableName() . '.url_name' => $this->city['url_name']],
                 [City::tableName() . '.url_name' => $this->city['url_name']],
                 [Countries::tableName() . '.url_name' => $this->city['url_name']],
@@ -78,10 +96,56 @@ class DiscountSearch extends Discounts
 
         if (isset($this->under_category)) {
             $query->andWhere([UnderCategory::tableName() . '.url_name' => $this->under_category['url_name']]);
-
+            $this->queryForPlaceOnMap->andWhere([UnderCategory::tableName() . '.url_name' => $this->under_category['url_name']]);
         } else if (isset($this->category)) {
             $query->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
+            $this->queryForPlaceOnMap->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
         }
+
+        if ($this->open) {
+            $query->innerJoinWith(['post.workingHours' => function ($query) {
+                $query->andWhere(['day_type' => date('w') == 0 ? 7 : date('w')]);
+            }]);
+            $currentTimestamp = Yii::$app->formatter->asTimestamp(
+                Yii::$app->formatter->asTime(
+                    $loadTime + Yii::$app->user->getTimezoneInSeconds(), 'short')
+            );
+            $currentTime = idate('H', $currentTimestamp) * 3600 +
+                idate('i', $currentTimestamp) * 60 + idate('s', $currentTimestamp);
+            $query->andWhere(['or',
+                ['and',
+                    ['<=', 'tbl_working_hours.time_start', $currentTime],
+                    ['>=', 'tbl_working_hours.time_finish', $currentTime]
+                ],
+                ['and',
+                    ['>=', 'tbl_working_hours.time_finish', $currentTime + 24 * 3600],
+                    ['<=', 'tbl_working_hours.time_start', $currentTime + 24 * 3600]
+                ]
+            ]);
+
+            $this->queryForPlaceOnMap->innerJoinWith(['workingHours' => function ($query) {
+                $query->andWhere(['day_type' => date('w') == 0 ? 7 : date('w')]);
+            }]);
+            $this->queryForPlaceOnMap->andWhere(['or',
+                ['and',
+                    ['<=', 'tbl_working_hours.time_start', $currentTime],
+                    ['>=', 'tbl_working_hours.time_finish', $currentTime]
+                ],
+                ['and',
+                    ['>=', 'tbl_working_hours.time_finish', $currentTime + 24 * 3600],
+                    ['<=', 'tbl_working_hours.time_start', $currentTime + 24 * 3600]
+                ]
+            ]);
+        }
+
+        $query->groupBy([Discounts::tableName() . '.id']);
+
+        $this->queryForPlaceOnMap->groupBy([Posts::tableName() . '.id']);
+        $this->key = Helper::saveQueryForMap(
+            $this->queryForPlaceOnMap
+                ->prepare(Yii::$app->db->queryBuilder)
+                ->createCommand()->rawSql
+        );
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -114,6 +178,7 @@ class DiscountSearch extends Discounts
             $query->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
         }
 
+        $query->groupBy([Discounts::tableName() . '.id']);
         return $query->count();
     }
 
@@ -140,5 +205,21 @@ class DiscountSearch extends Discounts
         ]);
 
         return $dataProvider;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQueryForPlaceOnMap()
+    {
+        return $this->queryForPlaceOnMap;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKey()
+    {
+        return $this->key;
     }
 }

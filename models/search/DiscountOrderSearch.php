@@ -27,7 +27,7 @@ class DiscountOrderSearch extends DiscountOrder
     public function rules()
     {
         return [
-            [['id', 'user_id', 'discount_id', 'date_buy', 'date_finish', 'pin_code', 'status_promo'], 'integer'],
+            [['id', 'user_id', 'discount_id', 'date_buy', 'pin_code', 'status_promo'], 'integer'],
             [['promo_code', 'status', 'type', 'order_time', 'search_field'], 'safe'],
         ];
     }

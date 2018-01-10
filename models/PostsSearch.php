@@ -248,8 +248,6 @@ class PostsSearch extends Posts
         return $dataProvider;
     }
 
-
-
     public function searchSpotlight($params){
 
         $query = Posts::find();
@@ -314,10 +312,6 @@ class PostsSearch extends Posts
 
     }
 
-
-
-
-
     public function getAutoComplete(string $text){
         $query = Posts::find()->select(['tbl_posts.id','tbl_posts.data','tbl_posts.url_name','tbl_posts.city_id'])
             ->where(['like','upper(data)','%'.mb_strtoupper($text).'%',false]);
@@ -346,14 +340,44 @@ class PostsSearch extends Posts
 
     }
 
-    public function getKeyForPlacesOnMap(){
+    public function getKeyForPlacesOnMap()
+    {
         return $this->key;
     }
 
-    public static function getSortArray($paramSort){
+    public static function getSortArray($paramSort)
+    {
         switch ($paramSort){
             case 'new':{return ['date'=>SORT_DESC];}break;
             default:{return ['rating'=>SORT_DESC,'count_reviews'=>SORT_DESC];}break;
         }
+    }
+
+    public function getCountByCityAndCategory(array $params)
+    {
+        $this->load($params, '');
+
+        $query = Posts::find()
+            ->innerJoinWith(['city.region.coutries', 'categories.category'])
+            ->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']]);
+
+        if (isset($this->city)) {
+            $query->andWhere(['or',
+                [Region::tableName() . '.url_name' => $this->city['url_name']],
+                [City::tableName() . '.url_name' => $this->city['url_name']],
+                [Countries::tableName() . '.url_name' => $this->city['url_name']],
+            ]);
+        }
+
+        if (isset($this->under_category)) {
+            $query->andWhere([UnderCategory::tableName() . '.url_name' => $this->under_category['url_name']]);
+
+        } else if (isset($this->category)) {
+            $query->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
+        }
+
+        $query->groupBy([Posts::tableName() . '.id']);
+
+        return $query->count();
     }
 }

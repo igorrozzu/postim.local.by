@@ -1470,7 +1470,9 @@ a.btn-show-more{
     margin-bottom: 20px;
     height: auto;
 }
-.btn-filter{
+.btn-filter,
+.btn-division
+{
     display: flex;
     align-items: center;
     height: 60px;
@@ -1486,10 +1488,15 @@ a.btn-show-more{
     align-items: center;
     margin-right: 40px;
 }
-.btn-filter:hover{
+.btns-filter a {
+    text-decoration: none;
+}
+.btn-filter:hover,
+.btn-division:hover{
     color: #4b98df;
 }
-.btn-filter:hover.text{
+.btn-filter:hover.text,
+.btn-division:hover.text{
     color: #788399;
 }
 
@@ -3173,12 +3180,20 @@ a .btn-sort-reviews.active
     box-shadow: 0 2px 0 0 #cdced0;
     border-radius: 0 0 3px 3px;
 }
-.card-block-discount .discount-link {
+.cards-block-discount a {
     text-decoration: none;
 }
-.card-block-discount:nth-child(4n){
+.cards-block-discount.row-4 .card-block-discount:nth-child(4n){
     margin-right: 0px;
 }
+
+.cards-block-discount.row-3 .card-block-discount:nth-child(3n) {
+    margin-right: 0px;
+}
+.cards-block-discount.row-3 {
+   max-width: 940px;
+}
+
 .block-discount-photo{
     height: 200px;
     display: flex;
@@ -3441,7 +3456,7 @@ a .btn-sort-reviews.active
     background-color: #ffffff;
     border-radius: 3px;
     width: 900px;
-    height: 440px;
+    max-height: 440px;
     box-shadow: 0px 2px 0px 0px #cdced0;
 }
 .discount-photos{
@@ -3453,7 +3468,6 @@ a .btn-sort-reviews.active
 }
 .discount-photos img {
     display: none;
-
 }
 .discount-photos img:first-child {
     display: block;
@@ -3462,6 +3476,7 @@ a .btn-sort-reviews.active
     -o-object-fit: cover;
     object-fit: cover;
     object-position: center;
+    max-height: 440px;
 }
 .container-photos-inside{
     width: 100%;
@@ -3533,6 +3548,9 @@ a .btn-sort-reviews.active
     text-decoration: none;
     color: #ffffff;
     width: 100%;
+}
+.container-bottom-btn .order-discount.inactive {
+    cursor: not-allowed;
 }
 .blue-btn-40{
     display: flex;
@@ -3824,6 +3842,10 @@ insert-item h2:last-child{
 }
 .container-body-right-menu .container-item-menu:last-child{
     margin-bottom: 25px;
+}
+.business-block .container-item-menu:first-child,
+.business-block .container-item-menu:last-child {
+    margin: 0;
 }
 .container-body-right-menu .icon-business {
     height: 24px;
@@ -5231,6 +5253,9 @@ input.search-selected-field{
     flex-direction: column;
     width: 100%;
 }
+.block-promo-info a {
+    text-decoration: none;
+}
 .promo-info-header{
     font-size: 20px;
     color: #444444;
@@ -5312,18 +5337,9 @@ input.search-selected-field{
     display: flex;
     margin-left: 10px;
 }
-.container-item-menu .open-right-menu-list,
-.container-item-menu .close-right-menu-list{
 
-}
-.menu-list{
-    height: 0px;
-    overflow: hidden;
-}
-.menu-list.open-list{
-    height: auto;
-}
-.container-item-menu.active{
+.container-item-menu.active ,
+.business-block {
     background-color: #f2f4fd;
 }
 .container-promo-statistic{
@@ -5540,12 +5556,6 @@ input.search-selected-field{
     background-color: #b62c2c;
 }
 
-.container-item-menu a.close-right-menu-list{
-    cursor: default;
-}
-.container-item-menu a.close-right-menu-list:hover{
-    color: #6b778f;
-}
 /*Переопределение стилей формы yii2*/
 .help-block{
     color: #ff4c5b;

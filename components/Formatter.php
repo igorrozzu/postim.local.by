@@ -21,7 +21,7 @@ class Formatter extends \yii\i18n\Formatter
         }
     }
 
-    public function asDuration($value, $implodeString = ', ', $negativeSign = '-')
+    public function asCustomDuration($value)
     {
         if ($value === null) {
             return $this->nullDisplay;
@@ -43,26 +43,26 @@ class Formatter extends \yii\i18n\Formatter
             $isNegative = $interval->invert;
         }
 
-        if ($interval->y > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 year} other{# years}}', ['delta' => $interval->y], $this->locale);
-        }
-        if ($interval->m > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 month} other{# months}}', ['delta' => $interval->m], $this->locale);
-        }
-        if ($interval->d > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 day} other{# days}}', ['delta' => $interval->d], $this->locale);
-        }
-        if ($interval->h > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 hour} other{# hours}}', ['delta' => $interval->h], $this->locale);
-        }
-        if ($interval->i > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i], $this->locale);
-        }
-
         if ($isNegative) {
             return null;
         }
 
-        return empty($parts) ? $this->nullDisplay : (($isNegative ? $negativeSign : '') . implode($implodeString, $parts));
+        if ($interval->y > 0) {
+            return Yii::t('yii', '{delta, plural, =1{1 year} other{# years}}', ['delta' => $interval->y], $this->locale);
+        }
+        if ($interval->m > 0) {
+            return Yii::t('yii', '{delta, plural, =1{1 month} other{# months}}', ['delta' => $interval->m], $this->locale);
+        }
+        if ($interval->d > 0) {
+            return Yii::t('yii', '{delta, plural, =1{1 day} other{# days}}', ['delta' => $interval->d], $this->locale);
+        }
+        if ($interval->h > 0) {
+            return Yii::t('yii', '{delta, plural, =1{1 hour} other{# hours}}', ['delta' => $interval->h], $this->locale);
+        }
+        if ($interval->i > 0) {
+            return Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i], $this->locale);
+        }
+
+        return null;
     }
 }
