@@ -39,7 +39,7 @@ class DiscountController extends AdminDefaultController
         ]);
     }
 
-    public function actionEdit(int $id, string $redirect_back = null)
+    public function actionEdit(int $id)
     {
         $discount = Discounts::findOne($id);
 
@@ -53,14 +53,11 @@ class DiscountController extends AdminDefaultController
             $discount->photos = Yii::$app->request->post('photos');
 
             if ($discount->edit()) {
-                Yii::$app->session->setFlash('success', 'Редактирование скидки произведено успешно');
+                Yii::$app->session->setFlash('success',
+                    'Редактирование скидки произведено успешно');
 
-                if (isset($redirect_back)) {
-                    $redirectUrl = Url::to(['/discount/read', 'url' => $discount->url_name,
-                        'discountId' => $discount->id]);
-                } else {
-                    $redirectUrl = Url::to(['/admin/discount/index']);
-                }
+                $redirectUrl = Url::to(['/admin/discount/index']);
+
                 return $this->redirect($redirectUrl);
             }
         }

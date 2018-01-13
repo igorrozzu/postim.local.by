@@ -58,16 +58,18 @@ $this->title = 'Редактировать скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Условия акции</label>
 
-                <?php foreach (Json::decode($discount->conditions) as $condition): ?>
-                    <div class="option-select-field another-condition">
-                        <div class="block-textarea-custom">
+                <?php if(isset($discount->conditions)):?>
+                    <?php foreach (Json::decode($discount->conditions) as $condition): ?>
+                        <div class="option-select-field another-condition">
+                            <div class="block-textarea-custom">
                                 <textarea placeholder="Укажите условие"
                                           name="discount[conditions][]"
                                 ><?=$condition?></textarea>
-                            <div class="close-input-custom" ></div>
+                                <div class="close-input-custom" ></div>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach;?>
+                    <?php endforeach;?>
+                <?php endif;?>
 
                 <div class="selected-field" id="add-share-condition">
                     <div id="select-condition-value" class="select-value">
@@ -79,64 +81,11 @@ $this->title = 'Редактировать скидку на Postim.by';
                 <div id="select-condition" class="container-scroll auto-height" style="max-height: none;">
                     <div class="option-select-field">
                         <div class="block-textarea-custom hidden">
-                            <textarea data-preview-text="Воспользоваться промокодом вы можете до"
-                                      data-continue-text=" 00.00.2018."
-                                      placeholder="Укажите условие" readonly
-                            >Воспользоваться промокодом вы можете до 00.00.2018.</textarea>
-                            <div class="close-input-custom" ></div>
-                        </div>
-                    </div>
-                    <div class="option-select-field">
-                        <div class="block-textarea-custom hidden">
-                            <textarea data-preview-text="Промокод действует на одного человека"
-                                      data-continue-text=". Если идете компанией, необходимо приобретать промокоды на каждого."
-                                      placeholder="Укажите условие" readonly
-                            >Промокод действует на одного человека. Если идете компанией, необходимо приобретать промокоды на каждого.</textarea>
-                            <div class="close-input-custom" ></div>
-                        </div>
-                    </div>
-                    <div class="option-select-field">
-                        <div class="block-textarea-custom hidden">
-                            <textarea data-preview-text="Необходимо предъявлять промокод до заказа"
-                                      data-continue-text=". Скидка предоставляется только при наличии неиспользованного ранее промокода, вы можете его назвать по телефону, предъявить в распечатанном или в электронном виде."
-                                      placeholder="Укажите условие" readonly
-                            >Необходимо предъявлять промокод до заказа. Скидка предоставляется только при наличии неиспользованного ранее промокода, вы можете его назвать по телефону, предъявить в распечатанном или в электронном виде.</textarea>
-                            <div class="close-input-custom" ></div>
-                        </div>
-                    </div>
-                    <div class="option-select-field">
-                        <div class="block-textarea-custom hidden">
-                            <textarea data-preview-text="Обязателен предварительный заказ"
-                                      data-continue-text=" или бронь по телефонам, указанным в купоне на скидку."
-                                      placeholder="Укажите условие" readonly
-                            >Обязателен предварительный заказ или бронь по телефонам, указанным в купоне на скидку.</textarea>
-                            <div class="close-input-custom" ></div>
-                        </div>
-                    </div>
-                    <div class="option-select-field">
-                        <div class="block-textarea-custom hidden">
-                            <textarea data-preview-text="Скидка по промокоду не суммируется"
-                                      data-continue-text=" с другими акциями и спецпредложениями."
-                                      placeholder="Укажите условие" readonly
-                            >Скидка по промокоду не суммируется с другими акциями и спецпредложениями.</textarea>
-                            <div class="close-input-custom" ></div>
-                        </div>
-                    </div>
-                    <div class="option-select-field">
-                        <div class="block-textarea-custom hidden">
                             <textarea data-preview-text="Поставщик несет полную ответственность"
                                       data-continue-text=" перед потребителем за достоверность информации."
-                                      placeholder="Укажите условие" readonly
-                            >Поставщик несет полную ответственность перед потребителем за достоверность информации.</textarea>
-                            <div class="close-input-custom" ></div>
-                        </div>
-                    </div>
-                    <div class="option-select-field">
-                        <div class="block-textarea-custom hidden">
-                            <textarea data-preview-text='Услуги (товары) предоставляются ООО "Рестгорсервис" УНП 191206305.'
-                                      data-continue-text=""
-                                      placeholder="Укажите условие" readonly
-                            >Услуги (товары) предоставляются ООО "Рестгорсервис" УНП 191206305.</textarea>
+                                      placeholder="Укажите условие"
+                                      readonly
+                            >Поставщик несет полную ответственность</textarea>
                             <div class="close-input-custom" ></div>
                         </div>
                     </div>
@@ -181,6 +130,12 @@ $this->title = 'Редактировать скидку на Postim.by';
                 <input id="product-count" name="discount[number_purchases]" class="input-field-setting"
                        placeholder="Укажите колличество" value="<?=$discount->number_purchases?>">
             </div>
+            <div class="block-field-setting">
+                <label class="label-field-setting">Название промокода</label>
+                <input id="product-count" name="discount[promocode]" class="input-field-setting"
+                       placeholder="Укажите единый промокод для всех или Не указывайте и мы
+                       сгенерируем уникальный промокод из 4х цифр для каждого клиента" value="<?=$discount->promocode?>">
+            </div>
         </div>
 
         <div class="container-add-place">
@@ -218,21 +173,23 @@ $this->title = 'Редактировать скидку на Postim.by';
         </div>
 
         <div class="container-add-place">
-            <div class="block-field-setting">
-                <label class="label-field-setting">Заголовок для поисковиков</label>
-                <input name="discount[title]" class="input-field-setting" placeholder="Введите текст"
-                       value="<?=$discount->title?>">
-            </div>
-            <div class="block-field-setting">
-                <label class="label-field-setting">Описание для поисковиков</label>
-                <input name="discount[description]" class="input-field-setting" placeholder="Введите текст"
-                       value="<?=$discount->description?>">
-            </div>
-            <div class="block-field-setting">
-                <label class="label-field-setting">Ключевые слова</label>
-                <input name="discount[key_word]" class="input-field-setting" placeholder="Введите текст"
-                       value="<?=$discount->key_word?>">
-            </div>
+            <?php if(Yii::$app->user->isModerator()):?>
+                <div class="block-field-setting">
+                    <label class="label-field-setting">Заголовок для поисковиков</label>
+                    <input name="discount[title]" class="input-field-setting" placeholder="Введите текст"
+                           value="<?=$discount->title?>">
+                </div>
+                <div class="block-field-setting">
+                    <label class="label-field-setting">Описание для поисковиков</label>
+                    <input name="discount[description]" class="input-field-setting" placeholder="Введите текст"
+                           value="<?=$discount->description?>">
+                </div>
+                <div class="block-field-setting">
+                    <label class="label-field-setting">Ключевые слова</label>
+                    <input name="discount[key_word]" class="input-field-setting" placeholder="Введите текст"
+                           value="<?=$discount->key_word?>">
+                </div>
+            <?php endif;?>
             <div class="btn-send">
                 <div id="edit-discount" class="large-wide-button"><p>Редактировать</p></div>
             </div>

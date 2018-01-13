@@ -321,8 +321,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getIsOwner()
     {
-        return $this->hasOne(OwnerPost::className(), ['owner_id' => 'id'])
-            ->onCondition([OwnerPost::tableName() . '.owner_id' => Yii::$app->user->id]);
+        return $this->hasOne(OwnerPost::className(), ['owner_id' => 'id']);
     }
 
     public function getFullName(): string

@@ -4,6 +4,7 @@ use \app\components\mainMenu\MainMenuWidget;
 use \app\components\cardsPlaceWidget\CardsPlaceWidget;
 use \app\components\cardsNewsWidget\CardsNewsWidget;
 use \app\models\DescriptionPage;
+use app\widgets\cardsDiscounts\CardsDiscounts;
 
 
 $descriptionPage = DescriptionPage::initMetaTags(function ()use ($spotlight){
@@ -58,6 +59,20 @@ $this->registerMetaTag([
         </div>
         <div class="clear-fix"></div>
     <?php endif; ?>
+
+    <?php if($discountDataProvider->getTotalCount()):?>
+        <h2 class="h2-c">Новые скидки</h2>
+        <div class="cards-block-discount row-4 main-pjax" data-favorites-state-url="/discount/favorite-state">
+            <?= CardsDiscounts::widget([
+                'dataProvider' => $discountDataProvider,
+                'settings' => [
+                    'show-distance' => false,
+                    'view' => 'feed-main-page'
+                ]
+            ]); ?>
+        </div>
+    <?php endif; ?>
+
     <?php if($news->totalCount):?>
     <h2 class="h2-c">Последние новости</h2>
     <div class="container-news">

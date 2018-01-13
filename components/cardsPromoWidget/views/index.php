@@ -1,4 +1,6 @@
 <?php
+
+use app\models\entities\DiscountOrder;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -42,7 +44,10 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                 <div class="block-promo-btns">
                     <div class="promo-btn btn-print-promo"></div>
                     <div class="promo-btn btn-download-promo"></div>
-                    <div class="promo-btn btn-close-promo"></div>
+                    <?php if($item->status_promo === DiscountOrder::STATUS['active']):?>
+                        <div class="promo-btn btn-close-promo"
+                             data-href="<?=Url::to(['user/confirm-used-order', 'id' => $item->id])?>"></div>
+                    <?php endif;?>
                 </div>
             </div>
         </div>

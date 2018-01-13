@@ -10,7 +10,7 @@ $totalPrice = $totalCount > 0 ? $dataProvider->query->sum('price'): null;
         <span class="r3">Куплен</span>
         <span class="r4">Срок действия</span>
         <span class="r5">Сумма, руб</span>
-        <span class="r6">Статус</span>
+        <span class="r6">Клиент</span>
     </div>
     <div class="row-content">
         <span class="r1">

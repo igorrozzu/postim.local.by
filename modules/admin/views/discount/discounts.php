@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Discounts;
 use yii\grid\GridView;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
@@ -54,6 +55,20 @@ Pjax::begin([
                 'value' => function($discount) {
                     return "<a data-pjax=false target=\"_blank\" class='data-link' 
                     href='/id{$discount->user->id}'>{$discount->user->getFullName()}</a>";
+                },
+            ],
+
+            [
+                'attribute' => null,
+                'format' => 'raw',
+                'label' => 'Тип',
+                'headerOptions' => ['width'=>'50px','height'=>'50px','style'=>'vertical-align: middle;','class' => '--header-p'],
+                'value' => function($discount) {
+                    switch ($discount->status) {
+                        case Discounts::STATUS['editing']: return 'Ред...';
+                        case Discounts::STATUS['moderation']: return 'Новый';
+                        default: return 'Неверный тип';
+                    }
                 },
             ],
 

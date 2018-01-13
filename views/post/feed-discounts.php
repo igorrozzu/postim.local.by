@@ -11,11 +11,12 @@ $categoryName = mb_strtolower(Yii::t('app/singular', $post->onlyOnceCategories[0
 $city = Yii::t('app/locativus', $post->city->name);
 
 $title = 'Скидки, акции от ' . $post->data . ' - ' . $categoryName . ' в ' . $city . ', ' . $post['address'];
-$this->title = $title . ': промокоды';
+$descriptionText = $title . '. Промокоды ' . $post->data . ' — выгодные предложения по низкой цене.';
 
+$this->title = $title . ': промокоды';
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => $title . '. Промокоды ' . $post->data . ' — выгодные предложения по низкой цене.'
+    'content' => $descriptionText
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -118,6 +119,10 @@ echo "<script>$js</script>";
             </div>
         </div>
     <?php endif; ?>
+
+    <div class="description-text">
+        <?=$descriptionText?>
+    </div>
 </div>
 
 <script>

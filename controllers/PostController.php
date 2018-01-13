@@ -985,7 +985,7 @@ class PostController extends MainController
         $request = Yii::$app->request;
         $model = new DiscountSearch();
         $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 8),
+            'pageSize' => $request->get('per-page', 6),
             'page' => $request->get('page', 1) - 1,
             'route' => Url::to(['discount/load-more-discounts']),
             'selfParams' => [

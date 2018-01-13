@@ -34,6 +34,7 @@ class AppAsset extends AssetBundle
         'css/min-540px.css',
         'css/max-480px.css',
         'css/main-media.css',
+        'css/admin/pop-up/pop-up.css',
     ];
     public $js = [
         'js/uploads.js',
@@ -64,8 +65,9 @@ class AppAsset extends AssetBundle
         'js/add-post.js',
         'js/search.js',
         'js/libs/jquery.ui.touch-punch.min.js',
-        'js/modalWindow.js'
-
+        'js/modalWindow.js',
+        'js/discount.js',
+        'js/admin/pop-up.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

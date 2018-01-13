@@ -63,6 +63,21 @@ class User extends \yii\web\User{
         return true;
     }
 
+    public function isOwnerThisPost(int $postId): bool
+    {
+        if ($this->isGuest) {
+            return false;
+        }
+
+        $isCurrentUserOwner = OwnerPost::find()
+            ->where([
+                OwnerPost::tableName() . '.owner_id' => $this->getId(),
+                OwnerPost::tableName() . '.post_id' => $postId,
+            ])->one();
+
+        return isset($isCurrentUserOwner);
+    }
+
     public function generationSecretToken(){
 
 	    if($this->isModerator()){

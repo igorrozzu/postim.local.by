@@ -12,7 +12,7 @@ class CardsDiscounts extends Widget
 
     public function run()
     {
-        return $this->render('index', [
+        return $this->render($this->settings['view'] ?? 'index', [
             'dataProvider' => $this->dataProvider,
             'settings' => $this->settings,
         ]);

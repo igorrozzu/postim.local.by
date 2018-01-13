@@ -4,6 +4,7 @@ namespace app\components;
 
 use app\models\News;
 use app\models\ReviewsSearch;
+use app\models\search\DiscountSearch;
 use app\models\search\NewsSearch;
 use app\models\Posts;
 use app\models\PostsSearch;
@@ -64,10 +65,23 @@ class MainController extends Controller
             time()
         );
 
+        $discountSearchModel = new DiscountSearch();
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 4),
+            'page' => $request->get('page', 1) - 1,
+        ]);
+
+        $discountDataProvider = $discountSearchModel->searchByCity(
+            Yii::$app->request->queryParams,
+            $pagination,
+            time()
+        );
+
         return [
             'spotlight' => $dataProvider,
             'news' => $newsDataProvider,
             'reviews' => $reviewsDataProvider,
+            'discountDataProvider' => $discountDataProvider,
             'keyForMap' => $searchModel->getKeyForPlacesOnMap(),
             'initPhotoSliderParams' => [
                 'photoId' => isset($request->queryParams['photo_id']) ?

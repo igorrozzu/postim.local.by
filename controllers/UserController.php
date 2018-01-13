@@ -12,6 +12,7 @@ use app\models\City;
 use app\models\entities\DiscountOrder;
 use app\models\entities\Gallery;
 use app\models\entities\OwnerPost;
+use app\models\forms\AccountPayment;
 use app\models\moderation_post\PostsModeration;
 use app\models\moderation_post\PostsModerationSearch;
 use app\models\PostsSearch;
@@ -294,6 +295,10 @@ class UserController extends MainController
 
     public function actionGetPromocodes()
     {
+        if (Yii::$app->user->isGuest) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
         $searchModel = new DiscountOrderSearch();
         $request = Yii::$app->request;
         $pagination = new Pagination([
@@ -469,14 +474,12 @@ class UserController extends MainController
             'pageSize' => $request->get('per-page', 8),
             'page' => $request->get('page', 1) - 1,
             'selfParams'=> [
-                'status' => true,
                 'type' => true,
                 'order_time' => true,
                 'promo_code' => true,
             ],
         ]);
         $loadTime = $request->get('loadTime', time());
-        $_GET['status'] = $_GET['status'] ?? 'all';
         $_GET['type'] = $_GET['type'] ?? 'promocode';
         $dataProvider = $searchModel->statisticsSearch(
             $request->queryParams,
@@ -504,21 +507,12 @@ class UserController extends MainController
                 'pjax' => 'class="main-pjax a"'
             ];
 
-            $allOrderCount = DiscountOrder::getAllCount(DiscountOrder::TYPE['promoCode']);
-            $activeOrderCount = DiscountOrder::getActiveCount(DiscountOrder::TYPE['promoCode'],
-                DiscountOrder::STATUS['active']);
             return $this->render('statistics-promo', [
                 'breadcrumbParams' => $breadcrumbParams,
                 'dataProvider' => $dataProvider,
                 'loadTime' => $loadTime,
-                'status' => $request->queryParams['status'],
                 'order_time' => $request->queryParams['order_time'] ?? null,
                 'timeRange' => $searchModel->getTimeRange(),
-                'countItems' => [
-                    'all'=> $allOrderCount,
-                    'active' => $activeOrderCount,
-                    'inactive' => $allOrderCount - $activeOrderCount,
-                ]
             ]);
         }
     }
@@ -631,11 +625,83 @@ class UserController extends MainController
 
     public function actionHistory()
     {
-        return $this->render('account-history');
+        $breadcrumbParams = $this->getParamsForBreadcrumb();
+        $breadcrumbParams[] = [
+            'name' => 'История вашего счета',
+            'url_name' => Url::to(['user/history']),
+            'pjax' => 'class="main-pjax a"'
+        ];
+
+        return $this->render('account-history', [
+            'breadcrumbParams' => $breadcrumbParams
+        ]);
     }
 
     public function actionAccount()
     {
-        return $this->render('account');
+        $model = new AccountPayment();
+
+        $breadcrumbParams = $this->getParamsForBreadcrumb();
+
+        if (Yii::$app->request->isPost) {
+            $model = new AccountPayment();
+            $model->load(Yii::$app->request->post(), 'payment');
+
+            if ($model->validate()) {
+
+                $breadcrumbParams[] = [
+                    'name' => 'Оплата через систему "Расчет" (ЕРИП)',
+                    'url_name' => Url::to(['user/account']),
+                    'pjax' => 'class="main-pjax a"'
+                ];
+                return $this->render('erip-payment', [
+                    'model' => $model,
+                    'breadcrumbParams' => $breadcrumbParams
+                ]);
+            }
+        }
+
+        $userInfo = Yii::$app->user->identity->userInfo;
+
+        $breadcrumbParams[] = [
+            'name' => 'Пополнение счета',
+            'url_name' => Url::to(['user/account']),
+            'pjax' => 'class="main-pjax a"'
+        ];
+        return $this->render('account', [
+            'userInfo' => $userInfo,
+            'model' => $model,
+            'breadcrumbParams' => $breadcrumbParams
+        ]);
+    }
+
+    public function actionPayment()
+    {
+        return $this->render('erip-payment');
+    }
+
+    public function actionConfirmUsedOrder(int $id)
+    {
+        $response = new \stdClass();
+        $response->success = false;
+
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+            $order = DiscountOrder::find()
+                ->where([
+                    'user_id' => Yii::$app->user->getId(),
+                    'id' => $id
+                ])->one();
+
+            if (!isset($order)) {
+                return $this->asJson($response);
+            }
+
+            $order->status_promo = DiscountOrder::STATUS['inactive'];
+            if ($order->save()) {
+                $response->success = true;
+            }
+        }
+
+        return $this->asJson($response);
     }
 }

@@ -72,7 +72,6 @@ $config = [
                 'promocody' => 'user/get-promocodes',
                 'zakazy-promokodov' => 'user/order-promocodes',
                 'zakazy-sertifikatov' => 'user/order-certificates',
-
 				'<url:.+>-p<id:\d+>/moderation'=>'post/post-moderation',//модерируемая информация о месте
                 '<url:.+>-p<id:\d+>'=>'post/index',//информация о месте
                 'id<id:\d+>' => 'user/index',
@@ -85,6 +84,9 @@ $config = [
 				[
 					'class' => 'app\components\customUrlManager\ReviewsUrlRule', //лента отзывов
 				],
+                [
+                    'class' => 'app\components\customUrlManager\DiscountsUrlRule', //лента скидок
+                ],
                 '<url:.+>-n<id:\d+>'=>'news/news',//статья новости
                 '<url:^add$>'=>'post/add',
                 '<url:^edit>/<id:\d+>'=>'post/edit',

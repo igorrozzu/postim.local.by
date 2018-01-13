@@ -11,6 +11,7 @@ $totalCount = $dataProvider->totalCount;
 $categoryText = $this->context->under_category ?
     $this->context->under_category['name'] : $this->context->category['name'];;
 $city_name = Yii::$app->city->getSelected_city()['name'];
+$defaultUrl = '/' . Yii::$app->request->getPathInfo();
 
 $h1_text = $categoryText . ' в ' . Yii::t('app/locativus', $city_name);
 
@@ -50,7 +51,7 @@ $this->registerMetaTag([
                     </div>
                 </a>
                 <?php if ($totalCount > 0): ?>
-                    <a href="/<?= Yii::$app->request->getPathInfo() ?>">
+                    <a href="<?= $defaultUrl ?>">
                         <div id="discount-total-count" class="btn-division btn-bb active">
                             <span class="under-line">Скидки <?= $totalCount ?></span>
                         </div>
@@ -82,10 +83,30 @@ Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => false,
     'id' => 'feed-category',
-    'linkSelector' => false,
+    'linkSelector' => '#feed-category .block-sort a',
     'formSelector' => false,
 ])
 ?>
+    <div class="block-flex-white">
+        <div class="block-content">
+            <div class="block-sort">
+                <a href="<?=$defaultUrl?>?sort=new" class="btn-sort <?=$sort === 'new' ? 'active': ''?>">
+                    <span class="under-line">Новые</span>
+                </a>
+                <?php if(Yii::$app->request->cookies->getValue('geolocation')):?>
+                    <a href="<?=$defaultUrl?>?sort=nigh" class="btn-sort <?=$sort === 'nigh' ? 'active' : ''?>">
+                        <span class="under-line">Рядом</span>
+                    </a>
+                <?php else:?>
+                    <a style="display: none" href="<?=$defaultUrl?>?sort=nigh"
+                       class="btn-nigh btn-sort <?=$sort === 'nigh' ? 'active': ''?>">
+                        <span class="under-line">Рядом</span>
+                    </a>
+                    <a class="btn-sort no-geolocation"><span class="under-line">Рядом</span></a>
+                <?php endif;?>
+            </div>
+        </div>
+    </div>
     <div class="block-content">
         <?php if ($totalCount > 0): ?>
             <div class="cards-block-discount row-4 main-pjax" data-favorites-state-url="/discount/favorite-state">
@@ -114,7 +135,6 @@ Pjax::begin([
         </div>
     </div>
 <?php
-$defaultUrl = '/' . Yii::$app->request->getPathInfo();
 $js = <<<js
     $(document).ready(function() {
       category.filters.setDefaultUrl({url:'$defaultUrl'});

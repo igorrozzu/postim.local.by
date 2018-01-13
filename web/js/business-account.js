@@ -93,6 +93,25 @@ var BusinessAccount = (function (window, document, undefined,$) {
                     });
                 });
             },
+
+            Account: function() {
+
+                var scope = {
+                    init: function () {
+                        $(document).off('click','.make-payment')
+                        .on('click','.make-payment', function () {
+                            if ($(this).hasClass('disable')) {
+                                return;
+                            }
+
+                            $('#payment-form-type').val($(this).data('type'));
+                            $('#account-form').submit();
+                        });
+                    }
+                };
+
+                return scope;
+            }
         };
 
         return that;
@@ -102,4 +121,5 @@ var BusinessAccount = (function (window, document, undefined,$) {
 
 var businessAccount = BusinessAccount();
 businessAccount.init();
+businessAccount.Account().init();
 

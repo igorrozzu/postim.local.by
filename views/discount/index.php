@@ -7,18 +7,19 @@ use yii\widgets\Pjax;
 $categoryName = mb_strtolower(Yii::t('app/singular', $post->onlyOnceCategories[0]->name));
 $city = Yii::t('app/locativus', $post->city->name);
 
-$this->title = $post->data . ' - ' .  $categoryName . ' в ' . $city . ', ' . $post['address'] . ': cкидки';
+$this->title = !empty($discount->title) ? $discount->title : $discount->header . ' на Postim.by';
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Скидки, '. $categoryName .
-        ' ' . $post->data . ' в ' . $city.
-        ', ' . $post['address'] . '. Скидки заведений на Postim.by.'
+    'content' => !empty($discount->description) ? $discount->description :
+        'Промокод на скидку от ' . $discount->header . '. ' . $discount->header . ' на Postim.by'
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
-    'content'=> $post->data . ' скидки'
+    'content'=> !empty($discount->key_word) ? $discount->key_word : 'скидка, промокод, акция, ' . $post->data
 ]);
+
+$discountCover = $discount->getCover();
 ?>
 
 <?php
@@ -39,12 +40,11 @@ Pjax::begin([
 
 <div class="block-content">
 
-    <?php if(Yii::$app->user->isModerator()):?>
+    <?php if(Yii::$app->user->isModerator() || $isCurrentUserOwner):?>
         <div class="block-content-between" style="margin-bottom: -10px">
             <p class="text p-text">
                 Нашли неточность или ошибку,&nbsp;
-                <a class="href-edit" href="<?=Url::to(['/admin/discount/edit',
-                    'id' => $discount->id, 'redirect_back' => 'true']);?>">
+                <a class="href-edit" href="<?=Url::to(['/discount/edit', 'id' => $discount->id])?>">
                     исправьте&nbsp;или&nbsp;дополните&nbsp;информацию
                 </a>
             </p>
@@ -54,9 +54,14 @@ Pjax::begin([
     <div class="container-discount">
         <div class="container-discount-photos">
             <div class="discount-photos">
-                <?php foreach ($discount->gallery as $photo):?>
-                    <img href="<?=$discount->getPathToPicture($photo->link)?>"
-                         src="<?=$discount->getPathToPicture($photo->link)?>">
+                <img href="<?=$discountCover?>" src="<?=$discountCover?>">
+                <?php foreach ($discount->gallery as $photo):
+                    $pathToPicture = $discount->getPathToPicture($photo->link); ?>
+
+                    <?php if($pathToPicture !== $discountCover):?>
+                        <img href="<?=$pathToPicture?>" src="<?=$pathToPicture?>">
+                    <?php endif;?>
+
                 <?php endforeach;?>
             </div>
         </div>
@@ -64,7 +69,7 @@ Pjax::begin([
             <div class="discount-info-time-left">
                 <?php
                 $dateFinish = Yii::$app->formatter->asDate(
-                    $discount->date_finish + Yii::$app->user->identity->getTimezoneInSeconds(),
+                    $discount->date_finish + Yii::$app->user->getTimezoneInSeconds(),
                     'dd.MM.yyyy');
                 echo $duration ? 'Акция действует до ' . $dateFinish :
                     'Акция закончилась ' . $dateFinish;
@@ -83,12 +88,14 @@ Pjax::begin([
                 </div>
             <?php endif;?>
 
-            <div class="discount-info-text">
-                Скидка
-                <span class="discount-info-bold-text">
+            <?php if (isset($discount->discount)):?>
+                <div class="discount-info-text">
+                    Скидка
+                    <span class="discount-info-bold-text">
                     <?=$discount->discount?>%
-                </span>
-            </div>
+                    </span>
+                </div>
+            <?php endif;?>
 
             <div class="discount-info-text">
                 Экономия
@@ -111,7 +118,7 @@ Pjax::begin([
             <div class="container-bottom-btn">
                 <div class="blue-btn-40 order-discount <?=$duration ? 'active' : 'inactive' ?>"
                      data-href="<?=Url::to(['/discount/order', 'discountId' => $discount->id])?>">
-                    <p>Получить скидку <?=$discount->discount?>%</p>
+                    <p>Получить скидку <?= isset($discount->discount) ? $discount->discount . '%' : ''?></p>
                 </div>
             </div>
         </div>

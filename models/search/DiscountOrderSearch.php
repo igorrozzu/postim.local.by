@@ -93,7 +93,7 @@ class DiscountOrderSearch extends DiscountOrder
     {
         $table = DiscountOrder::tableName();
         $query = DiscountOrder::find()
-            ->innerJoinWith(['discount.ownerPost'])
+            ->innerJoinWith(['discount.ownerPost', 'user'])
             ->onCondition([OwnerPost::tableName() . '.owner_id' => \Yii::$app->user->id])
             ->andWhere(['<=', $table . '.date_buy', $params['loadTime'] ?? $loadTime])
             ->orderBy([$table . '.date_buy' => SORT_DESC]);
@@ -108,14 +108,6 @@ class DiscountOrderSearch extends DiscountOrder
         $this->load($params, '');
         if (!$this->validate()) {
             return $dataProvider;
-        }
-
-        if($this->status !== 'all') {
-            if ($this->status === 'active') {
-                $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['active']]);
-            } else if ($this->status === 'unactive') {
-                $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['inactive']]);
-            }
         }
 
         if ($this->type === 'promocode') {

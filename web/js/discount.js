@@ -167,6 +167,10 @@ var Discount = (function (window, document, undefined, $) {
                     init: function () {
                         $(document).off('click','.order-discount.active')
                         .on('click','.order-discount.active', function () {
+                            if (main.User.is_guest) {
+                                main.showErrorAut('Незарегистрированные пользователи не могут брать промокоды');
+                                return false;
+                            }
 
                             $.ajax({
                                 url: $(this).data('href'),

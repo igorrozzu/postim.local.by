@@ -3225,6 +3225,9 @@ a .btn-sort-reviews.active
     font-size: 16px;
     font-family: PT_Sans bold;
 }
+.discount.inactive {
+    background-color: #7b7b7b;
+}
 .go_to_view-block{
     height: 40px;
     margin-top: 40px;
@@ -5454,6 +5457,13 @@ input.search-selected-field{
     font-size: 14px;
     border-bottom: 1px solid #d3e4ff;
 }
+.row-content a {
+    color: #444444;
+    text-decoration: none;
+}
+.row-content a:hover {
+    text-decoration: underline;
+}
 .row-content-footer {
     padding: 25px 0;
     border-bottom: none;
@@ -6468,7 +6478,7 @@ form .field-input:first-child{
     margin-top: 100px;
 }
 
-/*start discounts*/
+/* user payment*/
 .custom-text-input {
     background-color: #F2F4FD;
     color: #444;
@@ -6478,6 +6488,34 @@ form .field-input:first-child{
     outline: medium none;
     border: 1px solid #d3e4ff;
     padding: 10px;
+}
+.payment-text-input {
+    display: inline-block;
+    width: 159px;
+    margin: 0 10px;
+    border: none;
+    font-family: PT_Sans bold;
+    background-color: #F2F4FD;
+    font-size: 18px;
+    height: 20px;
+    outline: medium none;
+    padding: 10px;
+    color: #444444;
+}
+.erip-payment {
+    background-color: #F2F4FD;
+    color: #6b778f;
+    width: 298px;
+    height: 100px;
+    position: relative;
+}
+.erip-payment:hover {
+    cursor: pointer;
+}
+.erip-payment .erip {
+    position: absolute;
+    right: 49px;
+    top: 34px;
 }
 .std-container {
     background-color: #fff;
@@ -6515,11 +6553,17 @@ form .field-input:first-child{
     font-family: PT_Sans bold;
     font-size: 22px;
 }
-.fill-account-agreement {
+.fill-account-text.style1 {
+    font-size: 19px;
+    color: #788399;
+}
+.fill-account-agreement,
+.account-text{
     color: #6b778f;
     font-size: 14px;
 }
-.fill-account-agreement a {
+.fill-account-agreement a,
+.account-text a{
     text-decoration: underline;
     color: #6b778f;
 }
@@ -6551,17 +6595,23 @@ form .field-input:first-child{
 }
 
 .payment-methods .erip:before,
-.payment-methods .bank:before
+.payment-methods .bank:before,
+.erip-payment:before
 {
     background-image: url("../img/payments.png");
     content: '';
     display: block;
     height: 62px;
 }
-.payment-methods .erip:before {
+.payment-methods .erip:before,
+.erip-payment:before {
     background-position: 90px 62px;
     width: 90px;
     margin: 20px calc(100%/2 - 45px) 13px calc(100%/2 - 45px);
+}
+.erip-payment:before {
+    position: absolute;
+    margin: 20px 0 0 20px;
 }
 .payment-methods .bank:before {
     background-position: 172px 62px;
@@ -6585,7 +6635,9 @@ form .field-input:first-child{
     background-position: 405px 114px;
     margin: 43px calc(100%/2 - 13px) 25px calc(100%/2 - 13px);
 }
+/*end user payment*/
 
+/* user payment history*/
 .filter-menu{
     display: flex;
     flex-wrap: wrap;
@@ -6639,8 +6691,9 @@ form .field-input:first-child{
 .statistic-content #mCSB_1_scrollbar_horizontal {
     bottom: -6px;
 }
+/*end user payment history*/
 
-
+/* order discount*/
 .order-info {
     display: flex;
     flex-flow: row;
@@ -6703,8 +6756,7 @@ form .field-input:first-child{
 .busket-popup-message {
     top:calc(50% - 240px);
 }
-
-/*end discounts*/
+/*end order discount*/
 
 .origin-photo-feed{
     width: 100px;

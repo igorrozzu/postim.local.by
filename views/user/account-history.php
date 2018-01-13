@@ -17,11 +17,7 @@ Pjax::begin([
 ])
 ?>
 <div class="block-content" style="margin-top: 80px;">
-    <div class="bread-crumb">
-        <a class="pre" href="#">Главная</a>
-        <span class="separator"></span>
-        <p>История вашего счета</p>
-    </div>
+    <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v">История вашего счета</h1>
 
 </div>
@@ -29,10 +25,10 @@ Pjax::begin([
     <div class="block-content">
         <div class="menu-btns-card">
 
-            <a href="#" >
+            <a href="<?= Url::to(['user/account'])?>" >
                 <div class="btn2-menu"><span class="under-line">Пополнить</span></div>
             </a>
-            <a href="#">
+            <a href="<?= Url::to(['user/history'])?>">
                 <div class="btn2-menu active"><span class="under-line">История</span></div>
             </a>
         </div>
@@ -42,17 +38,11 @@ Pjax::begin([
 <div class="block-content">
     <div class="std-container" style="box-shadow: none">
         <div class="fill-account-header">
-            На счету: 00,0 руб и 12,5 мега-руб
+            На счету: 00,0 руб
         </div>
         <div class="filter-menu">
-            <a href="#" >
-                <div class="filter-menu-btn active"><span class="under-line">Все</span></div>
-            </a>
             <a href="#">
                 <div class="filter-menu-btn"><span class="under-line">Платежи</span></div>
-            </a>
-            <a href="#">
-                <div class="filter-menu-btn"><span class="under-line">Бонусы</span></div>
             </a>
         </div>
 

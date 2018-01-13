@@ -9,6 +9,7 @@ use app\components\Pagination;
 use app\models\Discounts;
 use app\models\entities\DiscountOrder;
 use app\models\entities\FavoritesDiscount;
+use app\models\entities\GalleryDiscount;
 use app\models\entities\OwnerPost;
 use app\models\Posts;
 use app\models\search\DiscountSearch;
@@ -25,16 +26,8 @@ class DiscountController extends MainController
 {
     public function actionAdd(int $postId)
     {
-        $currentUserId = Yii::$app->user->getId();
-
         if (!Yii::$app->user->isModerator()) {
-            $isCurrentUserOwner = OwnerPost::find()
-                ->where([
-                    OwnerPost::tableName() . '.owner_id' => $currentUserId,
-                    OwnerPost::tableName() . '.post_id' => $postId,
-                ])->one();
-
-            if (!isset($isCurrentUserOwner)) {
+            if (!Yii::$app->user->isOwnerThisPost($postId)) {
                 throw new NotFoundHttpException('Cтраница не найдена');
             }
         }
@@ -44,10 +37,11 @@ class DiscountController extends MainController
             'status' => Yii::$app->user->isModerator() ? Discounts::STATUS['active'] :
                 Discounts::STATUS['moderation'],
             'post_id' => $postId,
-            'user_id' => $currentUserId,
+            'user_id' => Yii::$app->user->getId(),
             'count_favorites' => 0,
             'count_orders' => 0,
         ]);
+        $post = Posts::findOne($postId);
 
         if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
 
@@ -58,8 +52,6 @@ class DiscountController extends MainController
             $model->photos = Yii::$app->request->post('photos');
 
             if ($model->create()) {
-                $post = Posts::findOne($postId);
-
                 $message = Yii::$app->user->isModerator() ? 'Добавление скидки произведено успешно.' :
                     'Добавление скидки произведено успешно. Ваша скидка отправлена на модерацию.';
                 Yii::$app->session->setFlash('success', $message);
@@ -80,6 +72,52 @@ class DiscountController extends MainController
 
         return $this->render('add', [
             'model' => $model,
+            'post' => $post
+        ]);
+    }
+
+    public function actionEdit(int $id)
+    {
+        $discount = Discounts::findOne($id);
+
+        if (!isset($discount)) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
+        if (!Yii::$app->user->isModerator()) {
+            if (!Yii::$app->user->isOwnerThisPost($discount->post_id)) {
+                throw new NotFoundHttpException('Cтраница не найдена');
+            }
+        }
+
+        if (Yii::$app->request->isPost) {
+
+            $discount->load(Yii::$app->request->post(), 'discount');
+            $discount->photos = Yii::$app->request->post('photos');
+
+            if (!Yii::$app->user->isModerator()) {
+                $discount->status = Discounts::STATUS['editing'];
+            }
+            if ($discount->edit()) {
+                $message = Yii::$app->user->isModerator() ? 'Редактирование скидки произведено успешно.' :
+                    'Редактирование скидки произведено успешно. Ваша скидка отправлена на модерацию.';
+                Yii::$app->session->setFlash('success', $message);
+
+                $redirectUrl = Url::to(['/discount/read', 'url' => $discount->url_name,
+                    'discountId' => $discount->id]);
+
+                return $this->redirect($redirectUrl);
+            }
+        }
+
+        $photos = GalleryDiscount::find()
+            ->where(['discount_id' => $discount->id])
+            ->all();
+
+        return $this->render('edit', [
+            'photos' => $photos,
+            'discount' => $discount,
+            'errors' => array_values($discount->getFirstErrors()),
         ]);
     }
 
@@ -169,10 +207,10 @@ class DiscountController extends MainController
             $loadTime
         );
 
-        if ($request->isAjax && !$request->get('_pjax',false) ){
+        if ($request->isAjax && !$request->get('_pjax', false)) {
             return CardsDiscounts::widget([
                 'dataProvider' => $dataProvider,
-                'settings'=>[
+                'settings' => [
                     'show-more-btn' => true,
                     'replace-container-id' => 'feed-discount',
                     'loadTime' => $loadTime,
@@ -191,10 +229,15 @@ class DiscountController extends MainController
         if (!isset($discount)) {
             throw new NotFoundHttpException('Cтраница не найдена');
         }
-        if ($discount->status === Discounts::STATUS['moderation'] ||
-            $discount->status === Discounts::STATUS['inactive']) {
 
-            if (!Yii::$app->user->isModerator() || Yii::$app->user->getId() !== $discount->user_id) {
+        $isCurrentUserOwner = Yii::$app->user->isOwnerThisPost($discount->post_id);
+        if (in_array($discount->status, [
+            Discounts::STATUS['moderation'],
+            Discounts::STATUS['inactive'],
+            Discounts::STATUS['editing'],
+        ])) {
+
+            if (!Yii::$app->user->isModerator() && !$isCurrentUserOwner) {
                 throw new NotFoundHttpException('Cтраница не найдена');
             }
         }
@@ -213,8 +256,47 @@ class DiscountController extends MainController
             'post' => $discount->post,
             'breadcrumbParams' => $breadcrumbParams,
             'economy' => $discount->calculateEconomy(),
+            'isCurrentUserOwner' => $isCurrentUserOwner,
             'duration' => Yii::$app->formatter->asCustomDuration($discount->date_finish - time())
         ]);
+    }
+
+    public function actionReadAll()
+    {
+        $loadTime = Yii::$app->request->get('loadTime', time());
+
+        $searchModel = new DiscountSearch();
+        $pagination = new Pagination([
+            'pageSize' => Yii::$app->request->get('per-page', 6),
+            'page' => Yii::$app->request->get('page', 1) - 1,
+            'route' => Yii::$app->request->getPathInfo()
+        ]);
+
+        $dataProvider = $searchModel->searchByCity(
+            Yii::$app->request->queryParams,
+            $pagination,
+            $loadTime
+        );
+
+        if (Yii::$app->request->isAjax &&
+            !Yii::$app->request->get('_pjax', false)) {
+            return CardsDiscounts::widget([
+                    'dataProvider' => $dataProvider,
+                    'settings' => [
+                        'show-more-btn' => true,
+                        'replace-container-id' => 'feed-discounts',
+                        'loadTime' => $loadTime,
+                        'show-distance' => false,
+                    ]
+            ]);
+        } else {
+            $breadcrumbParams = $this->getParamsForBreadcrumbFeedDiscounts();
+            return $this->render('feed-discounts', [
+                'dataProvider' => $dataProvider,
+                'breadcrumbParams' => $breadcrumbParams,
+                'loadTime' => $loadTime
+            ]);
+        }
     }
 
     public function getParamsForBreadcrumb($discount)
@@ -274,8 +356,41 @@ class DiscountController extends MainController
         return $breadcrumbParams;
     }
 
+    public function getParamsForBreadcrumbFeedDiscounts()
+    {
+        $breadcrumbParams = [];
+        $currentUrl = Yii::$app->getRequest()->getHostInfo();
+
+        $breadcrumbParams[] = [
+            'name' => ucfirst(Yii::$app->getRequest()->serverName),
+            'url_name' => $currentUrl,
+            'pjax' => 'class="main-header-pjax a"'
+        ];
+
+        if ($city = Yii::$app->request->get('city')) {
+            $currentUrl = $currentUrl . '/' . $city['url_name'];
+            $breadcrumbParams[] = [
+                'name' => $city['name'],
+                'url_name' => $currentUrl,
+                'pjax' => 'class="main-pjax a"'
+            ];
+        }
+
+        $breadcrumbParams[] = [
+            'name' => 'Скидки',
+            'url_name' => Yii::$app->getRequest()->getUrl(),
+            'pjax' => 'class="main-pjax a"'
+        ];
+
+        return $breadcrumbParams;
+    }
+
     public function actionOrder(int $discountId)
     {
+        if (Yii::$app->user->isGuest) {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
         if (Yii::$app->request->isPost) {
             $discount = Discounts::findOne($discountId);
             $response = new \stdClass();
@@ -288,7 +403,7 @@ class DiscountController extends MainController
             }
 
             if ($discount->count_orders === $discount->number_purchases) {
-                $response->message = 'К сожалению, все промокоды разобраны.';
+                $response->message = 'К сожалению, все промокоды закончились.';
                 return $this->asJson($response);
             }
 
@@ -301,7 +416,7 @@ class DiscountController extends MainController
                 ->one();
 
             if (isset($lastOrderForDay)) {
-                $response->message = 'В сутки имеется возможность приобретать только один промокод.';
+                $response->message = 'Можно брать только один промокод в сутки на одну и ту же акцию.';
                 return $this->asJson($response);
             }
 
@@ -309,7 +424,7 @@ class DiscountController extends MainController
                 'user_id' => Yii::$app->user->id,
                 'discount_id' => $discount->id,
                 'date_buy' => time(),
-                'promo_code' => (string) mt_rand(1000, 9999),
+                'promo_code' => $discount->promocode ?? (string)mt_rand(1000, 9999),
                 'pin_code' => null,
                 'status_promo' => Discounts::STATUS['active'],
             ]);
@@ -318,7 +433,7 @@ class DiscountController extends MainController
                 $discount->updateCounters(['count_orders' => 1]);
             }
 
-            $response->redirectUrl = Url::to(['user/get-promocodes']);
+            $response->redirectUrl = Url::to(['user/get-promocodes']) . '?my_orders';
             $response->success = true;
             return $this->asJson($response);
 

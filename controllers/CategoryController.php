@@ -53,7 +53,8 @@ class CategoryController extends MainController
         $sort = PostsSearch::getSortArray($paramSort);
 
         $loadTime = Yii::$app->request->get('loadTime', time());
-        $geolocation = Yii::$app->request->cookies->getValue('geolocation')?Json::decode(Yii::$app->request->cookies->getValue('geolocation')):null;
+        $geolocation = Yii::$app->request->cookies->getValue('geolocation') ?
+            Json::decode(Yii::$app->request->cookies->getValue('geolocation')) : null;
         $loadGeolocation = Yii::$app->request->get('load-geolocation', $geolocation);
         $dataProvider = $searchModel->search(
             Yii::$app->request->queryParams,
@@ -247,10 +248,13 @@ class CategoryController extends MainController
         ]);
 
         $loadTime = Yii::$app->request->get('loadTime', time());
+        $geoLocation = Yii::$app->request->cookies->getValue('geolocation') ?
+            Json::decode(Yii::$app->request->cookies->getValue('geolocation')) : null;
         $dataProvider = $discountSearch->searchByCityAndCategory(
             $request->queryParams,
             $pagination,
-            $loadTime
+            $loadTime,
+            $geoLocation
         );
 
         $breadcrumbParams = $this->getParamsForBreadcrumb();
@@ -285,7 +289,8 @@ class CategoryController extends MainController
                 'selfParams' => $selfParams,
                 'keyForMap' => $discountSearch->getKey(),
                 'postCount' => $postCount,
-                'urlPost' => str_replace('/skidki', '', Yii::$app->request->getPathInfo())
+                'urlPost' => str_replace('/skidki', '', Yii::$app->request->getPathInfo()),
+                'sort' => Yii::$app->request->get('sort', 'new')
             ]);
         }
     }

@@ -17,11 +17,7 @@ Pjax::begin([
 ])
 ?>
 <div class="block-content" style="margin-top: 80px">
-    <div class="bread-crumb">
-        <a class="pre" href="#">Главная</a>
-        <span class="separator"></span>
-        <p>Пополнение счета</p>
-    </div>
+    <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <h1 class="h1-v">Пополнение счета</h1>
 
 </div>
@@ -29,10 +25,10 @@ Pjax::begin([
     <div class="block-content">
         <div class="menu-btns-card">
 
-            <a href="#" >
+            <a href="<?= Url::to(['user/account'])?>" >
                 <div class="btn2-menu active"><span class="under-line">Пополнить</span></div>
             </a>
-            <a href="#">
+            <a href="<?= Url::to(['user/history'])?>">
                 <div class="btn2-menu "><span class="under-line">История</span></div>
             </a>
         </div>
@@ -41,41 +37,44 @@ Pjax::begin([
 
 <div class="block-content">
     <div class="std-container">
-        <div class="fill-account-header">
-            На счету: 00,0 руб и 12,5 мега-руб
-        </div>
-        <div class="fill-account-content">
-            <div style="margin-bottom: 35px;">
-                <span>Сумма</span>
-                <input type="text" class="custom-text-input"
-                       style="display: inline-block; width: 159px; margin: 0 10px;"
-                       name="money" placeholder="Укажите сумму">
-                <span>руб</span>
+        <form method="post" id="account-form">
+            <div class="fill-account-header">
+                На счету: <?= $userInfo->virtual_money?> руб и <?= $userInfo->mega_money?> мега-руб
             </div>
-            <div class="fill-account-text">Выберите способ оплаты</div>
-            <div class="payment-methods">
-                <div class="payment-block">
-                    <div class="erip">
-                        <span>Система "Расчет"<br>(ЕРИП)</span>
+            <div class="fill-account-content">
+                <div style="margin-bottom: 35px;">
+                    <span>Сумма</span>
+                    <input id="payment-form-money" type="text" class="custom-text-input" name="payment[money]"
+                           style="display: inline-block; width: 159px; margin: 0 10px;" placeholder="Укажите сумму" value="<?= $model->money?>">
+                    <span>руб</span>
+                </div>
+                <div class="fill-account-text">Выберите способ оплаты</div>
+                <div class="payment-methods">
+                    <div class="payment-block">
+                        <div class="erip make-payment" data-type="1">
+                            <span>Система "Расчет"<br>(ЕРИП)</span>
+                        </div>
+                        <div class="bank disable" data-type="2" title="Временно недоступно">
+                            <span>Банковская<br>карта</span>
+                        </div>
                     </div>
-                    <div class="bank">
-                        <span>Банковская<br>карта</span>
-                    </div>
+                    <input id="payment-form-type" type="hidden" name="payment[type]">
+                </div>
+                <div class="fill-account-agreement">
+                    Пополняя счет, вы соглашаетесь cо всеми правилами
+                    и условиями <a href="/agreement">пользовательского соглашения</a> на 100%.<br>
+                    Если у вас возникли вопросы по оплате, ознакомьтесь с инструкцией.
                 </div>
             </div>
-            <div class="fill-account-agreement">
-                Пополняя счет, вы соглашаетесь во всеми правилами
-                и условиями <a href="/agreement">пользовательского соглашения</a> на 100%.<br>
-                Если у вас возникли вопросы по оплате, ознакомьтесь с инструкцией.
-            </div>
-        </div>
-
+        </form>
     </div>
-
-
 </div>
 
-
+<script>
+    $(document).ready(function () {
+        $('#payment-form-money').mask("###0.00", {reverse: true});
+    });
+</script>
 <?php
 Pjax::end();
 ?>

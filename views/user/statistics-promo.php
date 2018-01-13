@@ -28,27 +28,6 @@ Pjax::begin([
     'formSelector' => false,
 ])
 ?>
-<div class="block-flex-white">
-    <div class="block-content">
-        <div class="menu-btns-card feeds-btn-bar">
-            <a href="<?=Url::to(['user/order-promocodes'])?>" >
-                <div class="btn2-menu <?=($status === 'all') ? 'active' : ''?>">
-                    Все <?=$countItems['all']?>
-                </div>
-            </a>
-            <a href="<?=Url::to(['user/order-promocodes', 'status' => 'unactive', 'type' => 'promocode'])?>">
-                <div class="btn2-menu <?=($status === 'unactive') ? 'active' : ''?>">
-                    Использованные <?=$countItems['inactive']?>
-                </div>
-            </a>
-            <a href="<?=Url::to(['user/order-promocodes', 'status' => 'active', 'type' => 'promocode'])?>">
-                <div class="btn2-menu <?=($status === 'active') ? 'active' : ''?>">
-                    Действующие <?=$countItems['active']?>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
 
 <div class="block-content">
     <div class="container-promo-statistic">

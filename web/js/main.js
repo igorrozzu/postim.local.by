@@ -333,7 +333,31 @@ var Main = (function (window, document, undefined,$) {
 
                 }
 
-            }
+            },
+
+            Promocodes: function () {
+                var scope = {
+                    init: function () {
+                        $(document).off('click','.block-promo-btns .btn-close-promo')
+                        .on('click','.block-promo-btns .btn-close-promo', function () {
+                            $.ajax({
+                                url: $(this).data('href'),
+                                type: 'POST',
+                                success: function (response) {
+                                    if (response.success) {
+                                        $.pjax.reload({
+                                            container: '#feeds-of-user',
+                                            push: true,
+                                            replace: true
+                                        });
+                                    }
+                                }
+                            })
+                        });
+                    }
+                };
+                return scope;
+            },
         };
 
         return that;
@@ -345,3 +369,4 @@ var main = Main();
 main.userGeolocation = main.UserGeolocation();
 main.init();
 main.userGeolocation.init();
+main.Promocodes().init();

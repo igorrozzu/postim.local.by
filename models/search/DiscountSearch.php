@@ -23,6 +23,7 @@ class DiscountSearch extends Discounts
     public $under_category;
     public $city;
     public $open;
+    public $sort;
 
     private $queryForPlaceOnMap;
     private $key;
@@ -33,7 +34,7 @@ class DiscountSearch extends Discounts
     public function rules()
     {
         return [
-            [['category', 'under_category', 'city', 'open'], 'safe'],
+            [['category', 'under_category', 'city', 'open', 'sort'], 'safe'],
         ];
     }
 
@@ -63,7 +64,7 @@ class DiscountSearch extends Discounts
         return $dataProvider;
     }
 
-    public function searchByCityAndCategory(array $params, $pagination, int $loadTime)
+    public function searchByCityAndCategory(array $params, $pagination, int $loadTime, array $geolocation)
     {
         $this->load($params, '');
 
@@ -71,8 +72,21 @@ class DiscountSearch extends Discounts
             ->joinWith(['hasLike'])
             ->innerJoinWith(['post.city.region.coutries', 'post.categories.category'])
             ->andWhere(['<=', 'date_start', $loadTime])
-            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
-            ->orderBy(['date_start' => SORT_DESC]);
+            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']]);
+
+        if ($this->sort === 'nigh' && $geolocation) {
+            /*$coordinates = 'POINT(' . $geolocation["lat"] . ' ' . $geolocation["lon"] . ')';
+            $query->addSelect([
+                '*',
+                'ST_distance_sphere(st_point("coordinates"[0],"coordinates"[1]),ST_GeomFromText(\'' .
+                $coordinates . '\')) as distance'
+            ]);
+
+            $query->orderBy(['distance' => SORT_ASC]);*/
+        } else {
+            //$query->orderBy(['date_start' => SORT_DESC]);
+        }
+        $query->orderBy(['date_start' => SORT_DESC]);
 
         $this->queryForPlaceOnMap = Posts::find()
             ->select([Posts::tableName() . '.id', Posts::tableName() . '.coordinates'])
@@ -155,6 +169,35 @@ class DiscountSearch extends Discounts
         return $dataProvider;
     }
 
+    public function searchByCity($params, Pagination $pagination, int $loadTime)
+    {
+        $this->load($params, '');
+
+        $query = Discounts::find()
+            ->joinWith(['hasLike'])
+            ->innerJoinWith(['post.city.region.coutries'])
+            ->andWhere(['<=', 'date_start', $loadTime])
+            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
+            ->orderBy(['date_start' => SORT_DESC]);
+
+        if (isset($this->city)) {
+            $query->andWhere(['or',
+                [Region::tableName() . '.url_name' => $this->city['url_name']],
+                [City::tableName() . '.url_name' => $this->city['url_name']],
+                [Countries::tableName() . '.url_name' => $this->city['url_name']],
+            ]);
+        }
+
+        $query->groupBy([Discounts::tableName() . '.id']);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => $pagination,
+        ]);
+
+        return $dataProvider;
+    }
+
     public function getCountByCityAndCategory(array $params)
     {
         $this->load($params, '');
@@ -196,7 +239,10 @@ class DiscountSearch extends Discounts
     {
         $query = Discounts::find()
             ->innerJoinWith(['user'])
-            ->andWhere(['status' => Discounts::STATUS['moderation']])
+            ->andWhere(['or',
+                ['status' => Discounts::STATUS['moderation']],
+                ['status' => Discounts::STATUS['editing']],
+            ])
             ->orderBy(['date_start' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
