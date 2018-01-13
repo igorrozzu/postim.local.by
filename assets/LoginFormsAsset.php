@@ -21,7 +21,7 @@ class LoginFormsAsset extends AssetBundle
 
     ];
     public $js = [
-        'js/login-forms.js'
+        'js/login-forms.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

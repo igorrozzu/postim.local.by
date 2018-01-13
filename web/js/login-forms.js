@@ -55,7 +55,7 @@ var loginForms = (function (window, document, undefined, $) {
                 });
 
 
-                if(($.cookie('showForm') || null) === null){
+                /*if(($.cookie('showForm') || null) === null){
                     var showForm = setTimeout(function () {
 
                         var date = new Date();
@@ -67,8 +67,8 @@ var loginForms = (function (window, document, undefined, $) {
                         var $html = scope.getForm('login?with-message=true');
                         __$containerForms.html($html).show();
 
-                    },20000)
-                }
+                    },40000)
+                }*/
 
                 this.initSendFormHandlers();
             },

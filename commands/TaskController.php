@@ -231,7 +231,7 @@ class TaskController extends Controller
 
 
             $posts = Posts::find()
-                ->select(['city_id','tbl_posts.url_name','tbl_posts.id','date'])
+                ->select(['city_id','tbl_posts.url_name','tbl_posts.data','tbl_posts.id','date'])
                 ->innerJoinWith(['city'])
                 ->where(['tbl_city.url_name'=>$city->url_name])
                 ->orderBy(['date' => SORT_DESC])

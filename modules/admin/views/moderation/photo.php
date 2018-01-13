@@ -49,6 +49,18 @@ Pjax::begin([
                 }
 
             ],
+
+            [
+                'attribute' => null,
+                'format' => 'raw',
+                'label' => 'Автор',
+                'headerOptions' => ['width'=>'100px','class' => '--header-p'],
+                'value'=>function($data){
+                    return "{$data->user->name} {$data->user->surname}";
+                }
+
+            ],
+
             [
                 'attribute' => 'status',
                 'format' => 'raw',

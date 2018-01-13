@@ -12,6 +12,8 @@ web/download/
 config/params.php
 config/db.php
 web/js/*.min.js
+web/js/libs/enjoyhint/*.min.js
+web/js/libs/enjoyhint/*.min.css
 web/js/libs/*.min.js
 web/css/*.min.css
 web/js/admin/*.min.js
