@@ -64,7 +64,7 @@ class DiscountSearch extends Discounts
         return $dataProvider;
     }
 
-    public function searchByCityAndCategory(array $params, $pagination, int $loadTime, array $geolocation)
+    public function searchByCityAndCategory(array $params, $pagination, int $loadTime, $geolocation)
     {
         $this->load($params, '');
 
