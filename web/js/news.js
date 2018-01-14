@@ -54,7 +54,9 @@ var News = (function (window, document, undefined,$) {
                 });
             },
 
-            sendRequsetForStateItem: function ($container_replace,url, item_id) {
+            sendRequsetForStateItem: function ($container_replace,url, item_id, insert_count) {
+                insert_count = insert_count === undefined ? true : false;
+
                 $.ajax({
                     url: url,
                     type: 'POST',
@@ -70,7 +72,9 @@ var News = (function (window, document, undefined,$) {
                             });
 
                         }else {
-                            $container_replace.text(response.count)
+                            if (insert_count) {
+                                $container_replace.text(response.count);
+                            }
                             if(response.status=='add'){
                                 $container_replace.addClass('active');
                             }else {
@@ -80,8 +84,6 @@ var News = (function (window, document, undefined,$) {
                     }
                 });
             },
-
-
         }
 
         return that;

@@ -188,6 +188,17 @@ var Discount = (function (window, document, undefined, $) {
                                 }
                             })
                         });
+
+                        $(document).on('click','.container-discount .btn-like,.discount-post-block .btn-like', function () {
+                            if (main.User.is_guest) {
+                                main.showErrorAut('Неавторизованные пользователи не могут сохранять в Избранное понравившиеся');
+                                return false;
+                            }
+                            var $this = $(this);
+                            var itemId = $this.data('item-id');
+                            var url = $this.data('favorites-state-url');
+                            news.sendRequsetForStateItem($this, url, itemId, false);
+                        });
                     }
                 };
 

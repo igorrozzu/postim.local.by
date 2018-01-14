@@ -326,9 +326,11 @@ class Discounts extends \yii\db\ActiveRecord
         if (isset($_POST['discount']['conditions'])) {
             $encodedConditions = [];
             foreach ($this->conditions as $condition) {
-                $encodedConditions[] = Html::encode($condition);
+                if (!empty($condition)) {
+                    $encodedConditions[] = Html::encode($condition);
+                }
             }
-            $this->conditions = Json::encode($encodedConditions);
+            $this->conditions = !empty($encodedConditions) ? Json::encode($encodedConditions) : null;
         } else {
             $this->conditions = null;
         }

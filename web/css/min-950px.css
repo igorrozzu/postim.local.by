@@ -133,6 +133,24 @@
     .container-bottom-btn{
         margin-top: 20px;
     }
+    .container-discount-info .container-bottom-btn {
+        margin-top: 0;
+    }
+    .discount-btns-container {
+        width: auto;
+        position: static;
+    }
+    .discount-post-block {
+        flex-direction: column;
+        width: auto;
+    }
+    .discount-post-block .cover {
+        width: 100%;
+    }
+    .discount-post-block .content {
+        width: auto;
+    }
+
 
     /*Cтили toastMessage*/
     .toast-container {

@@ -89,6 +89,10 @@
         width: calc(100% - 355px);
     }
 
+    .discount-post-block{
+        width: calc(100% - 315px);
+    }
+
     .__first-column .container-add-place,
     .__first-column .block-description-card,
     .__first-column .container-post,

@@ -249,6 +249,11 @@ class Posts extends \yii\db\ActiveRecord
         return $this->hasMany(Discounts::className(), ['post_id' => 'id']);
     }
 
+    public function getDiscount()
+    {
+        return $this->hasOne(Discounts::className(), ['post_id' => 'id']);
+    }
+
     public function afterFind()
     {
         parent::afterFind();

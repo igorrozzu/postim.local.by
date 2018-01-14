@@ -1,18 +1,16 @@
 <?php
 use app\components\breadCrumb\BreadCrumb;
+use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
-
-$categoryName = mb_strtolower(Yii::t('app/singular', $post->onlyOnceCategories[0]->name));
-$city = Yii::t('app/locativus', $post->city->name);
 
 $this->title = !empty($discount->title) ? $discount->title : $discount->header . ' на Postim.by';
 
 $this->registerMetaTag([
     'name' => 'description',
     'content' => !empty($discount->description) ? $discount->description :
-        'Промокод на скидку от ' . $discount->header . '. ' . $discount->header . ' на Postim.by'
+        'Промокод на скидку от ' . $post->data . '. ' . $discount->header . ' на Postim.by'
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -38,7 +36,7 @@ Pjax::begin([
     <h1 class="h1-v"><?=$discount->header?></h1>
 </div>
 
-<div class="block-content">
+<div class="block-content main-pjax">
 
     <?php if(Yii::$app->user->isModerator() || $isCurrentUserOwner):?>
         <div class="block-content-between" style="margin-bottom: -10px">
@@ -115,6 +113,13 @@ Pjax::begin([
                 Цена промокода
                 <span class="discount-info-bold-text">Бесплатно</span>
             </div>
+            <div class="discount-btns-container">
+                <div class="add-favorite btn-like <?= $discount->isLike ? 'active' : ''?>"
+                     data-favorites-state-url="/discount/favorite-state" data-item-id="<?=$discount->id?>">
+                    Добавить в избранное
+                </div>
+            </div>
+
             <div class="container-bottom-btn">
                 <div class="blue-btn-40 order-discount <?=$duration ? 'active' : 'inactive' ?>"
                      data-href="<?=Url::to(['/discount/order', 'discountId' => $discount->id])?>">
@@ -139,6 +144,42 @@ Pjax::begin([
             <?php endforeach;?>
         </ul>
     </div>
+    <?php
+        $postUrl = Url::to(['post/index', 'url' => $post->url_name, 'id' => $post->id]);
+    ?>
+    <div class="discount-post-block">
+        <a href="<?= $postUrl?>">
+            <div class="cover" style="background-image: url('<?= $post->cover?>')"></div>
+        </a>
+        <div class="content">
+            <div class="header-block">
+                <a href="<?= $postUrl?>">
+                    <p class="header-text"><?=$post->data?></p>
+                <a>
+                <div class="add-favorite btn-like <?= $post->is_like ? 'active' : ''?>"
+                     data-favorites-state-url="/post/favorite-state" data-item-id="<?=$post->id?>">
+                </div>
+            </div>
+            </p>
+            <p class="categories">
+                <?=CardsPlaceWidget::renderCategories($post->categories, $post->city)?>
+            </p>
+            <div class="address">
+                <img class="icon-address" src="/img/icon-address-info.png">
+                <span><?=$post->city->name . ', ' . $post->address?></span>
+            </div>
+            <div class="time-work" style="margin: 0;">
+                <?=$post->is_open ? '<p class="open">Открыто ' . $post->timeOpenOrClosed . '</p>':
+                    '<p class="close">Закрыто '. $post->timeOpenOrClosed . '</p>'?>
+                <?php if ($post->distanceText):?>
+                    <div class="distance-to-me">
+                        <?=$post->distanceText?>
+                    </div>
+                <?php endif;?>
+            </div>
+        </div>
+    </div>
+
 
     <div class="block-content-between">
         <noindex>

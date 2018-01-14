@@ -41,7 +41,11 @@ class DiscountController extends AdminDefaultController
 
     public function actionEdit(int $id)
     {
-        $discount = Discounts::findOne($id);
+        $discount = Discounts::find()
+            ->innerJoinWith(['post'])
+            ->joinWith(['gallery'])
+            ->where([Discounts::tableName() . '.id' => $id])
+            ->one();
 
         if (!isset($discount)) {
             throw new NotFoundHttpException('Cтраница не найдена');
@@ -62,12 +66,7 @@ class DiscountController extends AdminDefaultController
             }
         }
 
-        $photos = GalleryDiscount::find()
-            ->where(['discount_id' => $discount->id])
-            ->all();
-
         return $this->render('edit', [
-            'photos' => $photos,
             'discount' => $discount,
             'errors' => array_values($discount->getFirstErrors()),
         ]);

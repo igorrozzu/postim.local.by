@@ -18,6 +18,7 @@ use app\models\uploads\UploadPhotosByUrl;
 use app\models\uploads\UploadPostPhotosTmp;
 use app\widgets\cardsDiscounts\CardsDiscounts;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
@@ -78,7 +79,11 @@ class DiscountController extends MainController
 
     public function actionEdit(int $id)
     {
-        $discount = Discounts::findOne($id);
+        $discount = Discounts::find()
+            ->innerJoinWith(['post'])
+            ->joinWith(['gallery'])
+            ->where([Discounts::tableName() . '.id' => $id])
+            ->one();
 
         if (!isset($discount)) {
             throw new NotFoundHttpException('Cтраница не найдена');
@@ -110,12 +115,8 @@ class DiscountController extends MainController
             }
         }
 
-        $photos = GalleryDiscount::find()
-            ->where(['discount_id' => $discount->id])
-            ->all();
 
         return $this->render('edit', [
-            'photos' => $photos,
             'discount' => $discount,
             'errors' => array_values($discount->getFirstErrors()),
         ]);
@@ -226,7 +227,19 @@ class DiscountController extends MainController
         $searchModel = new DiscountSearch();
         $discount = $searchModel->readDiscount($discountId);
 
-        if (!isset($discount)) {
+        $post = Posts::find()
+            ->innerJoinWith(['city.region.coutries',
+                'discount' => function (ActiveQuery $query) use ($discountId) {
+                $query->onCondition([Discounts::tableName() . '.id' => $discountId]);
+            }])
+            ->with(['workingHours' => function (ActiveQuery $query) {
+                $query->orderBy(['day_type' => SORT_ASC]);
+            }, 'lastPhoto'])
+            ->joinWith(['categories.category', 'hasLike'])
+            ->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']])
+            ->one();
+
+        if (!isset($discount) || !isset($post)) {
             throw new NotFoundHttpException('Cтраница не найдена');
         }
 
@@ -253,7 +266,7 @@ class DiscountController extends MainController
 
         return $this->render('index', [
             'discount' => $discount,
-            'post' => $discount->post,
+            'post' => $post,
             'breadcrumbParams' => $breadcrumbParams,
             'economy' => $discount->calculateEconomy(),
             'isCurrentUserOwner' => $isCurrentUserOwner,

@@ -158,7 +158,7 @@ $this->title = 'Добавить скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Название промокода</label>
                 <input id="product-count" name="discount[promocode]" class="input-field-setting"
-                       placeholder="Укажите единый промокод для всех или Не указывайте и мы сгенерируем уникальный промокод из 4х цифр для каждого клиента" value="">
+                       placeholder="Укажите единый промокод или мы сгенерируем уникальный промокод для каждого клиента" value="">
             </div>
         </div>
 

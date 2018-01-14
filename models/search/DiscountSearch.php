@@ -264,8 +264,8 @@ class DiscountSearch extends Discounts
     public function readDiscount(int $discountId): ? Model
     {
         $query = Discounts::find()
-            ->innerJoinWith(['post', 'totalView'])
-            ->joinWith(['gallery'])
+            ->innerJoinWith(['totalView'])
+            ->joinWith(['gallery', 'hasLike'])
             ->where([Discounts::tableName() . '.id' => $discountId]);
 
         return $query->one();

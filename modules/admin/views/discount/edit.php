@@ -2,6 +2,15 @@
 use yii\helpers\Json;
 use app\components\Helper;
 
+if (empty($discount->title)) {
+    $discount->title = $discount->header . ' на Postim.by';
+}
+if (empty($discount->description)) {
+    $discount->description = 'Промокод на скидку от ' . $discount->post->data . '. ' . $discount->header . ' на Postim.by';
+}
+if (empty($discount->key_word)) {
+    $discount->key_word = 'скидка, промокод, акция, ' . $discount->post->data;
+}
 $this->title = 'Редактировать скидку на Postim.by';
 ?>
 
@@ -133,8 +142,7 @@ $this->title = 'Редактировать скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Название промокода</label>
                 <input id="product-count" name="discount[promocode]" class="input-field-setting"
-                       placeholder="Укажите единый промокод для всех или Не указывайте и мы
-                       сгенерируем уникальный промокод из 4х цифр для каждого клиента" value="<?=$discount->promocode?>">
+                       placeholder="Укажите единый промокод или мы сгенерируем уникальный промокод для каждого клиента" value="<?=$discount->promocode?>">
             </div>
         </div>
 
@@ -163,7 +171,7 @@ $this->title = 'Редактировать скидку на Postim.by';
 
                 <?=$this->render('__edit_photos', [
                     'discount' => $discount,
-                    'photos' => $photos,
+                    'photos' => $discount->gallery,
                 ])?>
 
                 <label class="btn-add-photo-preview" for="discount-gallery">Добавить фотографии</label>
