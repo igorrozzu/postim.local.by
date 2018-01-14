@@ -268,11 +268,11 @@ class CategoryController extends MainController
 
         if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ) {
             return CardsDiscounts::widget([
-                'dataProvider' => $dataProvider,
+                'dataprovider' => $dataProvider,
                 'settings' => [
                     'show-more-btn' => true,
                     'replace-container-id' => 'feed-discounts',
-                    'loadTime' => $loadTime,
+                    'load-time' => $loadTime,
                     'postId' => false,
                     'show-distance' => true,
                 ]

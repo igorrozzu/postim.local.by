@@ -23,7 +23,7 @@ $discounts = $dataProvider->getModels();
                         <div class="go_to_view">Посмотреть</div>
                     </div>
                     <div class="btn-like-block">
-                        <div class="btn-like <?=isset($discount->hasLike) ? 'active' : ''?>">
+                        <div class="btn-like <?= $discount->isLike ? 'active' : ''?>">
                             <?=$discount->count_favorites?>
                         </div>
                     </div>
@@ -38,7 +38,7 @@ $discounts = $dataProvider->getModels();
                 <div class="time-left">
                     <?=$duration ? 'Осталось ' . $duration : 'Акция закончилась'?>
                 </div>
-                <?php if ($settings['show-distance']):?>
+                <?php if (isset($settings['show-distance']) && $settings['show-distance']):?>
                     <div class="distance-to-me">
                         <?=$discount->post->distanceText?>
                     </div>
@@ -57,7 +57,7 @@ $discounts = $dataProvider->getModels();
     <?php if ($nextLink = $dataProvider->pagination->getLinks()['next'] ?? false): ?>
         <div class="replace-block mg-btm-30" id="<?=$settings['replace-container-id']?>">
             <div class="btn-show-more" data-selector_replace="#<?=$settings['replace-container-id']?>"
-                 data-href="<?=$nextLink?>&loadTime=<?=$settings['loadTime']?>&postId=<?=$settings['postId'] ?? ''?>">
+                 data-href="<?=$nextLink?>&loadTime=<?=$settings['load-time']?><?=isset($settings['postId']) ? '&postId=' . $settings['postId'] : ''?>">
                 <noindex>Показать больше скидок</noindex>
             </div>
         </div>

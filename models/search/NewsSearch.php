@@ -4,6 +4,7 @@ namespace app\models\search;
 
 use app\components\Pagination;
 use app\models\City;
+use app\models\entities\FavoritesNews;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -14,7 +15,6 @@ use app\models\News;
  */
 class NewsSearch extends News
 {
-    public $favorite;
     public $favorite_id;
     public $city;
     /**
@@ -25,7 +25,7 @@ class NewsSearch extends News
         return [
             [['id', 'city_id', 'total_view_id', 'count_favorites', 'date'], 'integer'],
             [['header', 'description', 'data', 'description_s', 'key_word_s',
-                'cover','city', 'favorite', 'favorite_id'], 'safe'],
+                'cover','city', 'favorite_id'], 'safe'],
         ];
     }
 
@@ -62,9 +62,7 @@ class NewsSearch extends News
             return $dataProvider;
         }
 
-        if(isset($this->favorite) && $this->favorite === 'news') {
-            $query->innerJoinWith('favoriteNews');
-        } else if(!Yii::$app->user->isGuest) {
+        if(!Yii::$app->user->isGuest) {
             $query->joinWith('hasLike');
         }
 
@@ -79,9 +77,6 @@ class NewsSearch extends News
 
         if(isset($params['loadTime']) || isset($loadTime) ){
             $query->andWhere(['<=', 'tbl_news.date', $params['loadTime'] ?? $loadTime]);
-        }
-        if(isset($this->favorite_id)) {
-            $query->andWhere(['tbl_favorites_news.user_id' => $this->favorite_id]);
         }
 
         if(isset($params['text'])){
@@ -108,5 +103,29 @@ class NewsSearch extends News
         $query->limit(5);
         return $query->asArray()->all();
 
+    }
+
+    public function searchFavorites($params, Pagination $pagination, $loadTime)
+    {
+        $query = News::find()
+            ->joinWith('city.region')
+            ->innerJoinWith('favoriteNews')
+            ->andWhere(['<=', News::tableName() . '.date', $loadTime])
+            ->orderBy(['date' => SORT_DESC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => $pagination
+        ]);
+
+        if (!$this->load($params,'') && !$this->validate()) {
+            return $dataProvider;
+        }
+
+        if (isset($this->favorite_id)) {
+            $query->andWhere([FavoritesNews::tableName() . '.user_id' => $this->favorite_id]);
+        }
+
+        return $dataProvider;
     }
 }

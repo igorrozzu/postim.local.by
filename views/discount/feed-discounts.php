@@ -43,11 +43,11 @@ $this->registerMetaTag([
             <div class="cards-block-discount row-3 main-pjax" data-favorites-state-url="/discount/favorite-state">
 
                 <?= CardsDiscounts::widget([
-                    'dataProvider' => $dataProvider,
+                    'dataprovider' => $dataProvider,
                     'settings' => [
                         'show-more-btn' => true,
                         'replace-container-id' => 'feed-discounts',
-                        'loadTime' => $loadTime,
+                        'load-time' => $loadTime,
                         'show-distance' => false,
                     ]
                 ]); ?>

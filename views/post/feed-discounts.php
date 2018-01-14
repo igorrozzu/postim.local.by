@@ -100,11 +100,11 @@ echo "<script>$js</script>";
         <div class="cards-block-discount row-3 main-pjax" data-favorites-state-url="/discount/favorite-state">
 
             <?= CardsDiscounts::widget([
-                'dataProvider' => $dataProvider,
+                'dataprovider' => $dataProvider,
                 'settings' => [
                     'show-more-btn' => true,
                     'replace-container-id' => 'feed-discounts',
-                    'loadTime' => time(),
+                    'load-time' => time(),
                     'postId' => $post['id'],
                     'show-distance' => false,
                 ]

@@ -1,7 +1,6 @@
 <?php
 
 use app\components\breadCrumb\BreadCrumb;
-use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 $this->title = 'Избранное на Postim.by';
@@ -24,13 +23,18 @@ Pjax::begin([
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
             <a href="<?=Url::to(['user/izbrannoe'])?>">
-                <div class="btn2-menu <?= !$isNewsFeed ? 'active' : ''?>">
+                <div class="btn2-menu <?= $feed === 'posts' ? 'active' : ''?>">
                     <span class="under-line">Места</span>
                 </div>
             </a>
             <a href="<?=Url::to(['user/izbrannoe', 'favorite' => 'news'])?>">
-                <div class="btn2-menu <?= $isNewsFeed ? 'active' : ''?>">
+                <div class="btn2-menu <?= $feed === 'news' ? 'active' : ''?>">
                     <span class="under-line">Новости</span>
+                </div>
+            </a>
+            <a href="<?=Url::to(['user/izbrannoe', 'favorite' => 'discounts'])?>">
+                <div class="btn2-menu <?= $feed === 'discounts' ? 'active' : ''?>">
+                    <span class="under-line">Скидки</span>
                 </div>
             </a>
         </div>
@@ -39,8 +43,8 @@ Pjax::begin([
 
 <div class="block-content">
     <?php if($dataProvider->getTotalCount()):?>
-        <div class="<?= $isNewsFeed ? 'block-news' : 'cards-block'?>">
-            <?= $widgetName::widget([
+        <div <?=$widgetWrapAttributes?>>
+            <?= $widgetClassName::widget([
                 'dataprovider' => $dataProvider,
                 'settings' => [
                     'show-more-btn' => true,
@@ -48,6 +52,7 @@ Pjax::begin([
                     'load-time' => $loadTime,
                 ]
             ]); ?>
+        </div>
     <?php else:?>
         <div style="margin-top: 10px; display: flex"></div>
             <div class="container-message">
@@ -58,8 +63,6 @@ Pjax::begin([
                 </div>
             </div>
     <?php endif;?>
-
-    </div>
 </div>
 <div class="clear-fix"></div>
 <div class="mg-btm-30"></div>

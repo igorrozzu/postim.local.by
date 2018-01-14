@@ -25,7 +25,7 @@ $city = Yii::$app->city->getSelected_city();
                         <div class="go_to_view">Посмотреть</div>
                     </div>
                     <div class="btn-like-block">
-                        <div class="btn-like <?= isset($discount->hasLike) ? 'active' : '' ?>">
+                        <div class="btn-like <?= $discount->isLike ? 'active' : '' ?>">
                             <?= $discount->count_favorites ?>
                         </div>
                     </div>

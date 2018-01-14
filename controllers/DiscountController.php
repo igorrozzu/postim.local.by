@@ -209,11 +209,11 @@ class DiscountController extends MainController
 
         if ($request->isAjax && !$request->get('_pjax', false)) {
             return CardsDiscounts::widget([
-                'dataProvider' => $dataProvider,
+                'dataprovider' => $dataProvider,
                 'settings' => [
                     'show-more-btn' => true,
                     'replace-container-id' => 'feed-discount',
-                    'loadTime' => $loadTime,
+                    'load-time' => $loadTime,
                     'postId' => $postId,
                     'show-distance' => false,
                 ]
@@ -281,11 +281,11 @@ class DiscountController extends MainController
         if (Yii::$app->request->isAjax &&
             !Yii::$app->request->get('_pjax', false)) {
             return CardsDiscounts::widget([
-                    'dataProvider' => $dataProvider,
+                    'dataprovider' => $dataProvider,
                     'settings' => [
                         'show-more-btn' => true,
                         'replace-container-id' => 'feed-discounts',
-                        'loadTime' => $loadTime,
+                        'load-time' => $loadTime,
                         'show-distance' => false,
                     ]
             ]);

@@ -7,13 +7,13 @@ use yii\base\Widget;
 
 class CardsDiscounts extends Widget
 {
-    public $dataProvider;
+    public $dataprovider;
     public $settings;
 
     public function run()
     {
         return $this->render($this->settings['view'] ?? 'index', [
-            'dataProvider' => $this->dataProvider,
+            'dataProvider' => $this->dataprovider,
             'settings' => $this->settings,
         ]);
     }

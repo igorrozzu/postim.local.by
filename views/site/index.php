@@ -64,7 +64,7 @@ $this->registerMetaTag([
         <h2 class="h2-c">Новые скидки</h2>
         <div class="cards-block-discount row-4 main-pjax" data-favorites-state-url="/discount/favorite-state">
             <?= CardsDiscounts::widget([
-                'dataProvider' => $discountDataProvider,
+                'dataprovider' => $discountDataProvider,
                 'settings' => [
                     'show-distance' => false,
                     'view' => 'feed-main-page'

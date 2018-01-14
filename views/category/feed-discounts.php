@@ -111,11 +111,11 @@ Pjax::begin([
         <?php if ($totalCount > 0): ?>
             <div class="cards-block-discount row-4 main-pjax" data-favorites-state-url="/discount/favorite-state">
                 <?= CardsDiscounts::widget([
-                    'dataProvider' => $dataProvider,
+                    'dataprovider' => $dataProvider,
                     'settings' => [
                         'show-more-btn' => true,
                         'replace-container-id' => 'feed-discounts',
-                        'loadTime' => $loadTime,
+                        'load-time' => $loadTime,
                         'postId' => false,
                         'show-distance' => true,
                     ]

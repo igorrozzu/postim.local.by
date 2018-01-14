@@ -8,6 +8,7 @@ use app\components\cardsPromoWidget\CardsPromoWidget;
 use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use app\components\MainController;
 use app\components\orderStatisticsWidget\OrderStatisticsWidget;
+use app\components\user\FavoritesFeedsHelper;
 use app\models\City;
 use app\models\entities\DiscountOrder;
 use app\models\entities\Gallery;
@@ -389,24 +390,26 @@ class UserController extends MainController
     public function actionIzbrannoe()
     {
         $request = Yii::$app->request;
+
         $_GET['favorite'] = $request->get('favorite', 'posts');
         $_GET['favorite_id'] = $request->get('favorite_id', Yii::$app->user->id);
-        $isNewsFeed = $_GET['favorite'] === 'news';
-        $searchModel = $isNewsFeed ? new NewsSearch() : new PostsSearch();
+
+        $helper = new FavoritesFeedsHelper($_GET['favorite']);
+
+        $searchModel = $helper->getModel();
         $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 3),
+            'pageSize' => $request->get('per-page', 6),
             'page' => $request->get('page', 1) - 1,
             'selfParams'=> [
                 'favorite' => true,
                 'favorite_id' => true,
             ],
         ]);
-        $loadTime = $request->get('loadTime', time());
 
-        $dataProvider = $searchModel->search(
+        $loadTime = $request->get('loadTime', time());
+        $dataProvider = $searchModel->searchFavorites(
             $request->queryParams,
             $pagination,
-            PostsSearch::getSortArray('new'),
             $loadTime
         );
 
@@ -416,23 +419,26 @@ class UserController extends MainController
             'url_name' => Yii::$app->request->getUrl(),
             'pjax' => 'class="main-pjax a"'
         ];
-        $widgetName = $isNewsFeed ? CardsNewsWidget::className() : CardsPlaceWidget::className();
-        if($request->isAjax && !$request->get('_pjax',false)) {
-            return $widgetName::widget([
+
+        $widgetClassName = $helper->getWidgetClassName();
+
+        if ($request->isAjax && !$request->get('_pjax',false)) {
+            return $widgetClassName::widget([
                 'dataprovider' => $dataProvider,
                 'settings' => [
                     'show-more-btn' => true,
                     'replace-container-id' => 'feed-favorites',
                     'load-time' => $loadTime,
-                ]
+                ],
             ]);
         } else {
             return $this->render('feed-favorites', [
                 'dataProvider' => $dataProvider,
                 'loadTime' => $loadTime,
-                'isNewsFeed' => $isNewsFeed,
-                'widgetName' => $widgetName,
-                'breadcrumbParams'=>$breadcrumbParams
+                'feed' => $_GET['favorite'],
+                'widgetClassName' => $widgetClassName,
+                'widgetWrapAttributes' => $helper->getWidgetWrapAttributes(),
+                'breadcrumbParams' => $breadcrumbParams
             ]);
         }
     }

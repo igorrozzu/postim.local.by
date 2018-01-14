@@ -8,6 +8,7 @@ use app\models\Category;
 use app\models\City;
 use app\models\Countries;
 use app\models\Discounts;
+use app\models\entities\FavoritesDiscount;
 use app\models\Posts;
 use app\models\Region;
 use app\models\UnderCategory;
@@ -15,6 +16,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
+use yii\db\Query;
 
 
 class DiscountSearch extends Discounts
@@ -24,6 +26,7 @@ class DiscountSearch extends Discounts
     public $city;
     public $open;
     public $sort;
+    public $favorite_id;
 
     private $queryForPlaceOnMap;
     private $key;
@@ -50,11 +53,14 @@ class DiscountSearch extends Discounts
     public function searchByPost($params, Pagination $pagination, int $loadTime)
     {
         $query = Discounts::find()
-            ->joinWith(['hasLike'])
             ->where(['post_id' => $params['postId']])
             ->andWhere(['<=', 'date_start', $loadTime])
             ->andWhere(['status' => Discounts::STATUS['active']])
             ->orderBy(['date_start' => SORT_DESC]);
+
+        if (!Yii::$app->user->isGuest) {
+            $query->joinWith(['hasLike']);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -69,10 +75,13 @@ class DiscountSearch extends Discounts
         $this->load($params, '');
 
         $query = Discounts::find()
-            ->joinWith(['hasLike'])
             ->innerJoinWith(['post.city.region.coutries', 'post.categories.category'])
             ->andWhere(['<=', 'date_start', $loadTime])
             ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']]);
+
+        if (!Yii::$app->user->isGuest) {
+            $query->joinWith(['hasLike']);
+        }
 
         if ($this->sort === 'nigh' && $geolocation) {
             /*$coordinates = 'POINT(' . $geolocation["lat"] . ' ' . $geolocation["lon"] . ')';
@@ -174,11 +183,14 @@ class DiscountSearch extends Discounts
         $this->load($params, '');
 
         $query = Discounts::find()
-            ->joinWith(['hasLike'])
             ->innerJoinWith(['post.city.region.coutries'])
             ->andWhere(['<=', 'date_start', $loadTime])
             ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
             ->orderBy(['date_start' => SORT_DESC]);
+
+        if (!Yii::$app->user->isGuest) {
+            $query->joinWith(['hasLike']);
+        }
 
         if (isset($this->city)) {
             $query->andWhere(['or',
@@ -223,6 +235,30 @@ class DiscountSearch extends Discounts
 
         $query->groupBy([Discounts::tableName() . '.id']);
         return $query->count();
+    }
+
+    public function searchFavorites($params, Pagination $pagination, $loadTime)
+    {
+        $query = Discounts::find()
+            ->innerJoinWith(['favoritesDiscount'])
+            ->andWhere(['<=', 'date_start', $loadTime])
+            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
+            ->orderBy(['date_start' => SORT_DESC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => $pagination
+        ]);
+
+        if (!$this->load($params,'') && !$this->validate()) {
+            return $dataProvider;
+        }
+
+        if (isset($this->favorite_id)) {
+            $query->andWhere([FavoritesDiscount::tableName() . '.user_id' => $this->favorite_id]);
+        }
+
+        return $dataProvider;
     }
 
     public function readDiscount(int $discountId): ? Model
