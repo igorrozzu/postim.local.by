@@ -4,6 +4,9 @@
         width: calc(100%);
         margin: 0;
     }
+    .logo-menu{
+        margin-left: 0px;
+    }
     .header-selected-city,
     .btns-map {
         width: calc(100% - 20px);
@@ -164,11 +167,8 @@
     .btn-notice {
         padding: 15px 10px;
     }
-    .btn_add_place {
-        padding: 0 10px;
-    }
     .open-search .authorized .search_block {
-        width: calc(100% - 131px);
+        width: calc(100% - 30px);
     }
     .sign_in_btn {
         padding: 0 10px;

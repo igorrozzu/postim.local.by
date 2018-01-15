@@ -66,8 +66,14 @@ $countNotif = NotificationUser::getCountNotifications();
 <!--верхнее меню-->
 <div class="container-header">
     <div class="header authorized">
-        <div class="menu-btn"></div>
-        <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:'/'?>" class="logo"></a>
+        <div class="logo-menu">
+            <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:'/'?>" class="logo"></a>
+            <div class="menu-btn">
+                <div class="menu-icon"></div>
+                <div class="menu-text">Каталог</div>
+                <div class="menu-arrows-icon"></div>
+            </div>
+        </div>
         <div class="select-city btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
         <noindex>
             <div class="main-pjax">
@@ -82,11 +88,6 @@ $countNotif = NotificationUser::getCountNotifications();
                 <span class="count-notice"><?=$countNotif?></span>
             <?php endif;?>
         </div>
-        <noindex>
-            <div class="main-pjax">
-                <a href="/add" class="btn_add_place" rel="nofollow"></a>
-            </div>
-        </noindex>
         <div class="search_block">
             <div class="cancel"></div>
             <input class="search" type="text" placeholder="Поиск" value="<?=Yii::$app->request->get('text','')?>">

@@ -1,45 +1,13 @@
 @media (max-width:540px) {
 
     .logo:after,
-    .header-popup-authentication .logo:after,
-    .btn-search:after,
-    .open-search .btn-search:after,
-    .btn_add_place:after
+    .header-popup-authentication .logo:after
     {
         content: '';
         display: block;
         background-image: url("../img/icons.png");
     }
 
-    .search_block{
-        display: flex;
-        float: right;
-        background-color: transparent;
-        padding: 0;
-        margin: 0;
-        width: auto;
-        height: 60px;
-    }
-    .search{
-        display: none;
-    }
-    .open-search .search_block{
-        display: flex;
-        padding-left:10px;
-        float: right;
-        margin: 10px 15px 0 0;
-        background-color: white;
-        height: 40px;
-        border-radius: 40px;
-        width: calc(100% - 33px);
-    }
-    .open-search .search{
-        display: inherit;
-        width: calc(100% - 77px);
-    }
-    .open-search .authorized .search_block{
-        width: calc(100% - 156px);
-    }
     .h1-c,
     .h1-v{
         font-size: 28px;
@@ -53,53 +21,28 @@
     .autocomplete-result-search ul li{
         width: 100%;
     }
-    .logo:after {
-        width: 92px;
-        height: 31px;
-        background-position: 222px 333px;
+
+    .menu-btn .menu-text,
+    .menu-btn .menu-arrows-icon{
+        display: none;
     }
+
+    .menu-btn{
+        width: 20px;
+        margin: 0 10px 0 0;
+    }
+
+    .logo{
+        float: right;
+        padding: 19px 0 8px 0;
+    }
+
     .header-popup-authentication .logo:after{
         width: 126px;
         height: 31px;
         background-position: 239px 260px;
     }
-    .btn-search:after{
-        width: 18px;
-        height: 18px;
-        background-position: 482px 830px;
-    }
-    .btn-search:hover:after{
-        background-position: 464px 830px;
-    }
-    .btn-search{
-        height: auto;
-        display: flex;
-        align-items: center;
-        padding: 22px 15px;
-    }
 
-    .open-search .btn-search{
-        float: right;
-        padding: 3px 3px 3px 3px;
-        cursor: pointer;
-    }
-    .open-search .btn-search:after{
-        width: 36px;
-        height: 36px;
-        background-position: 644px 767px;
-    }
-    .open-search .btn-search:hover:after{
-        background-position: 608px 767px;
-    }
-
-    .btn_add_place:after {
-        width: 26px;
-        height: 26px;
-        background-position: 562px 906px;
-    }
-    .btn_add_place:hover:after{
-        background-position: 536px 906px;
-    }
     .count-notice{
         width: 20px;
         height: 20px;
