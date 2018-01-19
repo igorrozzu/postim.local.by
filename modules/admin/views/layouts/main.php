@@ -35,8 +35,14 @@ CustomScrollbarAsset::register($this);
 <!--верхнее меню-->
 <div class="container-header">
     <div class="header">
-        <div class="menu-btn"></div>
-        <a href="/" class="logo"></a>
+        <div class="logo-menu">
+            <a href="/" class="logo"></a>
+            <div class="menu-btn">
+                <div class="menu-icon"></div>
+                <div class="menu-text">Меню</div>
+                <div class="menu-arrows-icon"></div>
+            </div>
+        </div>
         <div class="profile-icon-menu">
             <img class="round-img" src="<?=Yii::$app->user->identity->getPhoto()?>">
         </div>

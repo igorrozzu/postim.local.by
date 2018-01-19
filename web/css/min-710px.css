@@ -1,17 +1,5 @@
 @media (max-width:770px) {
-    .btn-search{
-        padding: 4px 1px 3px 0px;
-    }
-    .search{
-        width: calc(100% - 52px);
-    }
-    .search_block{
-        padding-right: 2px;
-        width: calc(100% - 347px);
-    }
-    .authorized .search_block{
-        width: calc(100% - 397px);
-    }
+
     .h1-c{
         font-size: 30px;
     }
@@ -24,29 +12,7 @@
     .card-block-discount{
         width: 100%;
     }
-    .open-search .menu-btn,
-    .open-search .logo,
-    .open-search .sign_in_btn,
-    .open-search .btn_add_place,
-    .open-search .btn_br,
-    .open-search .select-city{
-        display: none;
-    }
-    .open-search .search_block{
-        width: calc(100% - 36px);
-    }
-    .open-search .search{
-        display: inherit;
-        width: calc(100% - 67px);
-    }
 
-    .open-search .authorized .search_block{
-        width: calc(100% - 163px);
-    }
-
-    .autocomplete-result-search ul li{
-        width: 50%;
-    }
     .menu-inline li{
         margin-right: 30px;
     }

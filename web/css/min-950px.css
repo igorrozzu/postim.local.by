@@ -1,27 +1,87 @@
 @media (max-width:949px) {
 
-    .header-menu-title{
-        display: none;
-    }
     .notif-menu .header-menu-title,
     .left-menu .header-menu-title{
         display: block;
     }
 
-    .header-menu-title.btn-select-city{
-        display: block;
-        margin-left: 0px;
-    }
-    .search_block{
-        width: calc(100% - 345px);
-    }
-    .authorized .search_block{
-        width: calc(100% - 395px);
-    }
 
-    .select-city{
+
+    .search_block{
+        display: flex;
+        float: right;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        width: auto;
+        height: 60px;
+    }
+    .search{
         display: none;
     }
+
+    .btn-search:after{
+        width: 18px;
+        height: 18px;
+        background-position: 482px 830px;
+    }
+    .btn-search:hover:after{
+        background-position: 464px 830px;
+    }
+    .btn-search{
+        height: auto;
+        display: flex;
+        align-items: center;
+        padding: 22px 15px;
+    }
+
+
+    .open-search .logo,
+    .open-search .sign_in_btn,
+    .open-search .btn_br,
+    .open-search .btn-notice,
+    .open-search .profile-icon-menu,
+    .open-search .select-city{
+        display: none;
+    }
+
+    .open-search .btn-search{
+        float: right;
+        padding: 3px 3px 3px 3px;
+        cursor: pointer;
+    }
+    .open-search .btn-search:after{
+        width: 36px;
+        height: 36px;
+        background-position: 644px 767px;
+    }
+    .open-search .btn-search:hover:after{
+        background-position: 608px 767px;
+    }
+
+    .open-search .search_block{
+        display: flex;
+        padding-left:10px;
+        float: right;
+        margin: 10px 15px 0 0;
+        background-color: white;
+        height: 40px;
+        border-radius: 40px;
+        width: calc(100% - 33px);
+    }
+    .open-search .search{
+        display: inherit;
+        width: calc(100% - 77px);
+    }
+
+    .authorized .search_block{
+        width: auto;
+    }
+
+    .open-search .authorized .search_block{
+        width: calc(100% - 40px);
+    }
+
     .nav-bar1,
     .block-description-card,
     .block-content-between,

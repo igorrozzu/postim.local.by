@@ -56,17 +56,20 @@ LoginFormsAsset::register($this);
 <!--верхнее меню-->
 <div class="container-header">
     <div class="header">
-        <div class="menu-btn"></div>
-        <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:'/'?>" class="logo"></a>
+        <div class="logo-menu">
+            <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:'/'?>" class="logo"></a>
+            <div class="menu-btn">
+                <div class="menu-icon"></div>
+                <div class="menu-text">Каталог</div>
+                <div class="menu-arrows-icon"></div>
+            </div>
+        </div>
         <div class="select-city btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
         <noindex>
             <div class="main-pjax">
                 <a href="/add" class="btn_br" rel="nofollow">Добавить место</a>
             </div>
             <div class="sign_in_btn">Войти</div>
-            <div class="main-pjax">
-                <a href="/add" class="btn_add_place" rel="nofollow"></a>
-            </div>
         </noindex>
         <div class="search_block">
             <div class="cancel"></div>
