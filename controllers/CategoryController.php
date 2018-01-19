@@ -244,6 +244,7 @@ class CategoryController extends MainController
                 'city' => true,
                 'category' => true,
                 'open' => true,
+                'sort' => true,
             ],
         ]);
 
@@ -264,7 +265,7 @@ class CategoryController extends MainController
             'pjax' => 'class="main-pjax a"'
         ];
 
-        $selfParams = ['sort' => true];
+        $selfParams = ['sort' => true, 'open' => true];
 
         if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ) {
             return CardsDiscounts::widget([

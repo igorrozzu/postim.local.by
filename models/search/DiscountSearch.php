@@ -83,20 +83,19 @@ class DiscountSearch extends Discounts
         $query = Discounts::find()
             ->innerJoinWith(['post.city.region.coutries', 'post.categories.category'])
             ->andWhere(['<=', 'date_start', $loadTime])
-            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
-            ->groupBy([Discounts::tableName() . '.id']);
+            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']]);
 
         if ($this->sort === 'nigh' && $geolocation) {
-            /*$coordinates = 'POINT(' . $geolocation["lat"] . ' ' . $geolocation["lon"] . ')';
+            $coordinates = 'POINT(' . $geolocation["lat"] . ' ' . $geolocation["lon"] . ')';
             $query->select([
                 Discounts::tableName() . '.*',
                 'ST_distance_sphere(st_point("coordinates"[0],"coordinates"[1]),ST_GeomFromText(\'' .
                 $coordinates . '\')) as distance'
-            ]);
-
-            $query->orderBy(['distance' => SORT_ASC]);*/
+            ])->distinct()
+                ->orderBy(['distance' => SORT_ASC]);
         } else {
-            $query->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
+            $query->groupBy([Discounts::tableName() . '.id'])
+                ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
         }
 
         $this->queryForPlaceOnMap = Posts::find()
