@@ -68,7 +68,7 @@ $this->title = 'Редактировать скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Условия акции</label>
 
-                <?php if(isset($discount->conditions)):?>
+                <?php if (isset($discount->conditions)):?>
                     <?php foreach (Json::decode($discount->conditions) as $condition): ?>
                         <div class="option-select-field another-condition">
                             <div class="block-textarea-custom">
@@ -89,16 +89,6 @@ $this->title = 'Редактировать скидку на Postim.by';
                 </div>
 
                 <div id="select-condition" class="container-scroll auto-height" style="max-height: none;">
-                    <div class="option-select-field">
-                        <div class="block-textarea-custom hidden">
-                            <textarea data-preview-text="Поставщик несет полную ответственность"
-                                      data-continue-text=" перед потребителем за достоверность информации."
-                                      placeholder="Укажите условие"
-                                      readonly
-                            >Поставщик несет полную ответственность</textarea>
-                            <div class="close-input-custom" ></div>
-                        </div>
-                    </div>
                     <div class="option-select-field another-condition">
                         <div class="block-textarea-custom hidden">
                             <textarea data-preview-text=""
@@ -109,6 +99,12 @@ $this->title = 'Редактировать скидку на Postim.by';
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="block-field-setting">
+                <label class="label-field-setting">Реквизиты</label>
+                <input  name="discount[requisites]" class="input-field-setting"
+                        placeholder="Введите реквизиты: ООО, УНП и т.д."
+                        value="<?= $discount->requisites?>">
             </div>
         </div>
 
@@ -122,7 +118,7 @@ $this->title = 'Редактировать скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Скидка (%)</label>
                 <input id="discount" name="discount[discount]" class="input-field-setting"
-                       placeholder="Укажите скидку" value="<?=$discount->discount?>">
+                       placeholder="Укажите скидку, если это возможно" value="<?=$discount->discount?>">
             </div>
 
             <div class="block-field-setting">

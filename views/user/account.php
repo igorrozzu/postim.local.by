@@ -73,6 +73,14 @@ Pjax::begin([
 <script>
     $(document).ready(function () {
         $('#payment-form-money').mask("###0.00", {reverse: true});
+
+        <?php if (isset($errors[0])):?>
+            $().toastmessage('showToast', {
+                text: '<?=$errors[0]?>',
+                stayTime: 5000,
+                type: 'error'
+            });
+        <?php endif;?>
     });
 </script>
 <?php

@@ -141,13 +141,6 @@
         position: static;
     }
     .discount-post-block {
-        flex-direction: column;
-        width: auto;
-    }
-    .discount-post-block .cover {
-        width: 100%;
-    }
-    .discount-post-block .content {
         width: auto;
     }
 

@@ -38,6 +38,8 @@ use yii\helpers\Json;
  * @property integer $user_id
  * @property integer $count_orders
  * @property integer $promocode
+ * @property integer $promocode_counter
+ * @property string $requisites
  *
  * @property Posts $post
  * @property TotalView $totalView
@@ -72,13 +74,16 @@ class Discounts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['post_id', 'header', 'number_purchases', 'total_view_id', 'status', 'date_start',
-                'date_finish', 'type', 'conditions', 'count_favorites', 'url_name', 'user_id', 'count_orders'], 'required'],
+            [['description', 'key_word', 'title', 'promocode'], 'trim'],
+            [['post_id', 'header', 'number_purchases', 'total_view_id', 'status', 'date_start', 'promocode_counter',
+                'date_finish', 'type', 'conditions', 'count_favorites', 'url_name', 'user_id', 'count_orders',
+                'requisites'], 'required'],
             ['cover', 'required',
                 'message' => 'Необходимо добавить хотя бы одну фотографию в галерею.'],
             [['post_id', 'total_view_id', 'status', 'date_start',
-                'date_finish', 'type', 'count_favorites', 'user_id', 'count_orders'], 'integer'],
-            [['data', 'header', 'cover', 'conditions', 'title', 'description', 'key_word', 'url_name', 'promocode'], 'string'],
+                'date_finish', 'type', 'count_favorites', 'user_id', 'count_orders', 'promocode_counter'], 'integer'],
+            [['data', 'header', 'cover', 'conditions', 'title', 'description', 'key_word',
+                'url_name', 'promocode', 'requisites'], 'string'],
             [['price'], 'number', 'min' => 0],
             ['discount', 'number', 'min' => 0, 'max' => 100],
             ['number_purchases', 'integer', 'min' => 1],
@@ -113,6 +118,7 @@ class Discounts extends \yii\db\ActiveRecord
             'date_finish' => 'Дата окончания акции',
             'type' => 'Категория',
             'conditions' => 'Условия акции',
+            'requisites' => 'Реквизиты',
         ];
     }
 
@@ -323,18 +329,19 @@ class Discounts extends \yii\db\ActiveRecord
 
     private function encodeProperties()
     {
+        $encodedConditions = [];
         if (isset($_POST['discount']['conditions'])) {
-            $encodedConditions = [];
             foreach ($this->conditions as $condition) {
+                $condition = trim($condition);
                 if (!empty($condition)) {
                     $encodedConditions[] = Html::encode($condition);
                 }
             }
-            $this->conditions = !empty($encodedConditions) ? Json::encode($encodedConditions) : null;
-        } else {
-            $this->conditions = null;
         }
+        $this->conditions = Json::encode($encodedConditions);
 
+        $this->requisites = Html::encode($this->requisites);
+        $this->promocode = Html::encode($this->promocode);
         $this->header = Html::encode($this->header);
         $this->title = Html::encode($this->title);
         $this->description = Html::encode($this->description);

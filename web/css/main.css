@@ -3187,9 +3187,6 @@ a .btn-sort-reviews.active
     margin-right: 0px;
 }
 
-.cards-block-discount.row-3 .card-block-discount:nth-child(3n) {
-    margin-right: 0px;
-}
 .cards-block-discount.row-3 {
    max-width: 940px;
 }
@@ -3640,55 +3637,37 @@ a .btn-sort-reviews.active
 .discount-post-block {
     display: flex;
     background-color: #fff;
-    margin-top: 20px;
+    margin-top: 30px;
     border-radius: 3px;
     box-shadow: 0px 2px 0px 0px #cdced0;
-    max-width: 940px;
+    max-width: 900px;
+    padding: 20px;
+}
+#discount-index a {
+    text-decoration: none;
 }
 .discount-post-block .cover {
-    min-width: 280px;
-    width: 280px;
+    min-width: 95px;
     display: block;
-    height: 150px;
+    height: 60px;
     background-position: center;
     background-size: cover;
 }
 .discount-post-block .content {
     display: flex;
     flex-direction: column;
-    padding: 20px;
     width: 100%;
+    margin-left: 20px;
 }
 .discount-post-block .header-block {
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
 }
-.discount-post-block .header-block a {
-    text-decoration: none;
-}
 .discount-post-block .header-text {
-    font-size: 20px;
+    font-size: 16px;
     color: #444;
     overflow: hidden;
-}
-.discount-post-block .add-favorite:before {
-    margin: 0;
-}
-.discount-post-block .categories {
-    font-size: 14px;
-    color: #788399;
-    margin-bottom: 20px;
-}
-.discount-post-block .categories a {
-     color: #788399;
-     text-decoration: none;
-     line-height: 16px;
-}
-.discount-post-block .categories a:hover {
-    color: #444;
-    cursor: pointer;
-    text-decoration: underline;
 }
 .discount-post-block .address {
     color: #788399;
@@ -3696,7 +3675,6 @@ a .btn-sort-reviews.active
     display: inline-flex;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: 15px;
 }
 /*Страница скидки end*/
 /*страница новости */
@@ -5573,6 +5551,8 @@ input.search-selected-field{
 }
 .table-promo .r6{
     width: 85px;
+    text-align: right;
+    overflow: hidden;
 }
 .table-promo .r4{
     width: 95px;
@@ -6640,6 +6620,9 @@ form .field-input:first-child{
 .account-text{
     color: #6b778f;
     font-size: 14px;
+}
+.account-text {
+    font-size: 16px;
 }
 .fill-account-agreement a,
 .account-text a{

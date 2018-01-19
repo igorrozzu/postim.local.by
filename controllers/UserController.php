@@ -660,6 +660,7 @@ class UserController extends MainController
                     'url_name' => Url::to(['user/account']),
                     'pjax' => 'class="main-pjax a"'
                 ];
+
                 return $this->render('erip-payment', [
                     'model' => $model,
                     'breadcrumbParams' => $breadcrumbParams
@@ -674,10 +675,12 @@ class UserController extends MainController
             'url_name' => Url::to(['user/account']),
             'pjax' => 'class="main-pjax a"'
         ];
+
         return $this->render('account', [
             'userInfo' => $userInfo,
             'model' => $model,
-            'breadcrumbParams' => $breadcrumbParams
+            'breadcrumbParams' => $breadcrumbParams,
+            'errors' => array_values($model->getFirstErrors()),
         ]);
     }
 

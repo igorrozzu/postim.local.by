@@ -394,6 +394,7 @@ class PostsSearch extends Posts
             ->joinWith('categories.category')
             ->andWhere(['<=', Posts::tableName() . '.date', $loadTime])
             ->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']])
+            ->groupBy([Posts::tableName() . '.id'])
             ->orderBy(['date' => SORT_DESC]);
 
         if (isset($this->favorite_id)) {

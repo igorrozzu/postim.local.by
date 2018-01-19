@@ -23,7 +23,8 @@ class AccountPayment extends Model
     public function rules()
     {
         return [
-            [['money', 'type'], 'required'],
+            ['money', 'required', 'message' => 'Необходимо указать сумму платежа'],
+            ['type', 'required'],
             [['type'], 'integer'],
             [['money'], 'number'],
             ['money', 'compare', 'compareValue' => 0, 'operator' => '>'],

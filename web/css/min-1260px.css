@@ -39,4 +39,8 @@
     }
     /*end Cтили toastMessage*/
 
+    .cards-block-discount.row-3 .card-block-discount:nth-child(3n) {
+        margin-right: 0px;
+    }
+
 }

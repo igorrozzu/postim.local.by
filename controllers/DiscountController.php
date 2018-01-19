@@ -41,6 +41,7 @@ class DiscountController extends MainController
             'user_id' => Yii::$app->user->getId(),
             'count_favorites' => 0,
             'count_orders' => 0,
+            'promocode_counter' => 1000,
         ]);
         $post = Posts::findOne($postId);
 
@@ -232,10 +233,7 @@ class DiscountController extends MainController
                 'discount' => function (ActiveQuery $query) use ($discountId) {
                 $query->onCondition([Discounts::tableName() . '.id' => $discountId]);
             }])
-            ->with(['workingHours' => function (ActiveQuery $query) {
-                $query->orderBy(['day_type' => SORT_ASC]);
-            }, 'lastPhoto'])
-            ->joinWith(['categories.category', 'hasLike'])
+            ->with(['lastPhoto'])
             ->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']])
             ->one();
 
@@ -437,13 +435,21 @@ class DiscountController extends MainController
                 'user_id' => Yii::$app->user->id,
                 'discount_id' => $discount->id,
                 'date_buy' => time(),
-                'promo_code' => $discount->promocode ?? (string)mt_rand(1000, 9999),
+                'promo_code' => isset($discount->promocode) && $discount->promocode !== '' ?
+                    $discount->promocode : (string) $discount->promocode_counter,
                 'pin_code' => null,
                 'status_promo' => Discounts::STATUS['active'],
             ]);
 
+            $transaction = Yii::$app->db->beginTransaction();
             if ($order->save()) {
-                $discount->updateCounters(['count_orders' => 1]);
+                $discount->updateCounters([
+                    'count_orders' => 1,
+                    'promocode_counter' => 1,
+                ]);
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
             }
 
             $response->redirectUrl = Url::to(['user/get-promocodes']) . '?my_orders';
@@ -465,7 +471,7 @@ class DiscountController extends MainController
 
             $discount = Discounts::find()
                 ->select(['count_favorites', 'id'])
-                ->with('hasLike')
+                ->joinWith('hasLike')
                 ->where(['id' => $itemId])
                 ->one();
 

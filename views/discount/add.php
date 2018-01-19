@@ -84,17 +84,6 @@ $this->title = 'Добавить скидку на Postim.by';
                         <div class="close-input-custom" ></div>
                     </div>
                 </div>
-                <div class="option-select-field">
-                    <div class="block-textarea-custom hidden">
-                            <textarea data-preview-text='Услуги (товары) предоставляются ООО "Рестгорсервис" УНП 191206305.'
-                                      data-continue-text=""
-                                      placeholder="Укажите условие"
-                                      name="discount[conditions][]"
-                                      >Услуги (товары) предоставляются <?= !empty($post->requisites) ? $post->requisites :
-                                    'ООО "Рестгорсервис" УНП 191206305'?>.</textarea>
-                        <div class="close-input-custom" ></div>
-                    </div>
-                </div>
 
                 <div class="selected-field" id="add-share-condition">
                     <div id="select-condition-value" class="select-value">
@@ -104,16 +93,6 @@ $this->title = 'Добавить скидку на Postim.by';
                 </div>
 
                 <div id="select-condition" class="container-scroll auto-height" style="max-height: none;">
-                    <div class="option-select-field">
-                        <div class="block-textarea-custom hidden">
-                            <textarea data-preview-text="Поставщик несет полную ответственность"
-                                      data-continue-text=" перед потребителем за достоверность информации."
-                                      placeholder="Укажите условие"
-                                      readonly
-                            >Поставщик несет полную ответственность</textarea>
-                            <div class="close-input-custom" ></div>
-                        </div>
-                    </div>
                     <div class="option-select-field another-condition">
                         <div class="block-textarea-custom hidden">
                             <textarea data-preview-text=""
@@ -124,6 +103,13 @@ $this->title = 'Добавить скидку на Postim.by';
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="block-field-setting">
+                <label class="label-field-setting">Реквизиты</label>
+                <input  name="discount[requisites]" class="input-field-setting"
+                        placeholder="Введите реквизиты: ООО, УНП и т.д."
+                        value="<?= !empty($post->requisites) ? $post->requisites :
+                            'ООО &quot;Рестгорсервис&quot; УНП 191206305'?>">
             </div>
         </div>
 

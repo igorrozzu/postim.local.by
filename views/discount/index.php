@@ -10,7 +10,7 @@ $this->title = !empty($discount->title) ? $discount->title : $discount->header .
 $this->registerMetaTag([
     'name' => 'description',
     'content' => !empty($discount->description) ? $discount->description :
-        'Промокод на скидку от ' . $post->data . '. ' . $discount->header . ' на Postim.by'
+        'Промокод на скидку от ' . $post->data . '. ' . $discount->header . ' на Postim.by.'
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -24,7 +24,7 @@ $discountCover = $discount->getCover();
 Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => true,
-    'id' => 'post-feeds',
+    'id' => 'discount-index',
     'linkSelector' => '.container-discount-info .container-bottom-btn a',
     'formSelector' => false,
 ])
@@ -77,11 +77,13 @@ Pjax::begin([
             <?php if (isset($discount->price)):?>
                 <div class="discount-info-text">
                     Стоимость
-                    <span class="through">
-                        <?=$discount->price?>
-                    </span>
+                    <?php if (isset($discount->discount)):?>
+                        <span class="through">
+                            <?= number_format($discount->price, 2)?>
+                        </span>
+                    <?php endif;?>
                     <span class="discount-info-bold-text">
-                        <?=$discount->price - $economy?> руб
+                        <?= number_format($discount->price - $economy, 2)?> руб
                     </span>
                 </div>
             <?php endif;?>
@@ -90,7 +92,7 @@ Pjax::begin([
                 <div class="discount-info-text">
                     Скидка
                     <span class="discount-info-bold-text">
-                    <?=$discount->discount?>%
+                    -<?=$discount->discount?>%
                     </span>
                 </div>
             <?php endif;?>
@@ -98,7 +100,7 @@ Pjax::begin([
             <div class="discount-info-text">
                 Экономия
                 <span class="discount-info-bold-text">
-                    <?=isset($economy) ? $economy . ' руб' : 'Не ограничена'?>
+                    <?=isset($economy) ? number_format($economy, 2) . ' руб' : 'Не ограничена'?>
                 </span>
             </div>
 
@@ -123,7 +125,8 @@ Pjax::begin([
             <div class="container-bottom-btn">
                 <div class="blue-btn-40 order-discount <?=$duration ? 'active' : 'inactive' ?>"
                      data-href="<?=Url::to(['/discount/order', 'discountId' => $discount->id])?>">
-                    <p>Получить скидку <?= isset($discount->discount) ? $discount->discount . '%' : ''?></p>
+                    <p>Получить скидку <?= isset($discount->discount) ?
+                            '-' . $discount->discount . '%' : ''?></p>
                 </div>
             </div>
         </div>
@@ -142,43 +145,32 @@ Pjax::begin([
             <?php foreach (Json::decode($discount->conditions) as $condition): ?>
                 <li><span><?=$condition?></span></li>
             <?php endforeach;?>
+            <li>
+                <span>Услуги (товары) предоставляются <?= $discount->requisites?>.</span>
+            </li>
+            <li>
+                <span>Поставщик несет полную ответственность перед
+                    потребителем за достоверность информации.</span>
+            </li>
         </ul>
     </div>
-    <?php
-        $postUrl = Url::to(['post/index', 'url' => $post->url_name, 'id' => $post->id]);
-    ?>
-    <div class="discount-post-block">
-        <a href="<?= $postUrl?>">
+
+    <h2 class="h2-c">Где?</h2>
+    <a href="<?= Url::to(['post/index', 'url' => $post->url_name, 'id' => $post->id])?>">
+        <div class="discount-post-block">
+
             <div class="cover" style="background-image: url('<?= $post->cover?>')"></div>
-        </a>
-        <div class="content">
-            <div class="header-block">
-                <a href="<?= $postUrl?>">
+
+            <div class="content">
+                <div class="header-block">
                     <p class="header-text"><?=$post->data?></p>
-                <a>
-                <div class="add-favorite btn-like <?= $post->is_like ? 'active' : ''?>"
-                     data-favorites-state-url="/post/favorite-state" data-item-id="<?=$post->id?>">
+                </div>
+                <div class="address">
+                    <span><?=$post->city->name . ', ' . $post->address?></span>
                 </div>
             </div>
-            </p>
-            <p class="categories">
-                <?=CardsPlaceWidget::renderCategories($post->categories, $post->city)?>
-            </p>
-            <div class="address">
-                <img class="icon-address" src="/img/icon-address-info.png">
-                <span><?=$post->city->name . ', ' . $post->address?></span>
-            </div>
-            <div class="time-work" style="margin: 0;">
-                <?=$post->is_open ? '<p class="open">Открыто ' . $post->timeOpenOrClosed . '</p>':
-                    '<p class="close">Закрыто '. $post->timeOpenOrClosed . '</p>'?>
-                <?php if ($post->distanceText):?>
-                    <div class="distance-to-me">
-                        <?=$post->distanceText?>
-                    </div>
-                <?php endif;?>
-            </div>
         </div>
-    </div>
+    </a>
 
 
     <div class="block-content-between">
@@ -212,6 +204,17 @@ Pjax::begin([
             gallery: {enabled: true}
         });
         $('html').scrollTop(0);
+
+        $(window).resize(function () {
+            var startWidth=900,
+                startHgt=440,
+                proportion=startWidth/startHgt;
+
+            var container = $('.container-discount-photos');
+            var width=$(container).width();
+            $('.container-discount-photos').css({height:width/proportion+'px'});
+        });
+        $(window).resize();
     });
 </script>
 <?php

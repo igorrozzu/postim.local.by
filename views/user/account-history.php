@@ -40,11 +40,6 @@ Pjax::begin([
         <div class="fill-account-header">
             На счету: 00,0 руб
         </div>
-        <div class="filter-menu">
-            <a href="#">
-                <div class="filter-menu-btn"><span class="under-line">Платежи</span></div>
-            </a>
-        </div>
 
         <div class="statistic-content">
             <table class="statistic-table">

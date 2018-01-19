@@ -85,12 +85,9 @@
     }
     .block-description-card,
     .container-settings,
-    .container-add-place{
-        width: calc(100% - 355px);
-    }
-
+    .container-add-place,
     .discount-post-block{
-        width: calc(100% - 315px);
+        width: calc(100% - 355px);
     }
 
     .__first-column .container-add-place,
@@ -149,9 +146,6 @@
     }
     .card-block-discount:nth-child(2n){
         margin-right: 0px;
-    }
-    .cards-block-discount.row-3 .card-block-discount:nth-child(3n) {
-        margin-right: 20px;
     }
     .container-photo{
         width: calc((100% - 20px)/2 );

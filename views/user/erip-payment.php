@@ -47,7 +47,7 @@ $this->title = 'Оплата через систему "Расчет" (ЕРИП)
                 - наличными (устройство cash-in, касса банка*).<br>
             </div>
 
-            <div class="account-text" style="font-size: 11px; margin-bottom: 20px;">
+            <div class="account-text" style="font-size: 14px; margin-bottom: 20px;">
                 *если Вы осуществляете платеж в кассе банка, пожалуйста, сообщите кассиру о необходимости проведения<br>
                 оплаты услуги «Postim.by» через систему «Расчет» (ЕРИП) и сообщите ему номер заказа.
             </div>
