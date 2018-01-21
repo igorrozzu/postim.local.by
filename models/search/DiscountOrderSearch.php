@@ -41,20 +41,13 @@ class DiscountOrderSearch extends DiscountOrder
         return Model::scenarios();
     }
 
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
-    public function search($params, Pagination $pagination, $loadTime = null)
+    public function search($params, Pagination $pagination, int $loadTime)
     {
         $table = DiscountOrder::tableName();
         $query = DiscountOrder::find()
             ->innerJoinWith(['discount'])
             ->where([$table . '.user_id' => \Yii::$app->user->id])
-            ->andWhere(['<=', $table . '.date_buy', $params['loadTime'] ?? $loadTime])
+            ->andWhere(['<=', $table . '.date_buy', $loadTime])
             ->orderBy([$table . '.date_buy' => SORT_DESC]);
 
         // add conditions that should always apply here
@@ -71,12 +64,16 @@ class DiscountOrderSearch extends DiscountOrder
             return $dataProvider;
         }
 
-        if($this->status !== 'all') {
-            if ($this->status === 'active') {
-                $query->andWhere([$table . '.status_promo' => 1]);
-            } else if ($this->status === 'unactive') {
-                $query->andWhere([$table . '.status_promo' => 0]);
-            }
+        switch ($this->status) {
+            case 'active':
+                $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['active']])
+                    ->andWhere(['>', Discounts::tableName() . '.date_finish', $loadTime]); break;
+            case 'inactive':
+                $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['inactive']]); break;
+            case 'expired':
+                $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['active']])
+                    ->andWhere(['<=', Discounts::tableName() . '.date_finish', $loadTime]); break;
+            default: break;
         }
 
         if ($this->type === 'promocode') {

@@ -29,14 +29,14 @@ Pjax::begin([
                     Действующие
                 </div>
             </a>
-            <a href="<?=Url::to(['user/get-promocodes', 'status' => 'unactive', 'type' => 'promocode'])?>">
-                <div class="btn2-menu <?=($status === 'unactive') ? 'active' : ''?>">
+            <a href="<?=Url::to(['user/get-promocodes', 'status' => 'inactive', 'type' => 'promocode'])?>">
+                <div class="btn2-menu <?=($status === 'inactive') ? 'active' : ''?>">
                     Использованые
                 </div>
             </a>
-            <a href="<?=Url::to(['user/get-promocodes', 'status' => 'all', 'type' => 'promocode'])?>" >
-                <div class="btn2-menu <?=($status === 'all') ? 'active' : ''?>">
-                    Все
+            <a href="<?=Url::to(['user/get-promocodes', 'status' => 'expired', 'type' => 'promocode'])?>" >
+                <div class="btn2-menu <?=($status === 'expired') ? 'active' : ''?>">
+                    Просроченные
                 </div>
             </a>
         </div>
@@ -52,7 +52,7 @@ Pjax::begin([
             'replace-container-id' => 'feed-promo',
             'load-time' => $loadTime,
             'show-more-btn-text' => 'Показать больше промокодов',
-            'not-found-text' => 'Вы пока не купили ни одного промокода.',
+            'not-found-text' => 'Промокодов не найдено.',
         ]
     ]);?>
     </div>

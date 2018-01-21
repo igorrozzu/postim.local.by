@@ -25,10 +25,10 @@ Pjax::begin([
     <div class="block-content">
         <div class="menu-btns-card">
 
-            <a href="<?= Url::to(['user/account'])?>" >
+            <a href="<?= Url::to(['account/replenishment'])?>" >
                 <div class="btn2-menu active"><span class="under-line">Пополнить</span></div>
             </a>
-            <a href="<?= Url::to(['user/history'])?>">
+            <a href="<?= Url::to(['account/history'])?>">
                 <div class="btn2-menu "><span class="under-line">История</span></div>
             </a>
         </div>

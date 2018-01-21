@@ -327,7 +327,7 @@ class UserController extends MainController
                     'replace-container-id' => 'feed-promo',
                     'load-time' => $loadTime,
                     'show-more-btn-text' => 'Показать больше промокодов',
-                    'not-found-text' => 'Вы пока не купили ни одного промокода.',
+                    'not-found-text' => 'Промокодов не найдено.',
                 ]
             ]);
         } else {
@@ -346,6 +346,7 @@ class UserController extends MainController
             ]);
         }
     }
+
     public function actionSertifikaty()
     {
         $searchModel = new DiscountOrderSearch();
@@ -468,61 +469,6 @@ class UserController extends MainController
         return $breadcrumbParams;
     }
 
-    public function actionOrderPromocodes()
-    {
-        if (!Yii::$app->user->isOwnerPost()) {
-            throw new NotFoundHttpException('Cтраница не найдена');
-        }
-
-        $searchModel = new DiscountOrderSearch();
-        $request = Yii::$app->request;
-        $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 8),
-            'page' => $request->get('page', 1) - 1,
-            'selfParams'=> [
-                'type' => true,
-                'order_time' => true,
-                'promo_code' => true,
-            ],
-        ]);
-        $loadTime = $request->get('loadTime', time());
-        $_GET['type'] = $_GET['type'] ?? 'promocode';
-        $dataProvider = $searchModel->statisticsSearch(
-            $request->queryParams,
-            $pagination,
-            $loadTime
-        );
-
-        if($request->isAjax && !$request->get('_pjax',false)) {
-            return OrderStatisticsWidget::widget([
-                'dataProvider' => $dataProvider,
-                'settings' => [
-                    'show-more-btn' => true,
-                    'replace-container-id' => 'feed-promo',
-                    'load-time' => $loadTime,
-                    'view-name' => $request->get('only_rows', false) ? 'rows' : 'index',
-                    'column-status-view' => 'promocode',
-                    'time-range' => $searchModel->getTimeRange(),
-                ]
-            ]);
-        } else {
-            $breadcrumbParams = $this->getParamsForBreadcrumb();
-            $breadcrumbParams[] = [
-                'name' => 'Заказы промокодов',
-                'url_name' => Url::to(['user/order-promocodes']),
-                'pjax' => 'class="main-pjax a"'
-            ];
-
-            return $this->render('statistics-promo', [
-                'breadcrumbParams' => $breadcrumbParams,
-                'dataProvider' => $dataProvider,
-                'loadTime' => $loadTime,
-                'order_time' => $request->queryParams['order_time'] ?? null,
-                'timeRange' => $searchModel->getTimeRange(),
-            ]);
-        }
-    }
-
     public function actionOrderCertificates()
     {
         if (!Yii::$app->user->isOwnerPost()) {
@@ -627,66 +573,6 @@ class UserController extends MainController
             }
             return $this->asJson($response);
         }
-    }
-
-    public function actionHistory()
-    {
-        $breadcrumbParams = $this->getParamsForBreadcrumb();
-        $breadcrumbParams[] = [
-            'name' => 'История вашего счета',
-            'url_name' => Url::to(['user/history']),
-            'pjax' => 'class="main-pjax a"'
-        ];
-
-        return $this->render('account-history', [
-            'breadcrumbParams' => $breadcrumbParams
-        ]);
-    }
-
-    public function actionAccount()
-    {
-        $model = new AccountPayment();
-
-        $breadcrumbParams = $this->getParamsForBreadcrumb();
-
-        if (Yii::$app->request->isPost) {
-            $model = new AccountPayment();
-            $model->load(Yii::$app->request->post(), 'payment');
-
-            if ($model->validate()) {
-
-                $breadcrumbParams[] = [
-                    'name' => 'Оплата через систему "Расчет" (ЕРИП)',
-                    'url_name' => Url::to(['user/account']),
-                    'pjax' => 'class="main-pjax a"'
-                ];
-
-                return $this->render('erip-payment', [
-                    'model' => $model,
-                    'breadcrumbParams' => $breadcrumbParams
-                ]);
-            }
-        }
-
-        $userInfo = Yii::$app->user->identity->userInfo;
-
-        $breadcrumbParams[] = [
-            'name' => 'Пополнение счета',
-            'url_name' => Url::to(['user/account']),
-            'pjax' => 'class="main-pjax a"'
-        ];
-
-        return $this->render('account', [
-            'userInfo' => $userInfo,
-            'model' => $model,
-            'breadcrumbParams' => $breadcrumbParams,
-            'errors' => array_values($model->getFirstErrors()),
-        ]);
-    }
-
-    public function actionPayment()
-    {
-        return $this->render('erip-payment');
     }
 
     public function actionConfirmUsedOrder(int $id)

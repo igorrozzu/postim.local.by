@@ -70,8 +70,7 @@ $config = [
                 'discount/<discountId:\d+>/order' => 'discount/order',
 
                 'promocody' => 'user/get-promocodes',
-                'zakazy-promokodov' => 'user/order-promocodes',
-                'zakazy-sertifikatov' => 'user/order-certificates',
+
 				'<url:.+>-p<id:\d+>/moderation'=>'post/post-moderation',//модерируемая информация о месте
                 '<url:.+>-p<id:\d+>'=>'post/index',//информация о месте
                 'id<id:\d+>' => 'user/index',

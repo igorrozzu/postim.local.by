@@ -130,10 +130,13 @@ $countNotif = NotificationUser::getCountNotifications();
                     <a><span class="icon-business"></span>Бизнес аккаунт</a>
                 </div>
                 <div class="container-item-menu visible">
-                    <a href="<?=Url::to(['user/order-promocodes'])?>"><span></span>Заказы промокодов</a>
+                    <a href="<?=Url::to(['account/order-promocodes'])?>"><span></span>Заказы промокодов</a>
                 </div>
                 <div class="container-item-menu visible">
-                    <a href="<?=Url::to(['user/account'])?>"><span></span>Пополнить счет</a>
+                    <a href="<?=Url::to(['account/replenishment'])?>"><span></span>Пополнить счет</a>
+                </div>
+                <div class="container-item-menu visible">
+                    <a href="<?=Url::to(['account/premium'])?>"><span></span>Премиум аккаунт</a>
                 </div>
             </div>
         <?php endif;?>

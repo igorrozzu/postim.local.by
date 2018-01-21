@@ -2854,7 +2854,7 @@ a.btn-show-more{
     margin-top: 20px;
     justify-content: space-between;
 }
-.btn-add-photo-review{
+.btn-add-photo-review {
     display: flex;
     align-items: center;
     background-color: #7b7b7b;
@@ -2866,7 +2866,22 @@ a.btn-show-more{
     font-size: 14px;
     cursor: pointer;
 }
-.btn-add-photo-review:hover{
+.btn-custom {
+    cursor: pointer;
+    text-align: center;
+    line-height: 40px;
+    display: block;
+    width: 190px;
+    box-shadow: 0 2px 0 0 #454c5c;
+    background-color: #7b7b7b;
+    color: #ffffff;
+    box-shadow: 0 2px 0 0 #454c5c;
+    height: 40px;
+    border-radius: 3px;
+}
+
+.btn-add-photo-review:hover,
+.btn-custom:hover {
     background-color: #696969;
 }
 .btn-add-photo-review p{
@@ -4577,30 +4592,39 @@ insert-item h2:last-child{
 .style-checkbox-chbox{
     display: none;
 }
-.subscription-email{
+.custom-checkbox-label{
     font-size: 16px;
-    color:#6b778f;
-
+    color: #444;
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
 }
+.custom-checkbox-label .economy-text {
+    font-size: 14px;
+    color: #6b778f;
+    margin-top: 5px;
+}
+.custom-checkbox-label:hover {
+    cursor: pointer;
+}
+.select-value .placeholder-select {
+    font-size: 15px;
+    color: #6b778f;
+}
+
 .block-field-setting.inline{
     flex-direction: row;
 }
-.subscription-email{
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
+
 .style-checkbox-chbox:not(checked) + label:before{
     content: '';
-    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1.55px solid #6b778f;
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
+    border: 1px solid #6b778f;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
     margin-right: 20px;
 }
 .style-checkbox-chbox:checked + label:before {
