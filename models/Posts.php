@@ -33,6 +33,7 @@ class Posts extends \yii\db\ActiveRecord
     public $has_send_bs = false;
     public $current_working_hours = null;
     public $timeOpenOrClosed = null;
+    public $hasActualDiscounts = null;
 
     public $lat;
     public $lon;
@@ -254,6 +255,12 @@ class Posts extends \yii\db\ActiveRecord
         return $this->hasOne(Discounts::className(), ['post_id' => 'id']);
     }
 
+    public function getActualDiscounts()
+    {
+        return $this->hasMany(Discounts::className(), ['post_id' => 'id'])
+            ->onCondition(['>', Discounts::tableName() . '.date_finish', time()]);
+    }
+
     public function afterFind()
     {
         parent::afterFind();
@@ -270,6 +277,10 @@ class Posts extends \yii\db\ActiveRecord
 
         if($this->isRelationPopulated('hasSendBs') && !empty($this->hasSendBs)){
             $this->has_send_bs = true;
+        }
+
+        if($this->isRelationPopulated('actualDiscounts') && !empty($this->actualDiscounts)){
+            $this->hasActualDiscounts = true;
         }
 
         if ($this->coordinates) {

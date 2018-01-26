@@ -38,7 +38,7 @@ class BusinessOrderSearch extends BusinessOrder
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$status = null)
+    public function search($params, $status = null)
     {
         $query = BusinessOrder::find();
 
@@ -63,6 +63,40 @@ class BusinessOrderSearch extends BusinessOrder
             'user_id' => $this->user_id,
             'post_id' => $this->post_id,
             'status' => $status,
+        ]);
+
+        $query->andFilterWhere(['like', 'position', $this->position])
+            ->andFilterWhere(['like', 'phone', $this->phone]);
+
+        return $dataProvider;
+    }
+
+    public function searchPremiumAccounts($params)
+    {
+        $query = BusinessOrder::find()
+            ->where(['status' => BusinessOrder::$PREMIUM_BIZ_AC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 8,
+            ],
+        ]);
+
+        $query->innerJoinWith('user')
+            ->orderBy(['premium_finish_date' => SORT_ASC]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'user_id' => $this->user_id,
+            'post_id' => $this->post_id,
+            'premium_finish_date' => $this->premium_finish_date,
         ]);
 
         $query->andFilterWhere(['like', 'position', $this->position])

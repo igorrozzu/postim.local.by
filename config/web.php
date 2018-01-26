@@ -69,6 +69,7 @@ $config = [
                 '<url:.+>-d<discountId:\d+>' => 'discount/read',
                 'discount/<discountId:\d+>/order' => 'discount/order',
 
+                'print-order' => 'discount/print-order',
                 'promocody' => 'user/get-promocodes',
 
 				'<url:.+>-p<id:\d+>/moderation'=>'post/post-moderation',//модерируемая информация о месте

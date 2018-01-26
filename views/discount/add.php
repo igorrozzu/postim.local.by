@@ -108,8 +108,7 @@ $this->title = 'Добавить скидку на Postim.by';
                 <label class="label-field-setting">Реквизиты</label>
                 <input  name="discount[requisites]" class="input-field-setting"
                         placeholder="Введите реквизиты: ООО, УНП и т.д."
-                        value="<?= !empty($post->requisites) ? $post->requisites :
-                            'ООО &quot;Рестгорсервис&quot; УНП 191206305'?>">
+                        value="<?= !empty($post->requisites) ? $post->requisites : ''?>">
             </div>
         </div>
 

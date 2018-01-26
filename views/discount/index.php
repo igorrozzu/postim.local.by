@@ -146,7 +146,7 @@ Pjax::begin([
                 <li><span><?=$condition?></span></li>
             <?php endforeach;?>
             <li>
-                <span>Услуги (товары) предоставляются <?= $discount->requisites?>.</span>
+                <span>Услуги (товары) предоставляются <?= $post->requisites?>.</span>
             </li>
             <li>
                 <span>Поставщик несет полную ответственность перед

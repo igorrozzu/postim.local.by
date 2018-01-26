@@ -1,6 +1,7 @@
 <?php
 use app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
+use app\widgets\cardsDiscounts\CardsDiscounts;
 use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
@@ -337,6 +338,23 @@ echo "<script>$js</script>";
                     <div class="elem-count-views"><?=$post->totalView['count']?></div>
                 </div>
             </div>
+
+            <?php if($dataProviderDiscounts->getTotalCount() > 0):?>
+                <h2 class="h2-c">Вам может понравиться</h2>
+                <div class="cards-block-discount row-3 main-pjax" data-favorites-state-url="/discount/favorite-state">
+
+                    <?= CardsDiscounts::widget([
+                        'dataprovider' => $dataProviderDiscounts,
+                        'settings' => [
+                            'show-more-btn' => true,
+                            'replace-container-id' => 'feed-discounts',
+                            'load-time' => $loadTime,
+                            'postId' => $post->id,
+                            'show-distance' => true,
+                        ]
+                    ]); ?>
+                </div>
+            <?php endif;?>
 
             <div class="comments_entity_container" data-entity_type="3" data-entity_id="<?=$post['id']?>">
                 <?=$this->render('/comments/post_comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$post->totalComments])?>

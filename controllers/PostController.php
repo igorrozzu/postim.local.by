@@ -43,12 +43,12 @@ class PostController extends MainController
     public function actionIndex(int $id, string $photo_id = null, int $review_id = null)
     {
         $query = Posts::find()
-        ->where(['id'=>$id]);
-        $with = ['info',
-            'workingHours'=>function ($query) {
+            ->where(['id'=>$id]);
+        $with = ['info', 'city', 'totalView','onlyOnceCategories.category', 'isCurrentUserOwner',
+            'categories.category',
+            'workingHours' => function ($query) {
                 $query->orderBy(['day_type'=>SORT_ASC]);
             },
-            'city', 'totalView','onlyOnceCategories.category', 'isCurrentUserOwner'
         ];
 
         if(!Yii::$app->user->isGuest){
@@ -109,11 +109,9 @@ class PostController extends MainController
             );
 
             $discountCount = Discounts::find()
-                ->where([
-                    'post_id' => $id,
-                    'status' => Discounts::STATUS['active']
-                ])->count();
-
+                ->where(['post_id' => $id])
+                ->andWhere(['!=', 'status', Discounts::STATUS['inactive']])
+                ->count();
 
             $commentsSearch = new CommentsSearch();
 
@@ -135,6 +133,20 @@ class PostController extends MainController
                 CommentsSearch::getSortArray('old')
             );
 
+            $discountModel = new DiscountSearch();
+            $discountPagination = new Pagination([
+                'pageSize' => Yii::$app->request->get('per-page', 6),
+                'page' => Yii::$app->request->get('page', 1) - 1,
+                'route' => Url::to(['discount/load-interesting-discounts']),
+            ]);
+            $loadTime = Yii::$app->request->get('loadTime', time());
+
+            $dataProviderDiscounts = $discountModel->searchByInteresting(
+                Yii::$app->request->queryParams,
+                $discountPagination,
+                $loadTime,
+                $post->categories
+            );
 
             return $this->render('index', [
                 'post' => $post,
@@ -151,6 +163,7 @@ class PostController extends MainController
                     'reviewId' => $review_id,
                 ],
                 'dataProviderComments' => $dataProviderComments,
+                'dataProviderDiscounts' => $dataProviderDiscounts,
                 'isShowDiscounts' => $discountCount > 0 || Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner)
             ]);
 

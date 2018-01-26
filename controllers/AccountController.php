@@ -13,10 +13,15 @@ use app\components\AuthController;
 use app\components\orderStatisticsWidget\OrderStatisticsWidget;
 use app\components\Pagination;
 use app\models\Discounts;
+use app\models\entities\BusinessOrder;
 use app\models\entities\DiscountOrder;
+use app\models\entities\OwnerPost;
 use app\models\forms\AccountPayment;
+use app\models\forms\PremiumAccount;
+use app\models\Posts;
 use app\models\search\DiscountOrderSearch;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\Exception;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
@@ -46,8 +51,84 @@ class AccountController extends AuthController
             'pjax' => 'class="main-pjax a"'
         ];
 
+        $errors = [];
+
+        if (Yii::$app->request->isPost) {
+            $model = new PremiumAccount();
+            $model->load(Yii::$app->request->post(), 'premium-account');
+
+            if ($model->validate()) {
+
+                $rateInfo = $model->getRateInfo();
+                $userInfo = Yii::$app->user->identity->userInfo;
+
+                if ($userInfo->virtual_money - $rateInfo['cost'] < 0) {
+                    Yii::$app->session->setFlash('message', [
+                        'type' => 'error',
+                        'text' => 'Недостаточно средств на счете',
+                    ]);
+                    return $this->redirect(Url::to(['account/replenishment']));
+                }
+
+                $account = BusinessOrder::find()
+                    ->where([
+                        'user_id' => Yii::$app->user->getId(),
+                        'post_id' => $model->postId,
+                    ])->one();
+
+                if (!$account) {
+                    Yii::$app->session->setFlash('message', [
+                        'type' => 'error',
+                        'text' => 'Бизнесс аккаунт не найден',
+                    ]);
+                    return $this->redirect(Url::to(['account/premium']));
+                }
+
+                $transaction = Yii::$app->db->beginTransaction();
+                $result = $userInfo->updateCounters([
+                    'virtual_money' => -$rateInfo['cost']
+                ]);
+
+                $time = time();
+                $period = $rateInfo['duration'] * 24 * 3600;
+
+                if ($account->premium_finish_date <= $time) {
+                    $account->premium_finish_date = $time + $period;
+                } else {
+                    $account->premium_finish_date += $period;
+                }
+                $account->status = BusinessOrder::$PREMIUM_BIZ_AC;
+
+                $result = $result && $account->update();
+
+                if ($result) {
+                    $transaction->commit();
+
+                    Yii::$app->session->setFlash('message', [
+                        'type' => 'success',
+                        'text' => 'Бизнесс аккаунт подключен на ' . $rateInfo['duration'] . ' дней',
+                    ]);
+
+                } else {
+                    $transaction->rollBack();
+                }
+
+            } else {
+                $errors = array_values($model->getFirstErrors());
+            }
+        }
+
+        $posts = Posts::find()
+            ->innerJoinWith(['ownersPost' => function (ActiveQuery $q) {
+                $q->onCondition([OwnerPost::tableName() . '.owner_id' => Yii::$app->user->id]);
+            }])
+            ->orderBy(['data' => SORT_ASC])
+            ->all();
+
         return $this->render('premium-account', [
-            'breadcrumbParams' => $breadcrumbParams
+            'breadcrumbParams' => $breadcrumbParams,
+            'posts' => $posts,
+            'errors' => $errors,
         ]);
     }
 

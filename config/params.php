@@ -3,6 +3,8 @@
 
 $params = [
     'notificationTemplates' => require 'notifications.php',
+    'premiumAccount' => require 'premiumAccount.php',
+
     'adminEmail' => 'admin@example.com',
     'mail.supportEmail' => 'info@postim.by',
     'site.hostName' => 'https://postim.local.by',

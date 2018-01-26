@@ -66,7 +66,7 @@ $this->registerMetaTag([
             <?= CardsDiscounts::widget([
                 'dataprovider' => $discountDataProvider,
                 'settings' => [
-                    'show-distance' => false,
+                    'show-distance' => true,
                     'view' => 'feed-main-page'
                 ]
             ]); ?>

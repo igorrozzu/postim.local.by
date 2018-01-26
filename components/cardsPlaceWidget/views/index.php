@@ -26,6 +26,9 @@
                         <div class="bookmarks-btn<?=$item->is_like?' active':''?>">
                             <?=$item["count_favorites"]?>
                         </div>
+                        <?php if($item->hasActualDiscounts):?>
+                            <div class="has-discounts">Здесь акция!</div>
+                        <?php endif;?>
                     </div>
                 </div>
             </a>

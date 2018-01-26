@@ -16,6 +16,7 @@ use app\models\entities\GalleryDiscount;
 use app\models\search\DiscountSearch;
 use app\modules\admin\components\AdminDefaultController;
 use Yii;
+use yii\db\Exception;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
@@ -56,13 +57,29 @@ class DiscountController extends AdminDefaultController
             $discount->load(Yii::$app->request->post(), 'discount');
             $discount->photos = Yii::$app->request->post('photos');
 
-            if ($discount->edit()) {
+            $result = false;
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                $discount->encodeProperties();
+                if ($discount->update() && $discount->addPhotos() && $discount->editPhotos()) {
+                    $discount->post->requisites = $discount->requisites;
+
+                    if ($discount->post->update() !== false) {
+                        $result = true;
+                    }
+                }
+            } catch (Exception $e){}
+
+            if ($result) {
+                $transaction->commit();
+
                 Yii::$app->session->setFlash('success',
                     'Редактирование скидки произведено успешно');
-
                 $redirectUrl = Url::to(['/admin/discount/index']);
 
                 return $this->redirect($redirectUrl);
+            } else {
+                $transaction->rollBack();
             }
         }
 
@@ -88,8 +105,8 @@ class DiscountController extends AdminDefaultController
     public function actionHide()
     {
         $response = new \stdClass();
-        $response->success = true;
-        $response->message = 'Скидка успешно скрыта';
+        $response->success = false;
+        $response->message = 'Ошибка скрытия. Попробуйте еще';
 
         $message = Yii::$app->request->post('message',false);
         $id = Yii::$app->request->post('id',false);
@@ -101,23 +118,27 @@ class DiscountController extends AdminDefaultController
                 ->one();
 
             if (isset($discount)) {
-                $link = Url::to(['/discount/read', 'url' => $discount->url_name, 'discountId' => $discount->id]);
+                $discount->status = Discounts::STATUS['inactive'];
+                if ($discount->update(false)) {
+                    $link = Url::to(['/discount/read', 'url' => $discount->url_name, 'discountId' => $discount->id]);
 
-                $templateMessage = Yii::$app->params['notificationTemplates']['discount'];
-                $messageNotice = sprintf($templateMessage['cancel'], $link, $discount->header, $message);
-                $messageEmail = sprintf($templateMessage['emailCancel'], $discount->header, $message);
+                    $templateMessage = Yii::$app->params['notificationTemplates']['discount'];
+                    $messageNotice = sprintf($templateMessage['cancel'], $link, $discount->header, $message);
+                    $messageEmail = sprintf($templateMessage['emailCancel'], $discount->header, $message);
 
-                UserHelper::sendNotification($discount->user_id, [
-                    'type' => '',
-                    'data' => $messageNotice,
-                ]);
-                UserHelper::sendMessageToEmailCustomReward($discount->user, $messageEmail, $link);
+                    UserHelper::sendNotification($discount->user_id, [
+                        'type' => '',
+                        'data' => $messageNotice,
+                    ]);
+                    UserHelper::sendMessageToEmailCustomReward($discount->user, $messageEmail, $link);
+
+                    $response->message = 'Скидка успешно скрыта';
+                    $response->success = true;
+                }
             } else {
-                $response->success = false;
                 $response->message = 'Скидка не найдена';
             }
         } else {
-            $response->success = false;
             $response->message = 'Введите текст сообщения';
         }
 

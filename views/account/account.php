@@ -77,8 +77,16 @@ Pjax::begin([
         <?php if (isset($errors[0])):?>
             $().toastmessage('showToast', {
                 text: '<?=$errors[0]?>',
-                stayTime: 5000,
+                stayTime: 8000,
                 type: 'error'
+            });
+        <?php endif;?>
+
+        <?php if ($message = Yii::$app->session->getFlash('message')):?>
+            $().toastmessage('showToast', {
+                text: '<?=$message['text']?>',
+                stayTime: 8000,
+                type: '<?=$message['type']?>'
             });
         <?php endif;?>
     });

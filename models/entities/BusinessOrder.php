@@ -13,16 +13,19 @@ use Yii;
  * @property integer $post_id
  * @property string $position
  * @property integer $status
+ * @property integer $premium_finish_date
  */
 class BusinessOrder extends \yii\db\ActiveRecord
 {
     private $mapStatusText = [
         10 => 'Бизнес-аккаунт',
         20 => 'Заявка на доблавление',
+        30 => 'Премиум бизнес-аккаунт',
     ];
 
     public static $BIZ_AC = 10;
     public static $BIZ_ORDER = 20;
+    public static $PREMIUM_BIZ_AC = 30;
 
 
     /**
@@ -43,7 +46,7 @@ class BusinessOrder extends \yii\db\ActiveRecord
             [['position'], 'required','message'=>'Введите должность'],
             [['full_name'], 'required','message'=>'Введите имя и фамилию'],
             [['phone'], 'required','message'=>'Введите телефон'],
-            [['user_id', 'post_id', 'status'], 'integer'],
+            [['user_id', 'post_id', 'status', 'premium_finish_date'], 'integer'],
             [['position','phone'], 'string', 'max' => 100],
             [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -62,6 +65,7 @@ class BusinessOrder extends \yii\db\ActiveRecord
             'position' => 'Должность',
             'phone' => 'Телефон',
             'status' => 'Статус',
+            'premium_finish_date' => 'Оплачено до'
         ];
     }
 

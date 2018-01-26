@@ -98,5 +98,45 @@ echo $this->render('order_table.php', [
     'searchModel' => $searchModel,
 ]);
 
+?>
+<div class="block-content">
+    <h1 class="h1-c" style="margin-top: 35px">Добавить премиум бизнес аккаунт</h1>
+
+    <form id="form-add-biz"
+          action="/admin/biz/add-business-account"
+          method="post"
+          pjax-container-add-biz="true">
+        <div class="container-add-place container-feedback" style="margin-top: 30px">
+
+            <div class="block-field-setting">
+                <input type="text" class="input-field-setting" name="businessAccount[postId]"
+                       style="margin-bottom: 15px;" placeholder="Id места" aria-required="true">
+            </div>
+            <div class="block-field-setting">
+                <input type="text" class="input-field-setting" name="businessAccount[userId]"
+                       style="margin-bottom: 15px;" placeholder="Id пользователя" aria-required="true">
+            </div>
+            <div class="block-field-setting">
+                <input type="text" class="input-field-setting" name="businessAccount[dayCount]"
+                       style="margin-bottom: 15px;" placeholder="Колличество дней премиума" aria-required="true">
+            </div>
+            <label>
+                <div class="btn-send" style="z-index: 3;position: relative">
+                    <div class="large-wide-button"><p>Добавить</p></div>
+                </div>
+                <input id="btn-form-edit-page" type="submit" style="display: none;">
+            </label>
+
+        </div>
+    </form>
+</div>
+
+<?php
+
+echo $this->render('premium-accounts', [
+    'dataProvider' => $dataProviderPremiumAccount,
+    'searchModel' => $searchModel,
+]);
+
 Pjax::end();
 ?>

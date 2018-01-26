@@ -90,11 +90,17 @@ Pjax::begin([
     <div class="block-flex-white">
         <div class="block-content">
             <div class="block-sort">
-                <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort'=>'new'])?>" class="btn-sort <?=$sort === 'new' ? 'active': ''?>">
+                <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort'=>'new'])?>"
+                   class="btn-sort <?=$sort === 'new' ? 'active': ''?>">
                     <span class="under-line">Новые</span>
                 </a>
+                <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort'=>'popular'])?>"
+                   class="btn-sort <?=$sort === 'popular' ? 'active': ''?>">
+                    <span class="under-line">Популярные</span>
+                </a>
                 <?php if(Yii::$app->request->cookies->getValue('geolocation')):?>
-                    <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort'=>'nigh'])?>" class="btn-sort <?=$sort === 'nigh' ? 'active' : ''?>">
+                    <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort'=>'nigh'])?>"
+                       class="btn-sort <?=$sort === 'nigh' ? 'active' : ''?>">
                         <span class="under-line">Рядом</span>
                     </a>
                 <?php else:?>

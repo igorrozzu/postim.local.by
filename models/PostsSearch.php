@@ -58,7 +58,9 @@ class PostsSearch extends Posts
      */
     public function search($params, Pagination $pagination, Array $sort, $loadTime = null, array $self_filters = [], $loadGeolocation = [])
     {
-        $query = Posts::find();
+        $query = Posts::find()
+            ->joinWith(['actualDiscounts']);
+
         if (!isset($params['id'])) {
             $query->orderBy(['priority' => SORT_DESC]);
         }
@@ -226,7 +228,7 @@ class PostsSearch extends Posts
         }
 
         if (isset($params['text'])) {
-            $query->andWhere(['like', 'upper(data)', '%' . mb_strtoupper($params['text']) . '%', false]);
+            $query->andWhere(['like', 'upper(tbl_posts.data)', '%' . mb_strtoupper($params['text']) . '%', false]);
         }
 
         $query->leftJoin(Gallery::tableName(), Posts::tableName() . '.id = ' . Gallery::tableName() . '.post_id');

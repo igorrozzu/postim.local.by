@@ -1044,6 +1044,15 @@ body:not(.open-search) .search{
     box-shadow: 0px 2px 0px 0px #cdced0;
     border-radius: 3px;
 }
+.card-block .has-discounts{
+    background-color: #ff7e29;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
 .cards-block .card-block:nth-child(4n){
     margin-right: 0px;
 }
@@ -1119,8 +1128,8 @@ body:not(.open-search) .search{
     display: none;
     cursor: pointer;
     position: absolute;
-    bottom: 26px;
-    left: 25px;
+    bottom: 20px;
+    left: 20px;
 }
 .card-photo:hover .bookmarks-btn,
 .card-photo:hover .bookmarks-btn.active{
@@ -1193,12 +1202,14 @@ body:not(.open-search) .search{
 .close:before {
     background-position: 256px 37px;
 }
-.open{
+.open,
+.open-txt {
     line-height: 15px;
     color: #50af4d;
     padding: 5px 0;
 }
-.close{
+.close,
+.close-txt {
     line-height: 15px;
     padding: 5px 0;
     color: #fe5b68;
@@ -2875,9 +2886,10 @@ a.btn-show-more{
     box-shadow: 0 2px 0 0 #454c5c;
     background-color: #7b7b7b;
     color: #ffffff;
-    box-shadow: 0 2px 0 0 #454c5c;
     height: 40px;
     border-radius: 3px;
+    border: none;
+    outline: none;
 }
 
 .btn-add-photo-review:hover,
@@ -5403,7 +5415,7 @@ input.search-selected-field{
     background-position: 248px 615px;
 }
 .promo-btn{
-    margin-right: 20px;
+    margin-left: 20px;
     cursor: pointer;
 }
 .promo-btn:last-child{

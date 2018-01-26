@@ -9,8 +9,10 @@ use app\modules\admin\models\BusinessOrder;
 use app\modules\admin\models\BusinessOrderSearch;
 use app\modules\admin\models\News;
 use app\modules\admin\models\OwnerPost;
+use Yii;
 use yii\data\Pagination;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * Default controller for the `admin` module
@@ -29,12 +31,16 @@ class BizController extends AdminDefaultController
         $searchModel = new BusinessOrderSearch();
         $dataProvider = $searchModel->search(\Yii::$app->request->get(),BusinessOrder::$BIZ_AC);
         $dataProviderOrder = $searchModel->search(\Yii::$app->request->get(),BusinessOrder::$BIZ_ORDER);
+        $dataProviderPremiumAccount = $searchModel->searchPremiumAccounts(
+            Yii::$app->request->get()
+        );
 
         return $this->render('index',[
             'biz'=>$biz,
             'biz_account'=>$biz_account,
             'dataProvider' => $dataProvider,
             'dataProviderOrder' => $dataProviderOrder,
+            'dataProviderPremiumAccount' => $dataProviderPremiumAccount,
             'searchModel' => $searchModel,
         ]);
 
@@ -194,6 +200,95 @@ class BizController extends AdminDefaultController
         }
     }
 
+    public function actionAddBusinessAccount()
+    {
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $post = $request->post('businessAccount');
 
+            if (is_numeric($post['postId']) && is_numeric($post['userId'])
+                && is_numeric($post['dayCount'])) {
+                $account = BusinessOrder::find()
+                    ->where([
+                        'user_id' => $post['userId'],
+                        'post_id' => $post['postId'],
+                    ])->one();
 
+                if (!$account) {
+                    Yii::$app->session->setFlash('toastMessage', [
+                        'type' => 'error',
+                        'message' => 'Бизнесс аккаунт не найден',
+                    ]);
+                    return $this->redirect($request->referrer);
+                }
+
+                $time = time();
+                $period = $post['dayCount'] * 24 * 3600;
+
+                if ($account->premium_finish_date <= $time) {
+                    $account->premium_finish_date = $time + $period;
+                } else {
+                    $account->premium_finish_date += $period;
+                }
+                $account->status = BusinessOrder::$PREMIUM_BIZ_AC;
+                $account->update();
+
+                Yii::$app->session->setFlash('toastMessage', [
+                    'type' => 'success',
+                    'message' => 'Бизнесс аккаунт подключен на ' . $post['dayCount'] . ' дней',
+                ]);
+            } else {
+                Yii::$app->session->setFlash('toastMessage', [
+                    'type' => 'error',
+                    'message' => 'Переданы неверные данные',
+                ]);
+            }
+
+            return $this->redirect($request->referrer);
+        } else {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+    }
+
+    public function actionChangeStatusBusiness()
+    {
+        if (Yii::$app->request->isPost) {
+            $request = Yii::$app->request;
+
+            $account =  BusinessOrder::find()->where([
+                'user_id'=>$request->post('user_id',null),
+                'post_id'=>$request->post('post_id',null),
+            ])->one();
+
+            switch ($request->post('action',null)) {
+                case 'remove': {
+                    $account->status = BusinessOrder::$BIZ_AC;
+                    /*$linkToPost = '/'.$biz_account->post->url_name.'-p'.$biz_account->post->id;
+                    $titlePost = $biz_account->post->data;
+                    $templateMessage = \Yii::$app->params['notificationTemplates']['biz_ac'];
+                    $message = sprintf($templateMessage['deActive'], $linkToPost,$titlePost);
+                    $emailMessage = sprintf($templateMessage['emailDeActive'],$titlePost);
+
+                    UserHelper::sendNotification($biz_account->user_id,[
+                        'type' => '',
+                        'data' => $message
+                    ]);
+
+                    $user = $biz_account->user;
+                    $user->name = $biz_account->full_name;
+
+                    UserHelper::sendMessageToEmailCustomReward($user,$emailMessage,$linkToPost);*/
+                } break;
+                case 'confirm': {
+                    $account->status = BusinessOrder::$PREMIUM_BIZ_AC;
+                } break;
+            }
+            $account->update();
+
+            return $this->asJson([
+                'success'=> true,
+                'action' => 'remove',
+            ]);
+        }
+    }
 }

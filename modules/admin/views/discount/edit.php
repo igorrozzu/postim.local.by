@@ -103,7 +103,7 @@ $this->title = 'Редактировать скидку на Postim.by';
                 <label class="label-field-setting">Реквизиты</label>
                 <input  name="discount[requisites]" class="input-field-setting"
                         placeholder="Введите реквизиты: ООО, УНП и т.д."
-                        value="<?= $discount->requisites?>">
+                        value="<?= $discount->post->requisites?>">
             </div>
         </div>
 

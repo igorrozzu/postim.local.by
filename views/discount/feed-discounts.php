@@ -4,6 +4,7 @@ use \app\components\breadCrumb\BreadCrumb;
 use app\components\rightBlock\RightBlockWidget;
 use \app\models\DescriptionPage;
 use app\widgets\cardsDiscounts\CardsDiscounts;
+use yii\widgets\Pjax;
 
 $city = Yii::$app->city->getSelected_city();
 $changedCityName = Yii::t('app/locativus',  $city['name']);
@@ -19,6 +20,7 @@ $descriptionPage = DescriptionPage::initMetaTags(function () use ($city, $change
 
     return $response;
 });
+$defaultUrl = '/' . Yii::$app->request->getPathInfo();
 
 $this->title = $descriptionPage['title'];
 $this->registerMetaTag([
@@ -36,6 +38,43 @@ $this->registerMetaTag([
     <?= BreadCrumb::widget(['breadcrumbParams' => $breadcrumbParams])?>
     <h1 class="h1-v"><?=$descriptionPage['h1']?></h1>
 </div>
+
+<?php
+Pjax::begin([
+    'timeout' => 60000,
+    'enablePushState' => false,
+    'id' => 'feed-discounts-by-city',
+    'linkSelector' => '#feed-discounts-by-city .block-sort a',
+    'formSelector' => false,
+])
+?>
+
+<div class="block-flex-white">
+    <div class="block-content">
+        <div class="block-sort">
+            <a href="<?=$defaultUrl?>"
+               class="btn-sort <?=$sort === 'new' ? 'active': ''?>">
+                <span class="under-line">Новые</span>
+            </a>
+            <a href="<?= $defaultUrl?>?sort=popular"
+               class="btn-sort <?=$sort === 'popular' ? 'active': ''?>">
+                <span class="under-line">Популярные</span>
+            </a>
+            <?php if(Yii::$app->request->cookies->getValue('geolocation')):?>
+                <a href="<?= $defaultUrl?>?sort=nigh"
+                   class="btn-sort <?=$sort === 'nigh' ? 'active' : ''?>">
+                    <span class="under-line">Рядом</span>
+                </a>
+            <?php else:?>
+                <a style="display: none" href="<?=$defaultUrl?>?sort=nigh"
+                   class="btn-nigh btn-sort <?=$sort === 'nigh' ? 'active': ''?>">
+                    <span class="under-line">Рядом</span>
+                </a>
+                <a class="btn-sort no-geolocation"><span class="under-line">Рядом</span></a>
+            <?php endif;?>
+        </div>
+    </div>
+</div>
 <div class="block-content">
     <div class="container-columns">
         <div class="__first-column">
@@ -48,7 +87,7 @@ $this->registerMetaTag([
                         'show-more-btn' => true,
                         'replace-container-id' => 'feed-discounts',
                         'load-time' => $loadTime,
-                        'show-distance' => false,
+                        'show-distance' => true,
                     ]
                 ]); ?>
             </div>
@@ -78,3 +117,7 @@ $this->registerMetaTag([
         menu.openPageInLeftMenu($('#btn-all-discounts'));
     });
 </script>
+
+<?php
+Pjax::end();
+?>

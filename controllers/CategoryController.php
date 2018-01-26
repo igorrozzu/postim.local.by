@@ -35,7 +35,8 @@ class CategoryController extends MainController
 
         $selfParams=['sort'=>true,'open'=>true,'filters'=>true];
         if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false)){
-            $selfFilterParams = Yii::$app->request->get('filters',false)?$this->getSelfFilters($this->category,$this->under_category):[];
+            $selfFilterParams = Yii::$app->request->get('filters',false) ?
+                $this->getSelfFilters($this->category,$this->under_category) : [];
         }else{
             $selfFilterParams = $this->getSelfFilters($this->category,$this->under_category)??[];
         }

@@ -66,7 +66,9 @@ Pjax::begin([
                 'value' => function($discount) {
                     switch ($discount->status) {
                         case Discounts::STATUS['editing']: return 'Ред...';
+                        case Discounts::STATUS['editingAfterHiding']: return 'Ред...(После скрытия)';
                         case Discounts::STATUS['moderation']: return 'Новый';
+                        case Discounts::STATUS['inactive']: return 'Скрыто';
                         default: return 'Неверный тип';
                     }
                 },

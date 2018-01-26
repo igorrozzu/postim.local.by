@@ -55,7 +55,7 @@ class DiscountSearch extends Discounts
         $query = Discounts::find()
             ->where(['post_id' => $params['postId']])
             ->andWhere(['<=', 'date_start', $loadTime])
-            ->andWhere(['status' => Discounts::STATUS['active']])
+            ->andWhere(['>=', 'status', Discounts::STATUS['active']])
             ->orderBy(['date_start' => SORT_DESC]);
 
         $newQuery = clone $query;
@@ -83,7 +83,7 @@ class DiscountSearch extends Discounts
         $query = Discounts::find()
             ->innerJoinWith(['post.city.region.coutries', 'post.categories.category'])
             ->andWhere(['<=', 'date_start', $loadTime])
-            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']]);
+            ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']]);
 
         if ($this->sort === 'nigh' && $geolocation) {
             $coordinates = 'POINT(' . $geolocation["lat"] . ' ' . $geolocation["lon"] . ')';
@@ -93,6 +93,9 @@ class DiscountSearch extends Discounts
                 $coordinates . '\')) as distance'
             ])->distinct()
                 ->orderBy(['distance' => SORT_ASC]);
+        } else if ($this->sort === 'popular') {
+            $query->groupBy([Discounts::tableName() . '.id'])
+                ->orderBy([Discounts::tableName() . '.count_orders' => SORT_DESC]);
         } else {
             $query->groupBy([Discounts::tableName() . '.id'])
                 ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
@@ -103,7 +106,7 @@ class DiscountSearch extends Discounts
             ->innerJoinWith(['discounts'])
             ->innerJoinWith(['city.region.coutries', 'categories.category'])
             ->andWhere(['<=', 'date_start', $loadTime])
-            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']]);
+            ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']]);
 
         if (isset($this->city)) {
             $query->andWhere(['or',
@@ -188,16 +191,30 @@ class DiscountSearch extends Discounts
         return $dataProvider;
     }
 
-    public function searchByCity($params, Pagination $pagination, int $loadTime)
+    public function searchByCity($params, Pagination $pagination, int $loadTime, $geolocation = null)
     {
         $this->load($params, '');
 
         $query = Discounts::find()
             ->innerJoinWith(['post.city.region.coutries'])
             ->andWhere(['<=', 'date_start', $loadTime])
-            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
-            ->groupBy([Discounts::tableName() . '.id'])
-            ->orderBy(['date_start' => SORT_DESC]);
+            ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']]);
+
+        if ($this->sort === 'nigh' && $geolocation) {
+            $coordinates = 'POINT(' . $geolocation["lat"] . ' ' . $geolocation["lon"] . ')';
+            $query->select([
+                Discounts::tableName() . '.*',
+                'ST_distance_sphere(st_point("coordinates"[0],"coordinates"[1]),ST_GeomFromText(\'' .
+                $coordinates . '\')) as distance'
+            ])->distinct()
+                ->orderBy(['distance' => SORT_ASC]);
+        } else if ($this->sort === 'popular') {
+            $query->groupBy([Discounts::tableName() . '.id'])
+                ->orderBy([Discounts::tableName() . '.count_orders' => SORT_DESC]);
+        } else {
+            $query->groupBy([Discounts::tableName() . '.id'])
+                ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
+        }
 
         if (isset($this->city)) {
             $query->andWhere(['or',
@@ -231,7 +248,7 @@ class DiscountSearch extends Discounts
 
         $query = Discounts::find()
             ->innerJoinWith(['post.city.region.coutries', 'post.categories.category'])
-            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']]);
+            ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']]);
 
         if (isset($this->city)) {
             $query->andWhere(['or',
@@ -256,7 +273,7 @@ class DiscountSearch extends Discounts
     {
         $query = Discounts::find()
             ->andWhere(['<=', 'date_start', $loadTime])
-            ->andWhere([Discounts::tableName() . '.status' => Discounts::STATUS['active']])
+            ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']])
             ->orderBy(['date_start' => SORT_DESC]);
 
         $newQuery = clone $query;
@@ -286,6 +303,57 @@ class DiscountSearch extends Discounts
         return $dataProvider;
     }
 
+    public function searchByInteresting($params, Pagination $pagination, int $loadTime, array $categories)
+    {
+        $this->load($params, '');
+
+        $query = Discounts::find()
+            ->innerJoinWith(['post.city.region.coutries', 'post.categories.category'])
+            ->andWhere(['<=', 'date_start', $loadTime])
+            ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']])
+            ->andWhere(['>', Discounts::tableName() . '.date_finish', $loadTime])
+            ->groupBy([Discounts::tableName() . '.id'])
+            ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
+
+        if ($cityUrl = Yii::$app->city->getSelected_city()['url_name']) {
+            $query->andWhere(['or',
+                [Region::tableName() . '.url_name' => $cityUrl],
+                [City::tableName() . '.url_name' => $cityUrl],
+                [Countries::tableName() . '.url_name' => $cityUrl],
+            ]);
+        }
+
+        $newQuery = clone $query;
+
+        if (!empty($categories)) {
+            $criteria[] = 'or';
+            foreach ($categories as $category) {
+                $criteria[][UnderCategory::tableName() . '.url_name'] = $category->url_name;
+            }
+            $query->andWhere($criteria);
+        }
+
+        $getIdsQuery = clone $query;
+        $getIdsQuery->select([Discounts::tableName() . '.id']);
+
+        $newQuery->andWhere([Category::tableName() . '.url_name' => $categories[0]->category->url_name]);
+        $newQuery->andWhere(['not in', Discounts::tableName() . '.id', $getIdsQuery]);
+
+        $unionQuery = (new ActiveQuery(Discounts::className()))
+            ->from(['unionQuery' => $query->union($newQuery, true)]);
+
+        if (!Yii::$app->user->isGuest) {
+            $unionQuery->joinWith(['hasLike']);
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $unionQuery,
+            'pagination' => $pagination,
+        ]);
+
+        return $dataProvider;
+    }
+
     public function readDiscount(int $discountId): ? Model
     {
         $query = Discounts::find()
@@ -300,10 +368,7 @@ class DiscountSearch extends Discounts
     {
         $query = Discounts::find()
             ->innerJoinWith(['user'])
-            ->andWhere(['or',
-                ['status' => Discounts::STATUS['moderation']],
-                ['status' => Discounts::STATUS['editing']],
-            ])
+            ->andWhere(['!=', 'status', Discounts::STATUS['active']])
             ->orderBy(['date_start' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
