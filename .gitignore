@@ -22,4 +22,6 @@ web/css/admin/pop-up/*.min.css
 web/sitemap.xml
 web/index.php
 web/baners/*
+web/discount-img/
+web/discount_photo/
 yii
