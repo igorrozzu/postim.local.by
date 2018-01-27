@@ -84,7 +84,6 @@ class BizController extends AdminDefaultController
                     UserHelper::sendMessageToEmailCustomReward($user,$emailMessage,$linkToPost);
 
 
-
                     $toastMessage = [
                         'type' => 'success',
                         'message' => 'Пользователь добавлен',
