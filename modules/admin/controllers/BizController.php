@@ -100,11 +100,14 @@ class BizController extends AdminDefaultController
                     $searchModel = new BusinessOrderSearch();
                     $dataProvider = $searchModel->search(\Yii::$app->request->get(), BusinessOrder::$BIZ_AC);
                     $dataProviderOrder = $searchModel->search(\Yii::$app->request->get(), BusinessOrder::$BIZ_ORDER);
-
+                    $dataProviderPremiumAccount = $searchModel->searchPremiumAccounts(
+                        Yii::$app->request->get()
+                    );
                     $params = [
                         'dataProvider' => $dataProvider,
                         'dataProviderOrder' => $dataProviderOrder,
-                        'searchModel' => $searchModel
+                        'searchModel' => $searchModel,
+                        'dataProviderPremiumAccount' => $dataProviderPremiumAccount
                     ];
 
                 }
