@@ -285,6 +285,7 @@ class BizController extends AdminDefaultController
                     $account->status = BusinessOrder::$PREMIUM_BIZ_AC;
                 } break;
             }
+
             $account->update();
 
             return $this->asJson([
