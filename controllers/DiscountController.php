@@ -6,6 +6,7 @@ use app\components\discountOrder\Order;
 use app\components\Helper;
 use app\components\MainController;
 use app\components\Pagination;
+use app\models\Comments;
 use app\models\Discounts;
 use app\models\entities\BusinessOrder;
 use app\models\entities\DiscountOrder;
@@ -13,6 +14,7 @@ use app\models\entities\FavoritesDiscount;
 use app\models\entities\GalleryDiscount;
 use app\models\entities\OwnerPost;
 use app\models\Posts;
+use app\models\search\CommentsSearch;
 use app\models\search\DiscountSearch;
 use app\models\TotalView;
 use app\models\uploads\UploadPhotos;
@@ -370,6 +372,27 @@ class DiscountController extends MainController
             'pjax' => 'class="main-pjax a"'
         ];
 
+        $commentsSearch = new CommentsSearch();
+
+        $defaultLimit = isset($comment_id) ? 1000 : 16;
+        $_GET['type_entity'] = Comments::TYPE['discount'];
+        $paginationComments= new Pagination([
+            'pageSize' => Yii::$app->request->get('per-page', $defaultLimit),
+            'page' => Yii::$app->request->get('page', 1) - 1,
+            'route' => '/comments/get-comments',
+            'selfParams'=>[
+                'id'=>true,
+                'type_entity'=>true
+            ]
+        ]);
+
+        $dataProviderComments = $commentsSearch->search( Yii::$app->request->queryParams,
+            $paginationComments,
+            $discount['id'],
+            CommentsSearch::getSortArray('old')
+        );
+
+
         Helper::addViews($discount->totalView);
 
         return $this->render('index', [
@@ -378,7 +401,8 @@ class DiscountController extends MainController
             'breadcrumbParams' => $breadcrumbParams,
             'economy' => $discount->calculateEconomy(),
             'isCurrentUserOwner' => $isCurrentUserOwner,
-            'duration' => Yii::$app->formatter->asCustomDuration($discount->date_finish - time())
+            'duration' => Yii::$app->formatter->asCustomDuration($discount->date_finish - time()),
+            'dataProviderComments' => $dataProviderComments
         ]);
     }
 

@@ -97,6 +97,10 @@ class CommentsController extends MainController
                 $view = 'post_comments';
             }
                 break;
+            case Comments::TYPE['discount']: {
+                $view = 'discount_comments';
+            }
+                break;
         }
 
         if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax', false)) {

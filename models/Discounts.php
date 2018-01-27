@@ -222,6 +222,11 @@ class Discounts extends \yii\db\ActiveRecord
             ->onCondition([FavoritesDiscount::tableName() . '.user_id' => Yii::$app->user->id]);
     }
 
+    public function getTotalComments(){
+        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['discount']])->count();
+    }
+
+
     /**
      * @return string
      */

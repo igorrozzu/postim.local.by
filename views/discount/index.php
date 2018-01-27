@@ -187,6 +187,10 @@ Pjax::begin([
         </div>
     </div>
 
+    <div style="margin-top: 30px" class="comments_entity_container" data-entity_type="4" data-entity_id="<?=$discount['id']?>">
+        <?=$this->render('/comments/discount_comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$discount->totalComments])?>
+    </div>
+
 </div>
 <script>
     $(document).ready(function () {
@@ -215,6 +219,10 @@ Pjax::begin([
             $('.container-discount-photos').css({height:width/proportion+'px'});
         });
         $(window).resize();
+
+        comments.init(4);
+        comments.setAutoResize('.textarea-main-comment');
+
     });
 </script>
 <?php
