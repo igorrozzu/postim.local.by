@@ -51,14 +51,14 @@ Pjax::begin([
                 <div class="fill-account-text">Выберите способ оплаты</div>
                 <div class="payment-methods">
                     <div class="payment-block">
-                        <div class="erip make-payment" data-type="1">
+                        <div class="erip make-payment" data-entity="1">
                             <span>Система "Расчет"<br>(ЕРИП)</span>
                         </div>
-                        <div class="bank disable" data-type="2" title="Временно недоступно">
+                        <div class="bank disable" data-entity="2" title="Временно недоступно">
                             <span>Банковская<br>карта</span>
                         </div>
                     </div>
-                    <input id="payment-form-type" type="hidden" name="payment[type]">
+                    <input id="payment-form-entity" type="hidden" name="payment[entity]">
                 </div>
                 <div class="fill-account-agreement">
                     Пополняя счет, вы соглашаетесь cо всеми правилами

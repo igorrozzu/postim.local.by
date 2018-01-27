@@ -1,8 +1,8 @@
 <?php
 
-namespace app\models\forms;
+namespace app\models\payment;
 
-use yii\base\Model;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for form "AccountPayment".
@@ -10,12 +10,15 @@ use yii\base\Model;
  * @property integer $type
  * @property string $money
  */
-class AccountPayment extends Model
+class AccountPayment extends ActiveRecord
 {
     const PAYMENT_TYPE = ['erip' => 1, 'card' => 2];
 
-    public $type;
-    public $money;
+    public static function tableName()
+    {
+        return 'tbl_account_payment';
+    }
+
 
     /**
      * @inheritdoc
@@ -24,11 +27,11 @@ class AccountPayment extends Model
     {
         return [
             ['money', 'required', 'message' => 'Необходимо указать сумму платежа'],
-            ['type', 'required'],
-            [['type'], 'integer'],
+            ['entity', 'required'],
+            [['entity', 'status', 'user_id'], 'integer'],
             [['money'], 'number'],
             ['money', 'compare', 'compareValue' => 0, 'operator' => '>'],
-            ['type', 'in', 'range' => array_values(AccountPayment::PAYMENT_TYPE)],
+            ['entity', 'in', 'range' => array_values(AccountPayment::PAYMENT_TYPE)],
         ];
     }
 

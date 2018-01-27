@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<ServiceProvider_Response>
+    <TransactionStart>
+        <ServiceProvider_TrxId>{{id}}</ServiceProvider_TrxId>
+        <Info xml:space="preserve">
+            <InfoLine>Заказ {{id}}: </InfoLine>
+            <InfoLine>Пополнение счета</InfoLine>
+        </Info>
+    </TransactionStart>
+</ServiceProvider_Response>

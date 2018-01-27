@@ -16,8 +16,8 @@ use app\models\Discounts;
 use app\models\entities\BusinessOrder;
 use app\models\entities\DiscountOrder;
 use app\models\entities\OwnerPost;
-use app\models\forms\AccountPayment;
 use app\models\forms\PremiumAccount;
+use app\models\payment\AccountPayment;
 use app\models\Posts;
 use app\models\search\DiscountOrderSearch;
 use Yii;
@@ -139,10 +139,10 @@ class AccountController extends AuthController
         $breadcrumbParams = $this->getParamsForBreadcrumb();
 
         if (Yii::$app->request->isPost) {
-            $model = new AccountPayment();
             $model->load(Yii::$app->request->post(), 'payment');
+            $model->load(['user_id' =>Yii::$app->user->identity->getId()], '');
 
-            if ($model->validate()) {
+            if ($model->validate() && $model->save()) {
 
                 $breadcrumbParams[] = [
                     'name' => 'Оплата через систему "Расчет" (ЕРИП)',

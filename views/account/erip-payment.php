@@ -21,7 +21,7 @@ $this->title = 'Оплата через систему "Расчет" (ЕРИП)
                 <tr>
                     <td><span class="fill-account-text style1">Заказ №</span></td>
                     <td style="padding: 0 0 10px 10px;">
-                        <input type="text" class="payment-text-input" value="12345" readonly>
+                        <input type="text" class="payment-text-input" value="<?=$model->id?>" readonly>
                     </td>
                 </tr>
                 <tr>

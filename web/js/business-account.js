@@ -104,7 +104,7 @@ var BusinessAccount = (function (window, document, undefined,$) {
                                 return;
                             }
 
-                            $('#payment-form-type').val($(this).data('type'));
+                            $('#payment-form-entity').val($(this).data('entity'));
                             $('#account-form').submit();
                         });
                     }

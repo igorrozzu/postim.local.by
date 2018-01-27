@@ -13,7 +13,6 @@ use app\models\City;
 use app\models\entities\DiscountOrder;
 use app\models\entities\Gallery;
 use app\models\entities\OwnerPost;
-use app\models\forms\AccountPayment;
 use app\models\moderation_post\PostsModeration;
 use app\models\moderation_post\PostsModerationSearch;
 use app\models\PostsSearch;
