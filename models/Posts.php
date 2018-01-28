@@ -328,11 +328,10 @@ class Posts extends \yii\db\ActiveRecord
     public function getUrls(){
 
         $urls = [
-            [
-                'url' => '/Fotografii-' . $this->url_name . '-p' . $this->id,
-                'image:image' => $this->getImgsForSiteMap()
-            ]
+            '/Fotografii-' . $this->url_name . '-p' . $this->id,
         ];
+
+        $urls = ArrayHelper::merge($urls, $this->getImgsForSiteMap());
 
         return  $urls;
     }
@@ -340,9 +339,13 @@ class Posts extends \yii\db\ActiveRecord
     private function getImgsForSiteMap():array
     {
 
-        $photos = Gallery::find()->select(new Expression("CONCAT('/post_photo/{$this->id}/', \"link\") as link"))
+        $photos = Gallery::find()->select(new Expression("CONCAT('/Fotografiya-{$this->url_name}-f', \"id\") as link"))
             ->where(['post_id'=> $this->id])
-            ->asArray()->all();
+            ->indexBy('id')->column();
+
+        if(!$photos){
+            return [];
+        }
 
         return $photos;
 

@@ -63,6 +63,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'Fotografii-<name:.+>-p<postId:\d+>' => 'post/gallery',
+                'Fotografiya-<name:.+>-f<idPhoto:\d+>' => 'post/photo',
                 'Sushi-sety-rolly-ot-sluzhby-dostavki-Sushi-Nashi' => 'test/index',
 				'<url:.+>-p<id:\d+>/moderation'=>'post/post-moderation',//модерируемая информация о месте
                 '<url:.+>-p<id:\d+>'=>'post/index',//информация о месте

@@ -2884,6 +2884,19 @@ a.btn-show-more{
 /*страница карточки товара end*/
 
 /*страница фотографии*/
+
+.block-li-photo{
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+.block-li-photo:nth-child(3n){
+    margin-right: 0px;
+}
+
 .block-photos-owner,
 .block-photos-users{
     margin-top: 10px;
@@ -2897,16 +2910,18 @@ a.btn-show-more{
 }
 .container-photo{
     display: flex;
-    margin-right: 20px;
-    margin-top: 20px;
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    height: 100%;
     background-position: center;
     background-size: cover;
     cursor: pointer;
 }
-.container-photo:nth-child(3n){
-    margin-right: 0px;
+
+.block-author{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: none;
 }
 .block-blackout{
     padding-top: 10px;
@@ -2918,6 +2933,9 @@ a.btn-show-more{
 }
 .container-photo:hover .block-blackout{
     display: flex;
+}
+.block-li-photo:hover .block-author{
+    display: block;
 }
 .avatar-user{
     width: 40px;
