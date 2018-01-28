@@ -16,6 +16,7 @@ class Task extends \yii\db\ActiveRecord
 {
     const TYPE = [
         'notification' => 1,
+        'accountReplenishment' => 2,
     ];
 
     /**

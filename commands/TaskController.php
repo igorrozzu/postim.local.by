@@ -8,6 +8,7 @@
 namespace app\commands;
 use app\behaviors\notification\handlers\NotificationHandler;
 use app\commands\cron\siteMap\models\SiteMap;
+use app\commands\cron\taskFactory\TaskFactory;
 use app\components\user\ExperienceCalc;
 use app\models\Category;
 use app\models\City;
@@ -23,6 +24,7 @@ use app\models\Posts;
 use app\modules\admin\models\Reviews;
 use Yii;
 use yii\console\Controller;
+use yii\db\IntegrityException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 
@@ -39,9 +41,7 @@ class TaskController extends Controller
 {
     public function actionHandleNotifications()
     {
-        $tasksQuery = Task::find()->where([
-            Task::tableName() . '.type' => Task::TYPE['notification']
-        ]);
+        $tasksQuery = Task::find();
 
         $mailer = Yii::$app->getMailer();
         $mailer->htmlLayout = 'layouts/notification';
@@ -50,12 +50,11 @@ class TaskController extends Controller
         foreach ($tasksQuery->each() as $task) {
             try {
                 $ids[] = $task->id;
-                $data = json_decode($task->data);
-                $class = 'app\commands\cron\notifications\\' . $data->class;
-                $handler = new $class($mailer);
-                $handler->params = $data->params;
+                $factory = new TaskFactory();
+                $handler = $factory->create($task, $mailer);
                 $handler->run();
             } catch (\Exception $e) {
+                array_pop($ids);
                 continue;
             }
         }
