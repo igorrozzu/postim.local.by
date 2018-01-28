@@ -63,7 +63,7 @@ Pjax::begin([
         </div>
         <?php if($photo->source):?>
         <div class="photo-desc">
-            <a href="<?=$photo->source?>" rel="nofollow noindex">Источник</a>
+            <p><a href="<?=$photo->source?>" rel="nofollow noindex">Источник</a></p>
         </div>
         <?php endif;?>
     </div>
