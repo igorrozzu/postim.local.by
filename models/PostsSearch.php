@@ -410,4 +410,36 @@ class PostsSearch extends Posts
 
         return $dataProvider;
     }
+
+    public function searchRecommendedPosts($categories)
+    {
+        $query = Posts::find()
+            ->innerJoinWith(['city.region.coutries', 'categories.category', 'businessOwner'])
+            ->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']])
+            ->groupBy([Posts::tableName() . '.id'])
+            ->limit(2);
+
+        if ($cityUrl = Yii::$app->city->getSelected_city()['url_name']) {
+            $query->andWhere(['or',
+                [Region::tableName() . '.url_name' => $cityUrl],
+                [City::tableName() . '.url_name' => $cityUrl],
+                [Countries::tableName() . '.url_name' => $cityUrl],
+            ]);
+        }
+
+        if (!empty($categories)) {
+            $criteria[] = 'or';
+            foreach ($categories as $category) {
+                $criteria[][UnderCategory::tableName() . '.url_name'] = $category->url_name;
+            }
+            $query->andWhere($criteria);
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]);
+
+        return $dataProvider;
+    }
 }

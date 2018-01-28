@@ -11,7 +11,16 @@ $postUrl = Url::to(['post/index', 'url' => $discount->post->url_name,
     'id' => $discount->post->id], true);
 $timezone = Yii::$app->user->getTimezoneInSeconds();
 ?>
-
+<style>
+    .print-hidden-block {
+        display: block;
+    }
+    @media print {
+        .print-hidden-block {
+            display: none;
+        }
+    }
+</style>
 
 <tr style="background-color: #FFFFFF">
     <td>
@@ -51,6 +60,13 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                     <?= Yii::$app->formatter->asDate($discountOrder->date_buy + $timezone,
                         'dd.MM.yyyy в HH:mm')?>
                 </span>
+            </span>
+            <span class="print-hidden-block" style="font-size: 14px;">
+                <a href="<?= Url::to(['discount/print-order', 'OID' => $discountOrder->id], true);?>"
+                   target="_blank" style="color: #3C5994; font-weight: bold;">Распечатать</a>
+                 <span style="display: block;">
+                     или сфотографируйте на телефон
+                 </span>
             </span>
         </span>
 

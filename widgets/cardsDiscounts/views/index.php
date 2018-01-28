@@ -9,7 +9,8 @@ $discounts = $dataProvider->getModels();
 ?>
     <div class="card-block-discount" data-item-id="<?=$discount->id?>">
         <a href="<?=Url::to(['discount/read', 'url' => $discount->url_name,
-            'discountId' => $discount->id])?>" class="discount-link">
+            'discountId' => $discount->id])?>" class="discount-link"
+        <?= isset($settings['links-no-follow']) ? 'rel="nofollow"' : ''?>>
             <div class="block-discount-photo" style="background-image: url('<?=$discount->getCover();?>')">
                 <div class="block-blackout-discount">
                     <div class="discount-block">

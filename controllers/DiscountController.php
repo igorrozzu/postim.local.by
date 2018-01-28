@@ -34,11 +34,7 @@ class DiscountController extends MainController
     public function actionAdd(int $postId)
     {
         if (!Yii::$app->user->isModerator()) {
-            $owner = BusinessOrder::find()
-                ->where([
-                    'user_id' => Yii::$app->user->getId(),
-                    'post_id' => $postId,
-                ])->one();
+            $owner = Yii::$app->user->getOwnerThisPost($postId);
             if (!$owner) {
                 throw new NotFoundHttpException();
             }
@@ -46,9 +42,9 @@ class DiscountController extends MainController
                 if ($owner->status === BusinessOrder::$BIZ_AC) {
                     Yii::$app->session->setFlash('message', [
                         'type' => 'error',
-                        'text' => 'Добавлять скидки могут только Премиум бизнес-аккаунты. Пополните счет на 30 рублей и получите доступ на 1 месяц.',
+                        'text' => 'Добавлять скидки могут только Премиум бизнес-аккаунты, выберите период, оплатите и получите доступ.',
                     ]);
-                    return $this->redirect(Url::to(['account/replenishment']));
+                    return $this->redirect(Url::to(['account/premium']));
 
                 } else {
                     throw new NotFoundHttpException();
@@ -134,11 +130,7 @@ class DiscountController extends MainController
         }
 
         if (!Yii::$app->user->isModerator()) {
-            $owner = BusinessOrder::find()
-                ->where([
-                    'user_id' => Yii::$app->user->getId(),
-                    'post_id' => $discount->post_id,
-                ])->one();
+            $owner = Yii::$app->user->getOwnerThisPost($discount->post_id);
             if (!$owner) {
                 throw new NotFoundHttpException();
             }
@@ -146,9 +138,9 @@ class DiscountController extends MainController
                 if ($owner->status === BusinessOrder::$BIZ_AC) {
                     Yii::$app->session->setFlash('message', [
                         'type' => 'error',
-                        'text' => 'Редактировать скидки могут только Премиум бизнес-аккаунты. Пополните счет на 30 рублей и получите доступ на 1 месяц.',
+                        'text' => 'Редактировать скидки могут только Премиум бизнес-аккаунты, выберите период, оплатите и получите доступ.',
                     ]);
-                    return $this->redirect(Url::to(['account/replenishment']));
+                    return $this->redirect(Url::to(['account/premium']));
 
                 } else {
                     throw new NotFoundHttpException();
@@ -303,7 +295,7 @@ class DiscountController extends MainController
     public function actionLoadInterestingDiscounts(int $postId)
     {
         $post = Posts::find()
-            ->innerJoinWith(['categories.category'])
+            ->innerJoinWith(['categories'])
             ->where([Posts::tableName() . '.id' => $postId])
             ->one();
 
@@ -354,7 +346,7 @@ class DiscountController extends MainController
             throw new NotFoundHttpException('Cтраница не найдена');
         }
 
-        $isCurrentUserOwner = Yii::$app->user->isOwnerThisPost($discount->post_id);
+        $isCurrentUserOwner = Yii::$app->user->getOwnerThisPost($discount->post_id);
         if (in_array($discount->status, [
             Discounts::STATUS['inactive'],
             Discounts::STATUS['editingAfterHiding'],

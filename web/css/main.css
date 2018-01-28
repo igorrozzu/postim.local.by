@@ -1053,6 +1053,28 @@ body:not(.open-search) .search{
     bottom: 20px;
     right: 20px;
 }
+
+/*start recommended-block*/
+.card-block .sign-recommended-post{
+    background-color: #59b356;
+    font-size: 14px;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+.recommended-block.cards-block {
+    width: 300px;
+}
+.recommended-block .card-block {
+    margin: 0 0 20px 0;
+    width: 300px;
+    height: 300px;
+}
+/*end recommended-block*/
+
 .cards-block .card-block:nth-child(4n){
     margin-right: 0px;
 }
@@ -1176,6 +1198,11 @@ body:not(.open-search) .search{
 }
 .block-news .card-info{
     height: 85px;
+}
+.recommended-block .card-info {
+    font-family: PT_Sans bold;
+    font-size: 16px;
+    height: 35px;
 }
 .block-new-reviews .block-reviews,
 .block-new-reviews .review-show-more {

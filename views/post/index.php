@@ -1,7 +1,9 @@
 <?php
 use app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
+use app\components\rightBlock\RightBlockWidget;
 use app\widgets\cardsDiscounts\CardsDiscounts;
+use app\widgets\cardsRecommendedPlace\CardsRecommendedPlace;
 use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
@@ -339,7 +341,8 @@ echo "<script>$js</script>";
                 </div>
             </div>
 
-            <?php if($dataProviderDiscounts->getTotalCount() > 0):?>
+            <?php if (isset($dataProviderDiscounts) && $dataProviderDiscounts->getTotalCount() > 0):?>
+            <noindex>
                 <h2 class="h2-c">Вам может понравиться</h2>
                 <div class="cards-block-discount row-3 main-pjax" data-favorites-state-url="/discount/favorite-state">
 
@@ -351,9 +354,11 @@ echo "<script>$js</script>";
                             'load-time' => $loadTime,
                             'postId' => $post->id,
                             'show-distance' => true,
+                            'links-no-follow' => true,
                         ]
                     ]); ?>
                 </div>
+            </noindex>
             <?php endif;?>
 
             <div class="comments_entity_container" data-entity_type="3" data-entity_id="<?=$post['id']?>">
@@ -373,7 +378,17 @@ echo "<script>$js</script>";
         </div>
         <div class="__second-column">
             <div class="--top-50px"></div>
-            <?= \app\components\rightBlock\RightBlockWidget::widget()?>
+            <?php if (isset($dataProviderRecommendedPosts) && $dataProviderRecommendedPosts->getTotalCount() > 0):?>
+
+                <div class="recommended-block cards-block">
+
+                    <?= CardsRecommendedPlace::widget([
+                        'dataprovider' => $dataProviderRecommendedPosts
+                    ]); ?>
+                </div>
+
+            <?php endif;?>
+            <?= RightBlockWidget::widget()?>
         </div>
     </div>
 

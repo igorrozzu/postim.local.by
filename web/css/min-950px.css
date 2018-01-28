@@ -251,4 +251,15 @@
         justify-content: center;
     }
 
+    /*start recommended-block*/
+    .recommended-block.cards-block {
+        width: auto;
+    }
+    .recommended-block .card-block {
+        width: calc((100% - 20px)/2 );
+    }
+    .recommended-block .card-block:first-child {
+        margin-right: 20px;
+    }
+    /*end recommended-block*/
 }

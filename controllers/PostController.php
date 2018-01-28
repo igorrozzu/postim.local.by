@@ -16,6 +16,7 @@ use app\models\entities\Gallery;
 use app\models\entities\OwnerPost;
 use app\models\moderation_post\PostsModeration;
 use app\models\Posts;
+use app\models\PostsSearch;
 use app\models\Reviews;
 use app\models\ReviewsSearch;
 use app\models\search\CommentsSearch;
@@ -45,7 +46,7 @@ class PostController extends MainController
         $query = Posts::find()
             ->where(['id'=>$id]);
         $with = ['info', 'city', 'totalView','onlyOnceCategories.category', 'isCurrentUserOwner',
-            'categories.category',
+            'categories', 'businessOwner',
             'workingHours' => function ($query) {
                 $query->orderBy(['day_type'=>SORT_ASC]);
             },
@@ -133,20 +134,30 @@ class PostController extends MainController
                 CommentsSearch::getSortArray('old')
             );
 
-            $discountModel = new DiscountSearch();
-            $discountPagination = new Pagination([
-                'pageSize' => Yii::$app->request->get('per-page', 6),
-                'page' => Yii::$app->request->get('page', 1) - 1,
-                'route' => Url::to(['discount/load-interesting-discounts']),
-            ]);
-            $loadTime = Yii::$app->request->get('loadTime', time());
+            $dataProviderDiscounts = null;
+            if (!$post->businessOwner) {
+                $discountModel = new DiscountSearch();
+                $discountPagination = new Pagination([
+                    'pageSize' => Yii::$app->request->get('per-page', 6),
+                    'page' => Yii::$app->request->get('page', 1) - 1,
+                    'route' => Url::to(['discount/load-interesting-discounts']),
+                ]);
+                $loadTime = Yii::$app->request->get('loadTime', time());
 
-            $dataProviderDiscounts = $discountModel->searchByInteresting(
-                Yii::$app->request->queryParams,
-                $discountPagination,
-                $loadTime,
-                $post->categories
-            );
+                $dataProviderDiscounts = $discountModel->searchByInteresting(
+                    Yii::$app->request->queryParams,
+                    $discountPagination,
+                    $loadTime,
+                    $post->categories
+                );
+            }
+
+            $dataProviderRecommendedPosts = null;
+            if (!$post->businessOwner) {
+                $postSearch = new PostsSearch();
+
+                $dataProviderRecommendedPosts = $postSearch->searchRecommendedPosts($post->categories);
+            }
 
             return $this->render('index', [
                 'post' => $post,
@@ -164,6 +175,7 @@ class PostController extends MainController
                 ],
                 'dataProviderComments' => $dataProviderComments,
                 'dataProviderDiscounts' => $dataProviderDiscounts,
+                'dataProviderRecommendedPosts' => $dataProviderRecommendedPosts,
                 'isShowDiscounts' => $discountCount > 0 || Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner)
             ]);
 

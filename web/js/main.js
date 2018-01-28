@@ -90,6 +90,13 @@ var Main = (function (window, document, undefined,$) {
                 $(document).off("click", "#post-feeds .menu-btns-card a");
                 $(document).pjax("#post-feeds .menu-btns-card a", {"push":true,"replace":false,"timeout":60000,"scrollTo":false,"container":"#post-feeds"});
 
+                // init pjax ленты скидок
+                $(document).off('click','#feed-discounts-by-city .block-sort a');
+                $(document).pjax("#feed-discounts-by-city .block-sort a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#feed-discounts-by-city"});
+
+                // init pjax страницы Пополнение счета
+                $(document).off('click','#account-feeds .menu-btns-card a');
+                $(document).pjax("#account-feeds .menu-btns-card a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#account-feeds"});
             },
             User:{
                 is_guest:true

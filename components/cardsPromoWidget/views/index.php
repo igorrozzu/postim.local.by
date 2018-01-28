@@ -42,7 +42,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                     </div>
                 </div>
                 <div class="block-promo-btns">
-                    <a href="<?= Url::to(['discount/print-order', 'OID' => $item->id])?>">
+                    <a href="<?= Url::to(['discount/print-order', 'OID' => $item->id])?>" target="_blank">
                         <div class="promo-btn btn-print-promo"></div>
                     </a>
                     <?php if($item->status_promo === DiscountOrder::STATUS['active'] &&

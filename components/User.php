@@ -1,6 +1,7 @@
 <?php
 namespace app\components;
 
+use app\models\entities\BusinessOrder;
 use app\models\entities\OwnerPost;
 use Yii;
 
@@ -63,19 +64,22 @@ class User extends \yii\web\User{
         return true;
     }
 
-    public function isOwnerThisPost(int $postId): bool
+    public function getOwnerThisPost(int $postId)
     {
         if ($this->isGuest) {
             return false;
         }
 
-        $isCurrentUserOwner = OwnerPost::find()
+        $owner = BusinessOrder::find()
             ->where([
-                OwnerPost::tableName() . '.owner_id' => $this->getId(),
-                OwnerPost::tableName() . '.post_id' => $postId,
+                'user_id' => $this->getId(),
+                'post_id' => $postId,
+            ])->andWhere(['or',
+                ['status' => BusinessOrder::$BIZ_AC],
+                ['status' => BusinessOrder::$PREMIUM_BIZ_AC],
             ])->one();
 
-        return isset($isCurrentUserOwner);
+        return $owner;
     }
 
     public function generationSecretToken(){

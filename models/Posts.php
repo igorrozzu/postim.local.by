@@ -261,6 +261,12 @@ class Posts extends \yii\db\ActiveRecord
             ->onCondition(['>', Discounts::tableName() . '.date_finish', time()]);
     }
 
+    public function getBusinessOwner()
+    {
+        return $this->hasOne(BusinessOrder::className(), ['post_id' => 'id'])
+            ->onCondition([BusinessOrder::tableName() . '.status' => BusinessOrder::$PREMIUM_BIZ_AC]);
+    }
+
     public function afterFind()
     {
         parent::afterFind();

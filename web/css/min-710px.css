@@ -9,7 +9,8 @@
     .card-block,
     .photo,
     .photo-not-found,
-    .card-block-discount{
+    .card-block-discount,
+    .recommended-block .card-block {
         width: 100%;
     }
 
@@ -174,4 +175,10 @@
         flex-flow: column;
     }
     /*end discounts*/
+
+    /*start recommended-block*/
+    .recommended-block .card-block:first-child {
+        margin-right: 0;
+    }
+    /*end recommended-block*/
 }

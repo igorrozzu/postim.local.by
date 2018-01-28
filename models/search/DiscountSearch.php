@@ -308,7 +308,7 @@ class DiscountSearch extends Discounts
         $this->load($params, '');
 
         $query = Discounts::find()
-            ->innerJoinWith(['post.city.region.coutries', 'post.categories.category'])
+            ->innerJoinWith(['post.city.region.coutries', 'post.categories'])
             ->andWhere(['<=', 'date_start', $loadTime])
             ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']])
             ->andWhere(['>', Discounts::tableName() . '.date_finish', $loadTime])
@@ -336,7 +336,6 @@ class DiscountSearch extends Discounts
         $getIdsQuery = clone $query;
         $getIdsQuery->select([Discounts::tableName() . '.id']);
 
-        $newQuery->andWhere([Category::tableName() . '.url_name' => $categories[0]->category->url_name]);
         $newQuery->andWhere(['not in', Discounts::tableName() . '.id', $getIdsQuery]);
 
         $unionQuery = (new ActiveQuery(Discounts::className()))

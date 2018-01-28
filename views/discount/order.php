@@ -1,10 +1,5 @@
 <?php
 use app\components\breadCrumb\BreadCrumb;
-use \app\components\Helper;
-use yii\helpers\Url;
-use yii\web\View;
-use yii\widgets\Pjax;
-
 
 $this->title = 'Покупка промокода на Postim.by';
 ?>
