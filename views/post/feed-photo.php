@@ -56,12 +56,18 @@ Pjax::begin([
     </div>
 </div>
 <div class="block-content">
-    <div style="display: flex; margin-top: 30px;" class="block-single-photo">
-        <img style="width: auto; height: auto;" src="<?=$photo->getPhotoPath()?>" alt="<?=$post->data ?? ''?>" title="<?=$post->data ?? ''?>">
+
+    <div class="container-post">
+        <div class="block-photo-post">
+            <img src="<?=$photo->getPhotoPath()?>" alt="<?=$post->data ?? ''?>" title="<?=$post->data ?? ''?>">
+        </div>
+        <?php if($photo->source):?>
+        <div class="photo-desc">
+            <a href="<?=$photo->source?>" rel="nofollow noindex">Источник</a>
+        </div>
+        <?php endif;?>
     </div>
-    <?php if($photo->source):?>
-        <a href="<?=$photo->source?>" rel="nofollow noindex">Источник</a>
-    <?php endif;?>
+
 </div>
 <script>
     $(document).ready(function() {
