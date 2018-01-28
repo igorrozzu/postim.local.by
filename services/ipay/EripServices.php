@@ -2,6 +2,7 @@
 
 namespace app\services\ipay;
 
+use app\models\entities\Task;
 use \domDocument;
 
 class EripServices{
@@ -94,14 +95,16 @@ class EripServices{
             $order = $this->_repositoryImplementation->getOrderById($orderNumber);
             $this->_repositoryImplementation->changeStatusById($orderNumber, self::PAID);
 
-            //todo надо вызввать тригер заказ оплачен
-
-            //TODO я думаю нужно добавить задачу, что заказ $order оплачен, а потом кронам обработать эту задачу
-            //TODO я думаю нужно добавить задачу, что заказ $order оплачен, а потом кронам обработать эту задачу
-            //TODO я думаю нужно добавить задачу, что заказ $order оплачен, а потом кронам обработать эту задачу
-            //TODO я думаю нужно добавить задачу, что заказ $order оплачен, а потом кронам обработать эту задачу
-            //TODO я думаю нужно добавить задачу, что заказ $order оплачен, а потом кронам обработать эту задачу
-            //TODO я думаю нужно добавить задачу, что заказ $order оплачен, а потом кронам обработать эту задачу
+            $task = new Task([
+                'data' => json_encode([
+                    'params' => [
+                        'user_id' => $order->user_id,
+                        'changing' => $order->money,
+                    ],
+                ]),
+                'type' => Task::TYPE['accountReplenishment'],
+            ]);
+            $task->save();
 
         }else{
             $this->_repositoryImplementation->changeProcessById($orderNumber, self::NOT_PROCESSED);

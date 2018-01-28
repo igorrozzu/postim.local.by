@@ -8,15 +8,20 @@
 
 namespace app\commands\cron\tasks;
 
+use app\services\account\AccountService;
+use yii\di\Container;
+
 class AccountReplenishment extends BaseTask
 {
+    /* @var  AccountService $accountService */
+    protected $accountService;
+
     public function run()
     {
-        $this->putMoney();
-    }
+        $containerDI = new Container();
 
-    private function putMoney()
-    {
-        //print_r($this->params);
+        $this->accountService = $containerDI->get(AccountService::class);
+        $this->accountService->changeAccount($this->params->user_id, $this->params->changing,
+            "На счет поступило {$this->params->changing} рублей");
     }
 }
