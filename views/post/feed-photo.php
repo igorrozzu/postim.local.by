@@ -60,7 +60,7 @@ Pjax::begin([
         <img style="width: auto; height: auto;" src="<?=$photo->getPhotoPath()?>" alt="<?=$post->data ?? ''?>" title="<?=$post->data ?? ''?>">
     </div>
     <?php if($photo->source):?>
-        <a href="<?$photo->source?>" rel="nofollow noindex">Источник</a>
+        <a href="<?=$photo->source?>" rel="nofollow noindex">Источник</a>
     <?php endif;?>
 </div>
 <script>
