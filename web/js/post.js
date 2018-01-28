@@ -407,6 +407,11 @@ var Post = (function (window, document, undefined,$) {
                             that.uploadPostPhotosHandler();
                             that.photoPopupWindowInit();
                             that.sendComplaintHandler();
+
+                            $(document).on('click', '.block-li-photo', function (e) {
+                                e.preventDefault();
+                            })
+
                         });
                     },
 
@@ -475,7 +480,7 @@ var Post = (function (window, document, undefined,$) {
                                 }
 
                                 _container.currentItem = $(this).data('sequence');
-                                _container.type = $(this).parent().data('type');
+                                _container.type = $(this).parents('[data-type]').data('type');
 
                                 if(_container.type === 'review') {
                                     _container.reviewId = $(this).parent().data('reviews_id');

@@ -86,15 +86,21 @@ echo "<script>$js</script>";
 <div class="block-content">
     <div class="block-photos-owner <?=!$ownerPhotos?'empty-photo':''?>" data-type="user">
         <?php foreach ($ownerPhotos as $index => $photo):?>
-            <div class="container-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>" data-source="<?=$photo->source ?? ''?>"
-                 data-id="<?=$photo->id?>" data-status="<?=$photo->user_status?>">
-                <div class="block-blackout">
+
+            <div class="block-li-photo">
+                <a href="<?=Url::to(['post/photo', 'name' => $post->url_name, 'idPhoto' => $photo->id])?>" title="<?=$photo->post->data ?? ''?>">
+                    <div class="container-photo" style="background-image: url('<?=$photo->getPhotoPath()?>')" data-sequence="<?=$index?>" data-source="<?=$photo->source ?? ''?>"
+                         data-id="<?=$photo->id?>" data-status="<?=$photo->user_status?>">
+                        <div class="block-blackout"></div>
+                    </div>
+                </a>
+                <div class="block-author">
                     <a href="<?=Url::to(['user/index', 'id' => $photo->user->id])?>">
                         <img class="avatar-user" src="<?=$photo->user->getPhoto()?>">
                     </a>
-                    <img class="origin-photo-feed" alt="<?=$post->data?>" title="<?=$post->data?>" src="<?=$photo->getPhotoPath()?>">
                 </div>
             </div>
+
         <?php endforeach;?>
 
         <label class="large-wide-button non-border fx-bottom photo-upload-sign" for="post-photos">

@@ -62,51 +62,11 @@ class SiteMap {
                 $urls = $model->getUrls();
                 foreach ($urls as $url){
 
-                    if(!is_array($url)){
-                        $item = array(
-                            'loc' => $host . $url,
-                            'changefreq' => $changeFreq,
-                            'priority' => $priority
-                        );
-                    }else{
-
-                        $elems = $url;
-                        $url = array_shift($elems);
-
-                        $item = array(
-                            'loc' => $host . $url,
-                            'changefreq' => $changeFreq,
-                            'priority' => $priority
-                        );
-
-                        foreach ($elems as $elemKey => $elem){
-
-                            $value = [];
-
-                            switch ($elemKey){
-                                case 'image:image': {
-
-                                    $itemImgs = [];
-
-                                    foreach ($elem as $linkImg){
-                                        $itemImg = [];
-                                        $itemImg['image:loc'] = $host . $linkImg['link'];
-
-                                        if($model->data){
-                                            $itemImg['image:title'] = $model->data;
-                                        }
-
-                                        $itemImgs[] = $itemImg;
-                                    }
-
-                                    $value = $itemImgs;
-
-                                }break;
-                            }
-
-                            $item[$elemKey] = $value;
-                        }
-                    }
+                    $item = array(
+                        'loc' => $host . $url,
+                        'changefreq' => $changeFreq,
+                        'priority' => $priority
+                    );
 
                     $this->items[] = $item;
                 }

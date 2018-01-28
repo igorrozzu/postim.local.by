@@ -696,6 +696,39 @@ class PostController extends MainController
         ]);
     }
 
+    public function actionPhoto(string $postName = null, int $idPhoto)
+    {
+        $request = Yii::$app->request;
+
+        $photo = Gallery::find()->where(['id' => $idPhoto])->one();
+        $post = Posts::find()->with([
+            'info', 'workingHours',
+            'city', 'totalView',
+            'hasLike', 'categories.category'
+        ])->where(['id' => $photo->post_id])
+            ->one();
+
+
+        $photoCount = Gallery::find()
+            ->where(['post_id' => $post->id])
+            ->count();
+
+        $breadcrumbParams = $this->getParamsForBreadcrumb($post);
+        $breadcrumbParams[] = [
+            'name' => 'Фото',
+            'url_name' => $request->getUrl(),
+            'pjax' => 'class="main-pjax a"'
+        ];
+
+
+        return $this->render('feed-photo', [
+            'post' => $post,
+            'breadcrumbParams' => $breadcrumbParams,
+            'photoCount' => $photoCount,
+            'photo' => $photo
+        ]);
+    }
+
     public function actionGetPlaceForMap(string $id)
     {
         $response = new \stdClass();
