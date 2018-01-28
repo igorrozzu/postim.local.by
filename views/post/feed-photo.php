@@ -6,7 +6,7 @@ use yii\web\View;
 use yii\widgets\Pjax;
 
 $category_name = $post->onlyOnceCategories[0]->name;
-$this->title = $post->data . ' : фото ' . $photo->id;
+$this->title = $post->data . ': фото ' . $photo->id;
 
 $this->registerMetaTag([
     'name' => 'description',
