@@ -254,6 +254,7 @@
     /*start recommended-block*/
     .recommended-block.cards-block {
         width: auto;
+        margin-top: 0;
     }
     .recommended-block .card-block {
         width: calc((100% - 20px)/2 );

@@ -51,6 +51,13 @@
         margin-top: 20px;
     }
 }
+@media (min-width: 940px) and (max-width: 1093px){
+    /*start recommended-block*/
+    .recommended-block.cards-block {
+        margin-top: 88px;
+    }
+    /*end recommended-block*/
+}
 
 @media (max-width: 800px) {
 

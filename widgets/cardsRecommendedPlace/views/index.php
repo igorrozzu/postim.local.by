@@ -1,6 +1,7 @@
 <?php
+
+use app\widgets\cardsRecommendedPlace\CardsRecommendedPlace;
 use yii\helpers\Html;
-use app\components\cardsPlaceWidget\CardsPlaceWidget;
 
 $data = $dataprovider->getModels();
 ?>
@@ -23,7 +24,7 @@ $data = $dataprovider->getModels();
         </div>
         <div class="js-href-post">
             <div class="card-block-info">
-                <p class="info-head"><?=CardsPlaceWidget::renderCategories($item->categories, $item->city)?></p>
+                <p class="info-head"><?=CardsRecommendedPlace::renderTextCategories($item->categories)?></p>
                 <p class="card-info">
                     <?=Html::encode(Html::decode($item['data']))?>
                 </p>

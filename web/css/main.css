@@ -1067,6 +1067,7 @@ body:not(.open-search) .search{
 }
 .recommended-block.cards-block {
     width: 300px;
+    margin-top: 52px;
 }
 .recommended-block .card-block {
     margin: 0 0 20px 0;
@@ -1203,6 +1204,7 @@ body:not(.open-search) .search{
     font-family: PT_Sans bold;
     font-size: 16px;
     height: 35px;
+    margin-top: 20px;
 }
 .block-new-reviews .block-reviews,
 .block-new-reviews .review-show-more {

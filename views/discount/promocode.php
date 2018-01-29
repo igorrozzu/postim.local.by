@@ -35,19 +35,19 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
             </a>
         </span>
 
-        <span style="display: inline-block; margin: 0 0 20px 20px; width: 280;">
+        <span style="display: inline-block; margin: 0 -5px 15px 20px; width: 280;">
             <a href="<?= $discountUrl?>" target="_blank">
-                <span style="float: left; display: block; width: 280; height: 137; background-size: cover; background-repeat: no-repeat;
+                <span style="float: left; display: block; width: 280; height: 131; background-size: cover; background-repeat: no-repeat;
                     background-image: url('<?= $hostName . $discount->getCover();?>') !important; ">
 
                 </span>
              </a>
         </span>
-        <span style="display: inline-block; width: 260; margin: 0 0 20px 20px; vertical-align: top; font-size: 16px;">
-            <span style="display: block; color: #6b778f; margin-bottom: 20px;">
+        <span style="display: inline-block; width: 260; margin: 0 0 15px 20px; vertical-align: top; font-size: 16px;">
+            <span style="display: block; color: #6b778f; margin-bottom: 15px;">
                 Промокод<span style="color: #444; font-weight: bold; margin-left: 5px;"><?= $discountOrder->promo_code?></span>
             </span>
-            <span style="display: block; color: #6b778f; margin-bottom: 20px;">
+            <span style="display: block; color: #6b778f; margin-bottom: 15px;">
                 Срок действия
                 <span style="color: #444; font-weight: bold; margin-left: 5px;">
                     <?= Yii::$app->formatter->asDate($discount->date_finish + $timezone,

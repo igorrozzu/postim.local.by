@@ -303,7 +303,7 @@ class DiscountSearch extends Discounts
         return $dataProvider;
     }
 
-    public function searchByInteresting($params, Pagination $pagination, int $loadTime, array $categories)
+    public function searchByInteresting($params, Pagination $pagination, int $loadTime, $post)
     {
         $this->load($params, '');
 
@@ -315,19 +315,19 @@ class DiscountSearch extends Discounts
             ->groupBy([Discounts::tableName() . '.id'])
             ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
 
-        if ($cityUrl = Yii::$app->city->getSelected_city()['url_name']) {
+        if ($post->city['url_name']) {
             $query->andWhere(['or',
-                [Region::tableName() . '.url_name' => $cityUrl],
-                [City::tableName() . '.url_name' => $cityUrl],
-                [Countries::tableName() . '.url_name' => $cityUrl],
+                [Region::tableName() . '.url_name' => $post->city['url_name']],
+                [City::tableName() . '.url_name' => $post->city['url_name']],
+                [Countries::tableName() . '.url_name' => $post->city['url_name']],
             ]);
         }
 
         $newQuery = clone $query;
 
-        if (!empty($categories)) {
+        if (!empty($post->categories)) {
             $criteria[] = 'or';
-            foreach ($categories as $category) {
+            foreach ($post->categories as $category) {
                 $criteria[][UnderCategory::tableName() . '.url_name'] = $category->url_name;
             }
             $query->andWhere($criteria);

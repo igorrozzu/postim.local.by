@@ -18,4 +18,17 @@ class CardsRecommendedPlace extends Widget
             'settings' => $this->settings,
         ]);
     }
+
+    public static function renderTextCategories($categories)
+    {
+        $tagCategories = [];
+
+        if ($categories && is_array($categories)) {
+            foreach ($categories as $category) {
+                $tagCategories[] = $category['name'];
+            }
+        }
+
+        return implode(', ', $tagCategories);
+    }
 }

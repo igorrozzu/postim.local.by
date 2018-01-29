@@ -96,7 +96,7 @@ var Main = (function (window, document, undefined,$) {
 
                 // init pjax страницы Пополнение счета
                 $(document).off('click','#account-feeds .menu-btns-card a');
-                $(document).pjax("#account-feeds .menu-btns-card a", {"push":false,"replace":false,"timeout":60000,"scrollTo":false,"container":"#account-feeds"});
+                $(document).pjax("#account-feeds .menu-btns-card a", {"push":true,"replace":false,"timeout":60000,"scrollTo":false,"container":"#account-feeds"});
             },
             User:{
                 is_guest:true

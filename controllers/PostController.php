@@ -148,16 +148,16 @@ class PostController extends MainController
                     Yii::$app->request->queryParams,
                     $discountPagination,
                     $loadTime,
-                    $post->categories
+                    $post
                 );
             }
 
             $dataProviderRecommendedPosts = null;
-            if (!$post->businessOwner) {
+            /*if (!$post->businessOwner) {
                 $postSearch = new PostsSearch();
 
                 $dataProviderRecommendedPosts = $postSearch->searchRecommendedPosts($post->categories);
-            }
+            }*/
 
             return $this->render('index', [
                 'post' => $post,

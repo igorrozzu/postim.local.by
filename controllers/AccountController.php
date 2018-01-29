@@ -19,7 +19,9 @@ use app\models\entities\OwnerPost;
 use app\models\forms\PremiumAccount;
 use app\models\payment\AccountPayment;
 use app\models\Posts;
+use app\models\search\AccountHistorySearch;
 use app\models\search\DiscountOrderSearch;
+use app\widgets\accountStatistic\AccountStatistic;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Exception;
@@ -30,6 +32,32 @@ class AccountController extends AuthController
 {
     public function actionHistory()
     {
+        $request = Yii::$app->request;
+
+        $historySearch = new AccountHistorySearch();
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 8),
+            'page' => $request->get('page', 1) - 1,
+        ]);
+        $loadTime = $request->get('loadTime', time());
+
+        $dataProvider = $historySearch->statisticsSearch(
+            $request->queryParams,
+            $pagination,
+            $loadTime
+        );
+
+        if ($request->isAjax && !$request->get('_pjax',false)) {
+            return AccountStatistic::widget([
+                'dataProvider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'item-table-statistic',
+                    'load-time' => $loadTime,
+                ]
+            ]);
+        }
+
         $breadcrumbParams = $this->getParamsForBreadcrumb();
         $breadcrumbParams[] = [
             'name' => 'История вашего счета',
@@ -38,7 +66,10 @@ class AccountController extends AuthController
         ];
 
         return $this->render('account-history', [
-            'breadcrumbParams' => $breadcrumbParams
+            'userInfo' => Yii::$app->user->identity->userInfo,
+            'breadcrumbParams' => $breadcrumbParams,
+            'dataProvider' => $dataProvider,
+            'loadTime' => $loadTime,
         ]);
     }
 

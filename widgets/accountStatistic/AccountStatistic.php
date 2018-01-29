@@ -1,6 +1,6 @@
 <?php
 
-namespace app\widgets;
+namespace app\widgets\accountStatistic;
 
 use yii\base\Widget;
 

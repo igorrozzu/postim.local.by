@@ -295,7 +295,7 @@ class DiscountController extends MainController
     public function actionLoadInterestingDiscounts(int $postId)
     {
         $post = Posts::find()
-            ->innerJoinWith(['categories'])
+            ->innerJoinWith(['city','categories'])
             ->where([Posts::tableName() . '.id' => $postId])
             ->one();
 
@@ -311,7 +311,7 @@ class DiscountController extends MainController
             $request->queryParams,
             $pagination,
             $loadTime,
-            $post->categories
+            $post
         );
 
         if ($request->isAjax && !$request->get('_pjax', false)) {
