@@ -434,14 +434,14 @@ class PostController extends MainController
 
         if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             $model = new UploadPostPhotosTmp();
-            $model->setDirectory("@webroot/post_photos/tmp/");
+            $model->setDirectory("@webroot/post_photo/tmp/");
 
             $model->files = UploadedFile::getInstancesByName('photos');
             if ($model->upload()) {
                 return $this->asJson([
                     'success' => true,
                     'data' => $model->getSavedFiles(),
-                    'folder' => 'post_photos',
+                    'folder' => 'post_photo',
                 ]);
             } else {
                 return $this->asJson([
