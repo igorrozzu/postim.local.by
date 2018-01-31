@@ -26,8 +26,7 @@ class Ipay_testController extends MainController {
 
         if($request->isPost && $request->post('XML'))
         {
-            $response = $this->_eripService->processInfo($request->post('XML'));
-            return $this->asXml($response);
+            return $this->_eripService->processInfo($request->post('XML'));
         }
     }
 
@@ -36,8 +35,7 @@ class Ipay_testController extends MainController {
 
         if($request->isPost && $request->post('XML'))
         {
-            $response = $this->_eripService->transactionStart($request->post('XML'));
-            return $this->asXml($response);
+            return $this->_eripService->transactionStart($request->post('XML'));
         }
     }
 
@@ -46,8 +44,7 @@ class Ipay_testController extends MainController {
 
         if($request->isPost && $request->post('XML'))
         {
-            $response = $this->_eripService->transactionResult($request->post('XML'));
-            return $this->asXml($response);
+            return $this->_eripService->transactionResult($request->post('XML'));
         }
     }
 
@@ -56,8 +53,7 @@ class Ipay_testController extends MainController {
 
         if($request->isPost && $request->post('XML'))
         {
-            $response = $this->_eripService->stornStart($request->post('XML'));
-            return $this->asXml($response);
+            return $this->_eripService->stornStart($request->post('XML'));
         }
     }
 
@@ -66,8 +62,7 @@ class Ipay_testController extends MainController {
 
         if($request->isPost && $request->post('XML'))
         {
-            $response = $this->_eripService->stornResult($request->post('XML'));
-            return $this->asXml($response);
+            return $this->_eripService->stornResult($request->post('XML'));
         }
     }
 
