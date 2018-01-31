@@ -22,6 +22,7 @@ class Ipay_testController extends MainController {
     public function actionService_info()
     {
         $request = Yii::$app->request;
+        Yii::info('start calculating average revenue', 'pushNotifications');
 
         if($request->isPost && $request->post('XML'))
         {
