@@ -7,7 +7,7 @@ use Yii;
 use yii\di\Container;
 use yii\web\Request;
 
-class IpayController extends MainController {
+class Ipay_testController extends MainController {
 
     /* @var  EripServices $_eripService */
     protected $_eripService;
