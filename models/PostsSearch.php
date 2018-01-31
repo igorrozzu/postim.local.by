@@ -411,7 +411,7 @@ class PostsSearch extends Posts
         return $dataProvider;
     }
 
-    public function searchRecommendedPosts($categories)
+    public function searchRecommendedPosts($post)
     {
         $query = Posts::find()
             ->innerJoinWith(['city.region.coutries', 'categories.category', 'businessOwner'])
@@ -419,17 +419,17 @@ class PostsSearch extends Posts
             ->groupBy([Posts::tableName() . '.id'])
             ->limit(2);
 
-        if ($cityUrl = Yii::$app->city->getSelected_city()['url_name']) {
+        if ($post->city['url_name']) {
             $query->andWhere(['or',
-                [Region::tableName() . '.url_name' => $cityUrl],
-                [City::tableName() . '.url_name' => $cityUrl],
-                [Countries::tableName() . '.url_name' => $cityUrl],
+                [Region::tableName() . '.url_name' => $post->city['url_name']],
+                [City::tableName() . '.url_name' => $post->city['url_name']],
+                [Countries::tableName() . '.url_name' => $post->city['url_name']],
             ]);
         }
 
-        if (!empty($categories)) {
+        if (!empty($post->categories)) {
             $criteria[] = 'or';
-            foreach ($categories as $category) {
+            foreach ($post->categories as $category) {
                 $criteria[][UnderCategory::tableName() . '.url_name'] = $category->url_name;
             }
             $query->andWhere($criteria);

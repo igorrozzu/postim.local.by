@@ -153,11 +153,11 @@ class PostController extends MainController
             }
 
             $dataProviderRecommendedPosts = null;
-            /*if (!$post->businessOwner) {
+            if (!$post->businessOwner) {
                 $postSearch = new PostsSearch();
 
-                $dataProviderRecommendedPosts = $postSearch->searchRecommendedPosts($post->categories);
-            }*/
+                $dataProviderRecommendedPosts = $postSearch->searchRecommendedPosts($post);
+            }
 
             return $this->render('index', [
                 'post' => $post,
