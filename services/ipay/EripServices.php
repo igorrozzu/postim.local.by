@@ -149,6 +149,9 @@ class EripServices{
 
     private function signature(string $inputXml, string $outputXml): string
     {
+
+        return $outputXml;
+
         $salt = addslashes('7499Gncr10mk,fgkwJDETFMZXa34');
         // Удаляем лишние символы до начала xml-запроса и после xml-запроса
         $XML = preg_replace('/^.*\<\?xml/sim', '<?xml', $inputXml);
