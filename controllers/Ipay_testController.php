@@ -7,7 +7,7 @@ use Yii;
 use yii\di\Container;
 use yii\web\Request;
 
-class IpayController extends MainController {
+class Ipay_testController extends MainController {
 
     /* @var  EripServices $_eripService */
     protected $_eripService;
@@ -22,6 +22,7 @@ class IpayController extends MainController {
     public function actionService_info()
     {
         $request = Yii::$app->request;
+        Yii::info('start calculating average revenue', 'pushNotifications');
 
         if($request->isPost && $request->post('XML'))
         {

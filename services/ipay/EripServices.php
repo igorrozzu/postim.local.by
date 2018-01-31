@@ -40,15 +40,15 @@ class EripServices{
                     if($order['status_process'] == self::NOT_PROCESSED){
                         $result = $this->_responseImplementation->getResponse(AEripResponse::$status['info'], $order);
                     }else{
-                        $message['message'] = "Заказ №{$orderNumber} находится в процессе оплаты";
+                        $message['message'] = "Заказ N{$orderNumber} находится в процессе оплаты";
                         $result = $this->_responseImplementation->getResponse(AEripResponse::$status['error'], $message);
                     }
                 }else{
-                    $message['message'] = "Заказ №{$orderNumber} уже оплачен";
+                    $message['message'] = "Заказ N{$orderNumber} уже оплачен";
                     $result = $this->_responseImplementation->getResponse(AEripResponse::$status['error'], $message);
                 }
             }else{
-                $message['message'] = "Заказ №{$orderNumber} не существует. Начните оплату заново на сайте Postim.by";
+                $message['message'] = "Заказ N{$orderNumber} не существует. Начните оплату заново на сайте Postim.by";
                 $result = $this->_responseImplementation->getResponse(AEripResponse::$status['error'], $message);
             }
         }
@@ -70,11 +70,11 @@ class EripServices{
                     $this->_repositoryImplementation->changeProcessById($orderNumber, self::PROCESSED);
                     $result = $this->_responseImplementation->getResponse(AEripResponse::$status['transaction_start'], $order);
                 }else{
-                    $message['message'] = "Заказ №{$orderNumber} находится в процессе оплаты";
+                    $message['message'] = "Заказ N{$orderNumber} находится в процессе оплаты";
                     $result = $this->_responseImplementation->getResponse(AEripResponse::$status['error'], $message);
                 }
             }else{
-                $message['message'] = "Заказ №{$orderNumber} не существует. Начните оплату заново на сайте Postim.by";
+                $message['message'] = "Заказ N{$orderNumber} не существует. Начните оплату заново на сайте Postim.by";
                 $result = $this->_responseImplementation->getResponse(AEripResponse::$status['error'], $message);
             }
         }
@@ -138,7 +138,7 @@ class EripServices{
             if($order){
                 $result = $this->_responseImplementation->getResponse(AEripResponse::$status['storn'], '');
             }else{
-                $message['message'] = "Заказ №{$orderNumber} не существует.";
+                $message['message'] = "Заказ N{$orderNumber} не существует.";
                 $result = $this->_responseImplementation->getResponse(AEripResponse::$status['error'], $message);
             }
         }
@@ -149,6 +149,9 @@ class EripServices{
 
     private function signature(string $inputXml, string $outputXml): string
     {
+
+        return $outputXml;
+
         $salt = addslashes('7499Gncr10mk,fgkwJDETFMZXa34');
         // Удаляем лишние символы до начала xml-запроса и после xml-запроса
         $XML = preg_replace('/^.*\<\?xml/sim', '<?xml', $inputXml);
