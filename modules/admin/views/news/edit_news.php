@@ -73,8 +73,10 @@ Pjax::begin([
             </div>
             <?= $form->field($news, 'data')
                 ->textInput(['id' => 'article','style' => 'display:none', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите текст', 'value' => \yii\helpers\Html::encode($news['data'])])
-                ->label(false) ?>
+                    'placeholder' => 'Введите текст', 'value' => \yii\helpers\Html::encode($news['data']),
+                    'data-upload-by-url' => '/post/upload-new-photo-by-url',
+                    'data-upload-by-file' => '/post/upload-new-photo',
+                ])->label(false) ?>
         </div>
 
         <script>
