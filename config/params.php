@@ -18,7 +18,10 @@ $params = [
     'user.experienceForFirstLevel' => 100,
 
     'security.encryptionKey' => 'mc2447382@',
+
     'post.perPage' => 16,
+    'post.recommendedPostsMaxCount' => 2,
+
     'mainPage.postCount' => 4,
     'mainPage.newsCount' => 4,
 ];

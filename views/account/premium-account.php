@@ -19,7 +19,7 @@ Pjax::begin([
 ?>
 <div class="block-content" style="margin-top: 80px">
     <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
-    <h1 class="h1-v">Премиум аккаунт</h1>
+    <h1 class="h1-v">Подключить премиум аккаунт</h1>
 
 </div>
 <div class="block-content" style="margin-top: 30px;">

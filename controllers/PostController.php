@@ -28,10 +28,12 @@ use app\models\uploads\UploadPhotos;
 use app\models\uploads\UploadPhotosByUrl;
 use app\models\uploads\UploadPostPhotos;
 use app\models\uploads\UploadPostPhotosTmp;
+use app\services\recommendedPosts\RecommendedPosts;
 use app\widgets\cardsDiscounts\CardsDiscounts;
 use linslin\yii2\curl\Curl;
 use Yii;
 use yii\db\Exception;
+use yii\di\Container;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
@@ -40,6 +42,8 @@ use yii\web\UploadedFile;
 
 class PostController extends MainController
 {
+    /* @var  RecommendedPosts $accountService */
+    protected $recommendedPostsService;
 
     public function actionIndex(int $id, string $photo_id = null, int $review_id = null)
     {
@@ -155,8 +159,15 @@ class PostController extends MainController
             $dataProviderRecommendedPosts = null;
             if (!$post->businessOwner) {
                 $postSearch = new PostsSearch();
+                $containerDI = new Container();
 
-                $dataProviderRecommendedPosts = $postSearch->searchRecommendedPosts($post);
+                $this->recommendedPostsService = $containerDI->get(RecommendedPosts::class);
+                $ids =  $this->recommendedPostsService->getPostsIds($post,
+                    Yii::$app->params['post.recommendedPostsMaxCount']);
+
+                if (!empty($ids)) {
+                    $dataProviderRecommendedPosts = $postSearch->searchRecommendedPostsByIds($ids);
+                }
             }
 
             return $this->render('index', [

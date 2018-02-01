@@ -411,29 +411,14 @@ class PostsSearch extends Posts
         return $dataProvider;
     }
 
-    public function searchRecommendedPosts($post)
+    public function searchRecommendedPostsByIds($ids)
     {
         $query = Posts::find()
-            ->innerJoinWith(['city.region.coutries', 'categories.category', 'businessOwner'])
-            ->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']])
-            ->groupBy([Posts::tableName() . '.id'])
-            ->limit(2);
-
-        if ($post->city['url_name']) {
-            $query->andWhere(['or',
-                [Region::tableName() . '.url_name' => $post->city['url_name']],
-                [City::tableName() . '.url_name' => $post->city['url_name']],
-                [Countries::tableName() . '.url_name' => $post->city['url_name']],
+            ->innerJoinWith(['categories.category'])
+            ->where([
+                Posts::tableName() . '.status' => Posts::$STATUS['confirm'],
+                Posts::tableName() . '.id' => $ids
             ]);
-        }
-
-        if (!empty($post->categories)) {
-            $criteria[] = 'or';
-            foreach ($post->categories as $category) {
-                $criteria[][UnderCategory::tableName() . '.url_name'] = $category->url_name;
-            }
-            $query->andWhere($criteria);
-        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

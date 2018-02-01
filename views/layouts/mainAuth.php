@@ -126,17 +126,15 @@ $countNotif = NotificationUser::getCountNotifications();
 
         <?php if(Yii::$app->user->identity->hasOwner()):?>
             <div class="business-block">
-                <div class="container-item-menu">
-                    <a><span class="icon-business"></span>Бизнес аккаунт</a>
-                </div>
                 <div class="container-item-menu visible">
-                    <a href="<?=Url::to(['account/order-promocodes'])?>"><span></span>Заказы промокодов</a>
+                    <a href="<?=Url::to(['account/order-promocodes'])?>">
+                        <span class="icon-business"></span>Заказы промокодов</a>
                 </div>
                 <div class="container-item-menu visible">
                     <a href="<?=Url::to(['account/replenishment'])?>"><span></span>Пополнить счет</a>
                 </div>
                 <div class="container-item-menu visible">
-                    <a href="<?=Url::to(['account/premium'])?>"><span></span>Премиум аккаунт</a>
+                    <a href="<?=Url::to(['account/premium'])?>"><span></span>Премиум</a>
                 </div>
             </div>
         <?php endif;?>
