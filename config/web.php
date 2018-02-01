@@ -43,10 +43,27 @@ $config = [
         ],
         'mailer' => require(__DIR__ . '/mailer.php'),
         'log' => [
+            'flushInterval' => 1,
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['error', 'warning',],
+                    'exportInterval' => 1,
+                    'categories' => [
+                        'yii\db\*',
+                        'yii\web\HttpException:*',
+                    ],
+                    'except' => [
+                        'yii\web\HttpException:404',
+                    ],
+                ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info'],
+                    'logVars' => [],
+                    'exportInterval' => 1,
+                    'categories' => ['pushNotifications'],
+                    'logFile' => '@app/runtime/logs/notification.log',
                 ],
             ],
         ],
