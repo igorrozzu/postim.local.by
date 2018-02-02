@@ -52,6 +52,8 @@ class RecommendedPosts
 
         if (empty($this->selectedPostIds)) {
             return null;
+        } else if (count($this->selectedPostIds) <= $limit) {
+            return $this->selectedPostIds;
         }
 
         $key = $this->getKey($post);
