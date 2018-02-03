@@ -168,7 +168,7 @@ class EripServices{
             // Формируем ответ с ошибкой проверки ЦП
             $body = '<?xml version="1.0" encoding="windows-1251"?><ServiceProvider_Response><Error><ErrorLine>Ошибка проверки ЦП</ErrorLine></Error></ServiceProvider_Response>';
             // Формируем ЦП и отправляем ЦП и ответ об ошибке в iPay
-            $body = mb_convert_encoding('utf-8', 'windows-1251', $body);
+            $body = iconv('utf-8', 'windows-1251', $body);
             $md5 = md5($salt .$body);
             header("ServiceProvider-Signature: SALT+MD5: $md5");
             return $body;
