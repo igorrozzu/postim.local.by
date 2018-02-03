@@ -6,8 +6,8 @@
             <Penalty/>
         </Amount>
         <Info xml:space="preserve">
-            <InfoLine>Номер заказа N {{id}}: </InfoLine>
-            <InfoLine>Оплата </InfoLine>
+            <InfoLine>РќРѕРјРµСЂ Р·Р°РєР°Р·Р° N {{id}}: </InfoLine>
+            <InfoLine>РћРїР»Р°С‚Р° </InfoLine>
         </Info>
     </ServiceInfo>
 </ServiceProvider_Response>

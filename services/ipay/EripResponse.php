@@ -11,7 +11,7 @@ class EripResponse extends AEripResponse {
 
         $response = '';
 
-        $filePath = \Yii::getAlias('@app/services/ipay/templates' . "/{$type}");
+        $filePath = \Yii::getAlias('@app/services/ipay/templates' . "/{$type}.template");
 
         if(file_exists($filePath)){
 
