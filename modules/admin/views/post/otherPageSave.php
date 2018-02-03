@@ -108,8 +108,10 @@ Pjax::begin([
 
                     <?= $form->field($editPage, 'description_text')
                         ->textInput(['id' => 'article','style' => 'display:none', 'class' => 'input-field-setting',
-                            'placeholder' => 'Введите текст', 'value' => \yii\helpers\Html::encode($editPage['description_text'])])
-                        ->label(false) ?>
+                            'placeholder' => 'Введите текст', 'value' => \yii\helpers\Html::encode($editPage['description_text']),
+                            'data-upload-by-url' => '/post/upload-new-photo-by-url',
+                            'data-upload-by-file' => '/post/upload-new-photo',
+                        ])->label(false) ?>
 
                     <?php if($editPage['description_text']):?>
                         <?=\app\components\Helper::parserForEditor($editPage['description_text'],true);?>
