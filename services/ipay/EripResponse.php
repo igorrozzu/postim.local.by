@@ -32,7 +32,7 @@ class EripResponse extends AEripResponse {
             $response = $template;
         }
 
-        return $response;
+        return trim($response, " \t\n\r");
     }
 
 }
