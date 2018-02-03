@@ -17,13 +17,12 @@ class Ipay_testController extends MainController {
         parent::init();
         $containerDI = new Container();
         $this->_eripService = $containerDI->get('app\services\ipay\EripServices');
+        Yii::$app->response->charset = 'utf-8';
     }
 
     public function actionService_info()
     {
         $request = Yii::$app->request;
-        Yii::info('start calculating average revenue', 'pushNotifications');
-
         if($request->isPost && $request->post('XML'))
         {
             return $this->_eripService->processInfo($request->post('XML'));
