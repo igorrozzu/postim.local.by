@@ -11,10 +11,10 @@ class EripResponse extends AEripResponse {
 
         $response = '';
 
-        $filePath = \Yii::getAlias('@app/services/ipay/templates' . "/{$type}.xml");
+        $filePath = \Yii::getAlias('@app/services/ipay/templates' . "/{$type}");
 
         if(file_exists($filePath)){
-            $dom = new \DOMDocument('1.0', 'windows-1251');
+            $dom = new \DOMDocument('1.0', 'utf-8');
             $dom->load($filePath);
             $template = $dom->saveXML();
 
