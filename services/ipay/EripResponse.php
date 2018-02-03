@@ -32,7 +32,10 @@ class EripResponse extends AEripResponse {
             $response = $template;
         }
 
-        return iconv('utf-8','windows-1251', trim($response, " \t\n\r"));
+        if($response){
+            return iconv('utf-8','windows-1251', $response);
+        }
+
     }
 
 }
