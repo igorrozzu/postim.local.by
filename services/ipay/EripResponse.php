@@ -14,7 +14,7 @@ class EripResponse extends AEripResponse {
         $filePath = \Yii::getAlias('@app/services/ipay/templates' . "/{$type}.xml");
 
         if(file_exists($filePath)){
-            $dom = new \DOMDocument('1.0', 'utf-8');
+            $dom = new \DOMDocument('1.0', 'windows-1251');
             $dom->load($filePath);
             $template = $dom->saveXML();
 
