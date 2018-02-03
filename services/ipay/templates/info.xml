@@ -6,8 +6,8 @@
             <Penalty/>
         </Amount>
         <Info xml:space="preserve">
-            <InfoLine>Zakaz N {{id}}: </InfoLine>
-            <InfoLine>Popolnenie scheta</InfoLine>
+            <InfoLine>Заказ N {{id}}: </InfoLine>
+            <InfoLine>Пополнение счета</InfoLine>
         </Info>
     </ServiceInfo>
 </ServiceProvider_Response>
