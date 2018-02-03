@@ -81,7 +81,6 @@ $config = [
             'rules' => [
                 'Fotografii-<name:.+>-p<postId:\d+>' => 'post/gallery',
                 'Fotografiya-<name:.+>-f<idPhoto:\d+>' => 'post/photo',
-                'Sushi-sety-rolly-ot-sluzhby-dostavki-Sushi-Nashi' => 'test/index',
                 'Skidki-<name:.+>-p<postId:\d+>' => 'post/get-discounts-by-post',
                 'add/discount/<postId:\d+>' => 'discount/add',
                 '<url:.+>-d<discountId:\d+>' => 'discount/read',

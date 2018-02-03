@@ -113,10 +113,6 @@ class TaskController extends Controller
                     ]);
                     $userIds->levelUpdate[] = $user->id;
                 }
-
-                if ($user->userInfo->hasExperienceAndBonusSub()) {
-                    $userIds->mailSending[] = $user->id;
-                }
             }
 
             if (isset($userIds->all)) {
@@ -142,31 +138,6 @@ class TaskController extends Controller
             $transaction->rollBack();
 
             return false;
-        }
-
-        if (isset($userIds->mailSending)) {
-            $mailer = Yii::$app->getMailer();
-            $mailer->htmlLayout = 'layouts/notification';
-
-            $messages = [];
-            $usersQueryForMailSending = User::find()
-                ->select([
-                    User::tableName() . '.name',
-                    User::tableName() . '.id',
-                    User::tableName() . '.email',
-                ])
-                ->where(['id' => $userIds->mailSending]);
-
-            foreach ($usersQueryForMailSending->each() as $user) {
-                $messages[] = $mailer->compose(['html' => 'reward'], [
-                    'user' => $user,
-                    'message' => $message,
-                ])->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])
-                    ->setTo($user->email)
-                    ->setSubject('Уведомление Postim.by');
-            }
-
-            $mailer->sendMultiple($messages);
         }
 
         return true;
