@@ -28,7 +28,7 @@ class EripRepository
 
         $order = $query->one();
 
-        return $order;
+        return $this->convertOrder($order);
     }
 
     private function convertOrder($order)
