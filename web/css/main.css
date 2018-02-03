@@ -1205,7 +1205,7 @@ body:not(.open-search) .search{
     font-size: 16px;
     height: auto;
     max-height: 33px;
-    margin: 17px 20px 20px 20px;
+    margin: 20px;
 }
 .block-new-reviews .block-reviews,
 .block-new-reviews .review-show-more {
