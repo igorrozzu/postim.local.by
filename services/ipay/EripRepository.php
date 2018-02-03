@@ -35,7 +35,7 @@ class EripRepository
     {
         if($order)
         {
-            $order['money'] = \Yii::$app->formatter->asDecimal($order['money']);
+            $order['money'] = \Yii::$app->formatter->asDecimal($order['money'],2, [\NumberFormatter::MIN_FRACTION_DIGITS => 0,]);
         }
 
         return $order;
