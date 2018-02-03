@@ -6,6 +6,7 @@ use app\components\cardsNewsWidget\CardsNewsWidget;
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use app\components\customUrlManager\CityAndCategoryUrlRule;
+use app\components\customUrlManager\DiscountsUrlRule;
 use app\components\customUrlManager\NewsUrlRule;
 use app\components\customUrlManager\ReviewsUrlRule;
 use app\components\MailSender;
@@ -201,22 +202,28 @@ class SiteController extends MainController
             Yii::$app->city->setCity($dataCity);
 
             $preUrl = $request->getReferrer();
+            $prevPathInfo = preg_replace('/https:?\/\/[^\/]+\//','', $preUrl);
+
             $preRequest = new Request();
             $preRequest->setUrl($preUrl);
-            $preRequest->setPathInfo(preg_replace('/https:?\/\/.+\//','',$preUrl));
+            $preRequest->setPathInfo($prevPathInfo);
             $newUrl = Yii::$app->request->hostInfo.'/'.Yii::$app->city->Selected_city['url_name'];
 
             $categoryUrlRuler = new CityAndCategoryUrlRule();
             $newsUrlRule = new NewsUrlRule();
             $reviewsUrlRule = new ReviewsUrlRule();
+            $discountsUrlRule = new DiscountsUrlRule();
 
             $isCategory = $categoryUrlRuler->parseRequest(Yii::$app->getUrlManager(),$preRequest);
             if($isCategory && $isCategory[0] != '/site/index'){
 
-                $pathInfo = $preRequest->getPathInfo();
-                $queryParams= explode('/',$pathInfo);
-                $nameCategory = $queryParams[count($queryParams)-1];
+                $nameCategory = $isCategory[1]['category']['url_name'];
                 $newUrl = ($dataCity['url_name']?'/'.$dataCity['url_name']:'').'/'.$nameCategory;
+
+                if ($isCategory[0] === '/category/get-discounts') {
+                    $newUrl .= '/skidki';
+                }
+
                 return $this->redirect($newUrl);
             }
 
@@ -230,6 +237,10 @@ class SiteController extends MainController
                 return $this->redirect($newUrl);
             }
 
+            if($discountsUrlRule->parseRequest(Yii::$app->getUrlManager(), $preRequest)){
+                $newUrl = ($dataCity['url_name'] ? '/'.$dataCity['url_name'] : '') . '/skidki';
+                return $this->redirect($newUrl);
+            }
 
             return $this->redirect($newUrl);
         }catch (\yii\base\InvalidParamException $exception){

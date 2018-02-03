@@ -9,11 +9,8 @@ $data = $dataprovider->getModels();
 
     <div class="card-block" data-item-id="<?=$item['id']?>" data-type="post">
         <div class="main-pjax">
-            <?php if($settings['moderation'] ?? false): ?>
-                <a href="/<?=$item['url_name']?><?=$item['main_id']!=null?'-p'.$item['main_id']:''?>-v<?=$item['id']?>">
-            <?php else:?>
-                <a href="/<?=$item['url_name']?>-p<?=$item['id']?>">
-            <?php endif;?>
+                <a href="/<?=$item['url_name']?>-p<?=$item['id']?>"
+                    <?= isset($settings['links-no-follow']) ? 'rel="nofollow"' : ''?>>
 
                 <div class="card-photo lazy" data-src="<?=$item["cover"]?>" style="background-image: url('/post-img/default.png')">
                     <div class="glass">
@@ -24,7 +21,9 @@ $data = $dataprovider->getModels();
         </div>
         <div class="js-href-post">
             <div class="card-block-info">
-                <p class="info-head"><?=CardsRecommendedPlace::renderTextCategories($item->categories)?></p>
+                <p class="info-head">
+                    <?=CardsRecommendedPlace::renderTextCategories($item->categories)?>
+                </p>
                 <p class="card-info">
                     <?=Html::encode(Html::decode($item['data']))?>
                 </p>

@@ -379,14 +379,17 @@ echo "<script>$js</script>";
         <div class="__second-column">
             <div class="--top-50px"></div>
             <?php if (isset($dataProviderRecommendedPosts) && $dataProviderRecommendedPosts->getTotalCount() > 0):?>
+                <noindex>
+                    <div class="recommended-block cards-block">
 
-                <div class="recommended-block cards-block">
-
-                    <?= CardsRecommendedPlace::widget([
-                        'dataprovider' => $dataProviderRecommendedPosts
-                    ]); ?>
-                </div>
-
+                        <?= CardsRecommendedPlace::widget([
+                            'dataprovider' => $dataProviderRecommendedPosts,
+                            'settings' => [
+                                'links-no-follow' => true,
+                            ],
+                        ]); ?>
+                    </div>
+                </noindex>
             <?php endif;?>
             <?= RightBlockWidget::widget()?>
         </div>

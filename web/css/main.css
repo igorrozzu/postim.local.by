@@ -1045,6 +1045,7 @@ body:not(.open-search) .search{
     border-radius: 3px;
 }
 .card-block .has-discounts{
+    font-size: 14px;
     background-color: #ff7e29;
     color: white;
     text-align: center;
@@ -1060,7 +1061,7 @@ body:not(.open-search) .search{
     font-size: 14px;
     color: white;
     text-align: center;
-    padding: 15px;
+    padding: 10px;
     position: absolute;
     top: 20px;
     left: 20px;
@@ -1072,7 +1073,6 @@ body:not(.open-search) .search{
 .recommended-block .card-block {
     margin: 0 0 20px 0;
     width: 300px;
-    height: 300px;
 }
 /*end recommended-block*/
 
@@ -1203,8 +1203,9 @@ body:not(.open-search) .search{
 .recommended-block .card-info {
     font-family: PT_Sans bold;
     font-size: 16px;
-    height: 35px;
-    margin-top: 20px;
+    height: auto;
+    max-height: 33px;
+    margin: 17px 20px 20px 20px;
 }
 .block-new-reviews .block-reviews,
 .block-new-reviews .review-show-more {
