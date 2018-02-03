@@ -17,7 +17,7 @@ class IpayController extends MainController {
         parent::init();
         $containerDI = new Container();
         $this->_eripService = $containerDI->get('app\services\ipay\EripServices');
-        Yii::$app->response->charset = 'utf-8';
+        Yii::$app->response->charset = 'windows-1251';
     }
 
     public function actionService_info()
