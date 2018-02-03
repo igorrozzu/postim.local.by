@@ -176,6 +176,7 @@ class EripServices{
         }
         $md5 = md5($salt . $outputXml);
         header("ServiceProvider-Signature: SALT+MD5: $md5");
+        return $outputXml;
     }
 
 
