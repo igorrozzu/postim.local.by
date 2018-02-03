@@ -11,10 +11,10 @@ class EripResponse extends AEripResponse {
 
         $response = '';
 
-        $filePath = \Yii::getAlias('@app/services/ipay/templates' . "/{$type}");
+        $filePath = \Yii::getAlias('@app/services/ipay/templates' . "/{$type}.xml");
 
         if(file_exists($filePath)){
-            $dom = new \DOMDocument('1.0', 'utf-8');
+            $dom = new \DOMDocument('1.0', 'windows-1251');
             $dom->load($filePath);
             $template = $dom->saveXML();
 
@@ -24,7 +24,7 @@ class EripResponse extends AEripResponse {
                 $attributes = $attributes[0];
                 foreach ($attributes as $attribute){
                     if($data[$attribute] ?? false){
-                        $template = str_replace("{{{$attribute}}}", $data[$attribute], $template);
+                        $template = str_replace("{{{$attribute}}}", iconv('utf-8','windows-1251', $data[$attribute]), $template);
                     }
                 }
             }
@@ -33,7 +33,7 @@ class EripResponse extends AEripResponse {
         }
 
         if($response){
-            return iconv('utf-8','windows-1251', $response);
+            return $response;
         }
 
     }
