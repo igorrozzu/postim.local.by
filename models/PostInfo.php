@@ -39,7 +39,7 @@ class PostInfo extends \yii\db\ActiveRecord
             [['phones', 'social_networks', 'editors', 'article'], 'string'],
             [['post_id'], 'required'],
             [['post_id'], 'integer'],
-            [['web_site'], 'string', 'max' => 50],
+            [['web_site'], 'string', 'max' => 500],
             [['post_id'], 'unique'],
             [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
         ];

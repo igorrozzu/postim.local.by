@@ -4,6 +4,7 @@ use \app\components\Helper;
 use app\components\rightBlock\RightBlockWidget;
 use app\widgets\cardsDiscounts\CardsDiscounts;
 use app\widgets\cardsRecommendedPlace\CardsRecommendedPlace;
+use app\widgets\photoSlider\PhotoSlider;
 use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
@@ -397,6 +398,17 @@ echo "<script>$js</script>";
 
 </div>
 </div>
+
+<input style="display: none" class="photo-add-review" name="photo-add-review" type="file" multiple
+       accept="image/*,image/jpeg,image/gif,image/png">
+
+<?= PhotoSlider::widget([
+    'settings' => [
+        'post' => $post,
+        'photoCount' => $photoCount,
+    ],
+])?>
+
 <?php if($review_id = Yii::$app->request->get('review_id',false)):?>
     <script>
         $(document).ready(function() {
@@ -410,7 +422,7 @@ echo "<script>$js</script>";
         post.photos.setLoadTime(<?=time()?>);
         post.photos.setPostId(<?=$post->id?>);
         post.photos.setAllPhotoCount(<?=$photoCount?>);
-        post.photos.resetContainer();
+
         <?php if (isset($initPhotoSliderParams['photoId'])) :?>
             post.photos.initPhotoSlider({
                 photoId: '<?=$initPhotoSliderParams['photoId']?>',
@@ -418,15 +430,7 @@ echo "<script>$js</script>";
                 type: '<?=$initPhotoSliderParams['reviewId'] ? 'review' : 'all'?>'
             });
         <?php endif;?>
-        main.initCustomScrollBar($('.photo-header'),{axis: "x",scrollInertia: 50, scrollbarPosition: "outside"})
-        $(".photo-wrap").swipe({
-            swipeRight: function(event, direction) {
-                post.photos.prevPhoto();
-            },
-            swipeLeft: function(event, direction) {
-                post.photos.nextPhoto();
-            }
-        });
+
 		menu_control.fireMethodClose();
         search.clear();
         comments.init(3);
@@ -434,35 +438,6 @@ echo "<script>$js</script>";
     })
 </script>
 
-<input style="display: none" class="photo-add-review" name="photo-add-review" type="file" multiple
-accept="image/*,image/jpeg,image/gif,image/png">
-
-<div class="container-blackout-photo-popup"></div>
-<div class="photo-popup">
-    <div class="close-photo-popup"></div>
-    <div class="photo-left-arrow"><div></div></div>
-    <div class="photo-popup-content">
-        <div class="photo-info">
-            <div class="photo-header" >
-                <a href="<?=$post['url_name']?>-p<?=$post['id']?>"><?=$post->data?></a>
-            </div>
-        </div>
-        <div class="photo-wrap">
-            <img class="photo-popup-item">
-        </div>
-    </div>
-    <div class="photo-right-arrow"><div></div></div>
-    <ul class="wrap-photo-info">
-        <li class="complain-gallery-text">Пожаловаться</li>
-        <li class="photo-source" style="display: none;">
-            <a href="#" rel="nofollow noopener" target="_blank"><span>Источник</span></a>
-        </li>
-    </ul>
-    <div class="gallery-counter">
-        <span id="start-photo-counter">1</span> из
-        <span id="end-photo-counter"><?=$photoCount?></span>
-    </div>
-</div>
 <?php
 Pjax::end();
 ?>

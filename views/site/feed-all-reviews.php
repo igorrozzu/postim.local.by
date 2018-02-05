@@ -1,6 +1,7 @@
 <?php
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\cardsReviewsWidget\CardsReviewsWidget;
+use app\widgets\photoSlider\PhotoSlider;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 use \app\components\breadCrumb\BreadCrumb;
@@ -103,32 +104,7 @@ Pjax::begin([
 <div class="clear-fix"></div>
 <div class="mg-btm-30"></div>
 
-<div class="container-blackout-photo-popup"></div>
-<div class="photo-popup">
-    <div class="close-photo-popup"></div>
-    <div class="photo-left-arrow"><div></div></div>
-    <div class="photo-popup-content">
-        <div class="photo-info">
-            <div class="photo-header" >
-                <a href="#">12345</a>
-            </div>
-        </div>
-        <div class="photo-wrap">
-            <img class="photo-popup-item">
-        </div>
-    </div>
-    <div class="photo-right-arrow"><div></div></div>
-    <ul class="wrap-photo-info">
-        <li class="complain-gallery-text">Пожаловаться</li>
-        <li class="photo-source" style="display: none;">
-            <a href="#" rel="nofollow noopener" target="_blank"><span>Источник</span></a>
-        </li>
-    </ul>
-    <div class="gallery-counter">
-        <span id="start-photo-counter">1</span> из
-        <span id="end-photo-counter"></span>
-    </div>
-</div>
+<?= PhotoSlider::widget()?>
 
 <script>
     $(document).ready(function() {
@@ -140,15 +116,7 @@ Pjax::begin([
                 type: 'review'
             });
         <?php endif;?>
-        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
-        $(".photo-wrap").swipe({
-            swipeRight: function(event, direction) {
-                post.photos.prevPhoto();
-            },
-            swipeLeft: function(event, direction) {
-                post.photos.nextPhoto();
-            }
-        });
+
         menu.openPageInLeftMenu($('#btn-all-reviews'));
     });
 </script>

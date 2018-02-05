@@ -7,7 +7,7 @@ foreach ($dataProvider->getModels() as $photo):?>
                 <div class="block-blackout"></div>
             </div>
         </a>
-        <div class="block-author">
+        <div class="block-author main-pjax">
             <a href="<?=Url::to(['user/index', 'id' => $photo->user->id])?>">
                 <img class="avatar-user" src="<?=$photo->user->getPhoto()?>">
             </a>

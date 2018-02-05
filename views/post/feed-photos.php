@@ -1,6 +1,7 @@
 <?php
 use app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
+use app\widgets\photoSlider\PhotoSlider;
 use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
@@ -94,7 +95,7 @@ echo "<script>$js</script>";
                         <div class="block-blackout"></div>
                     </div>
                 </a>
-                <div class="block-author">
+                <div class="block-author main-pjax">
                     <a href="<?=Url::to(['user/index', 'id' => $photo->user->id])?>">
                         <img class="avatar-user" src="<?=$photo->user->getPhoto()?>">
                     </a>
@@ -121,53 +122,24 @@ echo "<script>$js</script>";
 
 </div>
 
-<div class="container-blackout-photo-popup"></div>
-<div class="photo-popup">
-    <div class="close-photo-popup"></div>
-    <div class="photo-left-arrow"><div></div></div>
-    <div class="photo-popup-content">
-        <div class="photo-info">
-            <div class="photo-header" >
-                <a href="<?=$post['url_name']?>-p<?=$post['id']?>"><?=$post->data?></a>
-            </div>
-        </div>
-        <div class="photo-wrap">
-            <img class="photo-popup-item">
-        </div>
-    </div>
-    <div class="photo-right-arrow"><div></div></div>
-    <ul class="wrap-photo-info">
-        <li class="complain-gallery-text">Пожаловаться</li>
-        <li class="photo-source" style="display: none;">
-            <a href="#" rel="nofollow noopener" target="_blank"><span>Источник</span></a>
-        </li>
-    </ul>
-    <div class="gallery-counter">
-        <span id="start-photo-counter">1</span> из
-        <span id="end-photo-counter"><?=$photoCount?></span>
-    </div>
-</div>
+<?= PhotoSlider::widget([
+    'settings' => [
+        'post' => $post,
+        'photoCount' => $photoCount,
+    ],
+])?>
 <script>
     $(document).ready(function() {
         post.photos.setLoadTime(<?=$loadTime?>);
         post.photos.setPostId(<?=$post->id?>);
         post.photos.setAllPhotoCount(<?=$photoCount?>);
-        post.photos.resetContainer();
 
         <?php if (isset($initPhotoSliderParams['photoId'])) :?>
             post.photos.initPhotoSlider({
                 photoId: '<?=$initPhotoSliderParams['photoId']?>',
             });
         <?php endif;?>
-        main.initCustomScrollBar($('.photo-header'),{axis: "x",scrollInertia: 50, scrollbarPosition: "outside"})
-        $(".photo-wrap").swipe({
-            swipeRight: function(event, direction) {
-                post.photos.prevPhoto();
-            },
-            swipeLeft: function(event, direction) {
-                post.photos.nextPhoto();
-            }
-        });
+
 		menu_control.fireMethodClose();
     });
 </script>

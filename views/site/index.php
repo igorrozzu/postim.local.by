@@ -5,6 +5,7 @@ use \app\components\cardsPlaceWidget\CardsPlaceWidget;
 use \app\components\cardsNewsWidget\CardsNewsWidget;
 use \app\models\DescriptionPage;
 use app\widgets\cardsDiscounts\CardsDiscounts;
+use app\widgets\photoSlider\PhotoSlider;
 
 
 $descriptionPage = DescriptionPage::initMetaTags(function ()use ($spotlight){
@@ -19,7 +20,7 @@ $descriptionPage = DescriptionPage::initMetaTags(function ()use ($spotlight){
         'descriptionText' => 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
             .', лучшие места по отзывам посетителей — удобный поиск на карте Postim.by!</br> Время работы и прочую информацию смотрите у нас на сайте.',
 
-        'h1' => 'Рекомендательный сервис лучших мест в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).' по отзывам посетителей',
+        'h1' => 'Лучшие места в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).' по отзывам посетителей',
     ];
 
     return $response;
@@ -129,37 +130,12 @@ $this->registerMetaTag([
     </div>
 </div>
 
-<div class="container-blackout-photo-popup"></div>
-<div class="photo-popup">
-    <div class="close-photo-popup"></div>
-    <div class="photo-left-arrow"><div></div></div>
-    <div class="photo-popup-content">
-        <div class="photo-info">
-            <div class="photo-header">
-                <a href=""></a>
-            </div>
-        </div>
-        <div class="photo-wrap">
-            <img class="photo-popup-item">
-        </div>
-    </div>
-    <div class="photo-right-arrow"><div></div></div>
-    <ul class="wrap-photo-info">
-        <li class="complain-gallery-text">Пожаловаться</li>
-        <li class="photo-source" style="display: none;">
-            <a href="#" rel="nofollow noopener" target="_blank"><span>Источник</span></a>
-        </li>
-    </ul>
-    <div class="gallery-counter">
-        <span id="start-photo-counter">1</span> из
-        <span id="end-photo-counter"></span>
-    </div>
-</div>
+<?= PhotoSlider::widget()?>
 
 <script>
     $(document).ready(function() {
-        post.photos.resetContainer();
         post.photos.isChangeTitleInSlider(true);
+
         <?php if (isset($initPhotoSliderParams['photoId'])) :?>
             post.photos.initPhotoSlider({
                 photoId: '<?=$initPhotoSliderParams['photoId']?>',
@@ -167,15 +143,7 @@ $this->registerMetaTag([
                 type: 'review'
             });
         <?php endif;?>
-        $('.photo-header').mCustomScrollbar({axis: "x",scrollInertia: 50, scrollbarPosition: "outside"});
-        $(".photo-wrap").swipe({
-            swipeRight: function(event, direction) {
-                post.photos.prevPhoto();
-            },
-            swipeLeft: function(event, direction) {
-                post.photos.nextPhoto();
-            }
-        });
+
         menu_control.fireMethodClose();
         map.setIdPlacesOnMap("<?=$keyForMap?>");
     });

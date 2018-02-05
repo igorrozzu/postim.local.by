@@ -409,7 +409,10 @@ var Post = (function (window, document, undefined,$) {
                             that.sendComplaintHandler();
 
                             $(document).on('click', '.block-li-photo', function (e) {
-                                e.preventDefault();
+
+                                if (!$(e.target).hasClass('avatar-user')) {
+                                    e.preventDefault();
+                                }
                             })
 
                         });
@@ -475,9 +478,6 @@ var Post = (function (window, document, undefined,$) {
                     photoPopupWindowInit: function () {
                         $(document).ready(function () {
                             $(document).on('click','.block-photos .photo, .container-photo, .review-photo', function (e) {
-                                if ($(e.target).hasClass('avatar-user')) {
-                                    return;
-                                }
 
                                 _container.currentItem = $(this).data('sequence');
                                 _container.type = $(this).parents('[data-type]').data('type');
@@ -485,8 +485,6 @@ var Post = (function (window, document, undefined,$) {
                                 if(_container.type === 'review') {
                                     _container.reviewId = $(this).parent().data('reviews_id');
                                 }
-
-                                _container.loadPhotosFromPage();
 
                                 if (_container.url === false) {
                                     if (_container.type === 'profile') {
@@ -501,6 +499,9 @@ var Post = (function (window, document, undefined,$) {
                                         _container.url += '&per-page=' + perPage;
                                     }
                                 }
+
+                                _container.loadPhotosFromPage();
+                                _container.loadPhotosFromServer();
 
                                 var photo = _container.current();
                                 that.methods.setSourceInPhoto();

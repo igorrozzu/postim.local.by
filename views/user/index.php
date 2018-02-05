@@ -1,5 +1,6 @@
 <?php
 use app\components\user\ExperienceCalc;
+use app\widgets\photoSlider\PhotoSlider;
 use yii\widgets\Pjax;
 $this->title = $user->name . ' ' . $user->surname.' на Postim.by';
 $experience = ExperienceCalc::getExperienceInfo($user->userInfo->level, $user->userInfo->exp_points);
@@ -86,7 +87,14 @@ Pjax::begin([
     'formSelector' => false,
 ]);
 echo $feedReviews;
+echo PhotoSlider::widget([
+    'settings' => [
+        'photoCount' => $profilePhotoCount,
+    ],
+]);
 ?>
+<div style="margin-bottom:30px;"></div>
+
 <script>
     $(document).ready(function() {
         post.photos.setUserId(<?=$user->id?>);
@@ -99,50 +107,11 @@ echo $feedReviews;
                 type: '<?=$initPhotoSliderParams['reviewId'] ? 'review' : 'profile'?>'
             });
         <?php endif;?>
-        main.initCustomScrollBar($('.photo-header'),{axis: "x",scrollInertia: 50, scrollbarPosition: "outside"})
-        $(".photo-wrap").swipe({
-            swipeRight: function(event, direction) {
-                post.photos.prevPhoto();
-            },
-            swipeLeft: function(event, direction) {
-                post.photos.nextPhoto();
-            }
-        });
     })
 </script>
 <?php
 Pjax::end();
 ?>
-<div class="container-blackout-photo-popup"></div>
-<div class="photo-popup">
-    <div class="close-photo-popup"></div>
-    <div class="photo-left-arrow"><div></div></div>
-    <div class="photo-popup-content">
-        <div class="photo-info">
-            <div class="photo-header" >
-                <a href="#">Title</a>
-            </div>
-        </div>
-        <div class="photo-wrap">
-            <div class="pre-photo pre-popup-photo"></div>
-            <img class="photo-popup-item">
-            <div class="next-photo next-popup-photo"></div>
-        </div>
-    </div>
-
-    <div class="photo-right-arrow"><div></div></div>
-    <ul class="wrap-photo-info">
-        <li class="complain-gallery-text">Пожаловаться</li>
-        <li class="photo-source" style="display: none;">
-            <a href="#" rel="nofollow noopener" target="_blank"><span>Источник</span></a>
-        </li>
-    </ul>
-    <div class="gallery-counter">
-        <span id="start-photo-counter">1</span> из
-        <span id="end-photo-counter"><?=$profilePhotoCount?></span>
-    </div>
-</div>
-<div style="margin-bottom:30px;"></div>
 
 <?php
 	$redirectMessage = Yii::$app->session->getFlash('redirect_after_add'.Yii::$app->user->getId());

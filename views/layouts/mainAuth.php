@@ -77,7 +77,9 @@ $countNotif = NotificationUser::getCountNotifications();
         <div class="select-city btn-select-city"><?=\Yii::$app->city->Selected_city['name']?></div>
         <noindex>
             <div class="main-pjax">
-                <a href="/add" class="btn_br" rel="nofollow">Добавить место</a>
+                <a href="/add" class="btn_br" rel="nofollow">Добавить место
+                    <span style="font-family: PT_Sans;">&nbsp;(бесплатно)</span>
+                </a>
             </div>
         </noindex>
         <div class="profile-icon-menu">
@@ -205,7 +207,7 @@ Pjax::end();
                 </div>
             </div>
             <div class="text-footer">
-                ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы&nbsp;–&nbsp;9:00&nbsp;до&nbsp;18:00. Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span class="email-address">info@postim.by.</span> ©&nbsp;2016–2017&nbsp;Postim.by
+                ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы&nbsp;–&nbsp;9:00&nbsp;до&nbsp;18:00. Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span class="email-address">info@postim.by.</span> ©&nbsp;2016–<?=date('Y')?>&nbsp;Postim.by
             </div>
         </div>
     </div>
