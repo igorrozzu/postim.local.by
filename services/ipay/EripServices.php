@@ -92,7 +92,7 @@ class EripServices{
             $message['message'] = "Оплата заказа {$orderNumber} успешно завершена.";
             $result = $this->_responseImplementation->getResponse(AEripResponse::$status['transaction_result'], $message);
 
-            $order = $this->_repositoryImplementation->getOrderById($orderNumber);
+            $order = $this->_repositoryImplementation->getOrderById($orderNumber, false);
             $this->_repositoryImplementation->changeStatusById($orderNumber, self::PAID);
 
             $task = new Task([
