@@ -20,7 +20,7 @@ class AccountReplenishment extends BaseTask
         $containerDI = new Container();
 
         $this->accountService = $containerDI->get('app\services\account\AccountService');
-        $this->accountService->changeAccount($this->params->user_id, $this->params->changing,
-            "На счет поступило {$this->params->changing} рублей");
+        $this->accountService->changeAccount($this->params['user_id'], $this->params['changing'],
+            "На счет поступило {$this->params['changing']} рублей");
     }
 }
