@@ -9,14 +9,14 @@
     <div class="body-popup-authentication">
         <div class="visible-form-business-account">
             <?php $form = ActiveForm::begin(['id' => 'form-bs-account', 'enableClientScript' => false]) ?>
-            <div class="text-label complain-text">Создание бизнес-аккаунта</div>
+            <div class="text-label complain-text">Продвижение бизнеса</div>
 
             <?= $form->field($businessOrder, 'full_name',['options' => ['class' => 'field-input','style'=>'margin-top: 15px;']])
                 ->textInput(['placeholder' => 'Имя и фамилия', 'value' => $businessOrder['full_name']])
                 ->label(false) ?>
 
             <?= $form->field($businessOrder, 'company_name',['options' => ['class' => 'field-input','style'=>'margin-top: 10px;']])
-                ->textInput(['placeholder' => 'Название фирмы', 'value' => $businessOrder['company_name']])
+                ->textInput(['placeholder' => 'Название компании', 'value' => $businessOrder['company_name']])
                 ->label(false) ?>
 
             <?= $form->field($businessOrder, 'position',['options' => ['class' => 'field-input','style'=>'margin-top: 10px;']])
@@ -37,7 +37,7 @@
                 ->label(false) ?>
 
             <div class="field-btn">
-                <div class="btn-red js-create-bsa">Создать аккаунт</div>
+                <div class="btn-red js-create-bsa">Отправить заявку</div>
             </div>
             <?php ActiveForm::end()?>
         </div>

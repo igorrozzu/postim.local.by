@@ -52,7 +52,7 @@ class BidBusinessOrder extends \yii\db\ActiveRecord
             [ [ 'email' ], 'required', 'message' => 'Введите адрес электронной почты' ],
             [ [ 'email' ], 'email', 'message' => 'Введите корректный адрес электронной почты' ],
             [ [ 'full_name' ], 'required', 'message' => 'Введите имя и фамилию' ],
-            [ [ 'company_name' ], 'required', 'message' => 'Введите название фирмы' ],
+            [ [ 'company_name' ], 'required', 'message' => 'Введите название компании' ],
             [ [ 'phone' ], 'required', 'message' => 'Введите телефон' ],
             [ [ 'position', 'phone' ], 'string', 'max' => 100 ],
         ];
@@ -68,7 +68,7 @@ class BidBusinessOrder extends \yii\db\ActiveRecord
             'phone'        => 'Телефон',
             'status'       => 'Статус',
             'type'         => 'Тип заявки',
-            'company_name' => 'Название фирмы',
+            'company_name' => 'Название компании',
             'full_name'    => 'Имя и фамилия',
         ];
     }

@@ -112,6 +112,7 @@ $config = [
                 [
                     'class' => 'app\components\customUrlManager\OtherPageUrlRule', //лента отзывов
                 ],
+                'business-account' => 'lading/sale-of-a-business-account'
             ],
         ],
         'i18n' => [

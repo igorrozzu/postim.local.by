@@ -1,3 +1,16 @@
+<?php
+$this->title = 'Премиум Бизнес аккаунт: инструмент для бизнеса в Беларуси';
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Уникальная технология продвижения бизнеса. Рекламируйтесь на страницах конкурентов.Рассказывайте об акциях и скидках с помощью сервиса бесплатных промокодов. Анализируйте статистику клиентов с Postim.by.'
+]);
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content' => 'Премиум Бизнес аккаунт'
+]);
+
+?>
+
 <div style="margin-top: 60px"></div>
 <div id="for-bsn" class="content-with-background js-calc-height" style="height: 560px">
     <div class="background-photo --sale-bsa-bg"></div>
@@ -7,9 +20,10 @@
             <div style="margin-top: 30px"></div>
             <h1 class="h1-c" style="color: white">Премиум Бизнес аккаунт</h1>
             <div class="block-p">
-                <p>Уникальная технология продвижения бизнеса. Рекламируйтесь на страницах конкурентов.</p>
-                <p>Рассказывайте об акциях и скидках с помощью сервиса бесплатных промокодов.</p>
-                <p>Анализируйте статистику клиентов с Postim.by.</p>
+                <p>Уникальная технология продвижения бизнеса. Рекламируйтесь на страницах конкурентов.
+                    Рассказывайте об акциях и скидках с помощью сервиса бесплатных промокодов.
+                    Анализируйте статистику клиентов с Postim.by.
+                </p>
             </div>
             <div style="margin-top: 20px"></div>
             <div class="btn-inside-content js-btn-active-bsa" data-type="20">Начать продвижение бизнеса</div>
@@ -17,23 +31,24 @@
             <div class="block-p">
                 <p>Продвигайтесь в ТОП рейтинга бесплатно за счет отзывов о вашем месте, чтобы привлечь внимание
                 пользователей Postim.by, получить больше хороших отзывов и заинтересовать новых клиентов.
+                    Общайтесь от лица компании — потенциальные клиенты, выбирая места по отзывам, тоже оценят это.
                 </p>
-                <p>Общайтесь от лица компании — потенциальные клиенты, выбирая места по отзывам, тоже оценят это.</p>
             </div>
             <h2 class="h2-regular" style="margin-top: 30px">Более 345 000 подписчиков</h2>
             <div style="margin-top: 20px"></div>
             <div class="block-social-icons">
                 <div class="block-social">
                     <a href="https://vk.com/postimby" class="social-btn-vk" rel="nofollow"></a>
-                    <a href="https://www.facebook.com/postimby" class="social-btn-fb" rel="nofollow"></a>
+                    <a href="https://www.ok.ru/postimby" class="social-btn-ok" rel="nofollow"></a>
                     <a href="https://twitter.com/postimby" class="social-btn-tw" rel="nofollow"></a>
                 </div>
                 <div class="block-social">
-                    <a href="https://www.ok.ru/postimby" class="social-btn-ok" rel="nofollow"></a>
+                    <a href="https://www.instagram.com/postiminsk/" class="social-btn-inst" rel="nofollow"></a>
                     <a href="https://www.instagram.com/postimby" class="social-btn-inst" rel="nofollow"></a>
                     <a href="https://chats.viber.com/postimby/ru" class="social-btn-viber" rel="nofollow"></a>
                 </div>
             </div>
+            <div style="margin-top: 7px"></div>
         </div>
     </div>
 </div>
@@ -77,6 +92,7 @@
                     <p>Уберите рекламу конкурентов из вашей карточки. На вашей странице не будет
                         рекламных блоков мест и скидок конкурентов. Пусть всё внимание достанется вам.
                     </p>
+                    <p style="margin-top: 10px"><a class="--blue-link --without-bottom-line js-btn-active-bsa" data-type="20" href="javascript:void()">Подключить премиум бизнес аккаунт</a></p>
                 </div>
             </div>
             <div class="column-content">
@@ -190,7 +206,7 @@
        $(document).on('click','.item-content-menu', function () {
 
            $('html, body').animate({
-              scrollTop: $($(this).data('for-selector')).offset().top - 200
+              scrollTop: $($(this).data('for-selector')).offset().top - 100
            }, 100);
        });
 
