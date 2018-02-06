@@ -35,7 +35,7 @@ class EripResponse extends AEripResponse {
             $response = $template;
         }
 
-        return $response;
+        return mb_convert_encoding($response, 'utf-8', 'windows-1251');
 
     }
 
