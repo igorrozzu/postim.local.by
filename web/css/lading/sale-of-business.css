@@ -1,0 +1,360 @@
+
+.h2-regular
+{
+    font-family : PT_Sans;
+    font-size   : 30px;
+    color       : white;
+    font-weight : 100;
+}
+
+.nav-content-menu
+{
+    float   : left;
+    display : flex;
+}
+
+.nav-content-menu .item-content-menu
+{
+    display     : flex;
+    margin-left : 40px;
+    align-items : center;
+    height      : 60px;
+    font-family : PT_Sans;
+    font-size   : 16px;
+    color       : white;
+    cursor      : pointer;
+}
+
+.item-content-menu span
+{
+    padding-bottom : 2px;
+}
+
+.item-content-menu span.active,
+.item-content-menu:hover span
+{
+    box-shadow : 0px 3px 0px 0px #a5c7fd;
+}
+
+.btn-border
+{
+    width           : 156px;
+    height          : 36px;
+    border          : 2px solid #0b0b0b;
+    color           : white;
+    font-size       : 16px;
+    font-family     : PT_Sans;
+    cursor          : pointer;
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+}
+
+.block-main-right-btn
+{
+    display     : flex;
+    float       : right;
+    align-items : center;
+    height      : 60px;
+}
+
+.--border-blue
+{
+    border-color : #a5c7fd
+}
+
+.--border-blue:hover
+{
+    border-color : #7999d1;
+}
+
+.content-with-background
+{
+    position : relative;
+}
+
+.background-photo
+{
+    background-attachment : scroll;
+    background-size       : cover;
+    background-repeat     : no-repeat;
+    background-position   : center center;
+    width                 : 100%;
+    height                : inherit;
+    position              : absolute;
+    top                   : 0;
+    left                  : 0;
+}
+
+.block-with-grey-background
+{
+    background-color : #f1f2f4;
+    width            : 100%;
+}
+
+.background-blackout
+{
+    position         : absolute;
+    left             : 0;
+    top              : 0;
+    height           : inherit;
+    width            : 100%;
+    z-index          : 2;
+    background-image : -webkit-linear-gradient(top, rgba(5, 10, 13, 0.40), rgba(5, 10, 13, 0.80));
+}
+
+.--sale-bsa-bg
+{
+    background-image : url('/img/lading-bsa-bg.jpg');
+}
+
+.block-content-wrap
+{
+    position        : absolute;
+    top             : 0;
+    left            : 0;
+    display         : flex;
+    justify-content : center;
+    width           : 100%;
+    z-index         : 3;
+}
+
+.block-p
+{
+    margin-top  : 20px;
+    font-size   : 16px;
+    color       : white;
+    font-family : PT_Sans;
+    max-width   : 700px;
+}
+
+.--color-black-grey
+{
+    color : #444444;
+}
+
+.--color-black-blue
+{
+    color : #6b778f;
+}
+
+.--blue-link
+{
+    color : #4b98df;
+}
+
+.--without-bottom-line
+{
+    text-decoration : none;
+}
+
+.--without-bottom-line:hover
+{
+    text-decoration : solid underline;
+}
+
+.block-p p
+{
+    line-height : 20px;
+    font-size   : 16px;
+}
+
+.btn-inside-content
+{
+    display          : flex;
+    align-items      : center;
+    justify-content  : center;
+    cursor           : pointer;
+    max-width        : 230px;
+    padding          : 15px;
+    border-radius    : 3px;
+    background-color : #5f8dd8;
+    box-shadow       : 0px 2px 0px 0px #3c5994;
+    font-size        : 16px;
+    color            : #fff;
+}
+
+.btn-inside-content:hover
+{
+    background-color : #456dad;
+}
+
+.block-content-with-photo
+{
+    background-color : white;
+}
+
+.block-content-with-photo:nth-child(odd)
+{
+    background-color : #f1f2f4;
+}
+
+.block-columns-content
+{
+    display         : flex;
+    justify-content : space-between;
+    flex-direction  : row;
+    padding         : 30px 0px 20px 0px;
+}
+
+.block-content-with-photo:nth-child(odd) .block-columns-content
+{
+    flex-direction : row-reverse;
+}
+
+.column-content
+{
+    width : 50%;
+}
+
+.h3-regular
+{
+    font-size   : 30px;
+    font-family : PT_Sans;
+    color       : #444444;
+    font-weight : 100;
+}
+
+.computer-img
+{
+    max-width : 100%;
+    width     : auto;
+    height    : auto;
+}
+
+.main-block-price
+{
+    display         : flex;
+    justify-content : space-between;
+}
+
+.block-price
+{
+    display          : flex;
+    flex-direction   : column;
+    background-color : white;
+    box-shadow       : 0px 2px 0px 0px #cdcdcf;
+    padding          : 30px;
+    width            : 100%;
+    position         : relative;
+}
+
+.bottom-block
+{
+    position : absolute;
+    bottom   : 30px;
+}
+
+.block-price:nth-child(2)
+{
+    margin-left : 20px;
+}
+
+.h4-bold
+{
+    font-family : PT_Sans bold;
+    color       : #444444;
+    font-size   : 20px;
+}
+
+.total-price
+{
+    font-family : PT_Sans bold;
+    font-size   : 16px;
+}
+
+.total-price span
+{
+    color       : #d04d43;
+    font-family : PT_Sans;
+}
+
+.price-list p
+{
+    font-size   : 16px;
+    color       : #444444;
+    font-family : PT_Sans;
+    line-height : 20px;
+}
+
+.logo-lading
+{
+    float   : left;
+    padding : 19px 0 8px 0;
+}
+
+.logo-lading:after
+{
+    content             : '';
+    display             : block;
+    background-image    : url("../../img/icons.png");
+    width               : 126px;
+    height              : 31px;
+    background-position : 239px 260px;
+}
+
+@media (max-width : 780px)
+{
+    .nav-content-menu
+    {
+        display : none;
+    }
+
+    .h2-regular
+    {
+        font-size : 28px;
+    }
+
+    .block-columns-content
+    {
+        flex-direction  : column;
+        justify-content : normal;
+    }
+
+    .block-content-with-photo:nth-child(odd) .block-columns-content
+    {
+        flex-direction : column;
+    }
+
+    .column-content
+    {
+        width : 100%;
+    }
+
+    .column-content:nth-child(2)
+    {
+        margin-top : 30px;
+    }
+
+    .main-block-price
+    {
+        flex-direction  : column;
+        justify-content : normal;
+    }
+
+    .block-price
+    {
+        width : calc(100% - 60px);
+    }
+
+    .block-price:nth-child(2)
+    {
+        margin-left : 0px;
+        margin-top  : 30px;
+    }
+
+}
+
+@media (max-width : 480px)
+{
+    .logo-lading
+    {
+        margin-left : 10px;
+    }
+
+    .block-main-right-btn
+    {
+        margin-right : 10px;
+    }
+
+}

@@ -39,12 +39,12 @@ body{
 .close:before,
 .address-icon:after,
 .btn-search2:after,
-.block-footer .social-btn-vk:after,
-.block-footer .social-btn-fb:after,
-.block-footer .social-btn-ok:after,
-.block-footer .social-btn-inst:after,
-.block-footer .social-btn-viber:after,
-.block-footer .social-btn-tw:after,
+.block-social-icons .social-btn-vk:after,
+.block-social-icons .social-btn-fb:after,
+.block-social-icons .social-btn-ok:after,
+.block-social-icons .social-btn-inst:after,
+.block-social-icons .social-btn-viber:after,
+.block-social-icons .social-btn-tw:after,
 .photo-not-found:after,
 .metro-card:before,
 .web-site-card:before,
@@ -1488,32 +1488,33 @@ a.btn-show-more{
    color: #a7c9ff;
 }
 
-.block-footer .social-btn-vk:after,
-.block-footer .social-btn-fb:after,
-.block-footer .social-btn-ok:after,
-.block-footer .social-btn-inst:after,
-.block-footer .social-btn-viber:after,
-.block-footer .social-btn-tw:after{
+.block-social-icons .social-btn-vk:after,
+.block-social-icons .social-btn-fb:after,
+.block-social-icons .social-btn-ok:after,
+.block-social-icons .social-btn-inst:after,
+.block-social-icons .social-btn-viber:after,
+.block-social-icons .social-btn-tw:after{
     width: 50px;
     height: 44px;
     display: inline-block;
 }
-.block-footer .social-btn-vk:after {
+
+.block-social-icons .social-btn-vk:after {
     background-position: 58px 51px;
 }
-.block-footer .social-btn-fb:after {
+.block-social-icons .social-btn-fb:after {
     background-position: 489px 483px;
 }
-.block-footer .social-btn-tw:after {
+.block-social-icons .social-btn-tw:after {
     background-position: 129px 411px;
 }
-.block-footer .social-btn-ok:after {
+.block-social-icons .social-btn-ok:after {
     background-position: 201px 699px;
 }
-.block-footer .social-btn-inst:after {
+.block-social-icons .social-btn-inst:after {
     background-position: 201px 51px;
 }
-.block-footer .social-btn-viber:after {
+.block-social-icons .social-btn-viber:after {
     background-position: 129px 195px;
 }
 
@@ -4235,6 +4236,11 @@ insert-item h2:last-child{
 .form-business-account{
     top:calc(50% - 224px);
 }
+
+.--300h{
+    top:calc(50% - 300px);
+}
+
 .container-row-time-work{
     margin-bottom: 20px;
     display: flex;

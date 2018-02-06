@@ -4,6 +4,7 @@ idea
 web/user_photo/
 web/post-img/
 web/post_photo/
+web/post_photos/
 web/*.xml
 runtime
 web/assets/
@@ -19,6 +20,7 @@ web/css/*.min.css
 web/js/admin/*.min.js
 web/css/admin/*.min.css
 web/css/admin/pop-up/*.min.css
+web/css/lading/*.min.css
 web/sitemap.xml
 web/index.php
 web/baners/*

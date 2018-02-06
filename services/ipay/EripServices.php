@@ -92,7 +92,7 @@ class EripServices{
             $message['message'] = "Оплата заказа {$orderNumber} успешно завершена.";
             $result = $this->_responseImplementation->getResponse(AEripResponse::$status['transaction_result'], $message);
 
-            $order = $this->_repositoryImplementation->getOrderById($orderNumber);
+            $order = $this->_repositoryImplementation->getOrderById($orderNumber, false);
             $this->_repositoryImplementation->changeStatusById($orderNumber, self::PAID);
 
             $task = new Task([
@@ -150,8 +150,6 @@ class EripServices{
     private function signature(string $inputXml, string $outputXml): string
     {
 
-        return $outputXml;
-
         $salt = addslashes('7499Gncr10mk,fgkwJDETFMZXa34');
         // Удаляем лишние символы до начала xml-запроса и после xml-запроса
         $XML = preg_replace('/^.*\<\?xml/sim', '<?xml', $inputXml);
@@ -170,7 +168,7 @@ class EripServices{
             // Формируем ответ с ошибкой проверки ЦП
             $body = '<?xml version="1.0" encoding="windows-1251"?><ServiceProvider_Response><Error><ErrorLine>Ошибка проверки ЦП</ErrorLine></Error></ServiceProvider_Response>';
             // Формируем ЦП и отправляем ЦП и ответ об ошибке в iPay
-            $body = mb_convert_encoding('utf-8', 'windows-1251', $body);
+            $body = iconv('utf-8', 'windows-1251', $body);
             $md5 = md5($salt .$body);
             header("ServiceProvider-Signature: SALT+MD5: $md5");
             return $body;
@@ -178,6 +176,7 @@ class EripServices{
         }
         $md5 = md5($salt . $outputXml);
         header("ServiceProvider-Signature: SALT+MD5: $md5");
+        return $outputXml;
     }
 
 

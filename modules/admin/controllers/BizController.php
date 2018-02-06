@@ -4,7 +4,9 @@ namespace app\modules\admin\controllers;
 
 use app\components\UserHelper;
 use app\models\City;
+use app\models\entities\BidBusinessOrder;
 use app\modules\admin\components\AdminDefaultController;
+use app\modules\admin\models\SearchModels\BusinessBidSearch;
 use app\modules\admin\models\BusinessOrder;
 use app\modules\admin\models\BusinessOrderSearch;
 use app\modules\admin\models\News;
@@ -294,4 +296,48 @@ class BizController extends AdminDefaultController
             ]);
         }
     }
+
+    public function actionOrders()
+    {
+
+        $searchModel = new BusinessBidSearch();
+        $dataProvider = $searchModel->search(\Yii::$app->request->get());
+
+        return $this->render('bid_oreder',[
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
+    }
+
+    public function actionChangeStatusOrder()
+    {
+
+        $id = Yii::$app->request->get( 'id', false );
+        $action = Yii::$app->request->get( 'action', false );
+        $order = BidBusinessOrder::find()->where( [ 'id' => $id ] )->one();
+
+
+        if ( $order ) {
+
+            switch ( $action ) {
+                case 'delete':
+                    {
+                        $order->delete();
+                    }
+                    break;
+                case 'confirm':
+                    {
+                        $order->status = BidBusinessOrder::$VERIFIED;
+                        $order->save();
+                    }
+                    break;
+            }
+
+        }
+
+        return $this->actionOrders();
+
+    }
+
+
 }

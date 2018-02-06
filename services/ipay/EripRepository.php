@@ -26,7 +26,19 @@ class EripRepository
             $query->asArray(true);
         }
 
-        return $query->one();
+        $order = $query->one();
+
+        return $this->convertOrder($order);
+    }
+
+    private function convertOrder($order)
+    {
+        if($order)
+        {
+            $order['money'] = \Yii::$app->formatter->asDecimal($order['money'],2, [\NumberFormatter::MIN_FRACTION_DIGITS => 0,]);
+        }
+
+        return $order;
     }
 
     public function changeStatusById(int $id, $status){
