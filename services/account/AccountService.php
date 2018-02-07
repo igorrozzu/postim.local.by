@@ -28,11 +28,10 @@ class AccountService
         $this->_accountHistoryRepository = $accountHistoryRepository;
     }
 
-    public function changeAccount(int $userId, float $changing, string $message): bool
+    public function changeAccountWithTransaction(int $userId, float $changing, string $message): bool
     {
         $transaction = Yii::$app->db->beginTransaction();
-        $result = $this->_userinfoRepository->updateAccount($userId, $changing);
-        $result = $this->_accountHistoryRepository->add($userId, $changing, $message) && $result;
+        $result = $this->changeAccount($userId, $changing, $message);
 
         if ($result) {
             $transaction->commit();
@@ -41,5 +40,11 @@ class AccountService
             $transaction->rollBack();
             return false;
         }
+    }
+
+    public function changeAccount(int $userId, float $changing, string $message): bool
+    {
+        $result = $this->_userinfoRepository->updateAccount($userId, $changing);
+        return $result && $this->_accountHistoryRepository::add($userId, $changing, $message);
     }
 }

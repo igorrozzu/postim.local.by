@@ -111,7 +111,7 @@ class Discounts extends \yii\db\ActiveRecord
             'header' => 'Название скидки',
             'cover' => 'Cover',
             'price' => 'Стоимость товара или услуги',
-            'number_purchases' => 'Колличество промокодов',
+            'number_purchases' => 'Количество промокодов',
             'discount' => 'Скидка',
             'total_view_id' => 'Total View ID',
             'status' => 'Status',
@@ -147,7 +147,7 @@ class Discounts extends \yii\db\ActiveRecord
     {
         if (!$this->hasErrors()) {
             if ($this->number_purchases < $this->getOldAttribute('number_purchases')) {
-                $this->addError($attribute, 'Колличество промокодов можно только увеличивать');
+                $this->addError($attribute, 'Количество промокодов можно только увеличивать');
             }
         }
     }

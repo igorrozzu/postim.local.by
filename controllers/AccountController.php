@@ -12,8 +12,6 @@ namespace app\controllers;
 use app\components\AuthController;
 use app\components\orderStatisticsWidget\OrderStatisticsWidget;
 use app\components\Pagination;
-use app\models\Discounts;
-use app\models\entities\BusinessOrder;
 use app\models\entities\DiscountOrder;
 use app\models\entities\OwnerPost;
 use app\models\forms\PremiumAccount;
@@ -21,15 +19,21 @@ use app\models\payment\AccountPayment;
 use app\models\Posts;
 use app\models\search\AccountHistorySearch;
 use app\models\search\DiscountOrderSearch;
+use app\repositories\BusinessOrderRepository;
+use app\services\account\AccountService;
 use app\widgets\accountStatistic\AccountStatistic;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Exception;
+use yii\di\Container;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
 class AccountController extends AuthController
 {
+    /* @var  AccountService $accountService */
+    protected $accountService;
+
     public function actionHistory()
     {
         $request = Yii::$app->request;
@@ -91,9 +95,31 @@ class AccountController extends AuthController
             if ($model->validate()) {
 
                 $rateInfo = $model->getRateInfo();
-                $userInfo = Yii::$app->user->identity->userInfo;
 
-                if ($userInfo->virtual_money - $rateInfo['cost'] < 0) {
+                $containerDI = new Container();
+                $this->accountService = $containerDI->get('app\services\account\AccountService');
+
+                $account = BusinessOrderRepository::find()
+                    ->innerJoinWith(['post'])
+                    ->where([
+                        BusinessOrderRepository::tableName() . '.user_id' => Yii::$app->user->getId(),
+                        BusinessOrderRepository::tableName() . '.post_id' => $model->postId,
+                    ])->one();
+
+                if (!$account) {
+                    Yii::$app->session->setFlash('message', [
+                        'type' => 'error',
+                        'text' => 'Бизнес-аккаунт не найден',
+                    ]);
+                    return $this->redirect(Url::to(['account/premium']));
+                }
+                $transaction = Yii::$app->db->beginTransaction();
+
+                $result = $this->accountService->changeAccount(Yii::$app->user->getId(), -$rateInfo['cost'],
+                    "Подключение премиум бизнес-аккаунта для {$account->post->data} на {$rateInfo['duration']} дней");
+
+                if (!$result) {
+                    $transaction->rollBack();
                     Yii::$app->session->setFlash('message', [
                         'type' => 'error',
                         'text' => 'Недостаточно средств на счете',
@@ -101,45 +127,18 @@ class AccountController extends AuthController
                     return $this->redirect(Url::to(['account/replenishment']));
                 }
 
-                $account = BusinessOrder::find()
-                    ->where([
-                        'user_id' => Yii::$app->user->getId(),
-                        'post_id' => $model->postId,
-                    ])->one();
-
-                if (!$account) {
-                    Yii::$app->session->setFlash('message', [
-                        'type' => 'error',
-                        'text' => 'Бизнесс аккаунт не найден',
-                    ]);
-                    return $this->redirect(Url::to(['account/premium']));
-                }
-
-                $transaction = Yii::$app->db->beginTransaction();
-                $result = $userInfo->updateCounters([
-                    'virtual_money' => -$rateInfo['cost']
-                ]);
-
-                $time = time();
-                $period = $rateInfo['duration'] * 24 * 3600;
-
-                if ($account->premium_finish_date <= $time) {
-                    $account->premium_finish_date = $time + $period;
-                } else {
-                    $account->premium_finish_date += $period;
-                }
-                $account->status = BusinessOrder::$PREMIUM_BIZ_AC;
-
-                $result = $result && $account->update();
+                $result = $account->increasePremium($rateInfo['duration']);
 
                 if ($result) {
                     $transaction->commit();
 
                     Yii::$app->session->setFlash('message', [
                         'type' => 'success',
-                        'text' => 'Бизнесс аккаунт подключен на ' . $rateInfo['duration'] . ' дней',
+                        'text' => 'Премиум бизнес-аккаунт подключен на ' . $rateInfo['duration'] . ' дней',
                     ]);
 
+                    return $this->redirect(Url::to(['post/index',
+                        'url' => $account->post->url_name, 'id' => $account->post->id]));
                 } else {
                     $transaction->rollBack();
                 }

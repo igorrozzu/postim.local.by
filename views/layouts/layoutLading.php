@@ -79,38 +79,8 @@ Pjax::begin([
 ]);
 echo $content;
 Pjax::end();
-
 ?>
-<noindex>
-    <div class="block-footer">
-        <div class="block-footer-content">
-            <div class="block-footer-btn">
-                <ul class="menu-inline main-pjax">
-                    <li><a href="/about" rel="nofollow">О сайте</a></li>
-                    <li><a href="/review-rules" rel="nofollow">Правила</a></li>
-                    <li><a href="/agreement" rel="nofollow">Соглашение</a></li>
-                    <li><a href="/business" rel="nofollow">Бизнес-аккаунт</a></li>
-                    <li><a href="/feedback" rel="nofollow">Обратная связь</a></li>
-                </ul>
-                <div class="block-social-icons">
-                    <div class="block-social">
-                        <a href="https://vk.com/postimby" class="social-btn-vk" rel="nofollow"></a>
-                        <a href="https://www.facebook.com/postimby" class="social-btn-fb" rel="nofollow"></a>
-                        <a href="https://twitter.com/postimby" class="social-btn-tw" rel="nofollow"></a>
-                    </div>
-                    <div class="block-social">
-                        <a href="https://www.ok.ru/postimby" class="social-btn-ok" rel="nofollow"></a>
-                        <a href="https://www.instagram.com/postimby" class="social-btn-inst" rel="nofollow"></a>
-                        <a href="https://chats.viber.com/postimby/ru" class="social-btn-viber" rel="nofollow"></a>
-                    </div>
-                </div>
-            </div>
-            <div class="text-footer">
-                ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы&nbsp;–&nbsp;9:00&nbsp;до&nbsp;18:00. Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span class="email-address">info@postim.by.</span> ©&nbsp;2016–2017&nbsp;Postim.by
-            </div>
-        </div>
-    </div>
-</noindex>
+<?= $this->render('footer')?>
 
 <div class="container-blackout-popup-window" style="display: none"></div>
 <?php $this->endBody() ?>

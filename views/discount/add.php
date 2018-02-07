@@ -136,9 +136,9 @@ $this->title = 'Добавить скидку на Postim.by';
                        placeholder="&#8734;" value="" readonly>
             </div>
             <div class="block-field-setting">
-                <label class="label-field-setting">Колличество промокодов</label>
+                <label class="label-field-setting">Количество промокодов</label>
                 <input id="product-count" name="discount[number_purchases]" class="input-field-setting"
-                       placeholder="Укажите колличество" value="">
+                       placeholder="Укажите количество" value="">
             </div>
             <div class="block-field-setting">
                 <label class="label-field-setting">Название промокода</label>

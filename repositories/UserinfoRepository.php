@@ -3,22 +3,13 @@ namespace app\repositories;
 
 use app\models\UserInfo;
 
-class UserinfoRepository extends BaseRepository
+class UserinfoRepository extends UserInfo
 {
-    /**
-     * UserinfoRepository constructor.
-     * @param UserInfo $model
-     */
-    public function __construct(UserInfo $model)
-    {
-        $this->_model = $model;
-    }
-
     public function updateAccount(int $id, float $changing)
     {
-        $userInfo = $this->_model::findOne(['user_id' => $id]);
+        $userInfo = self::findOne(['user_id' => $id]);
 
-        if (!$userInfo) {
+        if (!$userInfo || $userInfo->virtual_money + $changing < 0) {
             return false;
         }
 

@@ -3,27 +3,18 @@ namespace app\repositories;
 
 use app\models\entities\AccountHistory;
 
-class AccountHistoryRepository extends BaseRepository
+class AccountHistoryRepository extends AccountHistory
 {
-    /**
-     * AccountHistory constructor.
-     * @param AccountHistory $model
-     */
-    public function __construct(AccountHistory $model)
+    public static function add(int $userId, float $changing, string $message)
     {
-        $this->_model = $model;
-    }
-
-    public function add(int $userId, float $changing, string $message)
-    {
-        $this->_model->setAttributes([
+        $model = new AccountHistory([
             'user_id' => $userId,
             'changing' => $changing,
             'message' => $message,
-            'type' => $this->_model::TYPE['virtualMoney'],
+            'type' => self::TYPE['virtualMoney'],
             'date' => time(),
         ]);
 
-        return $this->_model->save();
+        return $model->save();
     }
 }

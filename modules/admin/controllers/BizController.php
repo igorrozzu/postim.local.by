@@ -11,6 +11,7 @@ use app\modules\admin\models\BusinessOrder;
 use app\modules\admin\models\BusinessOrderSearch;
 use app\modules\admin\models\News;
 use app\modules\admin\models\OwnerPost;
+use app\repositories\BusinessOrderRepository;
 use Yii;
 use yii\data\Pagination;
 use yii\web\Controller;
@@ -212,7 +213,8 @@ class BizController extends AdminDefaultController
 
             if (is_numeric($post['postId']) && is_numeric($post['userId'])
                 && is_numeric($post['dayCount'])) {
-                $account = BusinessOrder::find()
+
+                $account = BusinessOrderRepository::find()
                     ->where([
                         'user_id' => $post['userId'],
                         'post_id' => $post['postId'],
@@ -221,25 +223,16 @@ class BizController extends AdminDefaultController
                 if (!$account) {
                     Yii::$app->session->setFlash('toastMessage', [
                         'type' => 'error',
-                        'message' => 'Бизнесс аккаунт не найден',
+                        'message' => 'Бизнес-аккаунт не найден',
                     ]);
                     return $this->redirect($request->referrer);
                 }
 
-                $time = time();
-                $period = $post['dayCount'] * 24 * 3600;
-
-                if ($account->premium_finish_date <= $time) {
-                    $account->premium_finish_date = $time + $period;
-                } else {
-                    $account->premium_finish_date += $period;
-                }
-                $account->status = BusinessOrder::$PREMIUM_BIZ_AC;
-                $account->update();
+                $account->increasePremium($post['dayCount']);
 
                 Yii::$app->session->setFlash('toastMessage', [
                     'type' => 'success',
-                    'message' => 'Бизнесс аккаунт подключен на ' . $post['dayCount'] . ' дней',
+                    'message' => 'Бизнес-аккаунт подключен на ' . $post['dayCount'] . ' дней',
                 ]);
             } else {
                 Yii::$app->session->setFlash('toastMessage', [

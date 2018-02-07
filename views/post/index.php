@@ -435,6 +435,14 @@ echo "<script>$js</script>";
         search.clear();
         comments.init(3);
         comments.setAutoResize('.textarea-main-comment');
+
+        <?php if ($message = Yii::$app->session->getFlash('message')):?>
+            $().toastmessage('showToast', {
+                text: '<?=$message['text']?>',
+                stayTime: 8000,
+                type: '<?=$message['type']?>'
+            });
+        <?php endif;?>
     })
 </script>
 

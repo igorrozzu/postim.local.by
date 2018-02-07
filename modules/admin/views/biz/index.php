@@ -118,7 +118,7 @@ echo $this->render('order_table.php', [
             </div>
             <div class="block-field-setting">
                 <input type="text" class="input-field-setting" name="businessAccount[dayCount]"
-                       style="margin-bottom: 15px;" placeholder="Колличество дней премиума" aria-required="true">
+                       style="margin-bottom: 15px;" placeholder="Количество дней премиума" aria-required="true">
             </div>
             <label>
                 <div class="btn-send" style="z-index: 3;position: relative">

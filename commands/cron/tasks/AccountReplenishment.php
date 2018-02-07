@@ -8,6 +8,7 @@
 
 namespace app\commands\cron\tasks;
 
+use app\services\account\AccountService;
 use yii\di\Container;
 
 class AccountReplenishment extends BaseTask
@@ -21,7 +22,7 @@ class AccountReplenishment extends BaseTask
 
         $this->accountService = $containerDI->get('app\services\account\AccountService');
         $changing = str_replace(",", ".", $this->params->changing);
-        $this->accountService->changeAccount($this->params->user_id, $changing,
+        $this->accountService->changeAccountWithTransaction($this->params->user_id, $changing,
             "На счет поступило {$this->params->changing} рублей");
     }
 }
