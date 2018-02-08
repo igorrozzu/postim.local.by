@@ -1,8 +1,8 @@
 <?php
 
+use app\components\MetaTagsSocialNetwork;
 use app\models\DescriptionPage;
 use app\widgets\cardsDiscounts\CardsDiscounts;
-use yii\helpers\Url;
 use \yii\widgets\Pjax;
 use \app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
@@ -40,6 +40,12 @@ $this->registerMetaTag([
     'content' => $descriptionPage['keywords']
 ]);
 
+MetaTagsSocialNetwork::registerOgTags($this, [
+    'og:title' => $descriptionPage['title'],
+    'twitter:title' => $descriptionPage['title'],
+    'og:description' => $descriptionPage['description'],
+    'twitter:description' => $descriptionPage['description'],
+]);
 ?>
     <div class="margin-top60"></div>
     <div class="menu-info-cards-contener">

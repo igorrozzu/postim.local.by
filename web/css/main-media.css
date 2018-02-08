@@ -95,5 +95,9 @@
         width: 100%;
         left: 0px;
     }
-
+}
+@media (max-width: 588px) {
+    .cards-block-discount{
+        margin-top: 10px;
+    }
 }

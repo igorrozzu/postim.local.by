@@ -221,7 +221,9 @@ echo "<script>$js</script>";
                             <div class="web-site-card">Веб-сайт</div>
                             <div class="block-inside">
                                 <p class="info-card-text">
-                                    <a target="_blank" rel="nofollow noopener" href="<?=$post->info['web_site']?>"><?=Helper::getDomainNameByUrl($post->info['web_site'])?></a>
+                                    <a target="_blank" rel="nofollow noopener" href="<?=$post->info['web_site']?>">
+                                        <?= Yii::$app->formatter->asHostName($post->info['web_site']) ?>
+                                    </a>
                                 </p>
                             </div>
                         </div>
@@ -344,7 +346,14 @@ echo "<script>$js</script>";
 
             <?php if (isset($dataProviderDiscounts) && $dataProviderDiscounts->getTotalCount() > 0):?>
             <noindex>
-                <h2 class="h2-c">Вам может понравиться</h2>
+                <div class="block-content-between cust">
+                    <h2 class="h2-v">Вам может понравиться</h2>
+                    <a class="--promo-link" href="<?= Url::to(['lading/sale-of-a-business-account'])?>"
+                       rel="nofollow">
+                        Разместить свою акцию
+                    </a>
+                </div>
+
                 <div class="cards-block-discount row-3 main-pjax" data-favorites-state-url="/discount/favorite-state">
 
                     <?= CardsDiscounts::widget([
@@ -382,13 +391,18 @@ echo "<script>$js</script>";
             <?php if (isset($dataProviderRecommendedPosts) && $dataProviderRecommendedPosts->getTotalCount() > 0):?>
                 <noindex>
                     <div class="recommended-block cards-block">
-
                         <?= CardsRecommendedPlace::widget([
                             'dataprovider' => $dataProviderRecommendedPosts,
                             'settings' => [
                                 'links-no-follow' => true,
                             ],
                         ]); ?>
+                    </div>
+                    <div class="--promo-block">
+                        <a href="<?= Url::to(['lading/sale-of-a-business-account'])?>" class="--promo-link"
+                           rel="nofollow">
+                            Продвинуть свой бизнес
+                        </a>
                     </div>
                 </noindex>
             <?php endif;?>

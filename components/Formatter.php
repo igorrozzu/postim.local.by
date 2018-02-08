@@ -65,4 +65,16 @@ class Formatter extends \yii\i18n\Formatter
 
         return null;
     }
+
+    public function asHostName(string $url)
+    {
+        $text = Helper::getDomainNameByUrl($url);
+        $position = strpos($text, '/' );
+
+        if ($position !== false) {
+            return substr($text, 0, $position);
+        } else {
+            return $text;
+        }
+    }
 }

@@ -1,9 +1,6 @@
 <?php
-use \app\components\mainMenu\MainMenuWidget;
 use \app\components\cardsPlaceWidget\CardsPlaceWidget;
-use \app\components\cardsNewsWidget\CardsNewsWidget;
-use \app\components\ListCityWidget\ListCityWidget;
-use yii\helpers\Url;
+use app\components\MetaTagsSocialNetwork;
 use \yii\widgets\Pjax;
 use \app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
@@ -71,6 +68,12 @@ $this->registerMetaTag([
     'content' => $descriptionPage['keywords']
 ]);
 
+MetaTagsSocialNetwork::registerOgTags($this, [
+    'og:title' => $descriptionPage['title'],
+    'twitter:title' => $descriptionPage['title'],
+    'og:description' => $descriptionPage['description'],
+    'twitter:description' => $descriptionPage['description'],
+]);
 ?>
 <div class="margin-top60"></div>
 <div class="menu-info-cards-contener">

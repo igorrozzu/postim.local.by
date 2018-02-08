@@ -1,6 +1,7 @@
 <?php
 use app\components\cardsNewsWidget\CardsNewsWidget;
 use \app\components\breadCrumb\BreadCrumb;
+use app\components\MetaTagsSocialNetwork;
 use \app\models\DescriptionPage;
 
 $descriptionText = 'Последние новости в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).' – обзоры интересных мест с фото и видео,
@@ -29,7 +30,14 @@ $this->registerMetaTag([
     'content' => $descriptionPage['keywords']
 ]);
 
+MetaTagsSocialNetwork::registerOgTags($this, [
+    'og:title' => $descriptionPage['title'],
+    'twitter:title' => $descriptionPage['title'],
+    'og:description' => $descriptionPage['description'],
+    'twitter:description' => $descriptionPage['description'],
+]);
 ?>
+
 <div class="margin-top60"></div>
 <div class="block-content">
     <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>

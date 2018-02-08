@@ -80,7 +80,7 @@ $this->registerMetaTag([
                         Ваша акция получает гарантированное внимание
                         клиентов, потому что попадает во множество разделов сайта.
                     </p>
-                    <p style="margin-top: 10px"><a class="--blue-link --without-bottom-line js-btn-active-bsa"  data-type="20" href="javascript:void()">Подключить премиум бизнес аккаунт</a></p>
+                    <p style="margin-top: 10px"><a class="--promo-link js-btn-active-bsa"  data-type="20" href="javascript:void()">Подключить премиум бизнес аккаунт</a></p>
                 </div>
             </div>
             <div class="column-content">
@@ -98,7 +98,7 @@ $this->registerMetaTag([
                     <p>Уберите рекламу конкурентов из вашей карточки. На вашей странице не будет
                         рекламных блоков мест и скидок конкурентов. Пусть всё внимание достанется вам.
                     </p>
-                    <p style="margin-top: 10px"><a class="--blue-link --without-bottom-line js-btn-active-bsa" data-type="20" href="javascript:void()">Подключить премиум бизнес аккаунт</a></p>
+                    <p style="margin-top: 10px"><a class="--promo-link js-btn-active-bsa" data-type="20" href="javascript:void()">Подключить премиум бизнес аккаунт</a></p>
                 </div>
             </div>
             <div class="column-content">
@@ -117,7 +117,7 @@ $this->registerMetaTag([
                         момент — когда люди выбирают, куда сходить или к кому обратиться. Обеспечьте
                         себе максимум внимания с помощью акций, рекламы и вас не смогут не заметить.
                     </p>
-                    <p style="margin-top: 10px"><a class="--blue-link --without-bottom-line js-btn-active-bsa" data-type="20" href="javascript:void()">Подключить премиум бизнес аккаунт</a></p>
+                    <p style="margin-top: 10px"><a class="--promo-link js-btn-active-bsa" data-type="20" href="javascript:void()">Подключить премиум бизнес аккаунт</a></p>
                 </div>
             </div>
             <div class="column-content">
@@ -167,7 +167,7 @@ $this->registerMetaTag([
             </div>
             <div style="margin-top: 120px"></div>
             <div class="bottom-block">
-                <div class="total-price">от 0,71 BYN в день <span>(по акции -30%)</span></div>
+                <div class="total-price">от 0,71 BYN в день <span></span></div>
                 <div style="margin-top: 30px"></div>
                 <div class="btn-inside-content js-btn-active-bsa" data-type="20" style="width: 100px">Подключить</div>
             </div>

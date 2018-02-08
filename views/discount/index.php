@@ -1,16 +1,18 @@
 <?php
 use app\components\breadCrumb\BreadCrumb;
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
+use app\components\MetaTagsSocialNetwork;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
 $this->title = !empty($discount->title) ? $discount->title : $discount->header . ' на Postim.by';
+$description = !empty($discount->description) ? $discount->description :
+    'Промокод на скидку от ' . $post->data . '. ' . $discount->header . ' на Postim.by.';
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => !empty($discount->description) ? $discount->description :
-        'Промокод на скидку от ' . $post->data . '. ' . $discount->header . ' на Postim.by.'
+    'content' => $description
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
@@ -18,6 +20,17 @@ $this->registerMetaTag([
 ]);
 
 $discountCover = $discount->getCover();
+$defaultImgUrl = Yii::$app->request->getHostInfo() . $discountCover;
+
+MetaTagsSocialNetwork::registerOgTags($this, [
+    'og:title' => $this->title,
+    'twitter:title' => $this->title,
+    'og:description' => $description,
+    'twitter:description' => $description,
+    'og:type' => 'article',
+    'og:image' => $defaultImgUrl,
+    'twitter:image:src' => $defaultImgUrl,
+]);
 ?>
 
 <?php

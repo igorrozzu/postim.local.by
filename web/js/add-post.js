@@ -237,7 +237,7 @@ var Post_add = (function (window, document, undefined, $) {
                         setTimeout(function () {
 							var new_lists = [];
 							var textFil=that.selectorFields.$inputSearch.val();
-							var expr = new RegExp('^'+textFil,'i');
+							var expr = new RegExp(textFil, 'i');
 							var number = that.selectorFields.info.length;
 
 							for (var i = 0; i < number; i++){
