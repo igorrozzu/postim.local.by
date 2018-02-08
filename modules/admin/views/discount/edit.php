@@ -21,7 +21,7 @@ $this->title = 'Редактировать скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Название скидки</label>
                 <input name="discount[header]" class="input-field-setting"
-                        placeholder="Введите название" value="<?=$discount->header?>">
+                       placeholder="Введите название" value="<?=$discount->header?>">
             </div>
 
             <div class="block-field-setting">
@@ -123,12 +123,12 @@ $this->title = 'Редактировать скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Экономия</label>
                 <input id="economy" class="input-field-setting"
-                       placeholder="&#8734;" value="" readonly>
+                       placeholder="&#8734;" value="">
             </div>
             <div class="block-field-setting">
                 <label class="label-field-setting">Цена со скидкой</label>
-                <input id="price-with-discount" class="input-field-setting"
-                       placeholder="&#8734;" value="" readonly>
+                <input id="price-with-discount" name="discount[price_with_discount]" class="input-field-setting"
+                       placeholder="Укажите цену со скидкой, если это возможно" value="<?=$discount->price_with_discount?>">
             </div>
             <div class="block-field-setting">
                 <label class="label-field-setting">Количество промокодов</label>
@@ -207,11 +207,11 @@ $this->title = 'Редактировать скидку на Postim.by';
 <script>
     $(document).ready(function () {
         <?php if (isset($errors[0])):?>
-            $().toastmessage('showToast', {
-                text: '<?=$errors[0]?>',
-                stayTime: 5000,
-                type: 'error'
-            });
+        $().toastmessage('showToast', {
+            text: '<?=$errors[0]?>',
+            stayTime: 5000,
+            type: 'error'
+        });
         <?php endif;?>
 
         editable.init('.editable', {
@@ -234,6 +234,7 @@ $this->title = 'Редактировать скидку на Postim.by';
         });
 
         $('#price').mask("###0.00", {reverse: true});
+        $('#price-with-discount').mask("###0.00", {reverse: true});
         $('#discount').mask("#0", {reverse: true});
         $('#product-count').mask("#0", {reverse: true});
 

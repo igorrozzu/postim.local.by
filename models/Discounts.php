@@ -38,6 +38,7 @@ use yii\helpers\Json;
  * @property integer $user_id
  * @property integer $count_orders
  * @property integer $promocode
+ * @property string $price_with_discount
  *
  * @property Posts $post
  * @property TotalView $totalView
@@ -84,7 +85,7 @@ class Discounts extends \yii\db\ActiveRecord
                 'date_finish', 'type', 'count_favorites', 'user_id', 'count_orders'], 'integer'],
             [['data', 'header', 'cover', 'conditions', 'title', 'description', 'key_word',
                 'url_name', 'promocode', 'requisites'], 'string'],
-            [['price'], 'number', 'min' => 0],
+            [['price', 'price_with_discount'], 'number', 'min' => 0],
             ['discount', 'number', 'min' => 0, 'max' => 100],
             ['number_purchases', 'integer', 'min' => 1],
             ['date_finish', 'validateDateFinish'],
@@ -111,6 +112,7 @@ class Discounts extends \yii\db\ActiveRecord
             'header' => 'Название скидки',
             'cover' => 'Cover',
             'price' => 'Стоимость товара или услуги',
+            'price_with_discount' => 'Цена со скидкой',
             'number_purchases' => 'Количество промокодов',
             'discount' => 'Скидка',
             'total_view_id' => 'Total View ID',
@@ -415,8 +417,12 @@ class Discounts extends \yii\db\ActiveRecord
 
     public function calculateEconomy()
     {
-        if (isset($this->price) && isset($this->discount)) {
-            return round($this->price * $this->discount / 100, 2);
+        if (isset($this->price) && isset($this->price_with_discount) ) {
+            $economy = $this->price - $this->price_with_discount;
+
+            if ($economy > 0) {
+                return round($economy, 2);
+            }
         }
 
         return null;

@@ -6,13 +6,6 @@ var Discount = (function (window, document, undefined, $) {
 
             Adding: function (){
 
-                var previewInputs = {
-                    price: $('#price'),
-                    discount: $('#discount'),
-                    economy: $('#economy'),
-                    priceWithDiscount: $('#price-with-discount'),
-                };
-
                 var scope = {
                     init: function () {
 
@@ -105,21 +98,25 @@ var Discount = (function (window, document, undefined, $) {
                                 post_add.photos.addPhotos.call(this, e, '/discount/upload-tmp-photo');
                             });
 
-                        $(document).off('input','#price,#discount')
-                            .on('input','#price,#discount',function () {
+                        $(document).off('input','#price,#price-with-discount')
+                            .on('input','#price,#price-with-discount',function () {
+
+                                var previewInputs = {
+                                    price: $('#price'),
+                                    economy: $('#economy'),
+                                    priceWithDiscount: $('#price-with-discount'),
+                                };
+
                                 var price = parseFloat(previewInputs.price.val());
-                                var discount = parseInt(previewInputs.discount.val());
+                                var priceWithDiscount = parseFloat(previewInputs.priceWithDiscount.val());
 
-                                if (!isNaN(price) && !isNaN(discount) && price > 0
-                                    && discount >= 0 && discount <= 100) {
+                                if (!isNaN(price) && !isNaN(priceWithDiscount) && price > 0
+                                    && priceWithDiscount >= 0 && (economy = price - priceWithDiscount) > 0) {
 
-                                    var economy = (discount / 100) * price;
                                     previewInputs.economy.val(economy.toFixed(2));
-                                    previewInputs.priceWithDiscount
-                                        .val((price - economy).toFixed(2));
+
                                 } else {
                                     previewInputs.economy.val('');
-                                    previewInputs.priceWithDiscount.val('');
                                 }
                             });
                     },

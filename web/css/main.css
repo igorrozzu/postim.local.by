@@ -3266,7 +3266,7 @@ a .btn-sort-reviews.active
 .cards-block-discount{
     display: flex;
     flex-wrap: wrap;
-    margin-top: -10px;
+    margin-top: 10px;
 }
 .btn-bb{
     padding-left: 20px;

@@ -12,7 +12,7 @@ $this->title = 'Добавить скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Название скидки</label>
                 <input name="discount[header]" class="input-field-setting"
-                        placeholder="Введите название">
+                       placeholder="Введите название">
             </div>
 
             <div class="block-field-setting">
@@ -60,7 +60,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-continue-text=". Скидка предоставляется только при наличии неиспользованного ранее промокода, вы можете его назвать по телефону, предъявить в распечатанном или в электронном виде."
                                       placeholder="Укажите условие"
                                       name="discount[conditions][]"
-                                      >Необходимо предъявлять промокод до заказа. Скидка предоставляется только при наличии неиспользованного ранее промокода, вы можете его назвать по телефону, предъявить в распечатанном или в электронном виде.</textarea>
+                            >Необходимо предъявлять промокод до заказа. Скидка предоставляется только при наличии неиспользованного ранее промокода, вы можете его назвать по телефону, предъявить в распечатанном или в электронном виде.</textarea>
                         <div class="close-input-custom" ></div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-continue-text=" или бронь по телефонам, указанным в купоне на скидку."
                                       placeholder="Укажите условие"
                                       name="discount[conditions][]"
-                                      >Обязателен предварительный заказ или бронь по телефонам, указанным в купоне на скидку.</textarea>
+                            >Обязателен предварительный заказ или бронь по телефонам, указанным в купоне на скидку.</textarea>
                         <div class="close-input-custom" ></div>
                     </div>
                 </div>
@@ -80,7 +80,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-continue-text=" с другими акциями и спецпредложениями."
                                       placeholder="Укажите условие"
                                       name="discount[conditions][]"
-                                      >Скидка по промокоду не суммируется с другими акциями и спецпредложениями.</textarea>
+                            >Скидка по промокоду не суммируется с другими акциями и спецпредложениями.</textarea>
                         <div class="close-input-custom" ></div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@ $this->title = 'Добавить скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Скидка (%)</label>
                 <input id="discount" name="discount[discount]" class="input-field-setting"
-                       placeholder="Укажите скидку, если это возможно"" value=">
+                       placeholder="Укажите скидку, если это возможно" value="">
             </div>
 
             <div class="block-field-setting">
@@ -132,8 +132,8 @@ $this->title = 'Добавить скидку на Postim.by';
             </div>
             <div class="block-field-setting">
                 <label class="label-field-setting">Цена со скидкой</label>
-                <input id="price-with-discount" class="input-field-setting"
-                       placeholder="&#8734;" value="" readonly>
+                <input id="price-with-discount" name="discount[price_with_discount]" class="input-field-setting"
+                       placeholder="Укажите цену со скидкой, если это возможно" value="">
             </div>
             <div class="block-field-setting">
                 <label class="label-field-setting">Количество промокодов</label>
@@ -221,6 +221,7 @@ $this->title = 'Добавить скидку на Postim.by';
         });
 
         $('#price').mask("###0.00", {reverse: true});
+        $('#price-with-discount').mask("###0.00", {reverse: true});
         $('#discount').mask("#0", {reverse: true});
         $('#product-count').mask("#0", {reverse: true});
     })
