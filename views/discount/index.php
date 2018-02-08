@@ -70,8 +70,8 @@ Pjax::begin([
                     $pathToPicture = $discount->getPathToPicture($photo->link); ?>
 
                     <?php if($pathToPicture !== $discountCover):?>
-                        <img href="<?=$pathToPicture?>" src="<?=$pathToPicture?>">
-                    <?php endif;?>
+                    <img href="<?=$pathToPicture?>" src="<?=$pathToPicture?>">
+                <?php endif;?>
 
                 <?php endforeach;?>
             </div>
@@ -87,17 +87,23 @@ Pjax::begin([
                 ?>
             </div>
 
-            <?php if (isset($discount->price)):?>
+            <?php
+
+            if (isset($discount->price) || isset($discount->price_with_discount)):?>
                 <div class="discount-info-text">
                     Стоимость
-                    <?php if (isset($discount->discount)):?>
-                        <span class="through">
+                    <?php if (isset($discount->price)):?>
+                        <span class="<?= isset($discount->price_with_discount) ? 'through': 'discount-info-bold-text'?>">
                             <?= number_format($discount->price, 2)?>
                         </span>
                     <?php endif;?>
-                    <span class="discount-info-bold-text">
-                        <?= number_format($discount->price - $economy, 2)?> руб
-                    </span>
+
+                    <?php if (isset($discount->price_with_discount)):?>
+                        <span class="discount-info-bold-text">
+                            <?= number_format($discount->price_with_discount, 2)?> руб
+                        </span>
+                    <?php endif;?>
+
                 </div>
             <?php endif;?>
 
@@ -208,11 +214,11 @@ Pjax::begin([
 <script>
     $(document).ready(function () {
         <?php if(Yii::$app->session->hasFlash('success')):?>
-            $().toastmessage('showToast', {
-                text: '<?=Yii::$app->session->getFlash('success')?>',
-                stayTime: 5000,
-                type: 'success'
-            });
+        $().toastmessage('showToast', {
+            text: '<?=Yii::$app->session->getFlash('success')?>',
+            stayTime: 5000,
+            type: 'success'
+        });
         <?php endif;?>
 
         $('.discount-photos').magnificPopup({
