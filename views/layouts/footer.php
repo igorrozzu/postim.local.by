@@ -13,7 +13,7 @@ use yii\helpers\Url;
                     <li class="main-pjax"><a href="/agreement" rel="nofollow">Соглашение</a></li>
                     <li>
                         <a href="<?= Url::to(['lading/sale-of-a-business-account'])?>" rel="nofollow">
-                            Для Бизнеса
+                            Для бизнеса
                         </a>
                     </li>
                     <li class="main-pjax"><a href="/feedback" rel="nofollow">Обратная связь</a></li>
@@ -38,7 +38,7 @@ use yii\helpers\Url;
                 </div>
             </div>
             <div class="text-footer">
-                ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы&nbsp;–&nbsp;9:00&nbsp;до&nbsp;18:00. Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span class="email-address">info@postim.by.</span> ©&nbsp;2016–<?=date('Y')?>&nbsp;Postim.by
+                ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы: &nbsp;9:00&nbsp;до&nbsp;18:00. Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span class="email-address">info@postim.by.</span> ©&nbsp;2016–<?=date('Y')?>&nbsp;Postim.by
             </div>
         </div>
     </div>

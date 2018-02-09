@@ -348,13 +348,16 @@ echo "<script>$js</script>";
             <noindex>
                 <div class="block-content-between cust">
                     <h2 class="h2-v">Вам может понравиться</h2>
-                    <a class="--promo-link" href="<?= Url::to(['lading/sale-of-a-business-account'])?>"
-                       rel="nofollow">
+                    <p class="text p-text">
+                        <a class="--promo-link" href="<?= Url::to(['lading/sale-of-a-business-account'])?>"
+                            rel="nofollow">
                         Разместить свою акцию
-                    </a>
+                        </a>
+                    </p>
                 </div>
 
-                <div class="cards-block-discount row-3 main-pjax" data-favorites-state-url="/discount/favorite-state">
+                <div class="cards-block-discount row-3 main-pjax"
+                     data-favorites-state-url="/discount/favorite-state" style="margin-top: -13px;">
 
                     <?= CardsDiscounts::widget([
                         'dataprovider' => $dataProviderDiscounts,
@@ -365,6 +368,7 @@ echo "<script>$js</script>";
                             'postId' => $post->id,
                             'show-distance' => true,
                             'links-no-follow' => true,
+                            'hide-bottom-block' => true,
                         ]
                     ]); ?>
                 </div>

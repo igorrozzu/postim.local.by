@@ -59,7 +59,7 @@ LoginFormsAsset::register($this);
         <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:'/'?>" class="logo-lading"></a>
         <div class="nav-content-menu">
             <div class="item-content-menu" data-for-selector="#for-bsn"><span class="active btn-forBsn">для Бизнеса</span></div>
-            <div class="item-content-menu" data-for-selector="#instument"><span class="btn-instument">Инструмены</span></div>
+            <div class="item-content-menu" data-for-selector="#instument"><span class="btn-instument">Инструменты</span></div>
             <div class="item-content-menu" data-for-selector="#price"><span class="btn-price">Стоимость</span></div>
         </div>
         <div class="block-main-right-btn">

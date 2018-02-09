@@ -28,11 +28,10 @@ use app\models\uploads\UploadPhotos;
 use app\models\uploads\UploadPhotosByUrl;
 use app\models\uploads\UploadPostPhotos;
 use app\models\uploads\UploadPostPhotosTmp;
+use app\repositories\DiscountRepository;
 use app\services\recommendedPosts\RecommendedPosts;
-use app\widgets\cardsDiscounts\CardsDiscounts;
 use linslin\yii2\curl\Curl;
 use Yii;
-use yii\db\Exception;
 use yii\di\Container;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -113,11 +112,6 @@ class PostController extends MainController
                 $loadTime
             );
 
-            $discountCount = Discounts::find()
-                ->where(['post_id' => $id])
-                ->andWhere(['!=', 'status', Discounts::STATUS['inactive']])
-                ->count();
-
             $commentsSearch = new CommentsSearch();
 
             $defaultLimit = isset($comment_id) ? 1000 : 16;
@@ -169,6 +163,8 @@ class PostController extends MainController
                     $dataProviderRecommendedPosts = $postSearch->searchRecommendedPostsByIds($ids);
                 }
             }
+
+            $discountCount = DiscountRepository::getVisibleCountByPostId($id);
 
             return $this->render('index', [
                 'post' => $post,
@@ -685,11 +681,7 @@ class PostController extends MainController
             ->createCommand()->rawSql;
         $keyForMap = Helper::saveQueryForMap($queryPost);
 
-        $discountCount = Discounts::find()
-            ->where([
-                'post_id' => $postId,
-                'status' => Discounts::STATUS['active']
-            ])->count();
+        $discountCount = DiscountRepository::getVisibleCountByPostId($postId);
 
         return $this->render('feed-photos.php', [
             'dataProvider' => $dataProvider,

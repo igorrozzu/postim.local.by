@@ -206,7 +206,7 @@ Pjax::begin([
         </div>
     </div>
 
-    <div style="margin-top: 30px" class="comments_entity_container" data-entity_type="4" data-entity_id="<?=$discount['id']?>">
+    <div style="margin-top: 40px" class="comments_entity_container" data-entity_type="4" data-entity_id="<?=$discount['id']?>">
         <?=$this->render('/comments/discount_comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$discount->totalComments])?>
     </div>
 

@@ -63,7 +63,7 @@ $discounts = $dataProvider->getModels();
             </div>
         </div>
 
-    <?php else:?>
+    <?php elseif (!isset($settings['hide-bottom-block'])):?>
         <div class="replace-block mg-btm-30"></div>
     <?php endif; ?>
 <?php endif;?>
