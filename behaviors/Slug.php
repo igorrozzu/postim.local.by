@@ -26,7 +26,8 @@ class Slug extends Behavior{
     public function getSlug( $event )
     {
         if ( empty( $this->owner->{$this->out_attribute} ) ) {
-            $this->owner->{$this->out_attribute} = $this->generateSlug( $this->owner->{$this->in_attribute} );
+            $headerWithoutQuotes = str_replace('&quot;', '', $this->owner->{$this->in_attribute});
+            $this->owner->{$this->out_attribute} = $this->generateSlug( $headerWithoutQuotes );
         }
     }
 

@@ -124,7 +124,7 @@ Pjax::begin([
             </div>
 
             <div class="discount-info-text before-icon-user">
-                Купили
+                Взяли
                 <span class="discount-info-bold-text">
                     <?=$discount->count_orders?> из <?=$discount->number_purchases?>
                 </span>

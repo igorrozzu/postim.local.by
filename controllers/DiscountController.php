@@ -11,8 +11,7 @@ use app\models\Discounts;
 use app\models\entities\BusinessOrder;
 use app\models\entities\DiscountOrder;
 use app\models\entities\FavoritesDiscount;
-use app\models\entities\GalleryDiscount;
-use app\models\entities\OwnerPost;
+use app\models\entities\Task;
 use app\models\Posts;
 use app\models\search\CommentsSearch;
 use app\models\search\DiscountSearch;
@@ -538,7 +537,6 @@ class DiscountController extends MainController
 
         if (Yii::$app->request->isPost) {
             $discount = Discounts::find()
-                ->innerJoinWith(['post.city', 'post.info'])
                 ->where([Discounts::tableName() . '.id' => $discountId])
                 ->one();
             $response = new \stdClass();
@@ -586,20 +584,22 @@ class DiscountController extends MainController
                 $transaction->commit();
             } else {
                 $transaction->rollBack();
+                return $this->asJson($response);
             }
 
             $response->redirectUrl = Url::to(['user/get-promocodes']) . '?my_orders';
             $response->success = true;
 
-            $mailer = Yii::$app->getMailer();
-            $mailer->htmlLayout = 'layouts/default';
-            $mailer->compose(['html' => 'promocode'], [
-                'discount' => $discount,
-                'discountOrder' => $order,
-            ])->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])
-                ->setTo(Yii::$app->user->identity->email)
-                ->setSubject('Ваш промокод от Postim.by')
-                ->send();
+            $task = new Task([
+                'data' => json_encode([
+                    'class' => 'NewPromocode',
+                    'params' => [
+                        'order_id' => $order->id,
+                    ],
+                ]),
+                'type' => Task::TYPE['notification'],
+            ]);
+            $task->save();
 
             return $this->asJson($response);
 

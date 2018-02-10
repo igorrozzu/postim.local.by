@@ -78,7 +78,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
             <?php endforeach;?>
 
             <span style="display: block;">
-                - Услуги (товары) предоставляются <?= $discount->requisites?>
+                - Услуги (товары) предоставляются <?= $discount->post->requisites?>
             </span>
 
             <span style="display: block;">
@@ -113,7 +113,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                 <span style="display: block; color: #6b778f;  margin-top: 3px;">
                     Веб-сайт:
                     <span style="color: #444; margin-left: 5px;">
-                        <?= Helper::getDomainNameByUrl($discount->post->info['web_site'])?>
+                        <?= Yii::$app->formatter->asHostName($discount->post->info['web_site'])?>
                     </span>
                 </span>
             <?php endif;?>

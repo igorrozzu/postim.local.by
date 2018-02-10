@@ -4,18 +4,18 @@ use app\components\Helper;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
-$hostName = Yii::$app->request->getHostInfo();
-$discountUrl = Url::to(['discount/read', 'url' => $discount->url_name,
-    'discountId' => $discount->id], true);
-$postUrl = Url::to(['post/index', 'url' => $discount->post->url_name,
-    'id' => $discount->post->id], true);
-$timezone = Yii::$app->user->getTimezoneInSeconds();
+$hostName = Yii::$app->params['site.hostName'];
+$discountUrl = "{$hostName}/{$discount->url_name}-d{$discount->id}";
+$postUrl = "{$hostName}/{$discount->post->url_name}-p{$discount->post->id}";
+$printOrderUrl = "{$hostName}/print-order?OID={$discountOrder->id}";
+
+$timezone = $discountOrder->user->getTimezoneInSeconds();
 ?>
 
 <tr style="background-color: #FFFFFF">
     <td>
         <span style="display: block; margin: 32px 20px 3px 20px;">
-            Здравствуйте, <?= Yii::$app->user->identity->name ?>.<br>
+            Здравствуйте, <?= $discountOrder->user->name ?>.<br>
             Вы получили промокод на акцию.
         </span>
 
@@ -25,10 +25,10 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
             </a>
         </span>
 
-        <span style="display: inline-block; margin: 0 0 20px 20px; width: 280;">
+        <span style="display: inline-block; margin: 0 0 20px 20px; width: 280px;">
             <a href="<?= $discountUrl?>" target="_blank">
-                <span style="float: left; display: block; width: 280; height: 137; background-size: cover; background-repeat: no-repeat;
-                    background-image: url('<?= $hostName . $discount->getCover();?>'); "></span>
+                <img src="<?= $hostName . $discount->getCover();?>"
+                     style="float: left; display: block; width: 280px; max-height: 164px">
              </a>
         </span>
         <span style="display: inline-block; width: 260; margin: 0 0 20px 20px; vertical-align: top; font-size: 16px;">
@@ -50,7 +50,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                 </span>
             </span>
             <span style="display: block; font-size: 14px;">
-                <a href="<?= Url::to(['discount/print-order', 'OID' => $discountOrder->id], true);?>"
+                <a href="<?= $printOrderUrl;?>"
                    target="_blank" style="color: #3C5994; font-weight: bold;">Распечатать</a>
                  <span style="display: block;">
                      или сфотографируйте на телефон
@@ -66,7 +66,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
             <?php endforeach;?>
 
             <span style="display: block;">
-                - Услуги (товары) предоставляются <?= $discount->requisites?>
+                - Услуги (товары) предоставляются <?= $discount->post->requisites?>
             </span>
 
             <span style="display: block;">
@@ -101,7 +101,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                 <span style="display: block; color: #6b778f;  margin-top: 3px;">
                     Веб-сайт:
                     <span style="color: #444; margin-left: 5px;">
-                        <?= Helper::getDomainNameByUrl($discount->post->info['web_site'])?>
+                        <?= Yii::$app->formatter->asHostName($discount->post->info['web_site'])?>
                     </span>
                 </span>
             <?php endif;?>

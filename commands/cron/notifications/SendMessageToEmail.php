@@ -2,14 +2,8 @@
 
 namespace app\commands\cron\notifications;
 
-use app\models\entities\NotificationUser;
-use app\models\Notification;
-use app\models\Posts;
-use app\models\User;
-use app\models\UserInfo;
+
 use Yii;
-use yii\base\Model;
-use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 class SendMessageToEmail extends BaseCronNotificationHandler

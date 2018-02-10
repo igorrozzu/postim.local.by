@@ -23,6 +23,10 @@ $config = [
         'category'=>[
             'class' => 'app\components\Category',
         ],
+        'formatter' => [
+            'class' => 'app\components\Formatter',
+            'timeZone' => 'UTC',
+        ],
         'i18n' => [
             'translations' => [
                 'app*' => [
