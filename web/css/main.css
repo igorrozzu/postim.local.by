@@ -208,7 +208,10 @@ body{
     margin-top: 40px;
     margin-bottom: 90px;
 }
-
+.container-filters .ui-slider-handle,
+.container-filters .ui-widget-content{
+    background-color: #d3e4ff;
+}
 .bottom-btn{
     position: absolute;
     top:calc(100% - 60px);
