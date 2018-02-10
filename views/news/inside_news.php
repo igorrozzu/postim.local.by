@@ -2,6 +2,9 @@
 use app\components\breadCrumb\BreadCrumb;
 use app\components\cardsNewsWidget\CardsNewsWidget;
 use app\components\commentsWidget\CommentsNewsWidget;
+use app\widgets\cardsDiscounts\CardsDiscounts;
+use yii\helpers\Url;
+
 $this->title = $news['title_s'];
 $this->registerMetaTag([
     'name' => 'description',
@@ -88,6 +91,30 @@ if($match){
                         <?= CardsNewsWidget::widget(['dataprovider' => $lastNews, 'settings' => ['replace-container-id' => 'feed-news','load-time'=>$loadTime]]) ?>
                     </div>
                 </div>
+                <?php if (isset($dataProviderDiscounts) && $dataProviderDiscounts->getTotalCount() > 0):?>
+                    <div class="block-content-between cust">
+                        <h2 class="h2-v">Вам может понравиться</h2>
+                        <p class="text p-text">
+                            <a class="--promo-link" href="<?= Url::to(['lading/sale-of-a-business-account'])?>"
+                               rel="nofollow">
+                                Разместить свою акцию
+                            </a>
+                        </p>
+                    </div>
+                    <div class="cards-block-discount row-3 main-pjax" style="margin-top: -13px;"
+                         data-favorites-state-url="/discount/favorite-state">
+                        <?= CardsDiscounts::widget([
+                            'dataprovider' => $dataProviderDiscounts,
+                            'settings' => [
+                                'show-more-btn' => true,
+                                'replace-container-id' => 'feed-discounts',
+                                'load-time' => $loadTime,
+                                'show-distance' => true,
+                                'links-no-follow' => true,
+                            ]
+                        ]); ?>
+                    </div>
+                <?php endif;?>
             </noindex>
 
         </div>

@@ -13,6 +13,7 @@ use app\models\entities\FavoritesNews;
 use app\models\News;
 use app\models\PostsSearch;
 use app\models\search\CommentsSearch;
+use app\models\search\DiscountSearch;
 use app\models\search\NewsSearch;
 use app\models\Region;
 use Yii;
@@ -117,6 +118,19 @@ class NewsController extends MainController
             CommentsSearch::getSortArray('old')
         );
 
+        $discountSearchModel = new DiscountSearch();
+        $discountPagination = new Pagination([
+            'pageSize' => Yii::$app->request->get('per-page', 6),
+            'page' => Yii::$app->request->get('page', 1) - 1,
+            'route' => Url::to(['discount/load-interesting-discounts-by-city']),
+        ]);
+
+        $_GET['city'] = $news->city;
+        $dataProviderDiscounts = $discountSearchModel->searchByCityOnlyActive(
+            Yii::$app->request->queryParams,
+            $discountPagination,
+            $loadTime
+        );
 
         $breadcrumbParams = $this->getParamsForBreadcrumbInside($news);
 
@@ -125,6 +139,7 @@ class NewsController extends MainController
             'lastNews'=>$lastNews,
             'breadcrumbParams'=>$breadcrumbParams,
             'dataProviderComments'=>$dataProviderComments,
+            'dataProviderDiscounts' => $dataProviderDiscounts,
             'loadTime'=>$loadTime
         ]);
     }

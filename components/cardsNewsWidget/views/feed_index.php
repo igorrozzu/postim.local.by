@@ -48,4 +48,6 @@ $data = $dataprovider->getModels();
              data-href="<?=$hrefNext?>&loadTime=<?=$settings['load-time'] ?? ''?>"><noindex>Показать больше новостей</noindex>
         </div>
     </div>
+<?php else: ?>
+    <div class="replace-block mg-btm-30"></div>
 <?php endif; ?>

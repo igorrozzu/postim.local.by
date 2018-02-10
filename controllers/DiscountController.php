@@ -327,6 +327,35 @@ class DiscountController extends MainController
         }
     }
 
+    public function actionLoadInterestingDiscountsByCity()
+    {
+        $request = Yii::$app->request;
+        $model = new DiscountSearch();
+        $pagination = new Pagination([
+            'pageSize' => Yii::$app->request->get('per-page', 6),
+            'page' => $request->get('page', 1) - 1,
+        ]);
+        $loadTime = $request->get('loadTime', time());
+
+        $dataProvider = $model->searchByCityOnlyActive(
+            $request->queryParams,
+            $pagination,
+            $loadTime
+        );
+
+        if ($request->isAjax && !$request->get('_pjax', false)) {
+            return CardsDiscounts::widget([
+                'dataprovider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-discount',
+                    'load-time' => $loadTime,
+                    'show-distance' => true,
+                ]
+            ]);
+        }
+    }
+
     public function actionRead(int $discountId)
     {
         $searchModel = new DiscountSearch();

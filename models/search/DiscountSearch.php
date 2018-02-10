@@ -242,6 +242,38 @@ class DiscountSearch extends Discounts
         return $dataProvider;
     }
 
+    public function searchByCityOnlyActive($params, Pagination $pagination, int $loadTime)
+    {
+        $this->load($params, '');
+
+        $query = Discounts::find()
+            ->innerJoinWith(['post.city.region.coutries'])
+            ->andWhere(['<=', 'date_start', $loadTime])
+            ->andWhere(['>', Discounts::tableName() . '.date_finish', $loadTime])
+            ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']])
+            ->groupBy([Discounts::tableName() . '.id'])
+            ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
+
+        if (isset($this->city)) {
+            $query->andWhere(['or',
+                [Region::tableName() . '.url_name' => $this->city['url_name']],
+                [City::tableName() . '.url_name' => $this->city['url_name']],
+                [Countries::tableName() . '.url_name' => $this->city['url_name']],
+            ]);
+        }
+
+        if (!Yii::$app->user->isGuest) {
+            $query->joinWith(['hasLike']);
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => $pagination,
+        ]);
+
+        return $dataProvider;
+    }
+
     public function getCountByCityAndCategory(array $params)
     {
         $this->load($params, '');
