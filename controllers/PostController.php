@@ -913,16 +913,18 @@ class PostController extends MainController
             } else {
 
                 $post = Posts::find()
-                    ->where(['id' => Yii::$app->request->post('id'),
-                        'user_id' => Yii::$app->user->getId(),
-                        'status' => 0
-                    ])
+                    ->where(['id' => Yii::$app->request->post('id')])
                     ->one();
 
-                if ($post) {
+                if ($post->isCurrentUserOwner) {
                     $scenario = AddPost::$SCENARIO_EDIT_USER_SELF_POST;
+                    $message = 'place_edit';
+                }elseif ($post->user_id == Yii::$app->user->getId() && $post->status === Posts::$STATUS['moderation'])
+                {
                     $message = 'moderation';
-                } else {
+                    $scenario = AddPost::$SCENARIO_EDIT_USER_SELF_POST;
+                }
+                else {
                     $scenario = AddPost::$SCENARIO_EDIT_USER;
                     $message = 'moderation_edit';
                 }
@@ -931,7 +933,7 @@ class PostController extends MainController
             $addPostModel->setScenario($scenario);
 
             if ($addPostModel->load(Yii::$app->request->post(), '') && $addPostModel->save()) {
-                if ($scenario !== AddPost::$SCENARIO_EDIT_MODERATOR) {
+                if ($message !== 'place_edit') {
                     Yii::$app->getSession()->setFlash('redirect_after_add' . Yii::$app->user->getId(), $message);
                     return $this->redirect('/id' . Yii::$app->user->getId());
                 } else {

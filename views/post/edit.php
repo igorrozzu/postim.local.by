@@ -177,9 +177,10 @@
 		</script>
 
 		<?php if(Yii::$app->user->identity->role > 1 ||
-            ($params['post']['status']==0 &&
-                !isset($params['post']['main_id']) &&
-                $params['post']['user_id'] == Yii::$app->user->getId())
+            (!isset($params['post']['main_id']) &&
+                $params['post']->isCurrentUserOwner ?? false) ||
+            ($params['post']->user_id == Yii::$app->user->getId() &&
+                $params['post']->status === \app\models\Posts::$STATUS['moderation'])
         ):?>
 			<div class="container-add-place">
 				<div class="container-gallery">
@@ -231,7 +232,11 @@
                 <div class="btn-place-save">
                     <div class="large-wide-button"><p>Редактировать</p></div>
                 </div>
-				<?php else:?>
+				<?php elseif($params['post']->isCurrentUserOwner ?? false):?>
+                    <div class="btn-place-save">
+                        <div class="large-wide-button"><p>Редактировать</p></div>
+                    </div>
+                <?php else:?>
                     <div class="btn-place-save" style="margin-top: -20px">
                         <div class="large-wide-button"><p>На модерацию</p></div>
                     </div>
