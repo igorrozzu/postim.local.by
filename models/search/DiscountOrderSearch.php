@@ -67,12 +67,12 @@ class DiscountOrderSearch extends DiscountOrder
         switch ($this->status) {
             case 'active':
                 $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['active']])
-                    ->andWhere(['>', Discounts::tableName() . '.date_finish', $loadTime]); break;
+                    ->andWhere(['>', $table . '.date_finish', $loadTime]); break;
             case 'inactive':
                 $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['inactive']]); break;
             case 'expired':
                 $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['active']])
-                    ->andWhere(['<=', Discounts::tableName() . '.date_finish', $loadTime]); break;
+                    ->andWhere(['<=', $table . '.date_finish', $loadTime]); break;
             default: break;
         }
 

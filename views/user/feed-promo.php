@@ -17,7 +17,7 @@ Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => false,
     'id' => 'feeds-of-user',
-    'linkSelector' => '.feeds-btn-bar a',
+    'linkSelector' => '#feeds-of-user .feeds-btn-bar a',
     'formSelector' => false,
 ])
 ?>
