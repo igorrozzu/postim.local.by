@@ -16,7 +16,7 @@ use Yii;
  * @property string $promo_code
  * @property integer $pin_code
  * @property integer $status_promo
- *
+ * @property integer $date_finish
  * @property Discounts $discount
  * @property User $user
  */
@@ -39,8 +39,8 @@ class DiscountOrder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'discount_id', 'date_buy', 'promo_code', 'status_promo'], 'required'],
-            [['user_id', 'discount_id', 'date_buy', 'pin_code', 'status_promo'], 'integer'],
+            [['user_id', 'discount_id', 'date_buy', 'date_finish', 'promo_code', 'status_promo'], 'required'],
+            [['user_id', 'discount_id', 'date_buy', 'date_finish', 'pin_code', 'status_promo'], 'integer'],
             [['promo_code'], 'string', 'max' => 200],
             [['discount_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discounts::className(), 'targetAttribute' => ['discount_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -57,6 +57,7 @@ class DiscountOrder extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'discount_id' => 'Discount ID',
             'date_buy' => 'Date Buy',
+            'date_finish' => 'Date Finish',
             'promo_code' => 'Promo Code',
             'pin_code' => 'Pin Code',
             'status_promo' => 'Status Promo',
