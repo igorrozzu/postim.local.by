@@ -148,8 +148,8 @@ class Discounts extends \yii\db\ActiveRecord
     public function validateNumberPurchases($attribute, $params)
     {
         if (!$this->hasErrors()) {
-            if ($this->number_purchases < $this->getOldAttribute('number_purchases')) {
-                $this->addError($attribute, 'Количество промокодов можно только увеличивать');
+            if ($this->number_purchases <= $this->count_orders) {
+                $this->addError($attribute, 'Количество промокодов должно быть больше заказов');
             }
         }
     }
