@@ -17,7 +17,7 @@ class FixController extends Controller
     {
         $orders = DiscountOrder::find()
             ->innerJoinWith(['discount'])
-            ->where([DiscountOrder::tableName() . '.status_promo', DiscountOrder::STATUS['active']]);
+            ->all();
 
         foreach ($orders as $order){
            $order->date_finish = $order->discount->date_finish;
