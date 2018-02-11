@@ -4,7 +4,7 @@
         <span class="r2"><?=$item->promo_code?></span>
         <span class="r3"><?=Yii::$app->formatter->asDate($item->date_buy + $timezone,
                 'dd.MM.yyyy')?></span>
-        <span class="r4">до <?=Yii::$app->formatter->asDate($item->discount->date_finish + $timezone,
+        <span class="r4">до <?=Yii::$app->formatter->asDate($item->date_finish + $timezone,
                 'dd.MM.yyyy')?></span>
         <span class="r5"><?=$item->discount->price?></span>
         <span class="r6">

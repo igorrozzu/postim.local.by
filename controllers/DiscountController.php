@@ -599,6 +599,7 @@ class DiscountController extends MainController
                 'user_id' => Yii::$app->user->id,
                 'discount_id' => $discount->id,
                 'date_buy' => time(),
+                'date_finish' => $discount->date_finish,
                 'promo_code' => isset($discount->promocode) && $discount->promocode !== '' ?
                     $discount->promocode : (string) mt_rand(1000, 9999),
                 'pin_code' => null,

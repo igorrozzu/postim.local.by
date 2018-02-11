@@ -30,7 +30,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                     </div>
                     <div class="promo-info">Срок действия
                         <span>
-                            <?=Yii::$app->formatter->asDate($item->discount->date_finish + $timezone,
+                            <?=Yii::$app->formatter->asDate($item->date_finish + $timezone,
                                 'до dd.MM.yyyy')?>
                         </span>
                     </div>
@@ -46,7 +46,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                         <div class="promo-btn btn-print-promo"></div>
                     </a>
                     <?php if($item->status_promo === DiscountOrder::STATUS['active'] &&
-                        $item->discount->date_finish > $settings['load-time']):?>
+                        $item->date_finish > $settings['load-time']):?>
                         <div class="promo-btn btn-close-promo"
                              data-href="<?=Url::to(['user/confirm-used-order', 'id' => $item->id])?>"></div>
                     <?php endif;?>

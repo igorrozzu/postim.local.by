@@ -38,7 +38,7 @@ $timezone = $discountOrder->user->getTimezoneInSeconds();
             <span style="display: block; color: #6b778f; margin-bottom: 20px;">
                 Срок действия
                 <span style="color: #444; font-weight: bold; margin-left: 5px;">
-                    <?= Yii::$app->formatter->asDate($discount->date_finish + $timezone,
+                    <?= Yii::$app->formatter->asDate($discountOrder->date_finish + $timezone,
                         'до dd.MM.yyyy')?>
                 </span>
             </span>
