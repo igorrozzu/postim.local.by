@@ -10,21 +10,18 @@ use app\behaviors\notification\handlers\NotificationHandler;
 use app\commands\cron\siteMap\models\SiteMap;
 use app\commands\cron\taskFactory\TaskFactory;
 use app\components\user\ExperienceCalc;
-use app\models\Category;
 use app\models\City;
 use app\models\entities\NotificationUser;
 use app\models\entities\Task;
 use app\models\News;
 use app\models\Notification;
 use app\models\PostUnderCategory;
-use app\models\UnderCategory;
 use app\models\User;
 use app\models\UserInfo;
 use app\models\Posts;
 use app\modules\admin\models\Reviews;
 use Yii;
 use yii\console\Controller;
-use yii\db\IntegrityException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 
@@ -41,26 +38,40 @@ class TaskController extends Controller
 {
     public function actionHandleNotifications()
     {
-        $tasksQuery = Task::find();
+        $tasksQuery = Task::find()
+            ->where(['status' => Task::STATUS['waiting']])
+            ->andWhere(['<=', 'date_of_execution', time()])
+            ->batch();
 
         $mailer = Yii::$app->getMailer();
-        $mailer->htmlLayout = 'layouts/notification';
-        $ids = [];
 
-        foreach ($tasksQuery->each() as $task) {
-            try {
-                $ids[] = $task->id;
-                $factory = new TaskFactory();
-                $handler = $factory->create($task, $mailer);
-                $handler->run();
-            } catch (\Exception $e) {
-                array_pop($ids);
-                continue;
+        foreach ($tasksQuery as $tasks) {
+
+            $failedTaskIds = [];
+            $successTaskIds = ArrayHelper::getColumn($tasks, 'id', false);
+            Task::updateAll(['status' => Task::STATUS['execution']],
+                [Task::tableName() . '.id' => $successTaskIds]);
+
+            foreach ($tasks as $task) {
+                try {
+                    $factory = new TaskFactory();
+                    $handler = $factory->create($task, $mailer);
+                    $handler->run();
+                } catch (\Exception $e) {
+                    $failedTaskIds[] = $task->id;
+                    continue;
+                }
             }
-        }
 
-        if (count($ids) > 0) {
-            Task::deleteAll([Task::tableName() . '.id' => $ids]);
+            if (count($failedTaskIds) > 0) {
+                Task::updateAll(['status' => Task::STATUS['waiting']],
+                    [Task::tableName() . '.id' => $failedTaskIds]);
+            }
+
+            $successTaskIds = array_diff($successTaskIds, $failedTaskIds);
+            if (count($successTaskIds) > 0) {
+                Task::deleteAll([Task::tableName() . '.id' => $successTaskIds]);
+            }
         }
 
         return true;

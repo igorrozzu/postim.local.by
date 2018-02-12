@@ -34,7 +34,7 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                                 'до dd.MM.yyyy')?>
                         </span>
                     </div>
-                    <div class="promo-info">Куплен
+                    <div class="promo-info">Взят
                         <span>
                             <?=Yii::$app->formatter->asDate($item->date_buy + $timezone,
                                 'dd.MM.yyyy в HH:mm')?>

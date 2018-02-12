@@ -3,6 +3,7 @@
 namespace app\services\ipay;
 
 use app\models\entities\Task;
+use app\repositories\TaskRepository;
 use \domDocument;
 
 class EripServices{
@@ -95,16 +96,10 @@ class EripServices{
             $order = $this->_repositoryImplementation->getOrderById($orderNumber, false);
             $this->_repositoryImplementation->changeStatusById($orderNumber, self::PAID);
 
-            $task = new Task([
-                'data' => json_encode([
-                    'params' => [
-                        'user_id' => $order->user_id,
-                        'changing' => $order->money,
-                    ],
-                ]),
-                'type' => Task::TYPE['accountReplenishment'],
-            ]);
-            $task->save();
+            TaskRepository::addTask([
+                'user_id' => $order->user_id,
+                'changing' => $order->money,
+            ], Task::TYPE['accountReplenishment']);
 
         }else{
             $this->_repositoryImplementation->changeProcessById($orderNumber, self::NOT_PROCESSED);

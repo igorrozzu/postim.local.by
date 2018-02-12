@@ -22,5 +22,6 @@ abstract class BaseCronNotificationHandler
     public function __construct(MailerInterface $mailer)
     {
         $this->mailer = $mailer;
+        $this->mailer->htmlLayout = 'layouts/notification';
     }
 }
