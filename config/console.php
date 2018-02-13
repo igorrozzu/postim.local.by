@@ -42,6 +42,7 @@ $config = [
         ],
         'db' => $db,
         'mailer' => require(__DIR__ . '/mailer.php'),
+        'urlManager' => require(__DIR__ . '/urlManager.php'),
     ],
     'params' => $params,
     /*
