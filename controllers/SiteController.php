@@ -662,7 +662,7 @@ class SiteController extends MainController
 
     public function actionAway(string $to)
     {
-        return $this->redirect($to);
+        return $this->redirect(urldecode($to));
     }
 
 }
