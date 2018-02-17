@@ -11,12 +11,18 @@ use Yii;
  * @property string $data
  * @property integer $type
  * @property integer $status
+ * @property integer $date_of_execution
  */
 class Task extends \yii\db\ActiveRecord
 {
     const TYPE = [
         'notification' => 1,
         'accountReplenishment' => 2,
+    ];
+
+    const STATUS = [
+        'waiting' => 0,
+        'execution' => 1,
     ];
 
     /**
@@ -35,7 +41,7 @@ class Task extends \yii\db\ActiveRecord
         return [
             [['data', 'type'], 'required'],
             [['data'], 'string'],
-            [['type', 'status'], 'integer'],
+            [['type', 'status', 'date_of_execution'], 'integer'],
         ];
     }
 

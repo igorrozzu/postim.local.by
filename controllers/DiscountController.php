@@ -19,6 +19,7 @@ use app\models\TotalView;
 use app\models\uploads\UploadPhotos;
 use app\models\uploads\UploadPhotosByUrl;
 use app\models\uploads\UploadPostPhotosTmp;
+use app\repositories\TaskRepository;
 use app\widgets\cardsDiscounts\CardsDiscounts;
 use Yii;
 use yii\db\ActiveQuery;
@@ -592,6 +593,7 @@ class DiscountController extends MainController
 
         if (Yii::$app->request->isPost) {
             $discount = Discounts::find()
+                ->innerJoinWith('post')
                 ->where([Discounts::tableName() . '.id' => $discountId])
                 ->one();
             $response = new \stdClass();
@@ -646,16 +648,23 @@ class DiscountController extends MainController
             $response->redirectUrl = Url::to(['user/get-promocodes']) . '?my_orders';
             $response->success = true;
 
-            $task = new Task([
-                'data' => json_encode([
-                    'class' => 'NewPromocode',
-                    'params' => [
-                        'order_id' => $order->id,
-                    ],
-                ]),
-                'type' => Task::TYPE['notification'],
+            $user = Yii::$app->user->identity;
+            TaskRepository::addMailTask('NewPromocode', [
+                'order_id' => $order->id,
             ]);
-            $task->save();
+            TaskRepository::addMailTask('SendMessageToEmail', [
+                'htmlLayout' => 'layouts/default',
+                'view' => ['html' => 'reviewAboutDiscount'],
+                'params' => [
+                    'userName' => $user->name,
+                    'discountTitle' => $discount->header,
+                    'postTitle' => $discount->post->data,
+                    'postUrl' => Url::to(['post/index', 'url' => $discount->post->url_name,
+                        'id' => $discount->post->id], true),
+                ],
+                'toEmail' => $user->email,
+                'subject' => "{$user->name}, оставьте отзыв о {$discount->post->data} на Postim.by"
+            ], $order->date_finish);
 
             return $this->asJson($response);
 

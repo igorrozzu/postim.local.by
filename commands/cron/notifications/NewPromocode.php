@@ -14,10 +14,8 @@ class NewPromocode extends BaseCronNotificationHandler
             ->where([DiscountOrder::tableName() . '.id' => $this->params->order_id])
             ->one();
 
-        $mailer = Yii::$app->getMailer();
-        $mailer->htmlLayout = 'layouts/default';
-
-        $mailer->compose(['html' => 'promocode'], [
+        $this->mailer->htmlLayout = 'layouts/default';
+        $this->mailer->compose(['html' => 'promocode'], [
             'discount' => $order->discount,
             'discountOrder' => $order,
         ])->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])

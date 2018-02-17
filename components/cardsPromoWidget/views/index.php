@@ -34,23 +34,23 @@ $timezone = Yii::$app->user->getTimezoneInSeconds();
                                 'до dd.MM.yyyy')?>
                         </span>
                     </div>
-                    <div class="promo-info">Куплен
+                    <div class="promo-info">Взят
                         <span>
                             <?=Yii::$app->formatter->asDate($item->date_buy + $timezone,
                                 'dd.MM.yyyy в HH:mm')?>
                         </span>
                     </div>
                 </div>
-                <div class="block-promo-btns">
-                    <a href="<?= Url::to(['discount/print-order', 'OID' => $item->id])?>" target="_blank">
-                        <div class="promo-btn btn-print-promo"></div>
-                    </a>
-                    <?php if($item->status_promo === DiscountOrder::STATUS['active'] &&
-                        $item->date_finish > $settings['load-time']):?>
+                <?php if ($settings['status'] === 'active'):?>
+                    <div class="block-promo-btns">
+                        <a href="<?= Url::to(['discount/print-order', 'OID' => $item->id])?>" target="_blank">
+                            <div class="promo-btn btn-print-promo"></div>
+                        </a>
                         <div class="promo-btn btn-close-promo"
-                             data-href="<?=Url::to(['user/confirm-used-order', 'id' => $item->id])?>"></div>
-                    <?php endif;?>
-                </div>
+                             data-href="<?=Url::to(['user/confirm-used-order', 'id' => $item->id])?>">
+                        </div>
+                    </div>
+                <?php endif;?>
             </div>
         </div>
     </div>

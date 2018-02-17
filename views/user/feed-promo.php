@@ -53,6 +53,7 @@ Pjax::begin([
             'load-time' => $loadTime,
             'show-more-btn-text' => 'Показать больше промокодов',
             'not-found-text' => 'Промокодов не найдено.',
+            'status' => $status,
         ]
     ]);?>
     </div>
