@@ -660,4 +660,9 @@ class SiteController extends MainController
 
     }
 
+    public function actionAway(string $to)
+    {
+        return $this->redirect($to);
+    }
+
 }

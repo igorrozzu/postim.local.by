@@ -993,18 +993,27 @@ MediumEditor.extensions = {};
             var i, url = anchorUrl || false;
             if (el.nodeName.toLowerCase() === 'a') {
                 el.target = '_blank';
-                el.rel = 'nofollow noopener';
             } else {
                 el = el.getElementsByTagName('a');
 
                 for (i = 0; i < el.length; i += 1) {
                     if (false === url || url === el[i].attributes.href.value) {
                         el[i].target = '_blank';
-                        el[i].rel = 'nofollow noopener';
                     }
                 }
             }
         },
+
+        setRedirectAnchorUrl: function (anchorUrl) {
+
+            if (anchorUrl.indexOf(window.location.hostname) == -1) {
+                anchorUrl = location.protocol + '//' + location.hostname + '/away?to=' + anchorUrl;
+            }
+
+            return anchorUrl
+
+        },
+
 
         /*
          * this function is called to explicitly remove the target='_blank' as FF holds on to _blank value even
@@ -7602,6 +7611,7 @@ MediumEditor.extensions = {};
                 }
                 targetUrl = opts.url || opts.value;
                 if (targetUrl && targetUrl.trim().length > 0) {
+                    targetUrl = MediumEditor.util.setRedirectAnchorUrl(targetUrl);
                     var currentSelection = this.options.contentWindow.getSelection();
                     if (currentSelection) {
                         var currRange = currentSelection.getRangeAt(0),
@@ -7707,8 +7717,8 @@ MediumEditor.extensions = {};
                         } else {
                             this.options.ownerDocument.execCommand('createLink', false, targetUrl);
                         }
-                        console.log(targetUrl);
-                        if (targetUrl.indexOf(window.location.hostname)==-1) {
+
+                        if (targetUrl.indexOf('away?to') !== -1) {
                             MediumEditor.util.setTargetBlank(MediumEditor.selection.getSelectionStart(this.options.ownerDocument), targetUrl);
                         } else {
                             MediumEditor.util.removeTargetBlank(MediumEditor.selection.getSelectionStart(this.options.ownerDocument), targetUrl);

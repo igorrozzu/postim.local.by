@@ -38,6 +38,7 @@ $manager = [
         '<url:^edit>/<id:\d+>'=>'post/edit',
         'search/<text:.+>'=>'site/search',
         'feedback'=>'site/feedback',
+        'away'=>'site/away',
         [
             'class' => 'app\components\customUrlManager\OtherPageUrlRule', //лента отзывов
         ],
