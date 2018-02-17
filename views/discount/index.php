@@ -2,6 +2,7 @@
 use app\components\breadCrumb\BreadCrumb;
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\MetaTagsSocialNetwork;
+use app\widgets\cardsDiscounts\CardsDiscounts;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
@@ -49,10 +50,10 @@ Pjax::begin([
     <h1 class="h1-v"><?=$discount->header?></h1>
 </div>
 
-<div class="block-content main-pjax">
+<div class="block-content">
 
     <?php if(Yii::$app->user->isModerator() || $isCurrentUserOwner):?>
-        <div class="block-content-between" style="margin-bottom: -10px">
+        <div class="block-content-between main-pjax" style="margin-bottom: -10px">
             <p class="text p-text">
                 Нашли неточность или ошибку,&nbsp;
                 <a class="href-edit" href="<?=Url::to(['/discount/edit', 'id' => $discount->id])?>">
@@ -151,63 +152,99 @@ Pjax::begin([
         </div>
     </div>
 
-    <?php if (!empty($discount->data)):?>
-        <h2 class="h2-c">Описание акции</h2>
-        <div class="block-description-card">
-            <?=$discount->data?>
-        </div>
-    <?php endif;?>
-
-    <h2 class="h2-c">Условия</h2>
-    <div class="block-description-card">
-        <ul>
-            <?php foreach (Json::decode($discount->conditions) as $condition): ?>
-                <li><span><?=$condition?></span></li>
-            <?php endforeach;?>
-            <li>
-                <span>Услуги (товары) предоставляются <?= $post->requisites?>.</span>
-            </li>
-            <li>
-                <span>Поставщик несет полную ответственность перед
-                    потребителем за достоверность информации.</span>
-            </li>
-        </ul>
-    </div>
-
-    <h2 class="h2-c">Где?</h2>
-    <a href="<?= Url::to(['post/index', 'url' => $post->url_name, 'id' => $post->id])?>">
-        <div class="discount-post-block">
-
-            <div class="cover" style="background-image: url('<?= $post->cover?>')"></div>
-
-            <div class="content">
-                <div class="header-block">
-                    <p class="header-text"><?=$post->data?></p>
+    <div class="container-columns">
+        <div class="__first-column">
+            <?php if (!empty($discount->data)):?>
+                <h2 class="h2-c">Описание акции</h2>
+                <div class="block-description-card">
+                    <?=$discount->data?>
                 </div>
-                <div class="address">
-                    <span><?=$post->city->name . ', ' . $post->address?></span>
+            <?php endif;?>
+
+            <h2 class="h2-c">Условия</h2>
+            <div class="block-description-card">
+                <ul>
+                    <?php foreach (Json::decode($discount->conditions) as $condition): ?>
+                        <li><span><?=$condition?></span></li>
+                    <?php endforeach;?>
+                    <li>
+                        <span>Услуги (товары) предоставляются <?= $post->requisites?>.</span>
+                    </li>
+                    <li>
+                        <span>Поставщик несет полную ответственность перед
+                            потребителем за достоверность информации.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <h2 class="h2-c">Где?</h2>
+            <div class="main-pjax">
+                <a href="<?= Url::to(['post/index', 'url' => $post->url_name, 'id' => $post->id])?>">
+                    <div class="discount-post-block">
+
+                        <div class="cover" style="background-image: url('<?= $post->cover?>')"></div>
+
+                        <div class="content">
+                            <div class="header-block">
+                                <p class="header-text"><?=$post->data?></p>
+                            </div>
+                            <div class="address">
+                                <span><?=$post->city->name . ', ' . $post->address?></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="block-content-between">
+                <noindex>
+                    <div class="block-social-share">
+                        <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk">0</span></div>
+                        <div class="social-btn-share goodshare" data-type="fb"><p>Share</p><span data-counter="fb">0</span></div>
+                        <div class="social-btn-share goodshare" data-type="tw"><p>Твитнуть</p></div>
+                        <div class="social-btn-share goodshare" data-type="ok"><span data-counter="ok">0</span></div>
+                    </div>
+                </noindex>
+                <div class="block-count-views">
+                    <div class="elem-count-views"><?=$discount->totalView->count?></div>
                 </div>
             </div>
-        </div>
-    </a>
 
-
-    <div class="block-content-between">
-        <noindex>
-            <div class="block-social-share">
-                <div class="social-btn-share goodshare" data-type="vk"><p>Поделиться</p> <span data-counter="vk">0</span></div>
-                <div class="social-btn-share goodshare" data-type="fb"><p>Share</p><span data-counter="fb">0</span></div>
-                <div class="social-btn-share goodshare" data-type="tw"><p>Твитнуть</p></div>
-                <div class="social-btn-share goodshare" data-type="ok"><span data-counter="ok">0</span></div>
+            <div style="margin-top: 40px" class="comments_entity_container" data-entity_type="4" data-entity_id="<?=$discount['id']?>">
+                <?=$this->render('/comments/discount_comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$discount->totalComments])?>
             </div>
-        </noindex>
-        <div class="block-count-views">
-            <div class="elem-count-views"><?=$discount->totalView->count?></div>
-        </div>
-    </div>
 
-    <div style="margin-top: 40px" class="comments_entity_container" data-entity_type="4" data-entity_id="<?=$discount['id']?>">
-        <?=$this->render('/comments/discount_comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$discount->totalComments])?>
+            <?php if (isset($dataProviderDiscounts) && $dataProviderDiscounts->getTotalCount() > 0):?>
+                <noindex>
+                    <div class="block-content-between cust">
+                        <h2 class="h2-v">Вам может понравиться</h2>
+                        <p class="text p-text">
+                            <a class="--promo-link" href="<?= Url::to(['lading/sale-of-a-business-account'])?>"
+                               rel="nofollow">
+                                Разместить свою акцию
+                            </a>
+                        </p>
+                    </div>
+                    <div class="cards-block-discount row-3 main-pjax" style="margin-top: -13px;"
+                         data-favorites-state-url="/discount/favorite-state">
+                        <?= CardsDiscounts::widget([
+                            'dataprovider' => $dataProviderDiscounts,
+                            'settings' => [
+                                'show-more-btn' => true,
+                                'replace-container-id' => 'feed-discounts',
+                                'load-time' => $loadTime,
+                                'show-distance' => true,
+                                'links-no-follow' => true,
+                                'hide-bottom-block' => true,
+                            ]
+                        ]); ?>
+                    </div>
+                </noindex>
+            <?php endif;?>
+        </div>
+        <div class="__second-column">
+        </div>
     </div>
 
 </div>
@@ -228,20 +265,12 @@ Pjax::begin([
         });
         $('html').scrollTop(0);
 
-        $(window).resize(function () {
-            var startWidth=900,
-                startHgt=440,
-                proportion=startWidth/startHgt;
-
-            var container = $('.container-discount-photos');
-            var width=$(container).width();
-            $('.container-discount-photos').css({height:width/proportion+'px'});
-        });
+        discount.mainPage.setHeightToBlock();
+        discount.mainPage.monitorScroll();
         $(window).resize();
 
         comments.init(4);
         comments.setAutoResize('.textarea-main-comment');
-
     });
 </script>
 <?php

@@ -196,6 +196,60 @@ var Discount = (function (window, document, undefined, $) {
                             var url = $this.data('favorites-state-url');
                             news.sendRequsetForStateItem($this, url, itemId, false);
                         });
+                    },
+
+                    setHeightToBlock: function () {
+                        $(window).resize(function () {
+                            var startWidth=900,
+                                startHgt=440,
+                                proportion=startWidth/startHgt;
+
+                            var container = $('.container-discount-photos');
+                            var width=$(container).width();
+                            var height = width/proportion+'px';
+                            $('.container-discount-photos').css({height:height});
+                        });
+                    },
+
+                    monitorScroll: function () {
+                        var rightBlock = $('.container-discount-info');
+                        var mainBlock = $('#discount-index');
+                        var headerHeight = 80;
+                        var desctopMinWidth = 935;
+                        var rightBlockOffset = rightBlock.offset().top - headerHeight;
+                        $(window).scroll(function() {
+
+                            if ($(window).width() < desctopMinWidth) {
+                                rightBlock.css({
+                                    top: 0,
+                                    bottom: 'none',
+                                });
+                                return;
+                            }
+
+                            var sctollTop = $(this).scrollTop();
+
+                            if (sctollTop > rightBlockOffset) {
+
+                                if (mainBlock.height() < sctollTop + rightBlock.outerHeight(true) + headerHeight) {
+                                    rightBlock.css({
+                                        top: 'none',
+                                        bottom: 0,
+                                    });
+                                } else {
+                                    rightBlock.css({
+                                        top: sctollTop - rightBlockOffset,
+                                        bottom: 'none',
+                                    })
+                                }
+
+                            } else {
+                                rightBlock.css({
+                                    top: 0,
+                                    bottom: 'none',
+                                });
+                            }
+                        });
                     }
                 };
 
@@ -211,4 +265,6 @@ var Discount = (function (window, document, undefined, $) {
 var discount = Discount();
 discount.Adding().init();
 discount.Feed().init();
-discount.Discount().init();
+
+discount.mainPage = discount.Discount();
+discount.mainPage.init();

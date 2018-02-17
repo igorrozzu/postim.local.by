@@ -123,9 +123,12 @@ class NewsController extends MainController
             'pageSize' => Yii::$app->request->get('per-page', 6),
             'page' => Yii::$app->request->get('page', 1) - 1,
             'route' => Url::to(['discount/load-interesting-discounts-by-city']),
+            'selfParams' => [
+                'city_url_name' => true,
+            ]
         ]);
 
-        $_GET['city'] = $news->city;
+        $_GET['city_url_name'] = $news->city->url_name;
         $dataProviderDiscounts = $discountSearchModel->searchByCityOnlyActive(
             Yii::$app->request->queryParams,
             $discountPagination,
