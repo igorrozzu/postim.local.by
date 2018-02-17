@@ -216,38 +216,30 @@ var Discount = (function (window, document, undefined, $) {
                         var mainBlock = $('#discount-index');
                         var headerHeight = 80;
                         var desctopMinWidth = 935;
+
+                        var rightBlockOffsetTop = rightBlock.offset().top;
                         var rightBlockOffset = rightBlock.offset().top - headerHeight;
+
                         $(window).scroll(function() {
 
                             if ($(window).width() < desctopMinWidth) {
-                                rightBlock.css({
-                                    top: 0,
-                                    bottom: 'none',
-                                });
+                                rightBlock.css({top: 0});
                                 return;
                             }
 
                             var sctollTop = $(this).scrollTop();
 
                             if (sctollTop > rightBlockOffset) {
+                                var top = mainBlock.outerHeight(true) <= sctollTop + rightBlock.outerHeight(true) + headerHeight ?
+                                    mainBlock.outerHeight(true) - rightBlock.outerHeight(true) - rightBlockOffsetTop :
+                                    sctollTop - rightBlockOffset;
 
-                                if (mainBlock.height() < sctollTop + rightBlock.outerHeight(true) + headerHeight) {
-                                    rightBlock.css({
-                                        top: 'none',
-                                        bottom: 0,
-                                    });
-                                } else {
-                                    rightBlock.css({
-                                        top: sctollTop - rightBlockOffset,
-                                        bottom: 'none',
-                                    })
-                                }
+                                rightBlock.css({
+                                    top: top,
+                                })
 
                             } else {
-                                rightBlock.css({
-                                    top: 0,
-                                    bottom: 'none',
-                                });
+                                rightBlock.css({top: 0});
                             }
                         });
                     }
