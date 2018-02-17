@@ -221,7 +221,7 @@ echo "<script>$js</script>";
                             <div class="web-site-card">Веб-сайт</div>
                             <div class="block-inside">
                                 <p class="info-card-text">
-                                    <a target="_blank" rel="nofollow noopener" href="<?=$post->info['web_site']?>">
+                                    <a target="_blank" href="<?= '/away?to=' . urlencode($post->info['web_site'])?>">
                                         <?= Yii::$app->formatter->asHostName($post->info['web_site']) ?>
                                     </a>
                                 </p>
@@ -241,10 +241,10 @@ echo "<script>$js</script>";
                                     <?php foreach ($post->info['social_networks'] as $key => $social_network):?>
                                         <?php if(is_array($social_network)):?>
                                             <?php foreach ($social_network as $keyItem => $valueItem):?>
-                                                <a target="_blank" rel="nofollow noopener" href="<?=$valueItem?>" class="<?=$keyItem?>-icon"></a>
+                                                <a target="_blank" href="<?= '/away?to=' . urlencode($valueItem)?>" class="<?=$keyItem?>-icon"></a>
                                             <?php endforeach;?>
                                         <?php else:?>
-                                            <a target="_blank" rel="nofollow noopener" href="<?=$social_network?>" class="<?=$key?>-icon"></a>
+                                            <a target="_blank" href="<?='/away?to=' . urlencode($social_network)?>" class="<?=$key?>-icon"></a>
                                         <?php endif;?>
                                     <?php endforeach;?>
                                 </div>
