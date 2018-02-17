@@ -993,6 +993,7 @@ MediumEditor.extensions = {};
             var i, url = anchorUrl || false;
             if (el.nodeName.toLowerCase() === 'a') {
                 el.target = '_blank';
+                el.setAttribute('data-pjax', false);
             } else {
                 el = el.getElementsByTagName('a');
 
