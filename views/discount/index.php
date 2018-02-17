@@ -226,7 +226,7 @@ Pjax::begin([
                             </a>
                         </p>
                     </div>
-                    <div class="cards-block-discount row-3 main-pjax" style="margin-top: -13px;"
+                    <div class="cards-block-discount row-3 main-pjax" style="margin-top: -13px; margin-bottom: -30px;"
                          data-favorites-state-url="/discount/favorite-state">
                         <?= CardsDiscounts::widget([
                             'dataprovider' => $dataProviderDiscounts,
@@ -236,7 +236,6 @@ Pjax::begin([
                                 'load-time' => $loadTime,
                                 'show-distance' => true,
                                 'links-no-follow' => true,
-                                'hide-bottom-block' => true,
                             ]
                         ]); ?>
                     </div>
