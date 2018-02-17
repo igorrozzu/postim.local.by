@@ -66,8 +66,7 @@
     }
     .block-description-card,
     .container-settings,
-    .container-add-place,
-    .discount-post-block{
+    .container-add-place {
         width: calc(100% - 355px);
     }
 

@@ -335,6 +335,10 @@ class DiscountController extends MainController
         $pagination = new Pagination([
             'pageSize' => Yii::$app->request->get('per-page', 6),
             'page' => $request->get('page', 1) - 1,
+            'selfParams' => [
+                'exclude_discount_id' => true,
+                'city_url_name' => true,
+            ]
         ]);
         $loadTime = $request->get('loadTime', time());
 
@@ -416,14 +420,36 @@ class DiscountController extends MainController
 
         Helper::addViews($discount->totalView);
 
+        $discountSearchModel = new DiscountSearch();
+        $discountPagination = new Pagination([
+            'pageSize' => Yii::$app->request->get('per-page', 6),
+            'page' => Yii::$app->request->get('page', 1) - 1,
+            'route' => Url::to(['discount/load-interesting-discounts-by-city']),
+            'selfParams' => [
+                'exclude_discount_id' => true,
+                'city_url_name' => true,
+            ]
+        ]);
+
+        $loadTime = time();
+        $_GET['city_url_name'] = $post->city->url_name;
+        $_GET['exclude_discount_id'] = $discountId;
+        $dataProviderDiscounts = $discountSearchModel->searchByCityOnlyActive(
+            Yii::$app->request->queryParams,
+            $discountPagination,
+            $loadTime
+        );
+
         return $this->render('index', [
             'discount' => $discount,
             'post' => $post,
             'breadcrumbParams' => $breadcrumbParams,
+            'loadTime' => $loadTime,
             'economy' => $discount->calculateEconomy(),
             'isCurrentUserOwner' => $isCurrentUserOwner,
             'duration' => Yii::$app->formatter->asCustomDuration($discount->date_finish - time()),
-            'dataProviderComments' => $dataProviderComments
+            'dataProviderComments' => $dataProviderComments,
+            'dataProviderDiscounts' => $dataProviderDiscounts
         ]);
     }
 

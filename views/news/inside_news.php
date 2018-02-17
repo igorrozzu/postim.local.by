@@ -82,13 +82,22 @@ if($match){
                 </div>
             </div>
             <div class="comments_entity_container" data-entity_type="1" data-entity_id="<?=$news['id']?>">
-                <?=$this->render('/comments/comments',['dataProviderComments'=>$dataProviderComments,'totalComments'=>$news->totalComments])?>
+                <?=$this->render('/comments/comments', [
+                        'dataProviderComments' => $dataProviderComments,
+                        'totalComments' => $news->totalComments
+                    ])?>
             </div>
             <noindex>
                 <h2 class="h2-c">Последние новости</h2>
                 <div class="block-news-container">
                     <div class="block-news">
-                        <?= CardsNewsWidget::widget(['dataprovider' => $lastNews, 'settings' => ['replace-container-id' => 'feed-news','load-time'=>$loadTime]]) ?>
+                        <?= CardsNewsWidget::widget([
+                            'dataprovider' => $lastNews,
+                            'settings' => [
+                                'replace-container-id' => 'feed-news',
+                                'load-time' => $loadTime
+                            ]
+                        ]) ?>
                     </div>
                 </div>
                 <?php if (isset($dataProviderDiscounts) && $dataProviderDiscounts->getTotalCount() > 0):?>

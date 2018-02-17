@@ -27,6 +27,8 @@ class DiscountSearch extends Discounts
     public $open;
     public $sort;
     public $favorite_id;
+    public $exclude_discount_id;
+    public $city_url_name;
 
     private $queryForPlaceOnMap;
     private $key;
@@ -37,7 +39,8 @@ class DiscountSearch extends Discounts
     public function rules()
     {
         return [
-            [['category', 'under_category', 'city', 'open', 'sort', 'favorite_id'], 'safe'],
+            [['category', 'under_category', 'city', 'open', 'sort', 'favorite_id',
+                'exclude_discount_id', 'city_url_name'], 'safe'],
         ];
     }
 
@@ -254,12 +257,16 @@ class DiscountSearch extends Discounts
             ->groupBy([Discounts::tableName() . '.id'])
             ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
 
-        if (isset($this->city)) {
+        if (!empty($this->city_url_name)) {
             $query->andWhere(['or',
-                [Region::tableName() . '.url_name' => $this->city['url_name']],
-                [City::tableName() . '.url_name' => $this->city['url_name']],
-                [Countries::tableName() . '.url_name' => $this->city['url_name']],
+                [Region::tableName() . '.url_name' => $this->city_url_name],
+                [City::tableName() . '.url_name' => $this->city_url_name],
+                [Countries::tableName() . '.url_name' => $this->city_url_name],
             ]);
+        }
+
+        if (isset($this->exclude_discount_id)) {
+            $query->andWhere(['!=', Discounts::tableName() . '.id', $this->exclude_discount_id]);
         }
 
         if (!Yii::$app->user->isGuest) {
