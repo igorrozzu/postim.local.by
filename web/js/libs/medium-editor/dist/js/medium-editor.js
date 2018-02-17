@@ -1007,7 +1007,8 @@ MediumEditor.extensions = {};
         setRedirectAnchorUrl: function (anchorUrl) {
 
             if (anchorUrl.indexOf(window.location.hostname) == -1) {
-                anchorUrl = location.protocol + '//' + location.hostname + '/away?to=' + anchorUrl;
+
+                anchorUrl = location.protocol + '//' + location.hostname + '/away?to=' + encodeURIComponent(anchorUrl);
             }
 
             return anchorUrl
