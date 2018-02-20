@@ -632,6 +632,7 @@ class DiscountController extends MainController
                     $discount->promocode : (string) mt_rand(1000, 9999),
                 'pin_code' => null,
                 'status_promo' => DiscountOrder::STATUS['active'],
+                'price' => $discount->price_with_discount ?? $discount->price ?? null,
             ]);
 
             $transaction = Yii::$app->db->beginTransaction();
