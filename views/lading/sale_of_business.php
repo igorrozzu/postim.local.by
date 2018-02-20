@@ -143,7 +143,7 @@ $this->registerMetaTag([
                 <p>6. Размещение на главной странице сайта за счет новых отзывов</p>
                 <p>7. Набор полиграфии для бизнеса</p>
             </div>
-            <div style="margin-top: 120px"></div>
+            <div class="bottom-block-fill"></div>
             <div class="bottom-block">
                 <div class="total-price">Бесплатно</div>
                 <div style="margin-top: 30px"></div>
@@ -163,9 +163,14 @@ $this->registerMetaTag([
                 <p>7. Размещение интересных акций в социальных сетях проекта</p>
                 <p style="margin-top: 10px; font-family: PT_Sans bold; color: #6b778f;">+ Все возможности обычного бизнес-аккаунта </p>
             </div>
-            <div style="margin-top: 120px"></div>
+            <div class="bottom-block-fill"></div>
             <div class="bottom-block">
-                <div class="total-price">от 0,71 BYN в день <span></span></div>
+                <div class="total-price" style="text-decoration: line-through;">
+                    от 0,71 BYN в день или оговоренный % от заказа
+                </div>
+                <div class="attention-text" style="margin-top: 5px;">
+                    Акция до 31.03.18! Первые 90 дней бесплатно
+                </div>
                 <div style="margin-top: 30px"></div>
                 <div class="btn-inside-content js-btn-active-bsa" data-type="20" style="width: 100px">Подключить</div>
             </div>
