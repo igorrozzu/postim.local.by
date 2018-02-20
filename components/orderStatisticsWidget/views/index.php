@@ -1,6 +1,6 @@
 <?php
 $totalCount = $dataProvider->getTotalCount();
-$totalPrice = $totalCount > 0 ? $dataProvider->query->sum('price'): null;
+$totalPrice = $totalCount > 0 ? $dataProvider->query->sum('price_with_discount'): null;
 ?>
 
 <div class="table-promo">

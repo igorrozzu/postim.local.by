@@ -13,7 +13,7 @@ foreach ($data as $item):?>
                 'dd.MM.yyyy')?></span>
         <span class="r4">до <?=Yii::$app->formatter->asDate($item->date_finish + $timezone,
                 'dd.MM.yyyy')?></span>
-        <span class="r5"><?=$item->discount->price?></span>
+        <span class="r5"><?=$item->discount->price_with_discount?></span>
         <span class="r6">
             <a href="<?=Url::to(['user/index', 'id' => $item->user->id])?>">
                 <?=$item->user->getFullName()?>

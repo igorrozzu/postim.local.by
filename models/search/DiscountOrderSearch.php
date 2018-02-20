@@ -115,7 +115,8 @@ class DiscountOrderSearch extends DiscountOrder
 
         if(isset($this->order_time)) {
 
-            $time = mktime(0, 0, 0);
+            $timeZone = Yii::$app->user->getTimezoneInSeconds();
+            $time = mktime(0, 0, 0) - $timeZone;
             $current_month = (int)date('n');
             $time_current_month = mktime(0,0,0, $current_month, 1);
 
@@ -125,26 +126,25 @@ class DiscountOrderSearch extends DiscountOrder
                 $time_prev_month = mktime(0,0,0, $current_month - 1, 1);
             }
 
-            $timeZone = Yii::$app->user->getTimezoneInSeconds();
-            $timeForView = strtotime(date('d.m.Y', time() + $timeZone));
+            $timeForView = time() + $timeZone;
 
             switch ($this->order_time) {
                 case 'today': $query->andWhere(['>=', $table . '.date_buy', $time]);
                     $this->timeRange = date('d.m.Y', $timeForView);
                     break;
-                case 'yesterday': $query->andWhere(['>=', $table . '.date_buy', $time - 3600 * 12])
+                case 'yesterday': $query->andWhere(['>=', $table . '.date_buy', $time - 3600 * 24])
                                         ->andWhere(['<', $table . '.date_buy', $time]);
-                    $this->timeRange = date('d.m.Y - ', $timeForView - 3600 * 12) .
+                    $this->timeRange = date('d.m.Y - ', $timeForView - 3600 * 24) .
                                        date('d.m.Y', $timeForView);
                     break;
-                case 'current-month': $query->andWhere(['>=', $table . '.date_buy', $time_current_month]);
+                case 'current-month': $query->andWhere(['>=', $table . '.date_buy', $time_current_month - $timeZone]);
                     $this->timeRange = date('d.m.Y - ', $time_current_month) .
                                        date('d.m.Y', $timeForView);
                     break;
-                case 'prev-month': $query->andWhere(['>=', $table . '.date_buy', $time_prev_month])
-                                         ->andWhere(['<', $table . '.date_buy', $time_current_month]);
+                case 'prev-month': $query->andWhere(['>=', $table . '.date_buy', $time_prev_month - $timeZone])
+                                         ->andWhere(['<', $table . '.date_buy', $time_current_month - $timeZone]);
                     $this->timeRange = date('d.m.Y - ', $time_prev_month) .
-                                       date('d.m.Y', $time_current_month - 3600 * 12);
+                                       date('d.m.Y', $time_current_month - 3600 * 24);
                     break;
             }
         }
