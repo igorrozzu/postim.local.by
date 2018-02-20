@@ -116,7 +116,7 @@ class DiscountOrderSearch extends DiscountOrder
         if(isset($this->order_time)) {
 
             $timeZone = Yii::$app->user->getTimezoneInSeconds();
-            $time = mktime(0, 0, 0) - $timeZone;
+            $time = strtotime('now 00:00:00', time() + $timeZone) - $timeZone;
             $current_month = (int)date('n');
             $time_current_month = mktime(0,0,0, $current_month, 1);
 

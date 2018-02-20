@@ -1,6 +1,9 @@
 <?php
+
+use app\models\entities\DiscountOrder;
+
 $totalCount = $dataProvider->getTotalCount();
-$totalPrice = $totalCount > 0 ? $dataProvider->query->sum('price_with_discount'): null;
+$totalPrice = $totalCount > 0 ? $dataProvider->query->sum(DiscountOrder::tableName() . '.price'): null;
 ?>
 
 <div class="table-promo">

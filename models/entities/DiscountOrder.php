@@ -18,6 +18,7 @@ use Yii;
  * @property integer $status_promo
  * @property integer $date_finish
  * @property Discounts $discount
+ * @property string $price
  * @property User $user
  */
 class DiscountOrder extends \yii\db\ActiveRecord
@@ -42,6 +43,7 @@ class DiscountOrder extends \yii\db\ActiveRecord
             [['user_id', 'discount_id', 'date_buy', 'date_finish', 'promo_code', 'status_promo'], 'required'],
             [['user_id', 'discount_id', 'date_buy', 'date_finish', 'pin_code', 'status_promo'], 'integer'],
             [['promo_code'], 'string', 'max' => 200],
+            [['price'], 'number', 'min' => 0],
             [['discount_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discounts::className(), 'targetAttribute' => ['discount_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];

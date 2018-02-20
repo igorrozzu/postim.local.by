@@ -9,6 +9,8 @@ $currentPage = $dataProvider->pagination->getPage();
 $searchUrl = $dataProvider->pagination->createUrl($currentPage);
 $dataProvider->pagination->selfParams['order_time'] = false;
 $currentUrl = $dataProvider->pagination->createUrl($currentPage);
+$dataProvider->pagination->selfParams['order_time'] = true;
+
 $current_month = (int)date('n');
 $time_prev_month = mktime(0,0,0, $current_month !== 1 ? $current_month - 1 : 12, 1);
 
@@ -32,7 +34,8 @@ Pjax::begin([
 <div class="block-content">
     <div class="container-promo-statistic">
         <div class="search-promo-statistic">
-            <input class="search-by-promo-code" placeholder="Поиск по названию и промокоду" data-href="<?=$searchUrl?>">
+            <input class="search-by-promo-code" placeholder="Поиск по названию и промокоду"
+                   data-href="<?=$searchUrl?>">
         </div>
         <div class="horizontal-scroll12">
             <div class="block-sort-menu feeds-btn-bar">
