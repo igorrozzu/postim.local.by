@@ -134,8 +134,7 @@ class DiscountOrderSearch extends DiscountOrder
                     break;
                 case 'yesterday': $query->andWhere(['>=', $table . '.date_buy', $time - 3600 * 24])
                                         ->andWhere(['<', $table . '.date_buy', $time]);
-                    $this->timeRange = date('d.m.Y - ', $timeForView - 3600 * 24) .
-                                       date('d.m.Y', $timeForView);
+                    $this->timeRange = date('d.m.Y', $timeForView - 3600 * 24);
                     break;
                 case 'current-month': $query->andWhere(['>=', $table . '.date_buy', $time_current_month - $timeZone]);
                     $this->timeRange = date('d.m.Y - ', $time_current_month) .
