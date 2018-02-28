@@ -221,7 +221,7 @@ echo "<script>$js</script>";
                             <div class="web-site-card">Веб-сайт</div>
                             <div class="block-inside">
                                 <p class="info-card-text">
-                                    <a target="_blank" href="<?= '/away?to=' . urlencode($post->info['web_site'])?>">
+                                    <a target="_blank" href="<?= '/away?to=' . urlencode(Url::ensureScheme('//' . Yii::$app->formatter->asHostName($post->info['web_site']), 'http'))?>">
                                         <?= Yii::$app->formatter->asHostName($post->info['web_site']) ?>
                                     </a>
                                 </p>
