@@ -52,5 +52,10 @@ use yii\helpers\Url;
                 post.photos.nextPhoto();
             }
         });
+
+        $('.photo-popup-item').load(function() {
+            $('.photo-popup #loader-box2').css({display: 'none'});
+            $('.photo-popup-item').css({display: 'block'});
+        });
     });
 </script>
