@@ -515,32 +515,39 @@
 
 			}
 		}
-		private function editPhotos(int $pos_id){
+		private function editPhotos(int $pos_id)
+        {
+			$galleries = Gallery::find()
+                ->where([
+                    'post_id' => $pos_id,
+                    'user_status' => 1
+                ])->all();
 
-			$galleries = Gallery::find()->where(['post_id'=>$pos_id,'user_status'=>1])->all();
-
-			if($galleries && is_array($galleries)){
-				foreach ($galleries as $gallery){
+			if ($galleries && is_array($galleries)) {
+				foreach ($galleries as $gallery) {
 					$is_isset = false;
-					if($this->photos && is_array($this->photos)){
+					if ($this->photos && is_array($this->photos)) {
 						foreach ($this->photos as $photo){
-							if($photo['link'] == $gallery['link']){
+							if ($photo['link'] == $gallery['link']) {
+							    if ($photo['src'] !== $gallery->source) {
+                                    $gallery->source = $photo['src'];
+                                    $gallery->save();
+                                }
 								$is_isset = true;
+								break;
 							}
 						}
 					}
 
-					if(!$is_isset){
+					if (!$is_isset){
 						$tmpLink = Yii::getAlias('@webroot/post_photo/'.$pos_id.'/' . $gallery['link']);
-						if(file_exists($tmpLink)){
+						if (file_exists($tmpLink)) {
 							unlink($tmpLink);
 						}
 						$gallery->delete();
 					}
-
 				}
 			}
-
 		}
 
 		private function removeRelations($post){

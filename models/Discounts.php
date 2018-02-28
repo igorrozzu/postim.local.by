@@ -394,7 +394,12 @@ class Discounts extends \yii\db\ActiveRecord
                 if ($this->photos && is_array($this->photos)) {
                     foreach ($this->photos as $photo) {
                         if ($photo['link'] === $discountPhoto['link']) {
+                            if ($photo['src'] !== $discountPhoto->source) {
+                                $discountPhoto->source = $photo['src'];
+                                $discountPhoto->save();
+                            }
                             $isset = true;
+                            break;
                         }
                     }
                 }
