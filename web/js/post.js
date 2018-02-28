@@ -312,15 +312,21 @@ var Post = (function (window, document, undefined,$) {
                             _container.state.$photoBox.css('display', 'flex');
                             $('body').css('overflow', 'hidden');
 
-                            $('.photo-popup-item').attr('src', that.methods.createPhotoUrl(photo));
+                            $('.photo-popup-item').load(function() {
+                                $('.photo-popup #loader-box2').css({display: 'none'});
+                                $('.photo-popup-item').css({display: 'block'});
+                            });
+                            that.methods.changePopupPhoto(photo);
 
-                            that.methods.resizePopupPhoto();
                             $('.photo-info .mCSB_container').css('left', 0);
                             _container.state.galleryIsOpen = true;
                         },
 
                         changePopupPhoto: function (photo) {
+                            $('.photo-popup #loader-box2').css({display: 'block'});
+                            $('.photo-popup-item').css({display: 'none'});
                             $('.photo-popup-item').attr('src', that.methods.createPhotoUrl(photo));
+
                             that.methods.resizePopupPhoto();
                         },
 

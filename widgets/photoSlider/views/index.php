@@ -20,6 +20,9 @@ use yii\helpers\Url;
             </div>
         </div>
         <div class="photo-wrap">
+            <div id="loader-box2">
+                <div class="loader" style="border-left: 8px solid #FFFFFF;"></div>
+            </div>
             <img class="photo-popup-item">
         </div>
     </div>
