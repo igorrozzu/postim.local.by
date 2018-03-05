@@ -3,7 +3,7 @@ return [
     'class' => 'yii\authclient\Collection',
     'clients' => [
         'vkontakte' => [
-            'class' => 'yii\authclient\clients\VKontakte',
+            'class' => 'app\components\social\clients\VK',
             'clientId' => '5088327',
             'clientSecret' => 'Hn7Toih2jduSjZVtoLdl',
             'scope' => ['email'],
