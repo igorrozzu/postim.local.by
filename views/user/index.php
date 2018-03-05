@@ -87,14 +87,17 @@ Pjax::begin([
     'formSelector' => false,
 ]);
 echo $feedReviews;
+?>
+<div style="margin-bottom:30px;"></div>
+<?php
+Pjax::end();
+
 echo PhotoSlider::widget([
     'settings' => [
         'photoCount' => $profilePhotoCount,
     ],
 ]);
 ?>
-<div style="margin-bottom:30px;"></div>
-
 <script>
     $(document).ready(function() {
         post.photos.setUserId(<?=$user->id?>);
@@ -109,10 +112,6 @@ echo PhotoSlider::widget([
         <?php endif;?>
     })
 </script>
-<?php
-Pjax::end();
-?>
-
 <?php
 	$redirectMessage = Yii::$app->session->getFlash('redirect_after_add'.Yii::$app->user->getId());
 	if($redirectMessage){

@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\components\cardsNewsWidget\CardsNewsWidget;
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\cardsPromoWidget\CardsPromoWidget;
 use app\components\cardsReviewsWidget\CardsReviewsWidget;
@@ -12,15 +11,11 @@ use app\components\user\FavoritesFeedsHelper;
 use app\models\City;
 use app\models\entities\DiscountOrder;
 use app\models\entities\Gallery;
-use app\models\entities\OwnerPost;
-use app\models\moderation_post\PostsModeration;
 use app\models\moderation_post\PostsModerationSearch;
 use app\models\PostsSearch;
-use app\models\Region;
 use app\models\ReviewsSearch;
 use app\models\search\DiscountOrderSearch;
 use app\models\search\GallerySearch;
-use app\models\search\NewsSearch;
 use app\models\TempEmail;
 use app\models\uploads\UploadUserPhoto;
 use app\models\User;
