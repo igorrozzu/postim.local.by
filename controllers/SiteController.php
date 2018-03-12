@@ -217,7 +217,7 @@ class SiteController extends MainController
             $isCategory = $categoryUrlRuler->parseRequest(Yii::$app->getUrlManager(),$preRequest);
             if($isCategory && $isCategory[0] != '/site/index'){
 
-                $nameCategory = $isCategory[1]['category']['url_name'];
+                $nameCategory = $isCategory[1]['under_category']['url_name'] ?? $isCategory[1]['category']['url_name'];
                 $newUrl = ($dataCity['url_name']?'/'.$dataCity['url_name']:'').'/'.$nameCategory;
 
                 if ($isCategory[0] === '/category/get-discounts') {
