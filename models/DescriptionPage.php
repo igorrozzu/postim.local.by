@@ -57,7 +57,7 @@ class DescriptionPage extends \yii\db\ActiveRecord
     }
 
     public static function convertUrl(string $url){
-        $newUrl = preg_replace('/(https?:\/\/.+(?=\/))|\?.+/','',$url);
+        $newUrl = preg_replace('/(https?:\/\/.+?(?=\/))|\?.+/','',$url);
         return $newUrl;
     }
 
