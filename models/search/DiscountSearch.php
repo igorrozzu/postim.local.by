@@ -16,8 +16,6 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
-use yii\db\Query;
-
 
 class DiscountSearch extends Discounts
 {
@@ -397,7 +395,8 @@ class DiscountSearch extends Discounts
         $query = Discounts::find()
             ->innerJoinWith(['totalView'])
             ->joinWith(['gallery', 'hasLike'])
-            ->where([Discounts::tableName() . '.id' => $discountId]);
+            ->where([Discounts::tableName() . '.id' => $discountId])
+            ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']]);
 
         return $query->one();
     }
