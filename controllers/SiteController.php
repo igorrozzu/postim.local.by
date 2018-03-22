@@ -15,9 +15,7 @@ use app\models\entities\Complaints;
 use app\models\Feedback;
 use app\models\Geocoding;
 use app\models\LoginModel;
-use app\models\News;
 use app\models\OtherPage;
-use app\models\Posts;
 use app\models\PostsSearch;
 use app\models\Reviews;
 use app\models\ReviewsLike;
@@ -27,14 +25,9 @@ use app\models\TempUser;
 use app\models\User;
 use linslin\yii2\curl\Curl;
 use Yii;
-use yii\base\Exception;
 use yii\data\ActiveDataProvider;
-use yii\data\ArrayDataProvider;
-use yii\data\SqlDataProvider;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use app\components\MainController;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
@@ -473,104 +466,8 @@ class SiteController extends MainController
 			'pjax'=>'class="main-pjax a"'
 		];
 
-
-
-
 		return $breadcrumbParams;
 	}
-
-	public function actionSearchAutoComplete(string $text){
-
-        $model = new PostsSearch();
-        $modelNews = new NewsSearch();
-
-        $dataAutoComplete = $model->getAutoComplete($text);
-        $dataAutoCompleteNews = $modelNews->getAutoComplete($text);
-
-        return $this->renderAjax('__search_auto_complete.php',
-            [
-                'dataAutoComplete' => $dataAutoComplete,
-                'dataAutoCompleteNews' => $dataAutoCompleteNews
-            ]
-        );
-
-    }
-
-    public function actionSearch(string $text){
-
-	    $model  = null;
-        $dataProvider = null;
-        $widget = null;
-        $widget_params = null;
-
-        $pagination = new Pagination([
-            'pageSize' => Yii::$app->request->get('per-page', 8),
-            'page' => Yii::$app->request->get('page', 1) - 1,
-            'route'=>Yii::$app->request->getPathInfo(),
-            'selfParams'=> [
-                'text'=>true,
-                'type_feed' => true,
-            ],
-        ]);
-        $loadTime = Yii::$app->request->get('loadTime', time());
-
-
-        $modelPlace = new PostsSearch();
-        $widgetPlace = CardsPlaceWidget::className();
-        $widget_paramsPlace = [
-            'dataprovider' => null,
-            'settings'=>[
-                'show-more-btn'=>true,
-                'replace-container-id' => 'feed-posts',
-                'load-time' => $loadTime,
-
-            ]
-        ];
-
-        $modelNews = new NewsSearch();
-        $widgetNews = CardsNewsWidget::className();
-        $widget_paramsNews = [
-            'dataprovider' => null,
-            'settings' =>
-                [
-                    'replace-container-id' => 'feed-news',
-                    'load-time' => $loadTime
-                ]
-        ];
-
-        $widget_paramsPlace['dataprovider'] = $modelPlace->search(
-            Yii::$app->request->queryParams,
-            $pagination,
-            ['date' => SORT_DESC],
-            $loadTime
-        );
-
-        $widget_paramsNews['dataprovider'] = $modelNews->search(
-            Yii::$app->request->queryParams,
-            $pagination,
-            ['date' => SORT_DESC],
-            $loadTime
-        );
-
-	    if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false)){
-	        if(Yii::$app->request->get('type_feed','place')){
-                echo $widgetPlace::widget($widget_paramsPlace);
-            }else{
-                echo $widgetNews::widget($widget_paramsNews);
-            }
-
-        }else{
-            return $this->render('__search_feeds.php',
-                [
-                    'widgetPlace' => $widgetPlace,
-                    'widget_paramsPlace' => $widget_paramsPlace,
-                    'widgetNews' => $widgetNews,
-                    'widget_paramsNews' => $widget_paramsNews
-                ]
-            );
-        }
-
-    }
 
     public function actionFeedback(){
 

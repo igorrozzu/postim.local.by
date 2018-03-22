@@ -36,7 +36,7 @@ $manager = [
         '<url:.+>-n<id:\d+>'=>'news/news',//статья новости
         '<url:^add$>'=>'post/add',
         '<url:^edit>/<id:\d+>'=>'post/edit',
-        'search/<text:.+>'=>'site/search',
+        'search/<text:.+>' => 'main-search/index',
         'feedback'=>'site/feedback',
         'away'=>'site/away',
         [

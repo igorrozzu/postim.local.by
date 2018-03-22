@@ -1,7 +1,13 @@
 <?php
+
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 $discounts = $dataProvider->getModels();
+
+if (isset($settings['is-it-sphinx-model'])) {
+    $discounts = ArrayHelper::getColumn($discounts, 'discount');
+}
 ?>
 
 <?php foreach ($discounts as $discount):
