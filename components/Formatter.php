@@ -77,4 +77,29 @@ class Formatter extends \yii\i18n\Formatter
             return $text;
         }
     }
+
+    /**
+     * @param string $text
+     * @param bool $en2ru
+     * en2ru if set as true, otherwise ru2en
+     * @return null|string|string[]
+     */
+    public function correctWrongKeyword(string $text, bool $en2ru = true)
+    {
+        $ruKeyword = [
+            'й','ц','у','к','е','н','г','ш','щ','з','х','ъ',
+            'ф','ы','в','а','п','р','о','л','д','ж','э',
+            'я','ч','с','м','и','т','ь','б','ю'
+        ];
+        $enKeyword = [
+            'q','w','e','r','t','y','u','i','o','p','[',']',
+            'a','s','d','f','g','h','j','k','l',';','\'',
+            'z','x','c','v','b','n','m',',','.'
+        ];
+
+        $result = $en2ru ? str_replace($enKeyword, $ruKeyword, $text) :
+            str_replace($ruKeyword, $enKeyword, $text);
+
+        return $result;
+    }
 }

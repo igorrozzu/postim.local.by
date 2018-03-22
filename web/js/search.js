@@ -88,8 +88,8 @@ var Search = (function (window, document, undefined,$) {
                 setTimeout(function () {
 
                     var text = $input.val();
-                    if(text.length > 1){
-                        $.get('/site/search-auto-complete',{text:text},function (html) {
+                    if(text.length > 2){
+                        $.get('/main-search/auto-complete',{text:text},function (html) {
                             if(!!html){
                                 __$containerAutoComplete.html(html);
                                 if(!__$containerAutoComplete.hasClass('active')){

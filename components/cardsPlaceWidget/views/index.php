@@ -1,11 +1,18 @@
 <?php
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Html;
-    use app\components\cardsPlaceWidget\CardsPlaceWidget;
-    use app\components\Helper;
-    $data = $dataprovider->getModels();
-    $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation')?\yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')):false;
-    $oldFormatter = new \app\components\OldFormatter();
+
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use app\components\cardsPlaceWidget\CardsPlaceWidget;
+use yii\helpers\Json;
+
+$data = $dataprovider->getModels();
+$CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation') ?
+    Json::decode(Yii::$app->request->cookies->getValue('geolocation')) : false;
+$oldFormatter = new \app\components\OldFormatter();
+
+if (isset($settings['is-it-sphinx-model'])) {
+    $data = ArrayHelper::getColumn($data, 'post');
+}
 ?>
 <?php foreach ($data as $item):?>
 

@@ -43,6 +43,7 @@ $config = [
         'db' => $db,
         'mailer' => require(__DIR__ . '/mailer.php'),
         'urlManager' => require(__DIR__ . '/urlManager.php'),
+        'sphinx' => require ('sphinxSearch/config.php'),
     ],
     'params' => $params,
     /*

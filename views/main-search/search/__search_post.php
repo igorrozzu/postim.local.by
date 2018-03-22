@@ -1,12 +1,8 @@
 <div class="block-content">
-    <?php if($widget_params['dataprovider']->totalCount):?>
-        <div class="block-news-container">
-            <div class="block-news">
-                <?=$widget::widget($widget_params);?>
-            </div>
+    <?php if($widget['params']['dataprovider']->getTotalCount()):?>
+        <div class="cards-block">
+            <?=$widget['class']::widget($widget['params']);?>
         </div>
-        <div class="clear-fix"></div>
-        <div style="margin-top: 30px"></div>
     <?php else:?>
         <div class="container-message">
             <div class="message-filter">
@@ -16,4 +12,3 @@
         </div>
     <?php endif;?>
 </div>
-
