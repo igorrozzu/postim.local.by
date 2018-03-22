@@ -7,6 +7,9 @@ var Search = (function (window, document, undefined,$) {
 
        var __$containerAutoComplete = null;
        var __$body = null;
+       var config = {
+           minTextLength: 1,
+       }
 
         var that = {
 
@@ -88,7 +91,7 @@ var Search = (function (window, document, undefined,$) {
                 setTimeout(function () {
 
                     var text = $input.val();
-                    if(text.length > 2){
+                    if(text.length > config.minTextLength){
                         $.get('/main-search/auto-complete',{text:text},function (html) {
                             if(!!html){
                                 __$containerAutoComplete.html(html);
