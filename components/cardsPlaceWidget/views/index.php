@@ -28,7 +28,12 @@ if (isset($settings['is-it-sphinx-model'])) {
                     <div class="glass">
                         <div class="reviews-btn-icn">
                             <div class="rating bg-r<?=$item["rating"]?>"><?=$item["rating"]?></div>
-                            <div class="total-reviews"><?=$item["count_reviews"]?> отзывов</div>
+                            <div class="total-reviews">
+                                <?=$item["count_reviews"]?>
+                                <?=Yii::$app->formatter->getNumEnding($item["count_reviews"], [
+                                        'отзыв', 'отзыва', 'отзывов'
+                                ])?>
+                            </div>
                         </div>
                         <div class="bookmarks-btn<?=$item->is_like?' active':''?>">
                             <?=$item["count_favorites"]?>

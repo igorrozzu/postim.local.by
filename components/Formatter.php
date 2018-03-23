@@ -102,4 +102,31 @@ class Formatter extends \yii\i18n\Formatter
 
         return $result;
     }
+
+    /**
+     * Функция возвращает окончание для множественного числа слова на основании числа и массива окончаний
+     * @param  $number int Число на основе которого нужно сформировать окончание
+     * @param  $ending_arr  array Массив слов с правильными окончаниями для чисел (1, 2, 5),
+     *         например array('комментарий', 'комментария', 'комментариев')
+     * @return string
+     */
+    public function getNumEnding(int $number, array $ending_arr)
+    {
+        $number = $number % 100;
+        if ($number >= 11 && $number <= 19) {
+            $ending = $ending_arr[2];
+        } else {
+            $i = $number % 10;
+            switch ($i) {
+                case (1): $ending = $ending_arr[0];
+                    break;
+                case (2):
+                case (3):
+                case (4): $ending = $ending_arr[1];
+                    break;
+                default: $ending = $ending_arr[2];
+            }
+        }
+        return $ending;
+    }
 }
