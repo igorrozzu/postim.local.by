@@ -8,13 +8,7 @@
 
 namespace app\controllers;
 
-
-use app\components\cardsNewsWidget\CardsNewsWidget;
-use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use app\components\MainController;
-use app\components\Pagination;
-use app\models\PostsSearch;
-use app\models\search\NewsSearch;
 use app\services\search\MainSearchService;
 use Yii;
 use yii\di\Container;
