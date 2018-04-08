@@ -47,8 +47,7 @@ class PostController extends MainController
     public function actionIndex(int $id, string $photo_id = null, int $review_id = null)
     {
         $query = Posts::find()
-            ->where(['id'=>$id])
-            ->andWhere(['!=', Posts::tableName() . '.status', Posts::$STATUS['private']]);
+            ->where(['id'=>$id]);
 
         $with = ['info', 'city', 'totalView','onlyOnceCategories.category', 'isCurrentUserOwner',
             'categories', 'businessOwner',
