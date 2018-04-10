@@ -6,8 +6,8 @@ return [
     'transport' => [
         'class' => 'Swift_SmtpTransport',
         'host' => 'smtp.yandex.ru',
-        'username' => 'info@postim.by',
-        'password' => 'mc2447382@',
+        'username' => 'feedback@postim.by',
+        'password' => 'vlad1770015@',
         'port' => '465',
         'encryption' => 'ssl',
     ],
