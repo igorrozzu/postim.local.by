@@ -3,7 +3,7 @@
 return [
     'class' => 'app\components\Mailer',
     'useFileTransport' => false,
-    'transport' => [
+    'transports' => [
         'info'     => [
             'class'      => 'Swift_SmtpTransport',
             'host'       => 'smtp.yandex.ru',
