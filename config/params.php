@@ -6,7 +6,7 @@ $params = [
     'premiumAccount' => require 'premiumAccount.php',
 
     'adminEmail' => 'admin@example.com',
-    'mail.supportEmail' => 'info@postim.by',
+    'mail.supportEmail' => 'mail.supportEmail',
     'site.hostName' => 'https://postim.local.by',
 
     'user.loginDuration' => 3600*24*30,
