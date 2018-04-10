@@ -77,4 +77,56 @@ class Formatter extends \yii\i18n\Formatter
             return $text;
         }
     }
+
+    /**
+     * @param string $text
+     * @param bool $en2ru
+     * en2ru if set as true, otherwise ru2en
+     * @return null|string|string[]
+     */
+    public function correctWrongKeyword(string $text, bool $en2ru = true)
+    {
+        $ruKeyword = [
+            'й','ц','у','к','е','н','г','ш','щ','з','х','ъ',
+            'ф','ы','в','а','п','р','о','л','д','ж','э',
+            'я','ч','с','м','и','т','ь','б','ю'
+        ];
+        $enKeyword = [
+            'q','w','e','r','t','y','u','i','o','p','[',']',
+            'a','s','d','f','g','h','j','k','l',';','\'',
+            'z','x','c','v','b','n','m',',','.'
+        ];
+
+        $result = $en2ru ? str_replace($enKeyword, $ruKeyword, $text) :
+            str_replace($ruKeyword, $enKeyword, $text);
+
+        return $result;
+    }
+
+    /**
+     * Функция возвращает окончание для множественного числа слова на основании числа и массива окончаний
+     * @param  $number int Число на основе которого нужно сформировать окончание
+     * @param  $ending_arr  array Массив слов с правильными окончаниями для чисел (1, 2, 5),
+     *         например array('комментарий', 'комментария', 'комментариев')
+     * @return string
+     */
+    public function getNumEnding(int $number, array $ending_arr)
+    {
+        $number = $number % 100;
+        if ($number >= 11 && $number <= 19) {
+            $ending = $ending_arr[2];
+        } else {
+            $i = $number % 10;
+            switch ($i) {
+                case (1): $ending = $ending_arr[0];
+                    break;
+                case (2):
+                case (3):
+                case (4): $ending = $ending_arr[1];
+                    break;
+                default: $ending = $ending_arr[2];
+            }
+        }
+        return $ending;
+    }
 }

@@ -48,6 +48,7 @@ class PostController extends MainController
     {
         $query = Posts::find()
             ->where(['id'=>$id]);
+
         $with = ['info', 'city', 'totalView','onlyOnceCategories.category', 'isCurrentUserOwner',
             'categories', 'businessOwner',
             'workingHours' => function ($query) {

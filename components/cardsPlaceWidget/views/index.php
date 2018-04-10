@@ -1,11 +1,18 @@
 <?php
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Html;
-    use app\components\cardsPlaceWidget\CardsPlaceWidget;
-    use app\components\Helper;
-    $data = $dataprovider->getModels();
-    $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation')?\yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')):false;
-    $oldFormatter = new \app\components\OldFormatter();
+
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use app\components\cardsPlaceWidget\CardsPlaceWidget;
+use yii\helpers\Json;
+
+$data = $dataprovider->getModels();
+$CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation') ?
+    Json::decode(Yii::$app->request->cookies->getValue('geolocation')) : false;
+$oldFormatter = new \app\components\OldFormatter();
+
+if (isset($settings['is-it-sphinx-model'])) {
+    $data = ArrayHelper::getColumn($data, 'post');
+}
 ?>
 <?php foreach ($data as $item):?>
 
@@ -21,7 +28,12 @@
                     <div class="glass">
                         <div class="reviews-btn-icn">
                             <div class="rating bg-r<?=$item["rating"]?>"><?=$item["rating"]?></div>
-                            <div class="total-reviews"><?=$item["count_reviews"]?> отзывов</div>
+                            <div class="total-reviews">
+                                <?=$item["count_reviews"]?>
+                                <?=Yii::$app->formatter->getNumEnding($item["count_reviews"], [
+                                        'отзыв', 'отзыва', 'отзывов'
+                                ])?>
+                            </div>
                         </div>
                         <div class="bookmarks-btn<?=$item->is_like?' active':''?>">
                             <?=$item["count_favorites"]?>

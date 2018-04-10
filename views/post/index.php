@@ -105,7 +105,12 @@ echo "<script>$js</script>";
             <meta itemprop="worstRating" content="1">
             <meta itemprop="bestRating" content="5">
         </div>
-        <div class="count-reviews-text"><?=$post->count_reviews?> отзывов</div>
+        <div class="count-reviews-text">
+            <?=$post->count_reviews?>
+            <?=Yii::$app->formatter->getNumEnding($post->count_reviews, [
+                'отзыв', 'отзыва', 'отзывов'
+            ])?>
+        </div>
         <div class="add-favorite <?=$post['is_like']?'active':''?>"><?=$post->count_favorites?></div>
     </div>
 </div>
