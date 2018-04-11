@@ -38,18 +38,6 @@ class DiscountController extends MainController
             if (!$owner) {
                 throw new NotFoundHttpException();
             }
-            if ($owner->status !== BusinessOrder::$PREMIUM_BIZ_AC) {
-                if ($owner->status === BusinessOrder::$BIZ_AC) {
-                    Yii::$app->session->setFlash('message', [
-                        'type' => 'error',
-                        'text' => 'Добавлять скидки могут только Премиум бизнес-аккаунты, выберите период, оплатите и получите доступ.',
-                    ]);
-                    return $this->redirect(Url::to(['account/premium']));
-
-                } else {
-                    throw new NotFoundHttpException();
-                }
-            }
         }
 
         $model = new Discounts([
@@ -133,18 +121,6 @@ class DiscountController extends MainController
             $owner = Yii::$app->user->getOwnerThisPost($discount->post_id);
             if (!$owner) {
                 throw new NotFoundHttpException();
-            }
-            if ($owner->status !== BusinessOrder::$PREMIUM_BIZ_AC) {
-                if ($owner->status === BusinessOrder::$BIZ_AC) {
-                    Yii::$app->session->setFlash('message', [
-                        'type' => 'error',
-                        'text' => 'Редактировать скидки могут только Премиум бизнес-аккаунты, выберите период, оплатите и получите доступ.',
-                    ]);
-                    return $this->redirect(Url::to(['account/premium']));
-
-                } else {
-                    throw new NotFoundHttpException();
-                }
             }
         }
 
