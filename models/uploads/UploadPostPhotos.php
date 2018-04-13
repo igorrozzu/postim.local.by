@@ -82,13 +82,19 @@ class UploadPostPhotos extends Model
 
     public function beforeValidate()
     {
-        $result = OwnerPost::find()->where([
-            'owner_id' => Yii::$app->user->id,
-            'post_id' => (int)Yii::$app->request->post('postId'),
-        ])->one();
-        if (isset($result)) {
+        if (Yii::$app->user->isModerator()) {
             $this->userStatus = Gallery::USER_STATUS['owner'];
+        } else {
+            $result = OwnerPost::find()->where([
+                'owner_id' => Yii::$app->user->id,
+                'post_id' => (int)Yii::$app->request->post('postId'),
+            ])->one();
+
+            if (isset($result)) {
+                $this->userStatus = Gallery::USER_STATUS['owner'];
+            }
         }
+
         return parent::beforeValidate();
     }
 }
