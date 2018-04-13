@@ -8,6 +8,7 @@ $params = [
     'adminEmail' => 'admin@example.com',
     'mail.supportEmail' => 'info@postim.by',
     'mail.feedbackEmail' => 'feedback@postim.by',
+    'mail.askEmail' => 'ask@postim.by',
     'site.hostName' => 'https://postim.local.by',
 
     'user.loginDuration' => 3600*24*30,
