@@ -33,7 +33,7 @@ class Feedback extends Model
 
         if($this->validate()){
 
-            Yii::$app->mailer->useTransport('feedback')->compose()
+            Yii::$app->mailer->useTransport('ask')->compose()
                 ->setTo(Yii::$app->params['mail.feedbackEmail'])
                 ->setFrom([Yii::$app->params['mail.feedbackEmail'] => $this->email])
                 ->setSubject($this->subject)

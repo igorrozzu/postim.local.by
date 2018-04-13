@@ -19,6 +19,14 @@ return [
             'password'   => 'vlad1770015@',
             'port'       => '465',
             'encryption' => 'ssl',
-        ]
+        ],
+        'ask' => [
+            'class'      => 'Swift_SmtpTransport',
+            'host'       => 'smtp.yandex.ru',
+            'username'   => 'ask@postim.by',
+            'password'   => 'vlad1770015@',
+            'port'       => '465',
+            'encryption' => 'ssl',
+        ],
     ],
 ];
