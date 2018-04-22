@@ -29,6 +29,7 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use app\components\MainController;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
 use yii\web\Response;
@@ -470,6 +471,14 @@ class SiteController extends MainController
 	}
 
     public function actionFeedback(){
+
+        $this->enableCsrfValidation = true;
+        Yii::$app->getRequest()->enableCsrfValidation = true;
+        if ($this->enableCsrfValidation && Yii::$app->getErrorHandler()->exception === null &&
+            !Yii::$app->getRequest()->validateCsrfToken())
+        {
+            throw new BadRequestHttpException(Yii::t('yii', 'Unable to verify your data submission.'));
+        }
 
         $feedBack = new Feedback();
         $toastMessage = null;

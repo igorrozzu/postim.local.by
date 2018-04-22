@@ -44,6 +44,7 @@ Pjax::begin([
                             'placeholder' => 'Введите текст', 'value' => $feedBack['message']])
                         ->label(false) ?>
                 </div>
+                <?=\yii\helpers\Html :: hiddenInput(\Yii :: $app->getRequest()->csrfParam, \Yii :: $app->getRequest()->getCsrfToken(), []);?>
                 <label>
                     <div class="btn-send" style="z-index: 3;position: relative">
                         <div class="large-wide-button"><p>Отправить</p></div>
