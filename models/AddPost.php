@@ -496,17 +496,23 @@
 						$tmpLink = Yii::getAlias('@webroot/post_photo/tmp/' . $photo['link']);
 						if (file_exists($tmpLink)) {
 							if (copy($tmpLink, $dir . $photo['link'])) {
-								$gallery = new Gallery(['post_id' => $post_id,
+							    $photoStatus = Yii::$app->user->isModerator() ?
+                                    Gallery::$STATUS['confirm'] : Gallery::$STATUS['moderation'];
+
+								$gallery = new Gallery([
+								    'post_id' => $post_id,
 									'user_id' => Yii::$app->user->getId(),
 									'link' => $photo['link'],
-									'user_status' => 1,
-									'status' => 0,
+									'user_status' => Gallery::USER_STATUS['owner'],
+									'status' => $photoStatus,
 									'date' => time(),
 									'source' => $photo['src'],
 								]);
-								if(!$gallery->save()){
+
+								if (!$gallery->save()) {
 									$this->customError = true;
 								}
+
 								unlink($tmpLink);
 							}
 						}
@@ -520,7 +526,7 @@
 			$galleries = Gallery::find()
                 ->where([
                     'post_id' => $pos_id,
-                    'user_status' => 1
+                    'user_status' => Gallery::USER_STATUS['owner']
                 ])->all();
 
 			if ($galleries && is_array($galleries)) {

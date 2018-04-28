@@ -263,8 +263,11 @@ class PostsSearch extends Posts
         $query->innerJoinWith($relations);
         $query->joinWith('categories.category');
 
-        $query->andWhere([Posts::tableName() . '.status' => 1]);
-        $this->queryForPlaceOnMap->andWhere([Posts::tableName() . '.status' => 1]);
+        $query->andWhere([
+            Posts::tableName() . '.status' => Posts::$STATUS['confirm'],
+            Reviews::tableName() . '.status' => Reviews::$STATUS['confirm'],
+        ]);
+        $this->queryForPlaceOnMap->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']]);
 
         if (!empty($this->city)) {
             $query->andWhere(['or',
