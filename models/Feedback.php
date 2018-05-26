@@ -12,6 +12,7 @@ class Feedback extends Model
     public $message = '';
     public $email = '';
     public $subject = '';
+    public $additional = '';
 
     /**
      * @return array the validation rules.
@@ -24,6 +25,7 @@ class Feedback extends Model
             [['message'], 'required','message'=>'Ввидите текст сообщения'],
             [['email'], 'required','message'=>'Введите корректный e-mail'],
             [['email'], 'email','message'=>'Введите корректный e-mail'],
+            [['additional'], 'safe']
 
         ];
 
@@ -33,12 +35,14 @@ class Feedback extends Model
 
         if($this->validate()){
 
-            Yii::$app->mailer->useTransport('feedback')->compose()
-                ->setTo(Yii::$app->params['mail.feedbackEmail'])
-                ->setFrom([Yii::$app->params['mail.feedbackEmail'] => $this->email])
-                ->setSubject($this->subject)
-                ->setTextBody($this->message)
-                ->send();
+            if(!$this->additional){
+                Yii::$app->mailer->useTransport('feedback')->compose()
+                    ->setTo(Yii::$app->params['mail.feedbackEmail'])
+                    ->setFrom([Yii::$app->params['mail.feedbackEmail'] => $this->email])
+                    ->setSubject($this->subject)
+                    ->setTextBody($this->message)
+                    ->send();
+            }
 
             $this->clearAttr();
             return true;

@@ -44,6 +44,15 @@ Pjax::begin([
                             'placeholder' => 'Введите текст', 'value' => $feedBack['message']])
                         ->label(false) ?>
                 </div>
+
+                <div class="block-field-setting js-mandatory-field" style="display: none">
+                    <label class="label-field-setting">Текст вашего сообщения</label>
+                    <?= $form->field($feedBack, 'additional')
+                        ->textarea(['style' => 'margin-bottom: -10px;height: 44px;resize: none;', 'class' => 'input-field-setting',
+                                    'placeholder' => 'Введите текст', 'value' => 'zlo'])
+                        ->label(false) ?>
+                </div>
+
                 <?=\yii\helpers\Html :: hiddenInput(\Yii :: $app->getRequest()->csrfParam, \Yii :: $app->getRequest()->getCsrfToken(), []);?>
                 <label>
                     <div class="btn-send" style="z-index: 3;position: relative">
@@ -85,6 +94,7 @@ $js2 = <<<js2
     $(document).ready(function() {
       $('.container-feedback textarea').autosize();
       menu_control.fireMethodClose();
+      $('.js-mandatory-field').remove();
     });
 js2;
 echo "<script>$js2</script>";
