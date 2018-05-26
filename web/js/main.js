@@ -316,7 +316,7 @@ var Main = (function (window, document, undefined,$) {
 
                 if (!params.value && currentTime >= params.expires) {
 
-                    var html = '<div class="push-message-request"><div class="push-message-text">Вы не против подписаться на<br><span>важные </span>новости от Postim.by</div><div class="push-message-btn sp_notify_prompt" onclick="oSpP.startSubscription();">Нет, не против</div></div>';
+                    var html = '<div class="push-message-request"><div class="push-message-text">Вы не против подписаться на<br><span>лучшие </span>акции и скидки от Postim.by</div><div class="push-message-btn sp_notify_prompt" onclick="oSpP.startSubscription();">Нет, не против</div></div>';
 
                     setTimeout(function () {
                         $().toastmessage('showToast', {
