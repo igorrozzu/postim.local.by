@@ -669,6 +669,10 @@ class PostController extends MainController
             throw new NotFoundHttpException('Cтраница не найдена');
         }
 
+        Helper::checkValidUrl('/' . Yii::$app->request->pathInfo,
+            Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])
+        );
+
         Helper::addViews($post->totalView);
 
         $photoCount = Gallery::find()

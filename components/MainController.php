@@ -10,6 +10,7 @@ use app\models\Posts;
 use app\models\PostsSearch;
 use Yii;
 use app\components\Pagination;
+use yii\helpers\Url;
 use yii\web\Controller;
 use app\models\LoginForm;
 
@@ -89,5 +90,10 @@ class MainController extends Controller
                 'reviewId' => (int) $request->get('review_id'),
             ]
         ];
+    }
+
+    public function redirect($url, $statusCode = 301)
+    {
+        return Yii::$app->getResponse()->redirect(Url::to($url), $statusCode);
     }
 }

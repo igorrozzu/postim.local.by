@@ -292,7 +292,7 @@ class Helper{
         if($currentUrl == $validUrl){
             return true;
         }else{
-            return Yii::$app->getResponse()->redirect(array($validUrl));
+            return Yii::$app->getResponse()->redirect(array($validUrl), 301);
         }
 
     }
