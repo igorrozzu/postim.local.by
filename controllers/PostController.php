@@ -664,6 +664,11 @@ class PostController extends MainController
         ])->where(['id' => $postId])
             ->one();
 
+        if(!$post)
+        {
+            throw new NotFoundHttpException('Cтраница не найдена');
+        }
+
         Helper::addViews($post->totalView);
 
         $photoCount = Gallery::find()
