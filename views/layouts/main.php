@@ -11,6 +11,7 @@ use app\components\mainMenu\MainMenuWidget;
 use app\components\socialWidgets\SocialWidget;
 use \app\components\ListCityWidget\ListCityWidget;
 use \yii\widgets\Pjax;
+use \app\widgets\canonicalHref\CanonicalHref;
 
 AppAsset::register($this);
 CustomScrollbarAsset::register($this);
@@ -40,6 +41,8 @@ LoginFormsAsset::register($this);
     <!--push start-->
     <script charset="UTF-8" src="//cdn.sendpulse.com/28edd3380a1c17cf65b137fe96516659/js/push/8112939af3b63172ed5cc9252b64b0d9_1.js" async></script>
     <!--push end-->
+
+    <?=CanonicalHref::widget(); ?>
 
     <?php $this->head() ?>
 </head>
