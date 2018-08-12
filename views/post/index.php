@@ -109,6 +109,7 @@ echo "<script>$js</script>";
         'Памятники',
         'Площади',
         'Улицы',
+        'Театры'
     ] ) )
         {
             $h1 = ucfirst(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)) . ' ' . $h1;
