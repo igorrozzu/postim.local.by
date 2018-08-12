@@ -96,4 +96,16 @@ class MainController extends Controller
     {
         return Yii::$app->getResponse()->redirect(Url::to($url), $statusCode);
     }
+
+    public function beforeAction( $action )
+    {
+        $absoluteUrl = Yii::$app->request->absoluteUrl;
+        if ((strpos($absoluteUrl, 'index.php') !== false)) {
+            $scriptUrl = Yii::$app->request->scriptUrl;
+            $new_url = str_replace($scriptUrl, "", $absoluteUrl);
+            $this->redirect($new_url, 301);
+        }
+
+        return parent::beforeAction( $action );
+    }
 }
