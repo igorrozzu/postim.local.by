@@ -98,7 +98,18 @@ echo "<script>$js</script>";
     <?php
         $h1 = $post->data;
 
-        if(!in_array($post->onlyOnceCategories[0]->name, ['Церкви, Монастыри и Костелы']))
+    if ( !in_array( $post->onlyOnceCategories[ 0 ]->name, [
+        'Церкви, Монастыри и Костелы',
+        'Достопримечательности',
+        'Замки и дворцы',
+        'Старинные усадьбы',
+        'Заброшенные места',
+        'Заказники',
+        'Музеи',
+        'Памятники',
+        'Площади',
+        'Улицы',
+    ] ) )
         {
             $h1 = ucfirst(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)) . ' ' . $h1;
         }
