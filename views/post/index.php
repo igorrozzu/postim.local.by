@@ -95,7 +95,15 @@ echo "<script>$js</script>";
 <div itemscope itemtype="http://schema.org/LocalBusiness">
 <div class="block-content">
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
-    <h1 itemprop="name" class="h1-v"><?=ucfirst(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)) . ' ' .$post->data?></h1>
+    <?php
+        $h1 = $post->data;
+
+        if(!in_array($post->onlyOnceCategories[0]->name, ['Церкви, Монастыри и Костелы']))
+        {
+            $h1 = ucfirst(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)) . ' ' . $h1;
+        }
+    ?>
+    <h1 itemprop="name" class="h1-v"><?=$h1?></h1>
 
     <div class="block-info-reviewsAndfavorites" data-item-id="<?=$post->id?>" data-type="post">
         <div class="rating-b bg-r<?=$post['rating']?>" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
