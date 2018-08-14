@@ -384,7 +384,7 @@ var Category = (function (window, document, undefined,$) {
                         $.pjax.reload({
                             container: '#feed-category',
                             url: filters.getUrlWithFilters(),
-                            push: false,
+                            push: true,
                             replace: false
                         });
                         var $iconFilter =  $('.icon-filter','.menu-info-cards-contener');

@@ -116,7 +116,7 @@ MetaTagsSocialNetwork::registerOgTags($this, [
 <?php
 Pjax::begin([
     'timeout' => 60000,
-    'enablePushState' => false,
+    'enablePushState' => true,
     'id' => 'feed-category',
     'linkSelector' => '#feed-category .block-sort a',
     'formSelector' => false,
