@@ -240,7 +240,7 @@ class TaskController extends Controller
                     $news[0]->date
                 );
                 $siteMapCity->addModels($news,SiteMap::WEEKLY,0.6);
-                $newDate = $news[0]->date;
+                $newDate = $news[0]->date > $newDate ? $news[0]->date : $newDate;
                 $isIssetSection = true;
             }
 
@@ -261,7 +261,7 @@ class TaskController extends Controller
                     0.7,
                     $reviews['date']
                 );
-                $newDate = $reviews['date'];
+                $newDate = $reviews['date'] > $newDate ? $reviews['date'] : $newDate;
                 $isIssetSection = true;
             }
 
