@@ -4,6 +4,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use app\components\cardsPlaceWidget\CardsPlaceWidget;
 use yii\helpers\Json;
+use \app\widgets\LinkPager\LinkPager;
 
 $data = $dataprovider->getModels();
 $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation') ?
@@ -85,6 +86,16 @@ if (isset($settings['is-it-sphinx-model'])) {
 
         </div>
     <?php endif; ?>
+
+<?php elseif($this->context->settings['show-pagination'] ?? false):?>
+    <div class="replace-block main-pjax">
+        <?php
+        echo LinkPager::widget([
+            'pagination' => $dataprovider->pagination,
+            'extraQuery' => ('&loadTime=' . $settings['load-time'] ?? '') . (isset($settings['load-geolocation'])&&is_array($settings['load-geolocation'])?'&'.http_build_query(array('load-geolocation'=>$settings['load-geolocation'])):'')
+        ]);
+        ?>
+    </div>
 <?php endif;?>
 
 

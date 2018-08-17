@@ -58,6 +58,15 @@ if(!$this->context->under_category){
 
 }
 
+$numberPage = 1;
+
+if(($numberPage = Yii::$app->request->get('page', 1)) > 1)
+{
+    $descriptionPage['title'].= ' - Страница ' . $numberPage;
+    $descriptionPage['description'].= ' - Страница ' . $numberPage;
+}
+
+
 $this->title = $descriptionPage['title'];
 $this->registerMetaTag([
     'name' => 'description',
@@ -142,7 +151,8 @@ Pjax::begin([
             <?= CardsPlaceWidget::widget([
                 'dataprovider' => $dataProvider,
                 'settings'=>[
-                    'show-more-btn'=>true,
+                    'show-more-btn'=>false,
+                    'show-pagination' => true,
                     'replace-container-id' => 'feed-posts',
                     'load-time' => $loadTime,
                     'load-geolocation'=>$loadGeolocation
@@ -162,10 +172,11 @@ Pjax::begin([
     </div>
     <?php endif;?>
 
+    <?php if($numberPage == 1):?>
     <div class="description-text">
         <?=$descriptionPage['descriptionText']?>
     </div>
-
+    <?php endif;?>
 </div>
 <?php
 $defaultUrl='/'.Yii::$app->request->getPathInfo();
