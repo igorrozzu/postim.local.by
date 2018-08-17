@@ -92,7 +92,7 @@ if (isset($settings['is-it-sphinx-model'])) {
         <?php
         echo LinkPager::widget([
             'pagination' => $dataprovider->pagination,
-            'extraQuery' => ('&loadTime=' . $settings['load-time'] ?? '') . (isset($settings['load-geolocation'])&&is_array($settings['load-geolocation'])?'&'.http_build_query(array('load-geolocation'=>$settings['load-geolocation'])):'')
+            'extraQuery' => (isset($settings['load-geolocation'])&&is_array($settings['load-geolocation'])?'&'.http_build_query(array('load-geolocation'=>$settings['load-geolocation'])):'')
         ]);
         ?>
     </div>
