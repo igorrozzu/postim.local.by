@@ -87,14 +87,18 @@ if (isset($settings['is-it-sphinx-model'])) {
         </div>
     <?php endif; ?>
 
-<?php elseif($this->context->settings['show-pagination'] ?? false):?>
+<?php elseif(($this->context->settings['show-pagination'] ?? false) && ($dataprovider->pagination->getLinks()['next'] ?? false)):?>
     <div class="replace-block main-pjax">
         <?php
-        echo LinkPager::widget([
-            'pagination' => $dataprovider->pagination,
-            'extraQuery' => (isset($settings['load-geolocation'])&&is_array($settings['load-geolocation'])?'&'.http_build_query(array('load-geolocation'=>$settings['load-geolocation'])):'')
-        ]);
+            echo LinkPager::widget([
+                'pagination' => $dataprovider->pagination,
+                'extraQuery' => (isset($settings['load-geolocation'])&&is_array($settings['load-geolocation'])?'&'.http_build_query(array('load-geolocation'=>$settings['load-geolocation'])):'')
+            ]);
         ?>
+    </div>
+<?php else:?>
+    <div class="replace-block mg-btm-30">
+
     </div>
 <?php endif;?>
 
