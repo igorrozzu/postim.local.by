@@ -22,6 +22,7 @@ use app\models\UnderCategory;
 use app\models\WorkingHours;
 use yii\console\Controller;
 use yii\base\Security;
+use yii\helpers\ArrayHelper;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -311,6 +312,54 @@ class HelloController extends Controller
                                             'city_name'=>$city_name,'count'=>1]);
             $model->save();
         }
+    }
+
+    public function actionReplaceH1()
+    {
+        $exeptCategories = [
+            'Церкви, Монастыри и Костелы',
+            'Достопримечательности',
+            'Замки и дворцы',
+            'Старинные усадьбы',
+            'Заброшенные места',
+            'Заказники',
+            'Музеи',
+            'Памятники',
+            'Площади',
+            'Улицы',
+            'Театры'
+        ];
+
+        $underCategoriesName = ArrayHelper::getColumn(UnderCategory::find()
+            ->asArray(true)
+            ->where(['not in', 'name', $exeptCategories])
+            ->all(), 'name');
+
+        $idsPost = [];
+
+        foreach ($underCategoriesName  as $category)
+        {
+            $ids = ArrayHelper::getColumn(Posts::find()->where(['~*', 'data', \Yii::t('app/singular',$category)])->all(), 'id');
+            $idsPost = array_unique(array_merge($idsPost, $ids));
+        }
+
+        $posts = Posts::find()
+            ->joinWith('categories')
+            ->with(['mainCategory'])
+            ->where(['not in', 'tbl_posts.id', $idsPost])
+            ->andWhere(['not in', 'tbl_under_category.name', $exeptCategories])->all();
+
+        foreach ($posts as $post)
+        {
+            $postName = $post->data;
+            $postName = ucfirst(\Yii::t('app/singular',$post->mainCategory->name)) . ' ' . $postName;
+            $postName = preg_replace("/ {2,}/"," ", $postName);
+            $post->data = $postName;
+            $post->save();
+        }
+
+
+
     }
 
 

@@ -97,24 +97,6 @@ echo "<script>$js</script>";
     <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
     <?php
         $h1 = $post->data;
-
-    if ( !in_array( $post->onlyOnceCategories[ 0 ]->name, [
-        'Церкви, Монастыри и Костелы',
-        'Достопримечательности',
-        'Замки и дворцы',
-        'Старинные усадьбы',
-        'Заброшенные места',
-        'Заказники',
-        'Музеи',
-        'Памятники',
-        'Площади',
-        'Улицы',
-        'Театры',
-        'Крепости и форты'
-    ] ) )
-        {
-            $h1 = ucfirst(Yii::t('app/singular',$post->onlyOnceCategories[0]->name)) . ' ' . $h1;
-        }
     ?>
     <h1 itemprop="name" class="h1-v"><?=$h1?></h1>
 

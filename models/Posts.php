@@ -121,6 +121,14 @@ class Posts extends \yii\db\ActiveRecord
             });
     }
 
+    public function getMainCategory()
+    {
+        return $this->hasOne(UnderCategory::className(), ['id' => 'under_category_id'])
+            ->via('postUnderCategory', function ($query) {
+                $query->where(['priority' => 1]);
+            });
+    }
+
     public function getCategoriesPriority()
     {
         $postUnderCategory = UnderCategory::find()
