@@ -3,7 +3,6 @@
 $manager = [
     'normalizer' => [
         'class' => 'yii\web\UrlNormalizer',
-        'normalizeTrailingSlash'=>true
     ],
     'enablePrettyUrl' => true,
     'showScriptName' => false,
