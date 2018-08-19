@@ -87,17 +87,27 @@ if (isset($settings['is-it-sphinx-model'])) {
         </div>
     <?php endif; ?>
 
-<?php elseif(($this->context->settings['show-pagination'] ?? false) && ($dataprovider->pagination->getLinks()['next'] ?? false)):?>
+<?php elseif(($this->context->settings['show-pagination'] ?? false) && ($dataprovider->pagination->getLinks()['next'] ?? false || $dataprovider->pagination->getLinks()['prev'] ?? false)):?>
     <div class="replace-block main-pjax">
         <?php
             echo LinkPager::widget([
                 'pagination' => $dataprovider->pagination,
                 'maxButtonCount' => 5,
+                'firstPageLabel' => true,
+                'lastPageLabel' => true,
                 'prevPageLabel' => false,
                 'nextPageLabel' => false,
                 'extraQuery' => (isset($settings['load-geolocation'])&&is_array($settings['load-geolocation'])?'&'.http_build_query(array('load-geolocation'=>$settings['load-geolocation'])):'')
             ]);
         ?>
+
+        <?php if($hrefNext = $dataprovider->pagination->getLinks()['next'] ?? false):?>
+        <a class="btn-show-more" style="margin-top: 0px" href="<?=$hrefNext?><?= isset($settings['load-geolocation'])&&is_array($settings['load-geolocation'])?'&'.http_build_query(array('load-geolocation'=>$settings['load-geolocation'])):''?>">
+            <noindex>Следующая</noindex>
+        </a>
+        <div class="mg-btm-30"></div>
+        <?php endif;?>
+
     </div>
 <?php else:?>
     <div class="replace-block mg-btm-30">

@@ -180,10 +180,18 @@ class LinkPager extends Widget
         $buttons = [];
         $currentPage = $this->pagination->getPage();
 
+        // internal pages
+        list($beginPage, $endPage) = $this->getPageRange();
+
         // first page
         $firstPageLabel = $this->firstPageLabel === true ? '1' : $this->firstPageLabel;
         if ($firstPageLabel !== false) {
-            $buttons[] = $this->renderPageButton($firstPageLabel, 0, $this->firstPageCssClass, $currentPage <= 0, false);
+
+            $disabled = $beginPage == 0;
+
+            $buttons[] = $this->renderPageButton($firstPageLabel, 0, $this->firstPageCssClass, $disabled, false);
+            if(!$disabled)
+                $buttons[] = $this->renderDoteButton('...');
         }
 
         // prev page
@@ -194,8 +202,7 @@ class LinkPager extends Widget
             $buttons[] = $this->renderPageButton($this->prevPageLabel, $page, $this->prevPageCssClass, $currentPage <= 0, false);
         }
 
-        // internal pages
-        list($beginPage, $endPage) = $this->getPageRange();
+
         for ($i = $beginPage; $i <= $endPage; ++$i) {
             $buttons[] = $this->renderPageButton($i + 1, $i, null, $this->disableCurrentPageButton && $i == $currentPage, $i == $currentPage);
         }
@@ -211,7 +218,13 @@ class LinkPager extends Widget
         // last page
         $lastPageLabel = $this->lastPageLabel === true ? $pageCount : $this->lastPageLabel;
         if ($lastPageLabel !== false) {
-            $buttons[] = $this->renderPageButton($lastPageLabel, $pageCount - 1, $this->lastPageCssClass, $currentPage >= $pageCount - 1, false);
+
+            $disabled = $endPage == $pageCount - 1;
+
+            if(!$disabled)
+                $buttons[] = $this->renderDoteButton('...');
+
+            $buttons[] = $this->renderPageButton($lastPageLabel, $pageCount - 1, $this->lastPageCssClass, $disabled, false);
         }
 
         return Html::tag('ul', implode("\n", $buttons), $this->options);
@@ -227,6 +240,14 @@ class LinkPager extends Widget
      * @param bool $active whether this page button is active
      * @return string the rendering result
      */
+
+    protected function renderDoteButton($label)
+    {
+        $options = ['class' => empty($class) ? $this->pageCssClass : $class];
+
+        return Html::tag('li', Html::tag('i', $label) , $options);
+    }
+
     protected function renderPageButton($label, $page, $class, $disabled, $active)
     {
         $options = ['class' => empty($class) ? $this->pageCssClass : $class];

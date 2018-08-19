@@ -1088,6 +1088,7 @@ body:not(.open-search) .search{
 .replace-block{
     display: flex;
     width: 100%;
+    flex-direction: column;
 }
 
 .container-comments .replace-block{
@@ -7081,3 +7082,23 @@ form .field-input:first-child{
 
 .pagination-sm > li:last-child > a, .pagination-sm > li:last-child > span
 {border-top-right-radius : 3px;border-bottom-right-radius : 3px}
+
+.pagination .last.disabled
+{
+    display: none;
+}
+
+.pagination .first.disabled
+{
+    display: none;
+}
+
+.pagination li i
+{
+    padding : 6px 12px;
+    display: flex;
+    align-items: center;
+    height: 25px;
+    font-size: 14px;
+    color: #8e9aad;
+}

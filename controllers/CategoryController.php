@@ -26,6 +26,8 @@ class CategoryController extends MainController
     public $category=false;
     public $under_category =false;
 
+    static public $CATEGORY_PER_PAGE = 16;
+
     public function actionIndex()
     {
         $this->category = Yii::$app->request->get('category',false);
@@ -44,7 +46,7 @@ class CategoryController extends MainController
         $selfParams = ArrayHelper::merge($selfParams,$selfFilterParams);
 
         $pagination = new Pagination([
-            'pageSize' => Yii::$app->request->get('per-page', 8),
+            'pageSize' => Yii::$app->request->get('per-page', static::$CATEGORY_PER_PAGE),
             'page' => Yii::$app->request->get('page', 1)-1,
             'route'=>Yii::$app->request->getPathInfo(),
             'selfParams'=>$selfParams
