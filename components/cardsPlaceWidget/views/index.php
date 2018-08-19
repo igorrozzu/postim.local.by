@@ -87,7 +87,7 @@ if (isset($settings['is-it-sphinx-model'])) {
         </div>
     <?php endif; ?>
 
-<?php elseif(($this->context->settings['show-pagination'] ?? false) && ($dataprovider->pagination->getLinks()['next'] ?? false || $dataprovider->pagination->getLinks()['prev'] ?? false)):?>
+<?php elseif(($this->context->settings['show-pagination'] ?? false) && (($dataprovider->pagination->getLinks()['next'] ?? false) || ($dataprovider->pagination->getLinks()['prev'] ?? false))):?>
     <div class="replace-block main-pjax">
         <?php
             echo LinkPager::widget([
