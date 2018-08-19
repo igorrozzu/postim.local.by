@@ -116,7 +116,7 @@ $config = [
         ],
 
         'authClientCollection' => require ('authClientCollection.php'),
-
+        'sphinx' => require ('sphinxSearch/config.php'),
     ],
     'modules' => [
         'admin' => [
