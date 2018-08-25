@@ -522,16 +522,6 @@ class DiscountController extends MainController
             'pjax' => 'class="main-pjax a"'
         ];
 
-        $breadcrumbParams[] = [
-            'name' => 'Скидки',
-            'url_name' => Url::to([
-                'post/get-discounts-by-post',
-                'name' => $post->url_name,
-                'postId' => $post->id,
-            ]),
-            'pjax' => 'class="main-pjax a"'
-        ];
-
         return $breadcrumbParams;
     }
 

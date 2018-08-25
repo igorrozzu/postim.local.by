@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 <div class="block-content">
     <?php if ($dataProvider->getTotalCount() > 0 || $isShowDiscounts): ?>
-        <h1 class="h2-c"><?=$post->data?> - скидки</h1>
+        <h1 class="h2-c">Скидки</h1>
     <?php endif; ?>
 
     <?php if ($isShowDiscounts): ?>
