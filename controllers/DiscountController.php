@@ -248,10 +248,13 @@ class DiscountController extends MainController
         ]);
         $loadTime = $request->get('loadTime', time());
 
+        $owner = Yii::$app->user->getOwnerThisPost($postId);
+        $isShowDiscounts = Yii::$app->user->isModerator() || isset($owner);
         $dataProvider = $model->searchByPost(
             $request->queryParams,
             $pagination,
-            $loadTime
+            $loadTime,
+            $isShowDiscounts
         );
 
         if ($request->isAjax && !$request->get('_pjax', false)) {

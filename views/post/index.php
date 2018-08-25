@@ -127,11 +127,6 @@ echo "<script>$js</script>";
             <a href="<?=Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
                 <div class="btn2-menu "><span class="under-line">Фотографии <?=$photoCount?></span></div>
             </a>
-            <?php if ($isShowDiscounts):?>
-                <a href="<?=Url::to(['post/get-discounts-by-post', 'name' => $post['url_name'], 'postId' => $post['id']])?>">
-                    <div class="btn2-menu"><span class="under-line">Скидки <?=$discountCount?></span></div>
-                </a>
-            <?php endif;?>
         </div>
     </div>
 </div>
@@ -351,8 +346,14 @@ echo "<script>$js</script>";
                     <div class="elem-count-views"><?=$post->totalView['count']?></div>
                 </div>
             </div>
+            <?= $this->render('__feed-discounts', [
+                 'dataProvider' => $dataProviderDiscounts,
+                'post' => $post,
+                'isShowDiscounts' => $isShowDiscounts
+            ])?>
 
-            <?php if (isset($dataProviderDiscounts) && $dataProviderDiscounts->getTotalCount() > 0):?>
+
+            <?php if (isset($dataProviderRecommendedDiscounts) && $dataProviderRecommendedDiscounts->getTotalCount() > 0):?>
             <noindex>
                 <div class="block-content-between cust">
                     <h2 class="h2-v">Вам может понравиться</h2>
@@ -368,7 +369,7 @@ echo "<script>$js</script>";
                      data-favorites-state-url="/discount/favorite-state" style="margin-top: -13px;">
 
                     <?= CardsDiscounts::widget([
-                        'dataprovider' => $dataProviderDiscounts,
+                        'dataprovider' => $dataProviderRecommendedDiscounts,
                         'settings' => [
                             'show-more-btn' => true,
                             'replace-container-id' => 'feed-discounts',
