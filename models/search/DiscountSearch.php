@@ -51,7 +51,7 @@ class DiscountSearch extends Discounts
      *
      * @return ActiveDataProvider
      */
-    public function searchByPost($params, Pagination $pagination, int $loadTime)
+    public function searchByPost($params, Pagination $pagination, int $loadTime, bool $showAll)
     {
         $query = Discounts::find()
             ->where(['post_id' => $params['postId']])
@@ -59,18 +59,24 @@ class DiscountSearch extends Discounts
             ->andWhere(['>=', 'status', Discounts::STATUS['active']])
             ->orderBy(['date_start' => SORT_DESC]);
 
-        $newQuery = clone $query;
-        $query->andWhere(['>', Discounts::tableName() . '.date_finish', $loadTime]);
-        $newQuery->andWhere(['<=', Discounts::tableName() . '.date_finish', $loadTime]);
-
-        $unionQuery = (new ActiveQuery(Discounts::className()))
-            ->from(['unionQuery' => $query->union($newQuery, true)]);
-        if (!Yii::$app->user->isGuest) {
-            $unionQuery->joinWith(['hasLike']);
+        $tmpQuery = clone $query;
+        if ($showAll) {
+            $newQuery = clone $query;
+            $query->andWhere(['>', Discounts::tableName() . '.date_finish', $loadTime]);
+            $newQuery->andWhere(['<=', Discounts::tableName() . '.date_finish', $loadTime]);
+            $unionQuery = (new ActiveQuery(Discounts::className()))
+                ->from(['unionQuery' => $query->union($newQuery, true)]);
+            if (!Yii::$app->user->isGuest) {
+                $unionQuery->joinWith(['hasLike']);
+            }
+        } else {
+            $tmpQuery->andWhere(['>', Discounts::tableName() . '.date_finish', $loadTime]);
+            if (!Yii::$app->user->isGuest) {
+                $tmpQuery->joinWith(['hasLike']);
+            }
         }
-
         $dataProvider = new ActiveDataProvider([
-            'query' => $unionQuery,
+            'query' => $showAll ? $unionQuery : $tmpQuery,
             'pagination' => $pagination,
         ]);
 
@@ -166,15 +172,10 @@ class DiscountSearch extends Discounts
             ]);
         }
 
-        $newQuery = clone $query;
-        $query->andWhere(['>', Discounts::tableName() . '.date_finish', $loadTime]);
-        $newQuery->andWhere(['<=', Discounts::tableName() . '.date_finish', $loadTime]);
-
-        $unionQuery = (new ActiveQuery(Discounts::className()))
-            ->from(['unionQuery' => $query->union($newQuery, true)])
+        $query->andWhere(['>', Discounts::tableName() . '.date_finish', $loadTime])
             ->innerJoinWith(['post']);
         if (!Yii::$app->user->isGuest) {
-            $unionQuery->joinWith(['hasLike']);
+            $query->joinWith(['hasLike']);
         }
 
         $this->queryForPlaceOnMap->groupBy([Posts::tableName() . '.id']);
@@ -185,7 +186,7 @@ class DiscountSearch extends Discounts
         );
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $unionQuery,
+            'query' => $query,
             'pagination' => $pagination,
         ]);
 
@@ -285,7 +286,8 @@ class DiscountSearch extends Discounts
 
         $query = Discounts::find()
             ->innerJoinWith(['post.city.region.coutries', 'post.categories.category'])
-            ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']]);
+            ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']])
+            ->andWhere(['>', Discounts::tableName() . '.date_finish', time()]);
 
         if (isset($this->city)) {
             $query->andWhere(['or',

@@ -248,10 +248,13 @@ class DiscountController extends MainController
         ]);
         $loadTime = $request->get('loadTime', time());
 
+        $owner = Yii::$app->user->getOwnerThisPost($postId);
+        $isShowDiscounts = Yii::$app->user->isModerator() || isset($owner);
         $dataProvider = $model->searchByPost(
             $request->queryParams,
             $pagination,
-            $loadTime
+            $loadTime,
+            $isShowDiscounts
         );
 
         if ($request->isAjax && !$request->get('_pjax', false)) {
@@ -516,16 +519,6 @@ class DiscountController extends MainController
         $breadcrumbParams[] = [
             'name' => $post['data'],
             'url_name' => $post['url_name'] . '-p' . $post['id'],
-            'pjax' => 'class="main-pjax a"'
-        ];
-
-        $breadcrumbParams[] = [
-            'name' => 'Скидки',
-            'url_name' => Url::to([
-                'post/get-discounts-by-post',
-                'name' => $post->url_name,
-                'postId' => $post->id,
-            ]),
             'pjax' => 'class="main-pjax a"'
         ];
 

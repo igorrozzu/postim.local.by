@@ -104,14 +104,12 @@ class PostController extends MainController
             ]);
             $type = Yii::$app->request->get('type', 'all');
             $loadTime = time();
-            $dataProvider = $reviewsModel->search(
-                [
-                    'post_id' => $id,
-                    'type' => $type
-                ],
-                $pagination,
-                $loadTime
-            );
+            $dataProvider = $reviewsModel->search([
+                'post_id' => $id,
+                'type' => $type
+            ],
+            $pagination,
+            $loadTime);
 
             $commentsSearch = new CommentsSearch();
 
@@ -133,8 +131,25 @@ class PostController extends MainController
                 CommentsSearch::getSortArray('old')
             );
 
-            $dataProviderDiscounts = null;
-            if (!$post->businessOwner) {
+            $isShowDiscounts = Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner);
+            $model = new DiscountSearch();
+            $pagination = new Pagination([
+                'pageSize' => Yii::$app->request->get('per-page', 6),
+                'page' => Yii::$app->request->get('page', 1) - 1,
+                'route' => Url::to(['discount/load-more-discounts']),
+                'selfParams' => [
+                    'postId' => true,
+                ],
+            ]);
+            $dataProviderDiscounts = $model->searchByPost(
+                Yii::$app->request->queryParams,
+                $pagination,
+                time(),
+                $isShowDiscounts
+            );
+
+            $dataProviderRecommendedDiscounts = null;
+            if (!$post->businessOwner && $dataProviderDiscounts->getTotalCount() === 0) {
                 $discountModel = new DiscountSearch();
                 $discountPagination = new Pagination([
                     'pageSize' => Yii::$app->request->get('per-page', 6),
@@ -143,7 +158,7 @@ class PostController extends MainController
                 ]);
                 $loadTime = Yii::$app->request->get('loadTime', time());
 
-                $dataProviderDiscounts = $discountModel->searchByInteresting(
+                $dataProviderRecommendedDiscounts = $discountModel->searchByInteresting(
                     Yii::$app->request->queryParams,
                     $discountPagination,
                     $loadTime,
@@ -165,8 +180,6 @@ class PostController extends MainController
                 }
             }
 
-            $discountCount = DiscountRepository::getVisibleCountByPostId($id);
-
             return $this->render('index', [
                 'post' => $post,
                 'reviewsDataProvider' => $dataProvider,
@@ -174,7 +187,6 @@ class PostController extends MainController
                 'photoCount' => Gallery::getPostPhotoCount($id),
                 'previewPhoto' => Gallery::getPreviewPostPhoto($id, 4),
                 'keyForMap'=>$keyForMap,
-                'discountCount' => $discountCount,
                 'loadTime' => $loadTime,
                 'type' => $type,
                 'initPhotoSliderParams' => [
@@ -183,8 +195,9 @@ class PostController extends MainController
                 ],
                 'dataProviderComments' => $dataProviderComments,
                 'dataProviderDiscounts' => $dataProviderDiscounts,
+                'dataProviderRecommendedDiscounts' => $dataProviderRecommendedDiscounts,
                 'dataProviderRecommendedPosts' => $dataProviderRecommendedPosts,
-                'isShowDiscounts' => $discountCount > 0 || Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner)
+                'isShowDiscounts' => $isShowDiscounts
             ]);
 
         } else {
@@ -691,7 +704,7 @@ class PostController extends MainController
             ->createCommand()->rawSql;
         $keyForMap = Helper::saveQueryForMap($queryPost);
 
-        $discountCount = DiscountRepository::getVisibleCountByPostId($postId);
+        //$discountCount = DiscountRepository::getVisibleCountByPostId($postId);
 
         return $this->render('feed-photos.php', [
             'dataProvider' => $dataProvider,
@@ -701,11 +714,11 @@ class PostController extends MainController
             'photoCount' => $photoCount,
             'loadTime' => $loadTime,
             'keyForMap' => $keyForMap,
-            'discountCount' => $discountCount,
+            //'discountCount' => $discountCount,
             'initPhotoSliderParams' => [
                 'photoId' => $photo_id
             ],
-            'isShowDiscounts' => $discountCount > 0 || Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner)
+            //'isShowDiscounts' => $discountCount > 0 || Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner)
         ]);
     }
 
@@ -1055,51 +1068,6 @@ class PostController extends MainController
 
     public function actionGetDiscountsByPost(string $name, int $postId)
     {
-        $request = Yii::$app->request;
-        $model = new DiscountSearch();
-        $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 6),
-            'page' => $request->get('page', 1) - 1,
-            'route' => Url::to(['discount/load-more-discounts']),
-            'selfParams' => [
-                'postId' => true,
-            ],
-        ]);
-
-        $dataProvider = $model->searchByPost(
-            $request->queryParams,
-            $pagination,
-            time()
-        );
-
-        $post = Posts::find()->with([
-            'city', 'onlyOnceCategories', 'isCurrentUserOwner'
-        ])->where(['id' => $postId])
-            ->one();
-
-        $breadcrumbParams = $this->getParamsForBreadcrumb($post);
-        $breadcrumbParams[] = [
-            'name' => 'Скидки',
-            'url_name' => $request->getUrl(),
-            'pjax' => 'class="main-pjax a"'
-        ];
-
-        $queryPost = Posts::find()->where(['tbl_posts.id' => $postId])
-            ->prepare(Yii::$app->db->queryBuilder)
-            ->createCommand()->rawSql;
-        $keyForMap = Helper::saveQueryForMap($queryPost);
-
-        $photoCount = Gallery::find()
-            ->where(['post_id' => $postId])
-            ->count();
-
-        return $this->render('feed-discounts', [
-            'post' => $post,
-            'keyForMap' => $keyForMap,
-            'breadcrumbParams' => $breadcrumbParams,
-            'dataProvider' => $dataProvider,
-            'photoCount' => $photoCount,
-            'isShowDiscounts' => $dataProvider->getTotalCount() > 0 || Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner)
-        ]);
+        $this->redirect(['post/index', 'url' => $name, 'id' => $postId]);
     }
 }
