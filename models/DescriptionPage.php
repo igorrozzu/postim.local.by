@@ -73,7 +73,7 @@ class DescriptionPage extends \yii\db\ActiveRecord
 
         $response = ArrayHelper::merge($response,call_user_func($func));
 
-        $currentUrl = Url::to('',false);
+        $currentUrl = Url::to('',true);
 
         $descPage = self::find()->where(['url_page'=>self::convertUrl($currentUrl)])->one();
         if($descPage){
