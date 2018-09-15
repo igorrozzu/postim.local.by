@@ -374,17 +374,6 @@ class Posts extends \yii\db\ActiveRecord
         return   '/'.$this->url_name.'-p'.$this->id;
     }
 
-    public function getUrls(){
-
-        $urls = [
-            '/Fotografii-' . $this->url_name . '-p' . $this->id,
-        ];
-
-        $urls = ArrayHelper::merge($urls, $this->getImgsForSiteMap());
-
-        return  $urls;
-    }
-
     private function getImgsForSiteMap():array
     {
 
