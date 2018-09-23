@@ -34,15 +34,6 @@ echo "<script>$js</script>";
 <div class="block-content">
     <h1 class="h1-v"><?=$post->data?></h1>
 </div>
-<div class="block-flex-white">
-    <div class="block-content">
-        <div class="menu-btns-card">
-            <a href="<?=Url::to(['post/index', 'url' => $post['url_name'], 'id' => $post['id']])?>" >
-                <div class="btn2-menu active"><span class="under-line">Информация</span></div>
-            </a>
-        </div>
-    </div>
-</div>
 <div class="block-content">
     <div class="block-content-between cust">
         <h2 class="h2-v">Информация</h2>

@@ -117,15 +117,6 @@ echo "<script>$js</script>";
         <div class="add-favorite <?=$post['is_like']?'active':''?>"><?=$post->count_favorites?></div>
     </div>
 </div>
-<div class="block-flex-white">
-    <div class="block-content">
-        <div class="menu-btns-card">
-            <a href="<?=Url::to(['post/index', 'url' => $post['url_name'], 'id' => $post['id']])?>" >
-                <div class="btn2-menu active"><span class="under-line">Информация</span></div>
-            </a>
-        </div>
-    </div>
-</div>
 <div class="block-content">
     <div class="block-photos-container">
         <div class="block-photos" data-type="all">
