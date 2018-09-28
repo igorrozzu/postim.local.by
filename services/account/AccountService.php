@@ -22,9 +22,11 @@ class AccountService
      * @param UserinfoRepository $userinfoRepository
      * @param AccountHistoryRepository $accountHistoryRepository
      */
-    public function __construct(UserinfoRepository $userinfoRepository, AccountHistoryRepository $accountHistoryRepository)
-    {
-        $this->_userinfoRepository   = $userinfoRepository;
+    public function __construct(
+        UserinfoRepository $userinfoRepository,
+        AccountHistoryRepository $accountHistoryRepository
+    ) {
+        $this->_userinfoRepository = $userinfoRepository;
         $this->_accountHistoryRepository = $accountHistoryRepository;
     }
 

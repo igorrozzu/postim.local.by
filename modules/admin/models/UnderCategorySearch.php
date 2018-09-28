@@ -39,7 +39,7 @@ class UnderCategorySearch extends UnderCategory
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$pagination)
+    public function search($params, $pagination)
     {
         $query = UnderCategory::find();
 
@@ -47,7 +47,7 @@ class UnderCategorySearch extends UnderCategory
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);
@@ -58,7 +58,7 @@ class UnderCategorySearch extends UnderCategory
             return $dataProvider;
         }
 
-        $query->orderBy(['name'=>SORT_ASC]);
+        $query->orderBy(['name' => SORT_ASC]);
 
         // grid filtering conditions
         $query->andFilterWhere([

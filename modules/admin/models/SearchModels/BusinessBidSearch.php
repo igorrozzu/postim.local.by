@@ -45,7 +45,7 @@ class BusinessBidSearch extends BidBusinessOrder
                 'pageSize' => 8,
             ],
         ]);
-        $query->orderBy(['date'=>SORT_DESC]);
+        $query->orderBy(['date' => SORT_DESC]);
 
         $this->load($params);
 

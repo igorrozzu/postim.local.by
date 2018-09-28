@@ -31,9 +31,26 @@ class ReviewsLike extends \yii\db\ActiveRecord
         return [
             [['user_id', 'reviews_id'], 'required'],
             [['user_id', 'reviews_id'], 'integer'],
-            [['reviews_id', 'user_id'], 'unique', 'targetAttribute' => ['reviews_id', 'user_id'], 'message' => 'The combination of User ID and Reviews ID has already been taken.'],
-            [['reviews_id'], 'exist', 'skipOnError' => true, 'targetClass' => Reviews::className(), 'targetAttribute' => ['reviews_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['reviews_id', 'user_id'],
+                'unique',
+                'targetAttribute' => ['reviews_id', 'user_id'],
+                'message' => 'The combination of User ID and Reviews ID has already been taken.',
+            ],
+            [
+                ['reviews_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Reviews::className(),
+                'targetAttribute' => ['reviews_id' => 'id'],
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 

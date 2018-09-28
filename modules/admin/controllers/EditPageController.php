@@ -19,43 +19,44 @@ class EditPageController extends AdminDefaultController
     {
         $editPage = new DescriptionPage();
         $editPage->setScenario(DescriptionPage::$FIND_PAGE);
-        if(\Yii::$app->request->isPost){
-            if($editPage->load(\Yii::$app->request->post()) && $editPage->validate()){
+        if (\Yii::$app->request->isPost) {
+            if ($editPage->load(\Yii::$app->request->post()) && $editPage->validate()) {
 
-                if($findPage = $editPage->getData()){
+                if ($findPage = $editPage->getData()) {
                     $findPage->find_url = $editPage->find_url;
                     $editPage = $findPage;
                 }
 
-                return $this->render('__save_form',['editPage'=>$editPage]);
-            }else{
+                return $this->render('__save_form', ['editPage' => $editPage]);
+            } else {
 
                 $toastMessage = [
                     'type' => 'error',
                     'message' => 'Произошла ошибка',
                 ];
 
-                return $this->render('index',['editPage'=>$editPage,'toastMessage'=>$toastMessage]);
+                return $this->render('index', ['editPage' => $editPage, 'toastMessage' => $toastMessage]);
             }
 
-        }else{
-            return $this->render('index',['editPage'=>$editPage]);
+        } else {
+            return $this->render('index', ['editPage' => $editPage]);
         }
 
     }
 
-    public function actionSave(){
+    public function actionSave()
+    {
 
         $editPage = new DescriptionPage();
         $editPage->setScenario(DescriptionPage::$ADD_PAGE);
 
-        if(\Yii::$app->request->isPost){
+        if (\Yii::$app->request->isPost) {
 
-            if($editPage->load(\Yii::$app->request->post())){
+            if ($editPage->load(\Yii::$app->request->post())) {
 
-                if($editPage->validate()){
+                if ($editPage->validate()) {
                     $editPage->save();
-                }else{
+                } else {
                     $editPage = $editPage->getData();
                     $editPage->setScenario(DescriptionPage::$EDIT_PAGE);
                     $editPage->load(\Yii::$app->request->post());
@@ -69,12 +70,12 @@ class EditPageController extends AdminDefaultController
                     'message' => 'Страница изменена',
                 ];
 
-                return $this->render('index',['editPage'=>$editPage,'toastMessage'=>$toastMessage]);
+                return $this->render('index', ['editPage' => $editPage, 'toastMessage' => $toastMessage]);
             }
 
 
-        }else{
-            return $this->render('index',['editPage'=>$editPage]);
+        } else {
+            return $this->render('index', ['editPage' => $editPage]);
         }
     }
 }

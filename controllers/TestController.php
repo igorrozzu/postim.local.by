@@ -15,26 +15,27 @@ class TestController extends MainController
     }
 
 
-    public function actionGainPromo(){
+    public function actionGainPromo()
+    {
 
         $response = new \stdClass();
         $response->error = false;
 
-        if(!\Yii::$app->user->isGuest){
+        if (!\Yii::$app->user->isGuest) {
             $userOrderPromo = new OrdersPromo();
             $userOrderPromo->user_id = \Yii::$app->getUser()->getId();
 
-            if($userOrderPromo->save()){
+            if ($userOrderPromo->save()) {
                 $user = User::findOne(['id' => \Yii::$app->getUser()->getId()]);
                 $message = 'Для получения скидки сообщите до заказа промокод «Postim2017»';
 
-                UserHelper::sendMessageToEmail($user,$message,'/Sushi-sety-rolly-ot-sluzhby-dostavki-Sushi-Nashi');
+                UserHelper::sendMessageToEmail($user, $message, '/Sushi-sety-rolly-ot-sluzhby-dostavki-Sushi-Nashi');
             }
 
             $response->message = 'Промокод был выслан на электронную почту.';
             return $this->asJson($response);
 
-        }else{
+        } else {
             $response->error = true;
             $response->message = 'Незарегистрированные пользователи не могут получить скидку';
             return $this->asJson($response);

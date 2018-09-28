@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use app\assets\AppAdmAsset;
@@ -21,16 +22,16 @@ CustomScrollbarAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
     <?= Html::csrfMetaTags() ?>
-    <title><?=$this->title?></title>
-    <?php $this->registerAssetBundle('yii\web\JqueryAsset',yii\web\View::POS_HEAD); ?>
+    <title><?= $this->title ?></title>
+    <?php $this->registerAssetBundle('yii\web\JqueryAsset', yii\web\View::POS_HEAD); ?>
     <?php $this->head() ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
 
-<?=MainMenuWidget::widget(); ?>
+<?= MainMenuWidget::widget(); ?>
 
 <!--верхнее меню-->
 <div class="container-header">
@@ -44,7 +45,7 @@ CustomScrollbarAsset::register($this);
             </div>
         </div>
         <div class="profile-icon-menu">
-            <img class="round-img" src="<?=Yii::$app->user->identity->getPhoto()?>">
+            <img class="round-img" src="<?= Yii::$app->user->identity->getPhoto() ?>">
         </div>
     </div>
 </div>
@@ -56,7 +57,7 @@ Pjax::begin([
     'id' => 'main-view-container',
     'linkSelector' => '.main-pjax a',
     'formSelector' => false,
-    'scrollTo'=>1
+    'scrollTo' => 1,
 ]);
 echo $content;
 Pjax::end();
@@ -89,7 +90,9 @@ Pjax::end();
             </div>
         </div>
         <div class="text-footer">
-            ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы&nbsp;–&nbsp;9:00&nbsp;до&nbsp;18:00. Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span class="email-address">info@postim.by.</span> ©&nbsp;2016–2017&nbsp;Postim.by
+            ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы&nbsp;–&nbsp;9:00&nbsp;до&nbsp;18:00.
+            Тел:&nbsp;(029)&nbsp;718&nbsp;16&nbsp;66. Эл.&nbsp;почта:&nbsp;<span
+                    class="email-address">info@postim.by.</span> ©&nbsp;2016–2017&nbsp;Postim.by
         </div>
     </div>
 </div>

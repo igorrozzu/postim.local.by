@@ -190,8 +190,9 @@ class LinkPager extends Widget
             $disabled = $beginPage == 0;
 
             $buttons[] = $this->renderPageButton($firstPageLabel, 0, $this->firstPageCssClass, $disabled, false);
-            if(!$disabled)
+            if (!$disabled) {
                 $buttons[] = $this->renderDoteButton('...');
+            }
         }
 
         // prev page
@@ -199,12 +200,14 @@ class LinkPager extends Widget
             if (($page = $currentPage - 1) < 0) {
                 $page = 0;
             }
-            $buttons[] = $this->renderPageButton($this->prevPageLabel, $page, $this->prevPageCssClass, $currentPage <= 0, false);
+            $buttons[] = $this->renderPageButton($this->prevPageLabel, $page, $this->prevPageCssClass,
+                $currentPage <= 0, false);
         }
 
 
         for ($i = $beginPage; $i <= $endPage; ++$i) {
-            $buttons[] = $this->renderPageButton($i + 1, $i, null, $this->disableCurrentPageButton && $i == $currentPage, $i == $currentPage);
+            $buttons[] = $this->renderPageButton($i + 1, $i, null,
+                $this->disableCurrentPageButton && $i == $currentPage, $i == $currentPage);
         }
 
         // next page
@@ -212,7 +215,8 @@ class LinkPager extends Widget
             if (($page = $currentPage + 1) >= $pageCount - 1) {
                 $page = $pageCount - 1;
             }
-            $buttons[] = $this->renderPageButton($this->nextPageLabel, $page, $this->nextPageCssClass, $currentPage >= $pageCount - 1, false);
+            $buttons[] = $this->renderPageButton($this->nextPageLabel, $page, $this->nextPageCssClass,
+                $currentPage >= $pageCount - 1, false);
         }
 
         // last page
@@ -221,10 +225,12 @@ class LinkPager extends Widget
 
             $disabled = $endPage == $pageCount - 1;
 
-            if(!$disabled)
+            if (!$disabled) {
                 $buttons[] = $this->renderDoteButton('...');
+            }
 
-            $buttons[] = $this->renderPageButton($lastPageLabel, $pageCount - 1, $this->lastPageCssClass, $disabled, false);
+            $buttons[] = $this->renderPageButton($lastPageLabel, $pageCount - 1, $this->lastPageCssClass, $disabled,
+                false);
         }
 
         return Html::tag('ul', implode("\n", $buttons), $this->options);
@@ -245,7 +251,7 @@ class LinkPager extends Widget
     {
         $options = ['class' => empty($class) ? $this->pageCssClass : $class];
 
-        return Html::tag('li', Html::tag('i', $label) , $options);
+        return Html::tag('li', Html::tag('i', $label), $options);
     }
 
     protected function renderPageButton($label, $page, $class, $disabled, $active)
@@ -276,7 +282,7 @@ class LinkPager extends Widget
         $currentPage = $this->pagination->getPage();
         $pageCount = $this->pagination->getPageCount();
 
-        $beginPage = max(0, $currentPage - (int) ($this->maxButtonCount / 2));
+        $beginPage = max(0, $currentPage - (int)($this->maxButtonCount / 2));
         if (($endPage = $beginPage + $this->maxButtonCount - 1) >= $pageCount) {
             $endPage = $pageCount - 1;
             $beginPage = max(0, $endPage - $this->maxButtonCount + 1);

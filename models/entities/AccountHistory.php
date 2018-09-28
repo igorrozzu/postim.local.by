@@ -23,6 +23,7 @@ class AccountHistory extends \yii\db\ActiveRecord
     const TYPE = [
         'virtualMoney' => 1,
     ];
+
     /**
      * @inheritdoc
      */
@@ -41,7 +42,13 @@ class AccountHistory extends \yii\db\ActiveRecord
             [['user_id', 'type', 'date'], 'integer'],
             [['changing'], 'number'],
             [['message'], 'string'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 

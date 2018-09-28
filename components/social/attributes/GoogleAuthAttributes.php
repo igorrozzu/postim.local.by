@@ -28,7 +28,7 @@ class GoogleAuthAttributes extends SocialAuthAttributes
 
     public function getUserPhoto()
     {
-        if(isset($this->attributes['image']['url'])) {
+        if (isset($this->attributes['image']['url'])) {
             return preg_replace('/\?sz=\d+$/', '?sz=400',
                 $this->attributes['image']['url']);
         }

@@ -40,25 +40,60 @@ class LoginModel extends Model
     public function rules()
     {
         return [
-            [['name','email'], 'filter', 'filter' => 'trim'],
-            ['name', 'string', 'max' => 25, 'tooLong'=> 'Не более {max} символов', 'on' => self::SCENARIO_REGISTER],
-            ['email', 'required', 'message'=> 'Поле обязательно для заполнения',
-                'on' => [self::SCENARIO_LOGIN, self::SCENARIO_REGISTER, self::SCENARIO_PASSWORD_RECOVERY]],
-            ['email', 'email', 'message' => 'Некорректный email-адрес.',
-                'on' => [self::SCENARIO_LOGIN, self::SCENARIO_REGISTER, self::SCENARIO_PASSWORD_RECOVERY]],
-            ['password', 'required', 'message'=> 'Поле обязательно для заполнения',
-                'on' => [self::SCENARIO_LOGIN, self::SCENARIO_REGISTER, self::SCENARIO_PASSWORD_RESET_FORM]],
-            [['name', 'password_repeat'], 'required', 'on' => self::SCENARIO_REGISTER,
-                'message'=> 'Поле обязательно для заполнения'],
-            ['password_repeat', 'required', 'message'=> 'Поле обязательно для заполнения',
-                'on' => [self::SCENARIO_PASSWORD_RESET_FORM]],
-            ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message' => 'Пароли не совпадают',
-                'on' => [self::SCENARIO_REGISTER, self::SCENARIO_PASSWORD_RESET_FORM]],
-            ['email', 'unique', 'targetClass' => '\app\models\User', 'on' => self::SCENARIO_REGISTER,
-                'message' => 'Пользователь с таким email-адресом уже существует'],
+            [['name', 'email'], 'filter', 'filter' => 'trim'],
+            ['name', 'string', 'max' => 25, 'tooLong' => 'Не более {max} символов', 'on' => self::SCENARIO_REGISTER],
+            [
+                'email',
+                'required',
+                'message' => 'Поле обязательно для заполнения',
+                'on' => [self::SCENARIO_LOGIN, self::SCENARIO_REGISTER, self::SCENARIO_PASSWORD_RECOVERY],
+            ],
+            [
+                'email',
+                'email',
+                'message' => 'Некорректный email-адрес.',
+                'on' => [self::SCENARIO_LOGIN, self::SCENARIO_REGISTER, self::SCENARIO_PASSWORD_RECOVERY],
+            ],
+            [
+                'password',
+                'required',
+                'message' => 'Поле обязательно для заполнения',
+                'on' => [self::SCENARIO_LOGIN, self::SCENARIO_REGISTER, self::SCENARIO_PASSWORD_RESET_FORM],
+            ],
+            [
+                ['name', 'password_repeat'],
+                'required',
+                'on' => self::SCENARIO_REGISTER,
+                'message' => 'Поле обязательно для заполнения',
+            ],
+            [
+                'password_repeat',
+                'required',
+                'message' => 'Поле обязательно для заполнения',
+                'on' => [self::SCENARIO_PASSWORD_RESET_FORM],
+            ],
+            [
+                'password_repeat',
+                'compare',
+                'compareAttribute' => 'password',
+                'message' => 'Пароли не совпадают',
+                'on' => [self::SCENARIO_REGISTER, self::SCENARIO_PASSWORD_RESET_FORM],
+            ],
+            [
+                'email',
+                'unique',
+                'targetClass' => '\app\models\User',
+                'on' => self::SCENARIO_REGISTER,
+                'message' => 'Пользователь с таким email-адресом уже существует',
+            ],
             ['password', 'validatePassword', 'on' => self::SCENARIO_LOGIN],
-            ['email', 'exist', 'targetClass' => '\app\models\User', 'on' => self::SCENARIO_PASSWORD_RECOVERY,
-                'message' => 'Пользователя с таким email-адресом не существует'],
+            [
+                'email',
+                'exist',
+                'targetClass' => '\app\models\User',
+                'on' => self::SCENARIO_PASSWORD_RECOVERY,
+                'message' => 'Пользователя с таким email-адресом не существует',
+            ],
         ];
 
     }
@@ -97,7 +132,7 @@ class LoginModel extends Model
     public function getUserForResetPassword()
     {
         if ($this->validate()) {
-            if($user = $this->getUser()) {
+            if ($user = $this->getUser()) {
                 $user->generatePasswordResetToken();
                 return $user->save() ? $user : null;
             }

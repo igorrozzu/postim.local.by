@@ -16,18 +16,23 @@ class SocialRegister extends Model
     public $email;
 
     const MAX_NAME_LENGTH = 25;
+
     /**
      * @return array the validation rules.
      */
     public function rules()
     {
         return [
-            [['name','email'], 'filter', 'filter' => 'trim'],
-            [['name','email'], 'required', 'message'=> 'Поле обязательно для заполнения'],
-            ['name', 'string', 'max' => self::MAX_NAME_LENGTH, 'tooLong'=> 'Не более {max} символов'],
+            [['name', 'email'], 'filter', 'filter' => 'trim'],
+            [['name', 'email'], 'required', 'message' => 'Поле обязательно для заполнения'],
+            ['name', 'string', 'max' => self::MAX_NAME_LENGTH, 'tooLong' => 'Не более {max} символов'],
             ['email', 'email', 'message' => 'Некорректный email-адрес'],
-            ['email', 'unique', 'targetClass' => '\app\models\User',
-                'message' => 'Пользователь с таким email-адресом уже существует'],
+            [
+                'email',
+                'unique',
+                'targetClass' => '\app\models\User',
+                'message' => 'Пользователь с таким email-адресом уже существует',
+            ],
         ];
     }
 
@@ -56,7 +61,7 @@ class SocialRegister extends Model
             ]);
             if ($auth->save()) {
                 $userInfo = new UserInfo(['user_id' => $user->id]);
-                if ($userInfo->save()){
+                if ($userInfo->save()) {
                     $success = true;
                     ImageHelper::saveUserPhoto($attrClient->getUserPhoto(), $user);
                 }
@@ -75,13 +80,14 @@ class SocialRegister extends Model
             'screen_name' => $attrClient->getScreenName(),
             'name' => $attrClient->getName(),
             'surname' => $attrClient->getSurname(),
-            'email' =>  $attrClient->getEmail(),
+            'email' => $attrClient->getEmail(),
             'url_photo' => $attrClient->getUserPhoto(),
             'hash' => Yii::$app->security->generateRandomString(50),
         ]);
         $tempUser->trimNames(self::MAX_NAME_LENGTH);
         return $tempUser->save() ? $tempUser : null;
     }
+
     public function createSocialBinding(SocialAuthAttr $attrClient, $userId)
     {
         $auth = new SocialAuth([

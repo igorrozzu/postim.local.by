@@ -14,12 +14,16 @@ class News extends ParentNews
     public function rules()
     {
         return [
-            [['city_id'], 'required','message'=>'Выберите город'],
-            [['cover'], 'required','message'=>'Укажите фото'],
-            [['data','header','description','description_s','key_word_s','title_s'], 'required','message'=>'Введите текст'],
+            [['city_id'], 'required', 'message' => 'Выберите город'],
+            [['cover'], 'required', 'message' => 'Укажите фото'],
+            [
+                ['data', 'header', 'description', 'description_s', 'key_word_s', 'title_s'],
+                'required',
+                'message' => 'Введите текст',
+            ],
             [['date'], 'required'],
             [['city_id', 'total_view_id', 'count_favorites', 'date'], 'integer'],
-            [['header', 'description', 'data',  'key_word_s'], 'string'],
+            [['header', 'description', 'data', 'key_word_s'], 'string'],
             [['cover'], 'string', 'max' => 100],
             [['id'], 'safe'],
         ];
@@ -40,11 +44,11 @@ class News extends ParentNews
     public function beforeValidate()
     {
 
-        if(!$this->date){
+        if (!$this->date) {
             $this->date = time();
         }
 
-        if(!$this->count_favorites){
+        if (!$this->count_favorites) {
             $this->count_favorites = 0;
         }
 
@@ -54,8 +58,8 @@ class News extends ParentNews
 
     public function beforeSave($insert)
     {
-        if(!$this->total_view_id){
-            $totalView = new TotalView(['count'=>0]);
+        if (!$this->total_view_id) {
+            $totalView = new TotalView(['count' => 0]);
             $totalView->save();
             $this->total_view_id = $totalView->id;
 
@@ -72,8 +76,9 @@ class News extends ParentNews
     }
 
 
-    private function savePhoto(){
-        if($this->cover){
+    private function savePhoto()
+    {
+        if ($this->cover) {
 
             $dir = Yii::getAlias('@webroot/post-img/' . $this->id . '/');
             if (!is_dir($dir)) {
@@ -83,7 +88,7 @@ class News extends ParentNews
             $photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $this->cover);
 
             if (file_exists($photoPath)) {
-                if(copy($photoPath,$dir.$this->cover)){
+                if (copy($photoPath, $dir . $this->cover)) {
                     unlink($photoPath);
                 }
             }
@@ -91,22 +96,23 @@ class News extends ParentNews
         }
     }
 
-    public function getPatchCover(){
-        if($this->cover){
-            if($this->id){
-                $dir = Yii::getAlias('@webroot/post-img/' . $this->id . '/'.$this->cover);
-                if(file_exists($dir)){
-                    return '/post-img/'. $this->id . '/'.$this->cover;
-                }else{
+    public function getPatchCover()
+    {
+        if ($this->cover) {
+            if ($this->id) {
+                $dir = Yii::getAlias('@webroot/post-img/' . $this->id . '/' . $this->cover);
+                if (file_exists($dir)) {
+                    return '/post-img/' . $this->id . '/' . $this->cover;
+                } else {
                     $photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $this->cover);
-                    if(file_exists($photoPath)){
-                        return '/post_photo/tmp/'.$this->cover;
+                    if (file_exists($photoPath)) {
+                        return '/post_photo/tmp/' . $this->cover;
                     }
                 }
-            }else{
+            } else {
                 $photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $this->cover);
-                if(file_exists($photoPath)){
-                    return '/post_photo/tmp/'.$this->cover;
+                if (file_exists($photoPath)) {
+                    return '/post_photo/tmp/' . $this->cover;
                 }
             }
         }

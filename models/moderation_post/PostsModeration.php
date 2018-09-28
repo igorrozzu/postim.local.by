@@ -35,13 +35,13 @@ class PostsModeration extends \yii\db\ActiveRecord
 
     public $lat;
     public $lon;
-    public $distance=null;
+    public $distance = null;
     public $distanceText = null;
 
     public static $STATUS = [
         'moderation' => 0,
         'confirm' => 1,
-        'private'=> 2,
+        'private' => 2,
     ];
 
 
@@ -89,7 +89,7 @@ class PostsModeration extends \yii\db\ActiveRecord
         return [
             'OpenPlace' => [
                 'class' => 'app\behaviors\OpenPlace',
-                'only_is_open' => false
+                'only_is_open' => false,
             ],
             'slug' => [
                 'class' => 'app\behaviors\Slug',
@@ -99,38 +99,46 @@ class PostsModeration extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getUser(){
+    public function getUser()
+    {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-	public function getPostUnderCategory(){
-		return $this->hasMany(PostModerationUnderCategory::className(), ['post_id' => 'id']);
-	}
-	public function getPostCategory(){
-		return $this->hasMany(PostModerationUnderCategory::className(), ['post_id' => 'id']);
-	}
+
+    public function getPostUnderCategory()
+    {
+        return $this->hasMany(PostModerationUnderCategory::className(), ['post_id' => 'id']);
+    }
+
+    public function getPostCategory()
+    {
+        return $this->hasMany(PostModerationUnderCategory::className(), ['post_id' => 'id']);
+    }
+
     public function getCategories()
     {
         return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
             ->via('postUnderCategory');
     }
-	public function getOnlyOnceCategories()
-	{
-		return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
-			->via('postUnderCategory',function ($query) {
-				$query->orderBy(['priority' => SORT_DESC])
-					->limit(1);
-			});
-	}
 
-	public function getCategoriesPriority(){
-		$postUnderCategory = UnderCategory::find()
-			->where(['post_id'=> $this->id])
-			->innerJoin(PostModerationUnderCategory::tableName(),'under_category_id = tbl_under_category.id')
-			->orderBy(['priority'=> SORT_DESC])
-			->asArray()
-			->all();
-		return $postUnderCategory;
-	}
+    public function getOnlyOnceCategories()
+    {
+        return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
+            ->via('postUnderCategory', function ($query) {
+                $query->orderBy(['priority' => SORT_DESC])
+                    ->limit(1);
+            });
+    }
+
+    public function getCategoriesPriority()
+    {
+        $postUnderCategory = UnderCategory::find()
+            ->where(['post_id' => $this->id])
+            ->innerJoin(PostModerationUnderCategory::tableName(), 'under_category_id = tbl_under_category.id')
+            ->orderBy(['priority' => SORT_DESC])
+            ->asArray()
+            ->all();
+        return $postUnderCategory;
+    }
 
 
     public function getPostFeatures()
@@ -143,8 +151,6 @@ class PostsModeration extends \yii\db\ActiveRecord
     {
         return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
-
-
 
 
     public function getInfo()
@@ -168,21 +174,22 @@ class PostsModeration extends \yii\db\ActiveRecord
         parent::afterFind();
 
 
-        if($this->coordinates){
-            $latLng = explode(',',$this->coordinates);
-            $this->lat = str_replace('(','',$latLng[0]);
-            $this->lon = str_replace(')','',$latLng[1]);
+        if ($this->coordinates) {
+            $latLng = explode(',', $this->coordinates);
+            $this->lat = str_replace('(', '', $latLng[0]);
+            $this->lon = str_replace(')', '', $latLng[1]);
         }
-        if(isset(Yii::$app->request->cookies)){
-            if($this->distance == null && $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation')?\yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')):false){
-                if($this->lat && $this->lon){
-                    $this->distanceText = Yii::$app->oldFormatter->asShortLength(Helper::getDistanceBP($this->lat,$this->lon,
-                        $CurrentMePosition['lat'],$CurrentMePosition['lon']));
+        if (isset(Yii::$app->request->cookies)) {
+            if ($this->distance == null && $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation') ? \yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')) : false) {
+                if ($this->lat && $this->lon) {
+                    $this->distanceText = Yii::$app->oldFormatter->asShortLength(Helper::getDistanceBP($this->lat,
+                        $this->lon,
+                        $CurrentMePosition['lat'], $CurrentMePosition['lon']));
                 }
             }
         }
 
-        if($this->distance){
+        if ($this->distance) {
             $this->distanceText = Yii::$app->oldFormatter->asShortLength((int)$this->distance);
         }
 
@@ -190,7 +197,7 @@ class PostsModeration extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        $this->coordinates = '('.$this->lat.','.$this->lon.')';
+        $this->coordinates = '(' . $this->lat . ',' . $this->lon . ')';
         return parent::beforeValidate();
     }
 

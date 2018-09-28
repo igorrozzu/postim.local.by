@@ -41,28 +41,28 @@ class HelloController extends Controller
     public function actionInsertCity()
     {
         $row = 1;
-        if (($handle = fopen(\Yii::getAlias('@app/web/tmp/goroda.csv'), "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+        if (($handle = fopen(\Yii::getAlias('@app/web/tmp/goroda.csv'), "r")) !== false) {
+            while (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 $num = count($data);
                 $row++;
                 $region = new Region();
-                $region->name=$data[0];
-                $region->url_name=$data[1];
-                if($region->validate() && $region->save()){
-                    echo 'Регион '.$region->name." был сохранен\n\r";
-                    for ($c=2; $c < $num; $c+=2) {
+                $region->name = $data[0];
+                $region->url_name = $data[1];
+                if ($region->validate() && $region->save()) {
+                    echo 'Регион ' . $region->name . " был сохранен\n\r";
+                    for ($c = 2; $c < $num; $c += 2) {
                         $city = new City();
-                        $city->name =$data[$c];
-                        $city->url_name =$data[$c+1];
-                        $city->link('region',$region);
-                        if($city->validate() && $city->save()){
-                             echo 'города '.$city->url_name." был сохранен\n\r";
-                        }else{
-                            echo 'города '.$city->url_name."не был сохранен\n\r";
+                        $city->name = $data[$c];
+                        $city->url_name = $data[$c + 1];
+                        $city->link('region', $region);
+                        if ($city->validate() && $city->save()) {
+                            echo 'города ' . $city->url_name . " был сохранен\n\r";
+                        } else {
+                            echo 'города ' . $city->url_name . "не был сохранен\n\r";
                         }
                     }
-                }else{
-                    echo 'Регион '.$region->name." не был сохранен\n\r";
+                } else {
+                    echo 'Регион ' . $region->name . " не был сохранен\n\r";
                 }
 
             }
@@ -71,30 +71,31 @@ class HelloController extends Controller
 
     }
 
-    public function actionInsertCategory(){
+    public function actionInsertCategory()
+    {
         $row = 1;
-        if (($handle = fopen(\Yii::getAlias('@app/web/tmp/cat.csv'), "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 10000, ";")) !== FALSE) {
+        if (($handle = fopen(\Yii::getAlias('@app/web/tmp/cat.csv'), "r")) !== false) {
+            while (($data = fgetcsv($handle, 10000, ";")) !== false) {
                 $num = count($data);
                 $row++;
                 $category = new Category();
-                $category->name=$data[0];
-                $category->url_name=$data[1];
-                if($category->validate() && $category->save()){
-                    echo 'Категория '.$category->name." была сохранена\n\r";
-                    for ($c=2; $c < $num; $c+=2) {
+                $category->name = $data[0];
+                $category->url_name = $data[1];
+                if ($category->validate() && $category->save()) {
+                    echo 'Категория ' . $category->name . " была сохранена\n\r";
+                    for ($c = 2; $c < $num; $c += 2) {
                         $under_cat = new UnderCategory();
-                        $under_cat->name =$data[$c];
-                        $under_cat->url_name =$data[$c+1];
-                        $under_cat->link('category',$category);
-                        if($under_cat->validate() && $under_cat->save()){
-                            echo 'под категория '.$under_cat->url_name." был сохранен\n\r";
-                        }else{
-                            echo 'под категория '.$under_cat->url_name."не был сохранен\n\r";
+                        $under_cat->name = $data[$c];
+                        $under_cat->url_name = $data[$c + 1];
+                        $under_cat->link('category', $category);
+                        if ($under_cat->validate() && $under_cat->save()) {
+                            echo 'под категория ' . $under_cat->url_name . " был сохранен\n\r";
+                        } else {
+                            echo 'под категория ' . $under_cat->url_name . "не был сохранен\n\r";
                         }
                     }
-                }else{
-                    echo 'Регион '.$category->name." не был сохранен\n\r";
+                } else {
+                    echo 'Регион ' . $category->name . " не был сохранен\n\r";
                 }
 
             }
@@ -102,13 +103,14 @@ class HelloController extends Controller
         }
     }
 
-    public function actionInsertNotif($idFrom, $count){
+    public function actionInsertNotif($idFrom, $count)
+    {
         for ($i = 0; $i < $count; $i++) {
             $notif = new Notification();
             $notif->sender_id = $idFrom;
             $notif->message = json_encode([
                 'type' => 'xz',
-                'data' => 'Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>'
+                'data' => 'Получен новый отзыв о <b>Музей-заповедник "Коломенское"</b>',
             ]);
             $notif->date = time();
             if ($notif->validate() && $notif->save()) {
@@ -120,7 +122,8 @@ class HelloController extends Controller
 
     }
 
-    public function actionInsertReviews($postId, $userId, $count){
+    public function actionInsertReviews($postId, $userId, $count)
+    {
         for ($i = 0; $i < $count; $i++) {
             $review = new Reviews([
                 'user_id' => (int)$userId,
@@ -144,7 +147,8 @@ class HelloController extends Controller
 
     }
 
-    public function actionInsertPlaces($userId, $count){
+    public function actionInsertPlaces($userId, $count)
+    {
         for ($i = 0; $i < $count; $i++) {
             $model = new Posts([
                 'user_id' => (int)$userId,
@@ -158,7 +162,7 @@ class HelloController extends Controller
                 'count_reviews' => 10,
                 'under_category_id' => 1,
                 'count_favorites' => 0,
-                'status' => 1
+                'status' => 1,
             ]);
 
             if ($model->validate() && $model->save()) {
@@ -170,17 +174,18 @@ class HelloController extends Controller
 
     }
 
-    public function actionInsertNews($count){
+    public function actionInsertNews($count)
+    {
         $generateString = new Security();
         for ($i = 0; $i < $count; $i++) {
-            $total_view = new TotalView(['count'=>rand(1,142)]);
-            if($total_view->save()){
+            $total_view = new TotalView(['count' => rand(1, 142)]);
+            if ($total_view->save()) {
                 $model = new News([
-                    'city_id'=>rand(1,142),
-                    'header'=>'В витебске открыли музей искуства',
-                    'description'=>'В витебске открыли музей искуства',
-                    'date'=>time(),
-                    'data'=>'<div class="block-photo-post">
+                    'city_id' => rand(1, 142),
+                    'header' => 'В витебске открыли музей искуства',
+                    'description' => 'В витебске открыли музей искуства',
+                    'date' => time(),
+                    'data' => '<div class="block-photo-post">
         <img src="img/photo-post-news.jpg">
         <div class="photo-desc">Фото: Life.ru</div>
       </div>
@@ -204,14 +209,14 @@ class HelloController extends Controller
         автора. Например, о кафе, о кинотеатре или о магазине неподалёку от дома — каждый раз, как происходит что-то,
         заслуживающее внимания (в кинозале поставили кондиционер, в кафе начали делать потрясающие десерты, в магазине на
         кассах стали медленнее обслуживать), у флампера появляется повод написать об этой компании новый отзыв.</div>',
-                    'description_s'=>'В витебске открыли музей искуства',
-                    'key_word_s'=>'В витебске открыли музей искуства',
-                    'count_favorites'=> 0,
+                    'description_s' => 'В витебске открыли музей искуства',
+                    'key_word_s' => 'В витебске открыли музей искуства',
+                    'count_favorites' => 0,
                     'cover' => '/post-img/testP.png',
-                    'url_name'=>$generateString->generateRandomString()
+                    'url_name' => $generateString->generateRandomString(),
                 ]);
 
-                $model->link('totalView',$total_view);
+                $model->link('totalView', $total_view);
 
                 if ($model->validate() && $model->save()) {
                     echo 'model ' . $model->id . " была сохранена\n\r";
@@ -224,24 +229,25 @@ class HelloController extends Controller
 
     }
 
-    public function actionInsertCommentsNews($id_user,$id_news,$count_comments,$is_under=false){
-        for($i=0;$i<$count_comments;$i++){
+    public function actionInsertCommentsNews($id_user, $id_news, $count_comments, $is_under = false)
+    {
+        for ($i = 0; $i < $count_comments; $i++) {
             $model = new CommentsNews();
-            $model->user_id=$id_user;
-            $model->news_id=$id_news;
-            $model->like=rand(1,1210);
-            $model->date=time();
-            $model->data='Текст главного комментария';
-            if($model->save()){
-                echo "главный комментарий был сохранен под id ".$model->id."\n\r";
-                if($is_under){
-                    $model_under= new CommentsNews([
-                        'user_id'=>$id_user,
-                        'entity_id'=>$id_news,
-                        'like'=>rand(1,1210),
-                        'date'=>time(),
-                        'data'=>'Текст ответа на главный комментарий',
-                        'main_comment_id'=>$model->id
+            $model->user_id = $id_user;
+            $model->news_id = $id_news;
+            $model->like = rand(1, 1210);
+            $model->date = time();
+            $model->data = 'Текст главного комментария';
+            if ($model->save()) {
+                echo "главный комментарий был сохранен под id " . $model->id . "\n\r";
+                if ($is_under) {
+                    $model_under = new CommentsNews([
+                        'user_id' => $id_user,
+                        'entity_id' => $id_news,
+                        'like' => rand(1, 1210),
+                        'date' => time(),
+                        'data' => 'Текст ответа на главный комментарий',
+                        'main_comment_id' => $model->id,
                     ]);
                     $model_under->save();
                 }
@@ -250,50 +256,52 @@ class HelloController extends Controller
         }
     }
 
-    public function actionConvertTime(){
+    public function actionConvertTime()
+    {
         $workingHours = WorkingHours::find()->all();
-        foreach ($workingHours as $working){
-            if($working->time_start > $working->time_finish || ($working->time_start == 0 && $working->time_finish == 0) ){
-                $working->time_finish+=24*3600;
-                if($working->save()){
-                    echo "был сохранен под id ".$working->id."\n\r";
-                }else{
-                    echo "не был сохранен под id ".$working->id."\n\r";
+        foreach ($workingHours as $working) {
+            if ($working->time_start > $working->time_finish || ($working->time_start == 0 && $working->time_finish == 0)) {
+                $working->time_finish += 24 * 3600;
+                if ($working->save()) {
+                    echo "был сохранен под id " . $working->id . "\n\r";
+                } else {
+                    echo "не был сохранен под id " . $working->id . "\n\r";
                 }
 
             }
         }
     }
 
-    public function actionCalcCountPlace(){
+    public function actionCalcCountPlace()
+    {
 
-        $posts =  Posts::find()
+        $posts = Posts::find()
             ->with('categories.category')
             ->with('city.region.coutries')
             ->all();
 
 
-
-        foreach ($posts as $post){
+        foreach ($posts as $post) {
             $is_has_category = [];
-            foreach ($post->categories as $under_category){
+            foreach ($post->categories as $under_category) {
 
-                $this->savePostCategoryCount($under_category->url_name,$post->city->name);
-                $this->savePostCategoryCount($under_category->url_name,$post->city->region->name);
-                $this->savePostCategoryCount($under_category->url_name,$post->city->region->coutries->name);
-                if(!isset($is_has_category[$under_category->category->url_name.$post->city->name])){
-                    $this->savePostCategoryCount($under_category->category->url_name,$post->city->name);
-                    $is_has_category[$under_category->category->url_name.$post->city->name]=true;
+                $this->savePostCategoryCount($under_category->url_name, $post->city->name);
+                $this->savePostCategoryCount($under_category->url_name, $post->city->region->name);
+                $this->savePostCategoryCount($under_category->url_name, $post->city->region->coutries->name);
+                if (!isset($is_has_category[$under_category->category->url_name . $post->city->name])) {
+                    $this->savePostCategoryCount($under_category->category->url_name, $post->city->name);
+                    $is_has_category[$under_category->category->url_name . $post->city->name] = true;
                 }
 
-                if(!isset($is_has_category[$under_category->category->url_name.$post->city->region->name])){
-                    $this->savePostCategoryCount($under_category->category->url_name,$post->city->region->name);
-                    $is_has_category[$under_category->category->url_name.$post->city->region->name]=true;
+                if (!isset($is_has_category[$under_category->category->url_name . $post->city->region->name])) {
+                    $this->savePostCategoryCount($under_category->category->url_name, $post->city->region->name);
+                    $is_has_category[$under_category->category->url_name . $post->city->region->name] = true;
                 }
 
-                if(!isset($is_has_category[$under_category->category->url_name.$post->city->region->coutries->name])){
-                    $this->savePostCategoryCount($under_category->category->url_name,$post->city->region->coutries->name);
-                    $is_has_category[$under_category->category->url_name.$post->city->region->coutries->name]=true;
+                if (!isset($is_has_category[$under_category->category->url_name . $post->city->region->coutries->name])) {
+                    $this->savePostCategoryCount($under_category->category->url_name,
+                        $post->city->region->coutries->name);
+                    $is_has_category[$under_category->category->url_name . $post->city->region->coutries->name] = true;
                 }
 
             }
@@ -301,15 +309,19 @@ class HelloController extends Controller
         }
     }
 
-    private function savePostCategoryCount($category_name,$city_name){
+    private function savePostCategoryCount($category_name, $city_name)
+    {
         $model = PostCategoryCount::find()
-            ->where(['category_url_name'=>$category_name])
-            ->andWhere(['city_name'=>$city_name])->one();
-        if($model != null){
+            ->where(['category_url_name' => $category_name])
+            ->andWhere(['city_name' => $city_name])->one();
+        if ($model != null) {
             $model->updateCounters(['count' => 1]);
-        }else{
-            $model = new PostCategoryCount(['category_url_name' => $category_name,
-                                            'city_name'=>$city_name,'count'=>1]);
+        } else {
+            $model = new PostCategoryCount([
+                'category_url_name' => $category_name,
+                'city_name' => $city_name,
+                'count' => 1,
+            ]);
             $model->save();
         }
     }
@@ -327,7 +339,7 @@ class HelloController extends Controller
             'Памятники',
             'Площади',
             'Улицы',
-            'Театры'
+            'Театры',
         ];
 
         $underCategoriesName = ArrayHelper::getColumn(UnderCategory::find()
@@ -337,9 +349,12 @@ class HelloController extends Controller
 
         $idsPost = [];
 
-        foreach ($underCategoriesName  as $category)
-        {
-            $ids = ArrayHelper::getColumn(Posts::find()->where(['~*', 'data', \Yii::t('app/singular',$category)])->all(), 'id');
+        foreach ($underCategoriesName as $category) {
+            $ids = ArrayHelper::getColumn(Posts::find()->where([
+                '~*',
+                'data',
+                \Yii::t('app/singular', $category),
+            ])->all(), 'id');
             $idsPost = array_unique(array_merge($idsPost, $ids));
         }
 
@@ -349,15 +364,13 @@ class HelloController extends Controller
             ->where(['not in', 'tbl_posts.id', $idsPost])
             ->andWhere(['not in', 'tbl_under_category.name', $exeptCategories])->all();
 
-        foreach ($posts as $post)
-        {
+        foreach ($posts as $post) {
             $postName = $post->data;
-            $postName = ucfirst(\Yii::t('app/singular',$post->mainCategory->name)) . ' ' . $postName;
-            $postName = preg_replace("/ {2,}/"," ", $postName);
+            $postName = ucfirst(\Yii::t('app/singular', $post->mainCategory->name)) . ' ' . $postName;
+            $postName = preg_replace("/ {2,}/", " ", $postName);
             $post->data = $postName;
             $post->save();
         }
-
 
 
     }

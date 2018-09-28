@@ -41,12 +41,17 @@ class Complaints extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id','date','type','status','entities_id'], 'required'],
-            [['data'], 'required','message'=>'Опишите суть жалобы'],
+            [['user_id', 'date', 'type', 'status', 'entities_id'], 'required'],
+            [['data'], 'required', 'message' => 'Опишите суть жалобы'],
             [['user_id', 'type'], 'integer'],
             [['data'], 'string'],
             [['date'], 'safe'],
-            [['user_id'], 'unique', 'targetAttribute' => ['user_id', 'entities_id','type'], 'message'=>'Ваша жалоба уже отправлена'],
+            [
+                ['user_id'],
+                'unique',
+                'targetAttribute' => ['user_id', 'entities_id', 'type'],
+                'message' => 'Ваша жалоба уже отправлена',
+            ],
         ];
     }
 
@@ -67,7 +72,7 @@ class Complaints extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        if(!$this->date){
+        if (!$this->date) {
             $this->date = time();
         }
 

@@ -7,7 +7,8 @@ $this->title = 'Добавить место на Postim.by';
         <div class="container-add-place">
             <div class="block-field-setting">
                 <label class="label-field-setting">Название места</label>
-                <input name="name" class="input-field-setting validator" data-error-parents="block-field-setting" data-message="Ввидите название" data-regex="^\S.{3,}" placeholder="Введите название" value="">
+                <input name="name" class="input-field-setting validator" data-error-parents="block-field-setting"
+                       data-message="Ввидите название" data-regex="^\S.{3,}" placeholder="Введите название" value="">
             </div>
             <div class="block-field-setting">
                 <label class="label-field-setting">Категория</label>
@@ -42,9 +43,12 @@ $this->title = 'Добавить место на Postim.by';
                 </div>
             </div>
             <div class="block-field-setting" style="border-bottom: 0px">
-                <input style="margin-top: 0px" name="address_text"  class="input-field-setting validator" placeholder="Введите адрес" data-error-parents="block-field-setting" data-message="Введите адрес" data-regex="^\S.{3,}" value="">
+                <input style="margin-top: 0px" name="address_text" class="input-field-setting validator"
+                       placeholder="Введите адрес" data-error-parents="block-field-setting" data-message="Введите адрес"
+                       data-regex="^\S.{3,}" value="">
                 <label class="label-field-setting">Комментарий к адресу</label>
-                <input name="comments_to_address" class="input-field-setting" placeholder="Расстояние до метро, этаж и т.д."
+                <input name="comments_to_address" class="input-field-setting"
+                       placeholder="Расстояние до метро, этаж и т.д."
                        value="">
                 <input id="coords_address" style="display: none" name="coords_address" type="text">
             </div>
@@ -65,7 +69,8 @@ $this->title = 'Добавить место на Postim.by';
             </div>
             <div class="block-field-setting" style="margin-bottom: -20px;border-bottom: 0px">
                 <label class="label-field-setting">Поиск по карте</label>
-                <input class="input-field-setting js-search-on-map" placeholder="Введите адрес, чтобы отметить место" value="">
+                <input class="input-field-setting js-search-on-map" placeholder="Введите адрес, чтобы отметить место"
+                       value="">
             </div>
             <div id="map_block" class="block-map">
                 <div class="btns-map">
@@ -157,9 +162,9 @@ $this->title = 'Добавить место на Postim.by';
                         <div class="day-name-min">Пт.</div>
                         <div class="container-time">
                             <span>с</span>
-                            <div class="time-period"><input name="time_work[5][start]"  placeholder="00:00"></div>
+                            <div class="time-period"><input name="time_work[5][start]" placeholder="00:00"></div>
                             <span>до</span>
-                            <div class="time-period"><input name="time_work[5][finish]"  placeholder="00:00"></div>
+                            <div class="time-period"><input name="time_work[5][finish]" placeholder="00:00"></div>
                         </div>
                     </div>
                     <div class="container-row-time-work">
@@ -167,9 +172,9 @@ $this->title = 'Добавить место на Postim.by';
                         <div class="day-name-min">Сб.</div>
                         <div class="container-time">
                             <span>с</span>
-                            <div class="time-period"><input name="time_work[6][start]"  placeholder="00:00"></div>
+                            <div class="time-period"><input name="time_work[6][start]" placeholder="00:00"></div>
                             <span>до</span>
-                            <div class="time-period"><input name="time_work[6][finish]"  placeholder="00:00"></div>
+                            <div class="time-period"><input name="time_work[6][finish]" placeholder="00:00"></div>
                         </div>
                     </div>
                     <div class="container-row-time-work">
@@ -177,9 +182,9 @@ $this->title = 'Добавить место на Postim.by';
                         <div class="day-name-min">Вск.</div>
                         <div class="container-time">
                             <span>с</span>
-                            <div class="time-period"><input name="time_work[7][start]"  placeholder="00:00"></div>
+                            <div class="time-period"><input name="time_work[7][start]" placeholder="00:00"></div>
                             <span>до</span>
-                            <div class="time-period"><input name="time_work[7][finish]"  placeholder="00:00"></div>
+                            <div class="time-period"><input name="time_work[7][finish]" placeholder="00:00"></div>
                         </div>
                     </div>
                 </div>
@@ -195,11 +200,11 @@ $this->title = 'Добавить место на Postim.by';
         <div class="container-add-place">
             <div class="block-field-setting">
                 <label class="label-field-setting">Реквизиты</label>
-                <input name="requisites" class="input-field-setting validator" data-error-parents="block-field-setting"  placeholder="Введите реквизиты: ООО, УНП и т.д." value="">
+                <input name="requisites" class="input-field-setting validator" data-error-parents="block-field-setting"
+                       placeholder="Введите реквизиты: ООО, УНП и т.д." value="">
             </div>
         </div>
         <!--TODO описание места-->
-
 
 
         <div class="container-add-place">
@@ -228,23 +233,23 @@ $this->title = 'Добавить место на Postim.by';
 			});
         </script>
 
-            <div class="container-add-place">
-                <div class="container-gallery">
-                    <div class="gallery-header">Галерея</div>
-                    <div class="block-inputs-gallery" style="display: none">
+        <div class="container-add-place">
+            <div class="container-gallery">
+                <div class="gallery-header">Галерея</div>
+                <div class="block-inputs-gallery" style="display: none">
 
-                    </div>
-                    <div class="block-gallery">
-
-                    </div>
-                    <div class="btn-add-photos-gallery">Добавить фотографии</div>
                 </div>
-                <input style="display: none" class="photo-add" name="photo-add" type="file" multiple
-                       accept="image/*,image/jpeg,image/gif,image/png">
-            </div>
+                <div class="block-gallery">
 
-            <div class="container-add-place">
-				<?php if(Yii::$app->user->identity->role > 1):?>
+                </div>
+                <div class="btn-add-photos-gallery">Добавить фотографии</div>
+            </div>
+            <input style="display: none" class="photo-add" name="photo-add" type="file" multiple
+                   accept="image/*,image/jpeg,image/gif,image/png">
+        </div>
+
+        <div class="container-add-place">
+            <?php if (Yii::$app->user->identity->role > 1): ?>
                 <div class="block-field-setting">
                     <label class="label-field-setting">Заголовок для поисковиков</label>
                     <input name="engine[title]" class="input-field-setting" placeholder="Введите текст" value="">
@@ -260,39 +265,39 @@ $this->title = 'Добавить место на Postim.by';
                 <div class="btn-place-save">
                     <div class="large-wide-button"><p>Опубликовать</p></div>
                 </div>
-				<?php else:?>
-                    <div class="btn-place-save" style="margin-top: -20px">
-                        <div class="large-wide-button"><p>На модерацию</p></div>
-                    </div>
-                <?php endif;?>
-            </div>
+            <?php else: ?>
+                <div class="btn-place-save" style="margin-top: -20px">
+                    <div class="large-wide-button"><p>На модерацию</p></div>
+                </div>
+            <?php endif; ?>
+        </div>
 
 
     </form>
 </div>
 <div style="margin-bottom:30px;"></div>
 <script>
-    $(document).ready(function () {
-        $('.block-inputs').sortable();
+	$(document).ready(function () {
+		$('.block-inputs').sortable();
 
 		var maskBehavior = function (val) {
 			val = val.split(":");
-			return (parseInt(val[0]) > 19)? "HZ:M0" : "H0:M0";
+			return (parseInt(val[0]) > 19) ? "HZ:M0" : "H0:M0";
 		};
 
 		spOptions = {
-			onKeyPress: function(val, e, field, options) {
+			onKeyPress: function (val, e, field, options) {
 				field.mask(maskBehavior.apply({}, arguments), options);
 			},
 			translation: {
-				'H': { pattern: /[0-2]/, optional: false },
-				'Z': { pattern: /[0-3]/, optional: false },
-				'M': { pattern: /[0-5]/, optional: false}
+				'H': {pattern: /[0-2]/, optional: false},
+				'Z': {pattern: /[0-3]/, optional: false},
+				'M': {pattern: /[0-5]/, optional: false}
 			}
 		};
 
-        $('.container-time .time-period input').mask(maskBehavior, spOptions);
-		map.init({lat:53.905219, lon:27.564271},11);
+		$('.container-time .time-period input').mask(maskBehavior, spOptions);
+		map.init({lat: 53.905219, lon: 27.564271}, 11);
 		map.initEventClickMap(post_add.setPlace);
 	})
 </script>

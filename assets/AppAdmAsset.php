@@ -19,8 +19,8 @@ class AppAdmAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/reset.css',
-		'js/libs/medium-editor/dist/css/medium-editor.css',
-		'js/libs/medium-editor/dist/css/themes/default.css',
+        'js/libs/medium-editor/dist/css/medium-editor.css',
+        'js/libs/medium-editor/dist/css/themes/default.css',
         'css/main.css',
         'css/jquery.mCustomScrollbar.css',
         'css/jquery-ui.css',
@@ -37,7 +37,7 @@ class AppAdmAsset extends AssetBundle
         'css/admin/detailView.css',
         'css/admin/list-view.css',
         'css/admin/pop-up/pop-up.css',
-        'css/jquery-ui-datepicker.css'
+        'css/jquery-ui-datepicker.css',
     ];
     public $js = [
         'js/uploads.js',
@@ -60,7 +60,7 @@ class AppAdmAsset extends AssetBundle
         'js/add-post.js',
         'js/user-settings.js',
         '/js/discount.js',
-        '/js/libs/datepicker-ru.js'
+        '/js/libs/datepicker-ru.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

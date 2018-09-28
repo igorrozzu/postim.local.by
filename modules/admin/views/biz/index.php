@@ -1,7 +1,9 @@
 <?php
+
 use \yii\widgets\ActiveForm;
 
 $this->title = 'Бизнес-аккаунты';
+
 use yii\widgets\Pjax;
 
 Pjax::begin([
@@ -17,42 +19,67 @@ Pjax::begin([
 <div class="block-content">
     <h1 class="h1-c" style="margin-top: 35px">Бизнес-аккаунты</h1>
 
-    <?php $form = ActiveForm::begin(['id' => 'form-add-biz', 'enableClientScript' => false,'action'=>'/admin/biz/save','options'=>['pjax-container-add-biz'=>'true']]) ?>
+    <?php $form = ActiveForm::begin([
+        'id' => 'form-add-biz',
+        'enableClientScript' => false,
+        'action' => '/admin/biz/save',
+        'options' => ['pjax-container-add-biz' => 'true'],
+    ]) ?>
 
     <div class="container-add-place container-feedback" style="margin-top: 30px">
 
         <div class="block-field-setting">
             <label class="label-field-setting">Добавить бизнес-аккаунт</label>
             <?= $form->field($biz, 'post_id')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите id места', 'value' => $biz['post_id']])
+                ->textInput([
+                    'style' => 'margin-bottom: 15px;',
+                    'class' => 'input-field-setting',
+                    'placeholder' => 'Введите id места',
+                    'value' => $biz['post_id'],
+                ])
                 ->label(false) ?>
         </div>
         <div class="block-field-setting">
             <?= $form->field($biz, 'owner_id')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите id пользователя', 'value' => $biz['owner_id']])
+                ->textInput([
+                    'style' => 'margin-bottom: 15px;',
+                    'class' => 'input-field-setting',
+                    'placeholder' => 'Введите id пользователя',
+                    'value' => $biz['owner_id'],
+                ])
                 ->label(false) ?>
         </div>
 
         <div class="block-field-setting">
             <?= $form->field($biz_account, 'full_name')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите имя и фамилию', 'value' => $biz_account['full_name']])
+                ->textInput([
+                    'style' => 'margin-bottom: 15px;',
+                    'class' => 'input-field-setting',
+                    'placeholder' => 'Введите имя и фамилию',
+                    'value' => $biz_account['full_name'],
+                ])
                 ->label(false) ?>
         </div>
 
         <div class="block-field-setting">
             <?= $form->field($biz_account, 'position')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите должность пользователя', 'value' => $biz_account['position']])
+                ->textInput([
+                    'style' => 'margin-bottom: 15px;',
+                    'class' => 'input-field-setting',
+                    'placeholder' => 'Введите должность пользователя',
+                    'value' => $biz_account['position'],
+                ])
                 ->label(false) ?>
         </div>
 
         <div class="block-field-setting">
             <?= $form->field($biz_account, 'phone')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите телефон пользователя', 'value' => $biz_account['phone']])
+                ->textInput([
+                    'style' => 'margin-bottom: 15px;',
+                    'class' => 'input-field-setting',
+                    'placeholder' => 'Введите телефон пользователя',
+                    'value' => $biz_account['phone'],
+                ])
                 ->label(false) ?>
         </div>
 
@@ -64,15 +91,14 @@ Pjax::begin([
         </label>
 
     </div>
-    <?php ActiveForm::end()?>
+    <?php ActiveForm::end() ?>
 
 </div>
 
 
-
 <?php
 
-if(Yii::$app->session->hasFlash('toastMessage')) {
+if (Yii::$app->session->hasFlash('toastMessage')) {
     $toastMessage = Yii::$app->session->getFlash('toastMessage');
     $js = <<<JS
     $(document).ready(function () {

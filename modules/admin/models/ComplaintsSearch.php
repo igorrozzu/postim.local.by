@@ -39,7 +39,7 @@ class ComplaintsSearch extends Complaints
      *
      * @return ActiveDataProvider
      */
-    public function search($params,Pagination $pagination)
+    public function search($params, Pagination $pagination)
     {
         $query = Complaints::find();
 
@@ -47,7 +47,7 @@ class ComplaintsSearch extends Complaints
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);
@@ -56,7 +56,7 @@ class ComplaintsSearch extends Complaints
             return $dataProvider;
         }
 
-        $query->addOrderBy(['status'=>SORT_ASC,'date'=>SORT_DESC,]);
+        $query->addOrderBy(['status' => SORT_ASC, 'date' => SORT_DESC,]);
         $query->with(['user']);
 
         // grid filtering conditions

@@ -1,13 +1,16 @@
-.detail_view{
+.detail_view {
     background-color: white;
 }
-.detail_view{
+
+.detail_view {
     width: 940px;
 }
-.detail_view tr{
+
+.detail_view tr {
     height: 30px;
 }
-.detail_view tr th{
+
+.detail_view tr th {
     text-align: start;
     padding-left: 30px;
     padding-right: 30px;
@@ -19,7 +22,8 @@
     color: white;
     background-color: #626e87;
 }
-.detail_view tr td{
+
+.detail_view tr td {
     text-align: start;
     padding-left: 30px;
 
@@ -29,19 +33,22 @@
     font-family: PT_Sans;
     font-size: 14px;
 }
-.detail_view td a{
+
+.detail_view td a {
     color: #788399;
     text-decoration: underline;
 }
 
-.detail_view td a:hover{
+.detail_view td a:hover {
     text-decoration: none;
     color: #4b98df;
 }
-.photos-DW{
+
+.photos-DW {
     display: inline-block;
 }
-.photos-DW img{
+
+.photos-DW img {
     width: 100px;
     height: auto;
     margin: 10px;

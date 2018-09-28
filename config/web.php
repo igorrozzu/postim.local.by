@@ -6,7 +6,7 @@ $config = [
     'id' => 'basic',
     'timeZone' => 'UTC',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log','assetMinifier'],
+    'bootstrap' => ['log', 'assetMinifier'],
     'language' => 'ru-RU',
     'on beforeRequest' => function () {
         $pathInfo = Yii::$app->request->pathInfo;
@@ -25,11 +25,11 @@ $config = [
             'class' => \lajax\assetminifier\Component::className(),
             'minifyCss' => true,
             'minifyJs' => true,
-            'combine' =>true,
+            'combine' => true,
             'createGz' => true,
             'combiner' => [
                 'class' => 'lajax\assetminifier\Combiner',
-                'combinedFilesPath' => '/lajax-asset-minifier'
+                'combinedFilesPath' => '/lajax-asset-minifier',
             ],
         ],
         'session' => [
@@ -89,19 +89,19 @@ $config = [
                 'app*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'fileMap' => [
-                        'app'       => 'app.php',
-                        'app/locativus' =>'locativus.php',
-                        'app/parental_slope' =>'parental_slope.php',
-                        'app/singular' =>'singular.php',
+                        'app' => 'app.php',
+                        'app/locativus' => 'locativus.php',
+                        'app/parental_slope' => 'parental_slope.php',
+                        'app/singular' => 'singular.php',
                     ],
                 ],
             ],
         ],
 
-        'city'=>[
+        'city' => [
             'class' => 'app\components\City',
         ],
-        'category'=>[
+        'category' => [
             'class' => 'app\components\Category',
         ],
 
@@ -115,8 +115,8 @@ $config = [
             'timeZone' => 'UTC',
         ],
 
-        'authClientCollection' => require ('authClientCollection.php'),
-        'sphinx' => require ('sphinxSearch/config.php'),
+        'authClientCollection' => require('authClientCollection.php'),
+        'sphinx' => require('sphinxSearch/config.php'),
     ],
     'modules' => [
         'admin' => [
@@ -126,12 +126,12 @@ $config = [
     'params' => $params,
     'on afterAction' => function () {
         if (!Yii::$app->user->isGuest) {
-           $user = Yii::$app->user->identity;
-           $now = time();
-           if ($user->last_visit + Yii::$app->params['user.lastVisitUpdatePeriod'] < $now) {
-               $user->last_visit = $now;
-               $user->save();
-           }
+            $user = Yii::$app->user->identity;
+            $now = time();
+            if ($user->last_visit + Yii::$app->params['user.lastVisitUpdatePeriod'] < $now) {
+                $user->last_visit = $now;
+                $user->save();
+            }
         }
     },
 ];

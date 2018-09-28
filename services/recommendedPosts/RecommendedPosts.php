@@ -39,21 +39,24 @@ class RecommendedPosts
      * @param PostRepository $postRepository
      * @param RecommendedPostRepository $recommendedPostRepository
      */
-    public function __construct(PostRepository $postRepository,
-                                RecommendedPostRepository $recommendedPostRepository)
-    {
-        $this->_postRepository   = $postRepository;
+    public function __construct(
+        PostRepository $postRepository,
+        RecommendedPostRepository $recommendedPostRepository
+    ) {
+        $this->_postRepository = $postRepository;
         $this->_recommendedPostRepository = $recommendedPostRepository;
     }
 
-    public function getPostsIds(Model $post, int $limit): ? array
+    public function getPostsIds(Model $post, int $limit): ?array
     {
         $this->selectedPostIds = $this->_postRepository->getRecommendedPostsIds($post);
 
         if (empty($this->selectedPostIds)) {
             return null;
-        } else if (count($this->selectedPostIds) <= $limit) {
-            return $this->selectedPostIds;
+        } else {
+            if (count($this->selectedPostIds) <= $limit) {
+                return $this->selectedPostIds;
+            }
         }
 
         $key = $this->getKey($post);

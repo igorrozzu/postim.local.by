@@ -31,8 +31,20 @@ class PostUnderCategory extends \yii\db\ActiveRecord
         return [
             [['under_category_id', 'post_id'], 'required'],
             [['under_category_id', 'post_id'], 'integer'],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
-            [['under_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => UnderCategory::className(), 'targetAttribute' => ['under_category_id' => 'id']],
+            [
+                ['post_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Posts::className(),
+                'targetAttribute' => ['post_id' => 'id'],
+            ],
+            [
+                ['under_category_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => UnderCategory::className(),
+                'targetAttribute' => ['under_category_id' => 'id'],
+            ],
         ];
     }
 

@@ -47,18 +47,24 @@ class PostController extends MainController
     public function actionIndex(int $id, string $photo_id = null, int $review_id = null)
     {
         $query = Posts::find()
-            ->where(['id'=>$id]);
+            ->where(['id' => $id]);
 
-        $with = ['info', 'city', 'totalView','onlyOnceCategories.category', 'isCurrentUserOwner',
-            'categories', 'businessOwner',
+        $with = [
+            'info',
+            'city',
+            'totalView',
+            'onlyOnceCategories.category',
+            'isCurrentUserOwner',
+            'categories',
+            'businessOwner',
             'workingHours' => function ($query) {
-                $query->orderBy(['day_type'=>SORT_ASC]);
+                $query->orderBy(['day_type' => SORT_ASC]);
             },
         ];
 
-        if(!Yii::$app->user->isGuest){
-            $with[]='hasLike';
-            $with[]='hasSendBs';
+        if (!Yii::$app->user->isGuest) {
+            $with[] = 'hasLike';
+            $with[] = 'hasSendBs';
         }
         $post = $query->with($with)->one();
 
@@ -86,9 +92,9 @@ class PostController extends MainController
             $_GET['postId'] = $id;
             $reviewPageSize = Yii::$app->request->get('per-page', 5);
 
-            if($review_id){
+            if ($review_id) {
                 $newReviewsPageSize = ReviewsSearch::getNumberReviews($id, $review_id);
-                if($reviewPageSize < $newReviewsPageSize){
+                if ($reviewPageSize < $newReviewsPageSize) {
                     $reviewPageSize = $newReviewsPageSize;
                 }
             }
@@ -99,33 +105,33 @@ class PostController extends MainController
                 'route' => 'post/get-reviews',
                 'selfParams' => [
                     'postId' => true,
-                    'type' => true
+                    'type' => true,
                 ],
             ]);
             $type = Yii::$app->request->get('type', 'all');
             $loadTime = time();
             $dataProvider = $reviewsModel->search([
                 'post_id' => $id,
-                'type' => $type
+                'type' => $type,
             ],
-            $pagination,
-            $loadTime);
+                $pagination,
+                $loadTime);
 
             $commentsSearch = new CommentsSearch();
 
             $defaultLimit = isset($comment_id) ? 1000 : 16;
             $_GET['type_entity'] = Comments::TYPE['posts'];
-            $paginationComments= new Pagination([
+            $paginationComments = new Pagination([
                 'pageSize' => Yii::$app->request->get('per-page', $defaultLimit),
                 'page' => Yii::$app->request->get('page', 1) - 1,
                 'route' => '/comments/get-comments',
-                'selfParams'=>[
-                    'id'=>true,
-                    'type_entity'=>true
-                ]
+                'selfParams' => [
+                    'id' => true,
+                    'type_entity' => true,
+                ],
             ]);
 
-            $dataProviderComments = $commentsSearch->search( Yii::$app->request->queryParams,
+            $dataProviderComments = $commentsSearch->search(Yii::$app->request->queryParams,
                 $paginationComments,
                 $post['id'],
                 CommentsSearch::getSortArray('old')
@@ -172,7 +178,7 @@ class PostController extends MainController
                 $containerDI = new Container();
 
                 $this->recommendedPostsService = $containerDI->get(RecommendedPosts::class);
-                $ids =  $this->recommendedPostsService->getPostsIds($post,
+                $ids = $this->recommendedPostsService->getPostsIds($post,
                     Yii::$app->params['post.recommendedPostsMaxCount']);
 
                 if (!empty($ids)) {
@@ -186,7 +192,7 @@ class PostController extends MainController
                 'breadcrumbParams' => $breadcrumbParams,
                 'photoCount' => Gallery::getPostPhotoCount($id),
                 'previewPhoto' => Gallery::getPreviewPostPhoto($id, 4),
-                'keyForMap'=>$keyForMap,
+                'keyForMap' => $keyForMap,
                 'loadTime' => $loadTime,
                 'type' => $type,
                 'initPhotoSliderParams' => [
@@ -197,7 +203,7 @@ class PostController extends MainController
                 'dataProviderDiscounts' => $dataProviderDiscounts,
                 'dataProviderRecommendedDiscounts' => $dataProviderRecommendedDiscounts,
                 'dataProviderRecommendedPosts' => $dataProviderRecommendedPosts,
-                'isShowDiscounts' => $isShowDiscounts
+                'isShowDiscounts' => $isShowDiscounts,
             ]);
 
         } else {
@@ -207,7 +213,8 @@ class PostController extends MainController
     }
 
 
-    public function actionGetReviews(int $postId){
+    public function actionGetReviews(int $postId)
+    {
 
 
         $reviewsModel = new ReviewsSearch();
@@ -217,7 +224,7 @@ class PostController extends MainController
             'route' => 'post/get-reviews',
             'selfParams' => [
                 'postId' => true,
-                'type' => true
+                'type' => true,
             ],
         ]);
 
@@ -225,21 +232,21 @@ class PostController extends MainController
 
         $loadTime = Yii::$app->request->get('loadTime', time());
         $dataProvider = $reviewsModel->search(
-            ['post_id' => $postId,'type'=>$type],
+            ['post_id' => $postId, 'type' => $type],
             $pagination,
             $loadTime,
             true
         );
 
-        if(Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax',false) ){
-            echo  CardsReviewsWidget::widget([
+        if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax', false)) {
+            echo CardsReviewsWidget::widget([
                 'dataProvider' => $dataProvider,
-                'settings'=>[
+                'settings' => [
                     'show-more-btn' => true,
                     'replace-container-id' => 'feed-reviews',
                     'load-time' => $loadTime,
-                    'without_header'=>true
-                ]
+                    'without_header' => true,
+                ],
             ]);
         }
 
@@ -288,16 +295,17 @@ class PostController extends MainController
 
             return $this->render('index_moderation', [
                 'post' => $post,
-                'keyForMap' => $keyForMap
+                'keyForMap' => $keyForMap,
             ]);
         } else {
             throw new NotFoundHttpException();
         }
     }
 
-    public function actionPostCompare(int $id,$main_id){
+    public function actionPostCompare(int $id, $main_id)
+    {
 
-        if(!Yii::$app->user->isModerator()){
+        if (!Yii::$app->user->isModerator()) {
             throw new NotFoundHttpException();
         }
 
@@ -331,8 +339,8 @@ class PostController extends MainController
 
             return $this->render('index_compare', [
                 'post' => $post,
-                'mainPost'=>$mainPost,
-                'keyForMap' => $keyForMap
+                'mainPost' => $mainPost,
+                'keyForMap' => $keyForMap,
             ]);
         } else {
             throw new NotFoundHttpException();
@@ -347,7 +355,7 @@ class PostController extends MainController
         $breadcrumbParams[] = [
             'name' => ucfirst(Yii::$app->getRequest()->serverName),
             'url_name' => $currentUrl,
-            'pjax' => 'class="main-header-pjax a"'
+            'pjax' => 'class="main-header-pjax a"',
         ];
 
         if ($post->city) {
@@ -355,7 +363,7 @@ class PostController extends MainController
             $breadcrumbParams[] = [
                 'name' => $post->city['name'],
                 'url_name' => $currentUrl,
-                'pjax' => 'class="main-header-pjax a"'
+                'pjax' => 'class="main-header-pjax a"',
             ];
         }
 
@@ -363,7 +371,7 @@ class PostController extends MainController
             $breadcrumbParams[] = [
                 'name' => $post->onlyOnceCategories[0]['category']['name'],
                 'url_name' => $currentUrl . '/' . $post->onlyOnceCategories[0]['category']['url_name'],
-                'pjax' => 'class="main-header-pjax a"'
+                'pjax' => 'class="main-header-pjax a"',
             ];
         }
 
@@ -372,14 +380,14 @@ class PostController extends MainController
             $breadcrumbParams[] = [
                 'name' => $post->onlyOnceCategories[0]['name'],
                 'url_name' => $currentUrl,
-                'pjax' => 'class="main-header-pjax a"'
+                'pjax' => 'class="main-header-pjax a"',
             ];
         }
 
         $breadcrumbParams[] = [
             'name' => $post['data'],
             'url_name' => $post['url_name'] . '-p' . $post['id'],
-            'pjax' => 'class="main-pjax a"'
+            'pjax' => 'class="main-pjax a"',
         ];
 
         return $breadcrumbParams;
@@ -409,7 +417,7 @@ class PostController extends MainController
                 if ($post->updateCounters(['count_favorites' => 1])) {
                     $model = new FavoritesPost([
                         'user_id' => Yii::$app->user->id,
-                        'post_id' => $post->id
+                        'post_id' => $post->id,
                     ]);
                     if ($model->save()) {
                         $response->status = 'add';
@@ -441,7 +449,7 @@ class PostController extends MainController
             } else {
                 return $this->asJson([
                     'success' => false,
-                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов',
                 ]);
             }
         }
@@ -467,14 +475,15 @@ class PostController extends MainController
             } else {
                 return $this->asJson([
                     'success' => false,
-                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов',
                 ]);
             }
         }
 
     }
 
-    public function actionUploadNewPhoto(){
+    public function actionUploadNewPhoto()
+    {
         if (Yii::$app->user->isGuest) {
             throw new NotFoundHttpException('Cтраница не найдена');
         }
@@ -489,13 +498,14 @@ class PostController extends MainController
             } else {
                 return $this->asJson([
                     'success' => false,
-                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов',
                 ]);
             }
         }
     }
 
-    public function actionUploadNewPhotoByUrl(){
+    public function actionUploadNewPhotoByUrl()
+    {
         if (Yii::$app->user->isGuest) {
             throw new NotFoundHttpException('Cтраница не найдена');
         }
@@ -509,7 +519,7 @@ class PostController extends MainController
             } else {
                 return $this->asJson([
                     'success' => false,
-                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов',
                 ]);
             }
         }
@@ -590,8 +600,8 @@ class PostController extends MainController
             'route' => '/comments/get-comments',
             'selfParams' => [
                 'id' => true,
-                'type_entity' => true
-            ]
+                'type_entity' => true,
+            ],
         ]);
 
         $dataProviderComments = $commentsSearch->search(Yii::$app->request->queryParams,
@@ -603,8 +613,9 @@ class PostController extends MainController
         $is_official_user = OwnerPost::find()
             ->innerJoin(Posts::tableName(), Posts::tableName() . '.id = ' . OwnerPost::tableName() . '.post_id')
             ->innerJoin(Reviews::tableName(), Reviews::tableName() . '.post_id = ' . Posts::tableName() . '.id')
-            ->where(['owner_id' => Yii::$app->user->getId(),
-                Reviews::tableName() . '.id' => $id
+            ->where([
+                'owner_id' => Yii::$app->user->getId(),
+                Reviews::tableName() . '.id' => $id,
             ])->one();
 
 
@@ -614,7 +625,7 @@ class PostController extends MainController
                 'dataProviderComments' => $dataProviderComments,
                 'totalComments' => $totalComments,
                 'id' => $id,
-                'is_official_user' => $is_official_user
+                'is_official_user' => $is_official_user,
             ]
         );
 
@@ -623,13 +634,13 @@ class PostController extends MainController
 
     public function actionGallery(string $name, int $postId, string $photo_id = null)
     {
-        $this->redirect(Url::to(['post/index','url' => $name, 'id' => $postId]));
+        $this->redirect(Url::to(['post/index', 'url' => $name, 'id' => $postId]));
     }
 
     public function actionPhoto(string $postName = null, int $idPhoto)
     {
         $photo = Gallery::find()->where(['id' => $idPhoto])->one();
-        $this->redirect(Url::to(['post/index','url' => $postName, 'id' => $photo->post_id]));
+        $this->redirect(Url::to(['post/index', 'url' => $postName, 'id' => $photo->post_id]));
     }
 
     public function actionGetPlaceForMap(string $id)
@@ -659,9 +670,11 @@ class PostController extends MainController
     {
         $post = Posts::find()
             ->with('hasLike')
-            ->with(['workingHours' => function ($query) {
-                $query->orderBy(['day_type' => SORT_ASC]);
-            }])
+            ->with([
+                'workingHours' => function ($query) {
+                    $query->orderBy(['day_type' => SORT_ASC]);
+                },
+            ])
             ->where(['tbl_posts.id' => $id])
             ->one();
         return $this->renderAjax('__popup_place', ['post' => $post]);
@@ -676,9 +689,10 @@ class PostController extends MainController
             $cities = City::find()->select('id, name')->orderBy('name')->asArray()->all();
             $metro = Helper::getMetro();
 
-            $params = ['categories' => $categories,
+            $params = [
+                'categories' => $categories,
                 'cities' => $cities,
-                'metro' => $metro
+                'metro' => $metro,
             ];
             return $this->render('add', ['params' => $params]);
         } else {
@@ -703,21 +717,25 @@ class PostController extends MainController
                 if ($photos == null) {
                     $photos = [];
                 }
-                $post = Posts::find()->where(['id' => $id])->with(['city', 'info',
+                $post = Posts::find()->where(['id' => $id])->with([
+                    'city',
+                    'info',
                     'workingHours' => function ($query) {
                         $query->orderBy(['day_type' => SORT_ASC]);
                     },
                     'postCategory',
-                    'postFeatures'
+                    'postFeatures',
                 ])->one();
             } else {
                 $post = PostsModeration::find()->where(['main_id' => $id, 'user_id' => Yii::$app->user->getId()])
-                    ->with(['city', 'info',
+                    ->with([
+                        'city',
+                        'info',
                         'workingHours' => function ($query) {
                             $query->orderBy(['day_type' => SORT_ASC]);
                         },
                         'postCategory',
-                        'postFeatures'
+                        'postFeatures',
                     ])->one();
             }
 
@@ -728,13 +746,14 @@ class PostController extends MainController
 
             $features = $this->getFeaturesForEdit($idsCategory, $post->postFeatures);
 
-            $params = ['categories' => $categories,
+            $params = [
+                'categories' => $categories,
                 'cities' => $cities,
                 'post' => $post,
                 'photos' => $photos,
                 'moderation' => $moderation,
                 'features' => $features,
-                'metro'=>$metro
+                'metro' => $metro,
             ];
 
             return $this->render('edit', ['params' => $params]);
@@ -819,12 +838,10 @@ class PostController extends MainController
                 if ($post->isCurrentUserOwner) {
                     $scenario = AddPost::$SCENARIO_EDIT_USER_SELF_POST;
                     $message = 'place_edit';
-                }elseif ($post->user_id == Yii::$app->user->getId() && $post->status === Posts::$STATUS['moderation'])
-                {
+                } elseif ($post->user_id == Yii::$app->user->getId() && $post->status === Posts::$STATUS['moderation']) {
                     $message = 'moderation';
                     $scenario = AddPost::$SCENARIO_EDIT_USER_SELF_POST;
-                }
-                else {
+                } else {
                     $scenario = AddPost::$SCENARIO_EDIT_USER;
                     $message = 'moderation_edit';
                 }
@@ -837,7 +854,11 @@ class PostController extends MainController
                     Yii::$app->getSession()->setFlash('redirect_after_add' . Yii::$app->user->getId(), $message);
                     return $this->redirect('/id' . Yii::$app->user->getId());
                 } else {
-                    return $this->redirect(Url::to(['post/index', 'url' => 'redirect', 'id' => Yii::$app->request->post('id')]));
+                    return $this->redirect(Url::to([
+                        'post/index',
+                        'url' => 'redirect',
+                        'id' => Yii::$app->request->post('id'),
+                    ]));
                 }
 
             }
@@ -899,45 +920,50 @@ class PostController extends MainController
     public function actionGetPhotoInfo()
     {
         $params = [
-            'src' => Yii::$app->request->get('src', '')
+            'src' => Yii::$app->request->get('src', ''),
         ];
 
         return $this->renderAjax('__form_photo_info', $params);
     }
 
-    public function actionGetFormBusinessAccount(){
+    public function actionGetFormBusinessAccount()
+    {
 
-        if(!Yii::$app->user->isGuest){
+        if (!Yii::$app->user->isGuest) {
             $businessOrder = new BusinessOrder();
             $businessOrder->user_id = Yii::$app->user->getId();
-            $businessOrder->post_id = Yii::$app->request->get('post_id',null);
+            $businessOrder->post_id = Yii::$app->request->get('post_id', null);
 
-            return $this->renderAjax('__form_add_business_account',['businessOrder'=>$businessOrder]);
-        }else{
+            return $this->renderAjax('__form_add_business_account', ['businessOrder' => $businessOrder]);
+        } else {
             throw new NotFoundHttpException();
         }
 
     }
 
-    public function actionSaveBusinessAccount(){
+    public function actionSaveBusinessAccount()
+    {
 
-        if(Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
             $businessOrder = new BusinessOrder();
             $businessOrder->status = BusinessOrder::$BIZ_ORDER;
 
-            if($businessOrder->load(Yii::$app->request->post()) && $businessOrder->save()){
-                return $this->asJson(['success'=>true,'message'=>'Спасибо за вашу заявку. Она будет рассмотренав ближайшее время, после чего наш менеджер свяжется с вами']);
-            }else{
+            if ($businessOrder->load(Yii::$app->request->post()) && $businessOrder->save()) {
+                return $this->asJson([
+                    'success' => true,
+                    'message' => 'Спасибо за вашу заявку. Она будет рассмотренав ближайшее время, после чего наш менеджер свяжется с вами',
+                ]);
+            } else {
 
                 $message = $businessOrder->getFirstError('user_id');
-                if($message){
+                if ($message) {
                     $newBusinessOrder = new BusinessOrder();
                     $newBusinessOrder->user_id = $businessOrder->user_id;
                     $newBusinessOrder->post_id = $businessOrder->post_id;
                     $businessOrder = $newBusinessOrder;
                 }
-                $html = $this->renderPartial('__form_add_business_account',['businessOrder'=>$businessOrder]);
-                return $this->asJson(['success'=>false,'html'=>$html,'message'=>$message]);
+                $html = $this->renderPartial('__form_add_business_account', ['businessOrder' => $businessOrder]);
+                return $this->asJson(['success' => false, 'html' => $html, 'message' => $message]);
             }
         }
 

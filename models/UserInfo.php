@@ -52,10 +52,26 @@ class UserInfo extends \yii\db\ActiveRecord
     {
         return [
             ['user_id', 'required'],
-            [['user_id', 'level', 'exp_points', 'total_comments', 'count_places_added', 'count_place_moderation',
-                'gender', 'email_alert_subscription', 'answers_to_reviews_sub', 'answers_to_comments_sub',
-                'reviews_to_my_places_sub', 'places_and_discounts_sub', 'has_reward_for_filling_profile',
-                'reviews_to_favorite_places_sub', 'experience_and_bonus_sub'], 'integer'],
+            [
+                [
+                    'user_id',
+                    'level',
+                    'exp_points',
+                    'total_comments',
+                    'count_places_added',
+                    'count_place_moderation',
+                    'gender',
+                    'email_alert_subscription',
+                    'answers_to_reviews_sub',
+                    'answers_to_comments_sub',
+                    'reviews_to_my_places_sub',
+                    'places_and_discounts_sub',
+                    'has_reward_for_filling_profile',
+                    'reviews_to_favorite_places_sub',
+                    'experience_and_bonus_sub',
+                ],
+                'integer',
+            ],
             [['virtual_money', 'mega_money'], 'number'],
         ];
     }
@@ -117,8 +133,12 @@ class UserInfo extends \yii\db\ActiveRecord
     public static function getUserGender($gender)
     {
         switch ((int)$gender) {
-            case self::MAN_GENDER_VALUE: return 'Мужской'; break;
-            case self::WOMAN_GENDER_VALUE: return 'Женский'; break;
+            case self::MAN_GENDER_VALUE:
+                return 'Мужской';
+                break;
+            case self::WOMAN_GENDER_VALUE:
+                return 'Женский';
+                break;
         }
 
         return null;
@@ -127,8 +147,12 @@ class UserInfo extends \yii\db\ActiveRecord
     public static function getUserChoice($choice)
     {
         switch ((int)$choice) {
-            case self::ALLOW_USER_CHOICE['no']: return 'Нет'; break;
-            case self::ALLOW_USER_CHOICE['yes']: return 'Да'; break;
+            case self::ALLOW_USER_CHOICE['no']:
+                return 'Нет';
+                break;
+            case self::ALLOW_USER_CHOICE['yes']:
+                return 'Да';
+                break;
         }
 
         return null;
@@ -156,26 +180,26 @@ class UserInfo extends \yii\db\ActiveRecord
 
     public function hasRewardForFillingProfile(): bool
     {
-        return (bool) $this->has_reward_for_filling_profile;
+        return (bool)$this->has_reward_for_filling_profile;
     }
 
     public function hasReviewsToMyPlacesSub(): bool
     {
-        return (bool) $this->reviews_to_my_places_sub;
+        return (bool)$this->reviews_to_my_places_sub;
     }
 
     public function hasExperienceAndBonusSub(): bool
     {
-        return (bool) $this->experience_and_bonus_sub;
+        return (bool)$this->experience_and_bonus_sub;
     }
 
     public function hasAnswersToReviewsSub(): bool
     {
-        return (bool) $this->answers_to_reviews_sub;
+        return (bool)$this->answers_to_reviews_sub;
     }
 
     public function hasAnswersToCommentsSub(): bool
     {
-        return (bool) $this->answers_to_comments_sub;
+        return (bool)$this->answers_to_comments_sub;
     }
 }

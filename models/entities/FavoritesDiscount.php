@@ -33,8 +33,20 @@ class FavoritesDiscount extends \yii\db\ActiveRecord
         return [
             [['user_id', 'discount_id'], 'required'],
             [['user_id', 'discount_id'], 'integer'],
-            [['discount_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discounts::className(), 'targetAttribute' => ['discount_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['discount_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Discounts::className(),
+                'targetAttribute' => ['discount_id' => 'id'],
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 

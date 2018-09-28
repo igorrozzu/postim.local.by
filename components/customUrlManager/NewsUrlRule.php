@@ -9,7 +9,8 @@ use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use app\models\City;
 
-class NewsUrlRule extends CityUrlRule {
+class NewsUrlRule extends CityUrlRule
+{
 
     public function createUrl($manager, $route, $params)
     {
@@ -21,26 +22,28 @@ class NewsUrlRule extends CityUrlRule {
     {
         $pathInfo = $request->getPathInfo();
 
-        $queryParams= explode('/',$pathInfo);
+        $queryParams = explode('/', $pathInfo);
 
-        $route='/news/index';
+        $route = '/news/index';
 
-        if(count($queryParams)==1 && $queryParams[0]=='novosti'){
-            $params=[];
-			\Yii::$app->city->setDefault();
-            return [$route,$params];
+        if (count($queryParams) == 1 && $queryParams[0] == 'novosti') {
+            $params = [];
+            \Yii::$app->city->setDefault();
+            return [$route, $params];
         }
 
         $arrIndex = $this->getIndexArray();
 
-        if(count($queryParams)==2 && isset($arrIndex['indexCities'][$queryParams[0]]) && $queryParams[1]=='novosti' ){
-            $params['city']['name']=$arrIndex['indexCities'][$queryParams[0]]['name'];
-            $params['city']['url_name']=$arrIndex['indexCities'][$queryParams[0]]['url_name'];
+        if (count($queryParams) == 2 && isset($arrIndex['indexCities'][$queryParams[0]]) && $queryParams[1] == 'novosti') {
+            $params['city']['name'] = $arrIndex['indexCities'][$queryParams[0]]['name'];
+            $params['city']['url_name'] = $arrIndex['indexCities'][$queryParams[0]]['url_name'];
 
-            \Yii::$app->city->setCity(['name'=>$params['city']['name'],
-                'url_name'=>$params['city']['url_name']]);
+            \Yii::$app->city->setCity([
+                'name' => $params['city']['name'],
+                'url_name' => $params['city']['url_name'],
+            ]);
 
-            return [$route,$params];
+            return [$route, $params];
         }
 
 
@@ -49,7 +52,7 @@ class NewsUrlRule extends CityUrlRule {
 
     protected function getIndexArray()
     {
-        $array= parent::getIndexArray();
+        $array = parent::getIndexArray();
         return $array;
 
     }

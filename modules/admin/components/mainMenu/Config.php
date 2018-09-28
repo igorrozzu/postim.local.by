@@ -9,61 +9,61 @@ class Config
     {
         return [
             [
-                'name'  => 'Добавить контент',
-                'icon'  => 'icon-add-content',
-                'url'   => '',
+                'name' => 'Добавить контент',
+                'icon' => 'icon-add-content',
+                'url' => '',
                 'under' => [
                     [
                         'name' => 'Добавить новость',
-                        'url'  => '/admin/news'
+                        'url' => '/admin/news',
                     ],
                     [
                         'name' => 'Добавить категорию',
-                        'url'  => '/admin/post/categories'
+                        'url' => '/admin/post/categories',
                     ],
                     [
                         'name' => 'Добавить страницу',
-                        'url'  => '/admin/post/other-page'
+                        'url' => '/admin/post/other-page',
                     ],
                     [
                         'name' => 'Добавить банер',
-                        'url'  => '/admin/post/add-baner'
+                        'url' => '/admin/post/add-baner',
                     ],
                     [
                         'name' => 'Удалить место',
-                        'url'  => '/admin/post/delete-post'
+                        'url' => '/admin/post/delete-post',
                     ],
                     [
                         'name' => 'Удалить страницу',
-                        'url'  => '/admin/post/other-page-delete'
+                        'url' => '/admin/post/other-page-delete',
                     ],
                     [
                         'name' => 'Удалить категорию',
-                        'url'  => '/admin/post/delete-categories'
+                        'url' => '/admin/post/delete-categories',
                     ],
                 ],
             ],
 
             [
-                'name'  => 'Особенности',
-                'icon'  => 'icon-add-content',
-                'url'   => '',
+                'name' => 'Особенности',
+                'icon' => 'icon-add-content',
+                'url' => '',
                 'under' => [
                     [
                         'name' => 'Добавить особенность',
-                        'url'  => '/admin/features/add'
+                        'url' => '/admin/features/add',
                     ],
                     [
                         'name' => 'Действия над особенностями',
-                        'url'  => '/admin/features/index'
+                        'url' => '/admin/features/index',
                     ],
                     [
                         'name' => 'Особенность и категории',
-                        'url'  => '/admin/features/bind-category-and-features'
+                        'url' => '/admin/features/bind-category-and-features',
                     ],
                     [
                         'name' => 'Удалить особенность в категории',
-                        'url'  => '/admin/features/delete-category-and-features'
+                        'url' => '/admin/features/delete-category-and-features',
                     ],
 
                 ],
@@ -71,33 +71,33 @@ class Config
 
 
             [
-                'name'  => 'Модерация',
-                'icon'  => 'icon-moderation-adm',
-                'url'   => '',
+                'name' => 'Модерация',
+                'icon' => 'icon-moderation-adm',
+                'url' => '',
                 'under' => [
                     [
                         'name' => 'Отзывы',
-                        'url'  => '/admin/moderation/reviews'
+                        'url' => '/admin/moderation/reviews',
                     ],
                     [
                         'name' => 'Фото',
-                        'url'  => '/admin/moderation/photo'
+                        'url' => '/admin/moderation/photo',
                     ],
                     [
                         'name' => 'Места',
-                        'url'  => '/admin/moderation/post'
+                        'url' => '/admin/moderation/post',
                     ],
                     [
                         'name' => 'Жалобы',
-                        'url'  => '/admin/moderation/complaints'
+                        'url' => '/admin/moderation/complaints',
                     ],
                     [
                         'name' => 'Вопросы и ответы',
-                        'url'  => '/admin/moderation/ask-place'
+                        'url' => '/admin/moderation/ask-place',
                     ],
                     [
                         'name' => 'Скидки',
-                        'url'  => '/admin/discount/index'
+                        'url' => '/admin/discount/index',
                     ],
 
                 ],
@@ -105,20 +105,20 @@ class Config
             [
                 'name' => 'Редактирование',
                 'icon' => 'icon-edit-adm',
-                'url'  => '/admin/edit-page',
-                'id'   => 'edit-ac'
+                'url' => '/admin/edit-page',
+                'id' => 'edit-ac',
             ],
             [
-                'name'  => 'Бизнес-аккаунты',
-                'icon'  => 'icon-bz-ac-adm',
+                'name' => 'Бизнес-аккаунты',
+                'icon' => 'icon-bz-ac-adm',
                 'under' => [
                     [
                         'name' => 'Бизнес-аккаунты',
-                        'url'  => '/admin/biz/'
+                        'url' => '/admin/biz/',
                     ],
                     [
                         'name' => 'Заявки Бизнес-аккаунты',
-                        'url'  => '/admin/biz/orders'
+                        'url' => '/admin/biz/orders',
                     ],
                 ],
             ],

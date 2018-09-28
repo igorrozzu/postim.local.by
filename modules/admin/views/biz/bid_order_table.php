@@ -1,4 +1,5 @@
 <?php
+
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
@@ -15,7 +16,7 @@ $currentUrl = yii\helpers\Url::current([], true);
             'class' => 'table --custom-tbl-p',
             'style' => 'width:100%;',
         ],
-        'layout'=>"{items}\n{pager}",
+        'layout' => "{items}\n{pager}",
         'columns' => [
 
             [
@@ -23,7 +24,7 @@ $currentUrl = yii\helpers\Url::current([], true);
                 'format' => 'text',
                 'label' => 'Имя и фамилия',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->full_name;
                 },
             ],
@@ -32,7 +33,7 @@ $currentUrl = yii\helpers\Url::current([], true);
                 'format' => 'text',
                 'label' => 'Название компании',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->company_name;
                 },
             ],
@@ -41,7 +42,7 @@ $currentUrl = yii\helpers\Url::current([], true);
                 'format' => 'text',
                 'label' => 'Email',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->email;
                 },
             ],
@@ -61,7 +62,7 @@ $currentUrl = yii\helpers\Url::current([], true);
                 'format' => 'raw',
                 'label' => 'Статус',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->getStatusText($data->status);
                 },
             ],
@@ -71,7 +72,7 @@ $currentUrl = yii\helpers\Url::current([], true);
                 'format' => 'raw',
                 'label' => 'Тип',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->getStatusText($data->type);
                 },
             ],
@@ -81,11 +82,11 @@ $currentUrl = yii\helpers\Url::current([], true);
                 'format' => 'raw',
                 'label' => 'Действие',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->getButtons();
                 },
             ],
         ],
-    ]);?>
+    ]); ?>
 
 </div>

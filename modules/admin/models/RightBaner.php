@@ -52,8 +52,9 @@ class RightBaner extends \yii\db\ActiveRecord
     }
 
 
-    private function savePhoto(){
-        if($this->src){
+    private function savePhoto()
+    {
+        if ($this->src) {
 
             $dir = Yii::getAlias('@webroot/baners/');
             if (!is_dir($dir)) {
@@ -63,7 +64,7 @@ class RightBaner extends \yii\db\ActiveRecord
             $photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $this->src);
 
             if (file_exists($photoPath)) {
-                if(copy($photoPath,$dir.$this->src)){
+                if (copy($photoPath, $dir . $this->src)) {
                     unlink($photoPath);
                 }
             }
@@ -71,22 +72,22 @@ class RightBaner extends \yii\db\ActiveRecord
         }
     }
 
-    public function getPatchCover(){
-        if($this->src){
+    public function getPatchCover()
+    {
+        if ($this->src) {
             $dir = Yii::getAlias('@webroot/baners/' . $this->src);
-            if(file_exists($dir)){
-                return '/baners/'. $this->src;
-            }else{
+            if (file_exists($dir)) {
+                return '/baners/' . $this->src;
+            } else {
                 $photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $this->src);
-                if(file_exists($photoPath)){
-                    return '/post_photo/tmp/'.$this->src;
+                if (file_exists($photoPath)) {
+                    return '/post_photo/tmp/' . $this->src;
                 }
             }
         }
 
         return '';
     }
-
 
 
 }

@@ -28,9 +28,12 @@ class FavoritesFeedsHelper
     public function getModel()
     {
         switch ($this->feedName) {
-            case 'posts': return new PostsSearch();
-            case 'news': return new NewsSearch();
-            case 'discounts': return new DiscountSearch();
+            case 'posts':
+                return new PostsSearch();
+            case 'news':
+                return new NewsSearch();
+            case 'discounts':
+                return new DiscountSearch();
         }
 
         return null;
@@ -39,9 +42,12 @@ class FavoritesFeedsHelper
     public function getWidgetClassName()
     {
         switch ($this->feedName) {
-            case 'posts': return CardsPlaceWidget::className();
-            case 'news': return CardsNewsWidget::className();
-            case 'discounts': return CardsDiscounts::className();
+            case 'posts':
+                return CardsPlaceWidget::className();
+            case 'news':
+                return CardsNewsWidget::className();
+            case 'discounts':
+                return CardsDiscounts::className();
         }
 
         return null;
@@ -50,8 +56,10 @@ class FavoritesFeedsHelper
     public function getWidgetWrapAttributes()
     {
         switch ($this->feedName) {
-            case 'posts': return 'class"cards-block"';
-            case 'news': return 'class"block-news"';
+            case 'posts':
+                return 'class"cards-block"';
+            case 'news':
+                return 'class"block-news"';
             case 'discounts':
                 return 'class="cards-block-discount row-3 main-pjax" ' .
                     'data-favorites-state-url="/discount/favorite-state"';

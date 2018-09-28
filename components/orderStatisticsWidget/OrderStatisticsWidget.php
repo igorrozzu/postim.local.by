@@ -19,11 +19,11 @@ class OrderStatisticsWidget extends Widget
 
     public function run()
     {
-        if(isset($this->settings['view-name'])) {
+        if (isset($this->settings['view-name'])) {
 
             return $this->render($this->settings['view-name'], [
                 'dataProvider' => $this->dataProvider,
-                'settings' => $this->settings
+                'settings' => $this->settings,
             ]);
         } else {
             throw new InvalidParamException();

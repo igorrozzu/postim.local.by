@@ -6,9 +6,9 @@
  */
 
 namespace app\commands;
+
 use app\models\entities\DiscountOrder;
 use yii\console\Controller;
-
 
 
 class FixController extends Controller
@@ -19,9 +19,9 @@ class FixController extends Controller
             ->innerJoinWith(['discount'])
             ->all();
 
-        foreach ($orders as $order){
-           $order->date_finish = $order->discount->date_finish;
-           $order->save();
+        foreach ($orders as $order) {
+            $order->date_finish = $order->discount->date_finish;
+            $order->save();
         }
     }
 }

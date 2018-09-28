@@ -10,8 +10,11 @@ $city = Yii::$app->city->getSelected_city();
     $duration = Yii::$app->formatter->asCustomDuration($discount->date_finish - time());
     ?>
     <div class="card-block-discount" data-item-id="<?= $discount->id ?>">
-        <a href="<?= Url::to(['discount/read', 'url' => $discount->url_name,
-            'discountId' => $discount->id]) ?>" class="discount-link">
+        <a href="<?= Url::to([
+            'discount/read',
+            'url' => $discount->url_name,
+            'discountId' => $discount->id,
+        ]) ?>" class="discount-link">
             <div class="block-discount-photo" style="background-image: url('<?= $discount->getCover(); ?>')">
                 <div class="block-blackout-discount">
                     <div class="discount-block">
@@ -57,8 +60,8 @@ $city = Yii::$app->city->getSelected_city();
 
 <div class="clear-fix"></div>
 
-    <a href="<?= $city['url_name'] ? '/' . $city['url_name'] : '' ?>/skidki"
-       class="btn-show-more">Показать больше скидок</a>
+<a href="<?= $city['url_name'] ? '/' . $city['url_name'] : '' ?>/skidki"
+   class="btn-show-more">Показать больше скидок</a>
 
 
 

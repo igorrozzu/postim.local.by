@@ -37,8 +37,19 @@ class DiscountSearch extends Discounts
     public function rules()
     {
         return [
-            [['category', 'under_category', 'city', 'open', 'sort', 'favorite_id',
-                'exclude_discount_id', 'city_url_name'], 'safe'],
+            [
+                [
+                    'category',
+                    'under_category',
+                    'city',
+                    'open',
+                    'sort',
+                    'favorite_id',
+                    'exclude_discount_id',
+                    'city_url_name',
+                ],
+                'safe',
+            ],
         ];
     }
 
@@ -97,15 +108,17 @@ class DiscountSearch extends Discounts
             $query->select([
                 Discounts::tableName() . '.*',
                 'ST_distance_sphere(st_point("coordinates"[0],"coordinates"[1]),ST_GeomFromText(\'' .
-                $coordinates . '\')) as distance'
+                $coordinates . '\')) as distance',
             ])->distinct()
                 ->orderBy(['distance' => SORT_ASC]);
-        } else if ($this->sort === 'popular') {
-            $query->groupBy([Discounts::tableName() . '.id'])
-                ->orderBy([Discounts::tableName() . '.count_orders' => SORT_DESC]);
         } else {
-            $query->groupBy([Discounts::tableName() . '.id'])
-                ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
+            if ($this->sort === 'popular') {
+                $query->groupBy([Discounts::tableName() . '.id'])
+                    ->orderBy([Discounts::tableName() . '.count_orders' => SORT_DESC]);
+            } else {
+                $query->groupBy([Discounts::tableName() . '.id'])
+                    ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
+            }
         }
 
         $this->queryForPlaceOnMap = Posts::find()
@@ -116,12 +129,14 @@ class DiscountSearch extends Discounts
             ->andWhere(['>=', Discounts::tableName() . '.status', Discounts::STATUS['active']]);
 
         if (isset($this->city)) {
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 [Region::tableName() . '.url_name' => $this->city['url_name']],
                 [City::tableName() . '.url_name' => $this->city['url_name']],
                 [Countries::tableName() . '.url_name' => $this->city['url_name']],
             ]);
-            $this->queryForPlaceOnMap->andWhere(['or',
+            $this->queryForPlaceOnMap->andWhere([
+                'or',
                 [Region::tableName() . '.url_name' => $this->city['url_name']],
                 [City::tableName() . '.url_name' => $this->city['url_name']],
                 [Countries::tableName() . '.url_name' => $this->city['url_name']],
@@ -131,44 +146,56 @@ class DiscountSearch extends Discounts
         if (isset($this->under_category)) {
             $query->andWhere([UnderCategory::tableName() . '.url_name' => $this->under_category['url_name']]);
             $this->queryForPlaceOnMap->andWhere([UnderCategory::tableName() . '.url_name' => $this->under_category['url_name']]);
-        } else if (isset($this->category)) {
-            $query->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
-            $this->queryForPlaceOnMap->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
+        } else {
+            if (isset($this->category)) {
+                $query->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
+                $this->queryForPlaceOnMap->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
+            }
         }
 
         if ($this->open) {
-            $query->innerJoinWith(['post.workingHours' => function ($query) {
-                $query->andWhere(['day_type' => date('w') == 0 ? 7 : date('w')]);
-            }]);
+            $query->innerJoinWith([
+                'post.workingHours' => function ($query) {
+                    $query->andWhere(['day_type' => date('w') == 0 ? 7 : date('w')]);
+                },
+            ]);
             $currentTimestamp = Yii::$app->formatter->asTimestamp(
                 Yii::$app->formatter->asTime(
                     $loadTime + Yii::$app->user->getTimezoneInSeconds(), 'short')
             );
             $currentTime = idate('H', $currentTimestamp) * 3600 +
                 idate('i', $currentTimestamp) * 60 + idate('s', $currentTimestamp);
-            $query->andWhere(['or',
-                ['and',
+            $query->andWhere([
+                'or',
+                [
+                    'and',
                     ['<=', 'tbl_working_hours.time_start', $currentTime],
-                    ['>=', 'tbl_working_hours.time_finish', $currentTime]
+                    ['>=', 'tbl_working_hours.time_finish', $currentTime],
                 ],
-                ['and',
+                [
+                    'and',
                     ['>=', 'tbl_working_hours.time_finish', $currentTime + 24 * 3600],
-                    ['<=', 'tbl_working_hours.time_start', $currentTime + 24 * 3600]
-                ]
+                    ['<=', 'tbl_working_hours.time_start', $currentTime + 24 * 3600],
+                ],
             ]);
 
-            $this->queryForPlaceOnMap->innerJoinWith(['workingHours' => function ($query) {
-                $query->andWhere(['day_type' => date('w') == 0 ? 7 : date('w')]);
-            }]);
-            $this->queryForPlaceOnMap->andWhere(['or',
-                ['and',
+            $this->queryForPlaceOnMap->innerJoinWith([
+                'workingHours' => function ($query) {
+                    $query->andWhere(['day_type' => date('w') == 0 ? 7 : date('w')]);
+                },
+            ]);
+            $this->queryForPlaceOnMap->andWhere([
+                'or',
+                [
+                    'and',
                     ['<=', 'tbl_working_hours.time_start', $currentTime],
-                    ['>=', 'tbl_working_hours.time_finish', $currentTime]
+                    ['>=', 'tbl_working_hours.time_finish', $currentTime],
                 ],
-                ['and',
+                [
+                    'and',
                     ['>=', 'tbl_working_hours.time_finish', $currentTime + 24 * 3600],
-                    ['<=', 'tbl_working_hours.time_start', $currentTime + 24 * 3600]
-                ]
+                    ['<=', 'tbl_working_hours.time_start', $currentTime + 24 * 3600],
+                ],
             ]);
         }
 
@@ -207,19 +234,22 @@ class DiscountSearch extends Discounts
             $query->select([
                 Discounts::tableName() . '.*',
                 'ST_distance_sphere(st_point("coordinates"[0],"coordinates"[1]),ST_GeomFromText(\'' .
-                $coordinates . '\')) as distance'
+                $coordinates . '\')) as distance',
             ])->distinct()
                 ->orderBy(['distance' => SORT_ASC]);
-        } else if ($this->sort === 'popular') {
-            $query->groupBy([Discounts::tableName() . '.id'])
-                ->orderBy([Discounts::tableName() . '.count_orders' => SORT_DESC]);
         } else {
-            $query->groupBy([Discounts::tableName() . '.id'])
-                ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
+            if ($this->sort === 'popular') {
+                $query->groupBy([Discounts::tableName() . '.id'])
+                    ->orderBy([Discounts::tableName() . '.count_orders' => SORT_DESC]);
+            } else {
+                $query->groupBy([Discounts::tableName() . '.id'])
+                    ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
+            }
         }
 
         if (isset($this->city)) {
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 [Region::tableName() . '.url_name' => $this->city['url_name']],
                 [City::tableName() . '.url_name' => $this->city['url_name']],
                 [Countries::tableName() . '.url_name' => $this->city['url_name']],
@@ -257,7 +287,8 @@ class DiscountSearch extends Discounts
             ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
 
         if (!empty($this->city_url_name)) {
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 [Region::tableName() . '.url_name' => $this->city_url_name],
                 [City::tableName() . '.url_name' => $this->city_url_name],
                 [Countries::tableName() . '.url_name' => $this->city_url_name],
@@ -290,7 +321,8 @@ class DiscountSearch extends Discounts
             ->andWhere(['>', Discounts::tableName() . '.date_finish', time()]);
 
         if (isset($this->city)) {
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 [Region::tableName() . '.url_name' => $this->city['url_name']],
                 [City::tableName() . '.url_name' => $this->city['url_name']],
                 [Countries::tableName() . '.url_name' => $this->city['url_name']],
@@ -300,8 +332,10 @@ class DiscountSearch extends Discounts
         if (isset($this->under_category)) {
             $query->andWhere([UnderCategory::tableName() . '.url_name' => $this->under_category['url_name']]);
 
-        } else if (isset($this->category)) {
-            $query->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
+        } else {
+            if (isset($this->category)) {
+                $query->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
+            }
         }
 
         $query->groupBy([Discounts::tableName() . '.id']);
@@ -324,10 +358,10 @@ class DiscountSearch extends Discounts
 
         $dataProvider = new ActiveDataProvider([
             'query' => $unionQuery,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
-        if (!$this->load($params,'') && !$this->validate()) {
+        if (!$this->load($params, '') && !$this->validate()) {
             return $dataProvider;
         }
 
@@ -355,7 +389,8 @@ class DiscountSearch extends Discounts
             ->orderBy([Discounts::tableName() . '.date_start' => SORT_DESC]);
 
         if ($post->city['url_name']) {
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 [Region::tableName() . '.url_name' => $post->city['url_name']],
                 [City::tableName() . '.url_name' => $post->city['url_name']],
                 [Countries::tableName() . '.url_name' => $post->city['url_name']],
@@ -392,7 +427,7 @@ class DiscountSearch extends Discounts
         return $dataProvider;
     }
 
-    public function readDiscount(int $discountId): ? Model
+    public function readDiscount(int $discountId): ?Model
     {
         $query = Discounts::find()
             ->innerJoinWith(['totalView'])

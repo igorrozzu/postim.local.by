@@ -5,19 +5,19 @@
     && $category->countPlace != null
     && $category->countPlace->count != 0
 ):
-?>
+    ?>
 
     <li class="menu-category-list">
-        <div class="category-list-title" data-category_name="<?=$category['name']?>">
+        <div class="category-list-title" data-category_name="<?= $category['name'] ?>">
             <?php
-            echo '<a>'.$category['name'].'</a>';
+            echo '<a>' . $category['name'] . '</a>';
             ?>
             <span class="open-list-btn"></span>
         </div>
         <ul class="menu-category-items">
             <?php
             echo $this->render('list_under_category', [
-                'category' => $category
+                'category' => $category,
             ]);
 
             ?>

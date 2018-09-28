@@ -31,9 +31,26 @@ class ReviewsGallery extends \yii\db\ActiveRecord
         return [
             [['gallery_id', 'review_id'], 'required'],
             [['gallery_id', 'review_id'], 'integer'],
-            [['gallery_id', 'review_id'], 'unique', 'targetAttribute' => ['gallery_id', 'review_id'], 'message' => 'The combination of Gallery ID and Review ID has already been taken.'],
-            [['gallery_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gallery::className(), 'targetAttribute' => ['gallery_id' => 'id']],
-            [['review_id'], 'exist', 'skipOnError' => true, 'targetClass' => Reviews::className(), 'targetAttribute' => ['review_id' => 'id']],
+            [
+                ['gallery_id', 'review_id'],
+                'unique',
+                'targetAttribute' => ['gallery_id', 'review_id'],
+                'message' => 'The combination of Gallery ID and Review ID has already been taken.',
+            ],
+            [
+                ['gallery_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Gallery::className(),
+                'targetAttribute' => ['gallery_id' => 'id'],
+            ],
+            [
+                ['review_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Reviews::className(),
+                'targetAttribute' => ['review_id' => 'id'],
+            ],
         ];
     }
 

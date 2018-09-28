@@ -1,13 +1,15 @@
 <?php
 
 namespace app\controllers;
+
 use app\components\MainController;
 use app\services\ipay\EripServices;
 use Yii;
 use yii\di\Container;
 use yii\web\Request;
 
-class IpayController extends MainController {
+class IpayController extends MainController
+{
 
     /* @var  EripServices $_eripService */
     protected $_eripService;
@@ -24,44 +26,43 @@ class IpayController extends MainController {
     {
         $request = Yii::$app->request;
 
-        if($request->isPost && $request->post('XML'))
-        {
+        if ($request->isPost && $request->post('XML')) {
             return $this->_eripService->processInfo($request->post('XML'));
         }
     }
 
-    public function actionTransaction_start(){
+    public function actionTransaction_start()
+    {
         $request = Yii::$app->request;
 
-        if($request->isPost && $request->post('XML'))
-        {
+        if ($request->isPost && $request->post('XML')) {
             return $this->_eripService->transactionStart($request->post('XML'));
         }
     }
 
-    public function actionTransaction_result(){
+    public function actionTransaction_result()
+    {
         $request = Yii::$app->request;
 
-        if($request->isPost && $request->post('XML'))
-        {
+        if ($request->isPost && $request->post('XML')) {
             return $this->_eripService->transactionResult($request->post('XML'));
         }
     }
 
-    public function actionStorn_start(){
+    public function actionStorn_start()
+    {
         $request = Yii::$app->request;
 
-        if($request->isPost && $request->post('XML'))
-        {
+        if ($request->isPost && $request->post('XML')) {
             return $this->_eripService->stornStart($request->post('XML'));
         }
     }
 
-    public function actionStorn_result(){
+    public function actionStorn_result()
+    {
         $request = Yii::$app->request;
 
-        if($request->isPost && $request->post('XML'))
-        {
+        if ($request->isPost && $request->post('XML')) {
             return $this->_eripService->stornResult($request->post('XML'));
         }
     }

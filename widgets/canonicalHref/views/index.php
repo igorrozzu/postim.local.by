@@ -1,5 +1,5 @@
-<?php if($canonicalUrl):?>
-    <link rel="canonical" href="<?=$canonicalUrl?>"/>
-<?php endif;?>
+<?php if ($canonicalUrl): ?>
+    <link rel="canonical" href="<?= $canonicalUrl ?>"/>
+<?php endif; ?>
 
 

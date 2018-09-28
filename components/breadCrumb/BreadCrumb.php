@@ -13,12 +13,12 @@ use yii\base\Widget;
 
 class BreadCrumb extends Widget
 {
-    public $breadcrumbParams=null;
+    public $breadcrumbParams = null;
 
 
     public function run()
     {
-        echo $this->render('index',['breadcrumbParams'=>$this->breadcrumbParams]);
+        echo $this->render('index', ['breadcrumbParams' => $this->breadcrumbParams]);
     }
 
 }

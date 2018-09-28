@@ -7,7 +7,7 @@ $this->title = 'Добавить скидку на Postim.by';
 
 <div class="margin-top60"></div>
 <div class="block-content">
-    <form action="<?=Url::to(['discount/add', 'postId' => $model->post_id]);?>" id="discount-form" method="post">
+    <form action="<?= Url::to(['discount/add', 'postId' => $model->post_id]); ?>" id="discount-form" method="post">
         <div class="container-add-place">
             <div class="block-field-setting">
                 <label class="label-field-setting">Название скидки</label>
@@ -61,7 +61,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       placeholder="Укажите условие"
                                       name="discount[conditions][]"
                             >Необходимо предъявлять промокод до заказа. Скидка предоставляется только при наличии неиспользованного ранее промокода, вы можете его назвать по телефону, предъявить в распечатанном или в электронном виде.</textarea>
-                        <div class="close-input-custom" ></div>
+                        <div class="close-input-custom"></div>
                     </div>
                 </div>
                 <div class="option-select-field">
@@ -71,7 +71,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       placeholder="Укажите условие"
                                       name="discount[conditions][]"
                             >Обязателен предварительный заказ или бронь по телефонам, указанным в купоне на скидку.</textarea>
-                        <div class="close-input-custom" ></div>
+                        <div class="close-input-custom"></div>
                     </div>
                 </div>
                 <div class="option-select-field">
@@ -81,7 +81,7 @@ $this->title = 'Добавить скидку на Postim.by';
                                       placeholder="Укажите условие"
                                       name="discount[conditions][]"
                             >Скидка по промокоду не суммируется с другими акциями и спецпредложениями.</textarea>
-                        <div class="close-input-custom" ></div>
+                        <div class="close-input-custom"></div>
                     </div>
                 </div>
 
@@ -99,16 +99,16 @@ $this->title = 'Добавить скидку на Postim.by';
                                       data-continue-text=""
                                       placeholder="Укажите условие"
                                       readonly>Другие условия</textarea>
-                            <div class="close-input-custom" ></div>
+                            <div class="close-input-custom"></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="block-field-setting">
                 <label class="label-field-setting">Реквизиты</label>
-                <input  name="discount[requisites]" class="input-field-setting"
-                        placeholder="Введите реквизиты: ООО, УНП и т.д."
-                        value="<?= !empty($post->requisites) ? $post->requisites : ''?>">
+                <input name="discount[requisites]" class="input-field-setting"
+                       placeholder="Введите реквизиты: ООО, УНП и т.д."
+                       value="<?= !empty($post->requisites) ? $post->requisites : '' ?>">
             </div>
         </div>
 
@@ -143,7 +143,8 @@ $this->title = 'Добавить скидку на Postim.by';
             <div class="block-field-setting">
                 <label class="label-field-setting">Название промокода</label>
                 <input id="product-count" name="discount[promocode]" class="input-field-setting"
-                       placeholder="Укажите единый промокод или мы сгенерируем уникальный промокод для каждого клиента" value="">
+                       placeholder="Укажите единый промокод или мы сгенерируем уникальный промокод для каждого клиента"
+                       value="">
             </div>
         </div>
 
@@ -152,8 +153,8 @@ $this->title = 'Добавить скидку на Postim.by';
                 <div class="description-header">Описание акции</div>
                 <div class="block-write-editors">
                     <input id="article" name="discount[data]" type="text" style="display: none"
-                           data-upload-by-url="/discount/upload-new-photo-by-url?postId=<?=$model->post_id?>"
-                           data-upload-by-file="/discount/upload-new-photo?postId=<?=$model->post_id?>">
+                           data-upload-by-url="/discount/upload-new-photo-by-url?postId=<?= $model->post_id ?>"
+                           data-upload-by-file="/discount/upload-new-photo?postId=<?= $model->post_id ?>">
                     <div class="item item-editor-default container-editor">
                         <div class="editable"></div>
                     </div>
@@ -174,20 +175,21 @@ $this->title = 'Добавить скидку на Postim.by';
         </div>
 
         <div class="container-add-place">
-            <?php if(Yii::$app->user->isModerator()):?>
+            <?php if (Yii::$app->user->isModerator()): ?>
                 <div class="block-field-setting">
                     <label class="label-field-setting">Заголовок для поисковиков</label>
                     <input name="discount[title]" class="input-field-setting" placeholder="Введите текст" value="">
                 </div>
                 <div class="block-field-setting">
                     <label class="label-field-setting">Описание для поисковиков</label>
-                    <input name="discount[description]" class="input-field-setting" placeholder="Введите текст" value="">
+                    <input name="discount[description]" class="input-field-setting" placeholder="Введите текст"
+                           value="">
                 </div>
                 <div class="block-field-setting">
                     <label class="label-field-setting">Ключевые слова</label>
                     <input name="discount[key_word]" class="input-field-setting" placeholder="Введите текст" value="">
                 </div>
-            <?php endif;?>
+            <?php endif; ?>
             <div class="btn-send">
                 <div id="add-discount" class="large-wide-button"><p>Опубликовать</p></div>
             </div>
@@ -199,30 +201,30 @@ $this->title = 'Добавить скидку на Postim.by';
 <div style="margin-bottom:30px;"></div>
 
 <script>
-    $(document).ready(function () {
-        $('.block-inputs').sortable();
+	$(document).ready(function () {
+		$('.block-inputs').sortable();
 
-        editable.init('.editable', {
-            toolbar: {
-                photo: true,
-                video: true,
-                text: true
-            }
-        });
-        $('textarea').autosize();
-        $("#datepicker").datepicker({
-            minDate: 0,
-            onSelect: function(dateText, inst) {
-                var date = $(this).datepicker("getDate");
+		editable.init('.editable', {
+			toolbar: {
+				photo: true,
+				video: true,
+				text: true
+			}
+		});
+		$('textarea').autosize();
+		$("#datepicker").datepicker({
+			minDate: 0,
+			onSelect: function (dateText, inst) {
+				var date = $(this).datepicker("getDate");
 
-                $('#end-share-date').text(dateText);
-                $('#date_finish').val(Math.round(date.getTime()/1000));
-            }
-        });
+				$('#end-share-date').text(dateText);
+				$('#date_finish').val(Math.round(date.getTime() / 1000));
+			}
+		});
 
-        $('#price').mask("###0.00", {reverse: true});
-        $('#price-with-discount').mask("###0.00", {reverse: true});
-        $('#discount').mask("#0", {reverse: true});
-        $('#product-count').mask("#0", {reverse: true});
-    })
+		$('#price').mask("###0.00", {reverse: true});
+		$('#price-with-discount').mask("###0.00", {reverse: true});
+		$('#discount').mask("#0", {reverse: true});
+		$('#product-count').mask("#0", {reverse: true});
+	})
 </script>

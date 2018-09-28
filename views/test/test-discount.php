@@ -1,4 +1,5 @@
 <?php
+
 use app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
 use yii\helpers\Url;
@@ -9,11 +10,11 @@ $this->title = 'Суши-сеты от 17,20 руб./684 г, роллы от 8 �
 
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Суши-сеты от 17,20 руб./684 г, роллы от 8 руб. от службы доставки "Суши Наши" на Postim.by'
+    'content' => 'Суши-сеты от 17,20 руб./684 г, роллы от 8 руб. от службы доставки "Суши Наши" на Postim.by',
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
-    'content'=> 'Суши-сеты роллы Суши Наши'
+    'content' => 'Суши-сеты роллы Суши Наши',
 ]);
 ?>
 <div class="margin-top60"></div>
@@ -34,10 +35,12 @@ $this->registerMetaTag([
         </div>
         <div class="container-discount-info">
             <div class="discount-info-time-left">Акция действует до 30.12.17</div>
-            <div class="discount-info-text">Стоимость<span class="through">38.80</span><span class="discount-info-bold-text">17.20 руб</span></div>
+            <div class="discount-info-text">Стоимость<span class="through">38.80</span><span
+                        class="discount-info-bold-text">17.20 руб</span></div>
             <div class="discount-info-text">Скидка<span class="discount-info-bold-text">до 66%</span></div>
             <div class="discount-info-text">Осталось<span class="discount-info-bold-text">24 промокода</span></div>
-            <div class="discount-info-text before-icon-purse">Цена<span class="discount-info-bold-text">бесплатно</span></div>
+            <div class="discount-info-text before-icon-purse">Цена<span class="discount-info-bold-text">бесплатно</span>
+            </div>
             <div class="container-bottom-btn">
                 <div class="blue-btn-40 js-gain-promo"><p>Получить скидку до 66%</p></div>
             </div>
@@ -46,15 +49,19 @@ $this->registerMetaTag([
     <h2 class="h2-c">Условия</h2>
     <div class="block-description-card">
         <ul>
-            <li><span>С промокодом вы получаете скидку до 66% на суши-сеты. Воспользоваться скидкой вы можете до 31.12.2017.</span></li>
-            <li><span>Расчет банковской картой возможен только при условии, что при заказе Вы указали. что желаете рассчитаться в безналичном расчете.</span></li>
+            <li><span>С промокодом вы получаете скидку до 66% на суши-сеты. Воспользоваться скидкой вы можете до 31.12.2017.</span>
+            </li>
+            <li><span>Расчет банковской картой возможен только при условии, что при заказе Вы указали. что желаете рассчитаться в безналичном расчете.</span>
+            </li>
             <li><span>Необходимо предъявлять промокод до заказа. Вы можете его назвать по телефону.</span></li>
             <li><span>Акция распространяется на заказы на вынос с доставкой и в кафе.</span></li>
             <li><span>Минимальная сумма заказа на доставку: 18 руб.</span></li>
             <li><span>Стоимость доставки в пределах МКАД (включая Уручье): 3 руб.</span></li>
             <li><span>При заказе от 30 руб. доставка в пределах МКАД (включая Уручье) бесплатно.</span></li>
-            <li><span>Доставка за пределы МКАД (Тарасово, Ждановичи, Копище, Боровая. пос. Боровляны, Валерьяново, Б.Стиклево. Шабаны, Колядичи, Сенница, Юбилейный. Щoмыслица) стоимость: 4,50 руб.</span></li>
-            <li><span>Доставка за пределы МКАД (дальше указанных зон) осуществляется при минимальной сумме заказа 50 руб. (согласовывается с администратором).</span></li>
+            <li><span>Доставка за пределы МКАД (Тарасово, Ждановичи, Копище, Боровая. пос. Боровляны, Валерьяново, Б.Стиклево. Шабаны, Колядичи, Сенница, Юбилейный. Щoмыслица) стоимость: 4,50 руб.</span>
+            </li>
+            <li><span>Доставка за пределы МКАД (дальше указанных зон) осуществляется при минимальной сумме заказа 50 руб. (согласовывается с администратором).</span>
+            </li>
             <li><span>Поставщик несет полную ответственность перед потребителем за достоверность информации.</span></li>
             <li><span>Телефоны для заказа:<br>
             (033) 365-11-16 (MTS)<br>
@@ -84,7 +91,7 @@ $this->registerMetaTag([
         <img src="/test-discount/pic1.png" width="300" style="margin: 10px 0;"><br>
 
         <div style="color: #444444;font-family: PT_Sans bold;">
-             Сет "Кумото" (1043 г) 18,90 руб. вместо 42,80 руб.
+            Сет "Кумото" (1043 г) 18,90 руб. вместо 42,80 руб.
         </div>
         "Тихий Океан" 180 г - (авокадо, крабовая паста, кунжут белый и чёрный)<br>
         "Шри-Ланка" 188 г - (сливочный сыр, чука салат, соус ореховый)<br>
@@ -214,64 +221,64 @@ $this->registerMetaTag([
 </div>
 
 <script>
-    $(document).ready(function () {
+	$(document).ready(function () {
 
-        $(window).resize(function () {
-            var startWidth=900,
-                startHgt=440,
-                proportion=startWidth/startHgt;
+		$(window).resize(function () {
+			var startWidth = 900,
+					startHgt = 440,
+					proportion = startWidth / startHgt;
 
-            var container = $('.container-discount-photos');
-            var width=$(container).width();
-            $('.container-discount-photos').css({height:width/proportion+'px'});
-        });
-        $(window).resize();
+			var container = $('.container-discount-photos');
+			var width = $(container).width();
+			$('.container-discount-photos').css({height: width / proportion + 'px'});
+		});
+		$(window).resize();
 
-        $(document).on('click','.js-gain-promo',function(){
+		$(document).on('click', '.js-gain-promo', function () {
 
-            if (main.User.is_guest) {
-                main.showErrorAut('Незарегистрированные пользователи не могут получить скидку');
-                return false;
-            }
+			if (main.User.is_guest) {
+				main.showErrorAut('Незарегистрированные пользователи не могут получить скидку');
+				return false;
+			}
 
-            $.ajax({
-                url: '/test/gain-promo',
-                type: 'POST',
-                dataType: "json",
-                async:false,
-                success:function (response) {
+			$.ajax({
+				url: '/test/gain-promo',
+				type: 'POST',
+				dataType: "json",
+				async: false,
+				success: function (response) {
 
-                    if(response.error){
+					if (response.error) {
 
-                        $().toastmessage('showToast', {
-                            text: response.message,
-                            stayTime:5000,
-                            type:'error'
-                        });
+						$().toastmessage('showToast', {
+							text: response.message,
+							stayTime: 5000,
+							type: 'error'
+						});
 
-                    }else {
+					} else {
 
-                        (function($){
+						(function ($) {
 
-                            var modal = ModalWindow({
-                                actionUrl : '/site/get-modal-window',
-                                closeBtn : '.close-modal-btn',
+							var modal = ModalWindow({
+								actionUrl: '/site/get-modal-window',
+								closeBtn: '.close-modal-btn',
 
-                                renderBodyCallback: function ($form) {
-                                    $form.find('.body-modal').html('<div class="message">'+response.message+'</div>')
-                                }
-                            });
+								renderBodyCallback: function ($form) {
+									$form.find('.body-modal').html('<div class="message">' + response.message + '</div>')
+								}
+							});
 
-                            modal.init();
+							modal.init();
 
-                        })(jQuery)
+						})(jQuery)
 
-                    }
+					}
 
-                }
-            });
+				}
+			});
 
-        })
+		})
 
-    })
+	})
 </script>

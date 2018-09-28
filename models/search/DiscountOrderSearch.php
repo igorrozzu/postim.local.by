@@ -21,6 +21,7 @@ class DiscountOrderSearch extends DiscountOrder
     public $search_field;
 
     private $timeRange;
+
     /**
      * @inheritdoc
      */
@@ -67,19 +68,25 @@ class DiscountOrderSearch extends DiscountOrder
         switch ($this->status) {
             case 'active':
                 $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['active']])
-                    ->andWhere(['>', $table . '.date_finish', $loadTime]); break;
+                    ->andWhere(['>', $table . '.date_finish', $loadTime]);
+                break;
             case 'inactive':
-                $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['inactive']]); break;
+                $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['inactive']]);
+                break;
             case 'expired':
                 $query->andWhere([$table . '.status_promo' => DiscountOrder::STATUS['active']])
-                    ->andWhere(['<=', $table . '.date_finish', $loadTime]); break;
-            default: break;
+                    ->andWhere(['<=', $table . '.date_finish', $loadTime]);
+                break;
+            default:
+                break;
         }
 
         if ($this->type === 'promocode') {
             $query->andWhere([$table . '.pin_code' => null]);
-        } else if ($this->type === 'certificate') {
-            $query->andWhere(['not', [$table . '.pin_code' => null]]);
+        } else {
+            if ($this->type === 'certificate') {
+                $query->andWhere(['not', [$table . '.pin_code' => null]]);
+            }
         }
 
 
@@ -109,47 +116,54 @@ class DiscountOrderSearch extends DiscountOrder
 
         if ($this->type === 'promocode') {
             $query->andWhere([Discounts::tableName() . '.type' => DiscountOrder::TYPE['promoCode']]);
-        } else if ($this->type === 'certificate') {
-            $query->andWhere([Discounts::tableName() . '.type' => DiscountOrder::TYPE['certificate']]);
+        } else {
+            if ($this->type === 'certificate') {
+                $query->andWhere([Discounts::tableName() . '.type' => DiscountOrder::TYPE['certificate']]);
+            }
         }
 
-        if(isset($this->order_time)) {
+        if (isset($this->order_time)) {
 
             $timeZone = Yii::$app->user->getTimezoneInSeconds();
             $time = strtotime('now 00:00:00', time() + $timeZone) - $timeZone;
             $current_month = (int)date('n');
-            $time_current_month = mktime(0,0,0, $current_month, 1);
+            $time_current_month = mktime(0, 0, 0, $current_month, 1);
 
             if ($current_month === 1) {
-                $time_prev_month = mktime(0,0,0, 12, 1, (int) date('Y') - 1);
+                $time_prev_month = mktime(0, 0, 0, 12, 1, (int)date('Y') - 1);
             } else {
-                $time_prev_month = mktime(0,0,0, $current_month - 1, 1);
+                $time_prev_month = mktime(0, 0, 0, $current_month - 1, 1);
             }
 
             $timeForView = time() + $timeZone;
 
             switch ($this->order_time) {
-                case 'today': $query->andWhere(['>=', $table . '.date_buy', $time]);
+                case 'today':
+                    $query->andWhere(['>=', $table . '.date_buy', $time]);
                     $this->timeRange = date('d.m.Y', $timeForView);
                     break;
-                case 'yesterday': $query->andWhere(['>=', $table . '.date_buy', $time - 3600 * 24])
-                                        ->andWhere(['<', $table . '.date_buy', $time]);
+                case 'yesterday':
+                    $query->andWhere(['>=', $table . '.date_buy', $time - 3600 * 24])
+                        ->andWhere(['<', $table . '.date_buy', $time]);
                     $this->timeRange = date('d.m.Y', $timeForView - 3600 * 24);
                     break;
-                case 'current-month': $query->andWhere(['>=', $table . '.date_buy', $time_current_month - $timeZone]);
+                case 'current-month':
+                    $query->andWhere(['>=', $table . '.date_buy', $time_current_month - $timeZone]);
                     $this->timeRange = date('d.m.Y - ', $time_current_month) .
-                                       date('d.m.Y', $timeForView);
+                        date('d.m.Y', $timeForView);
                     break;
-                case 'prev-month': $query->andWhere(['>=', $table . '.date_buy', $time_prev_month - $timeZone])
-                                         ->andWhere(['<', $table . '.date_buy', $time_current_month - $timeZone]);
+                case 'prev-month':
+                    $query->andWhere(['>=', $table . '.date_buy', $time_prev_month - $timeZone])
+                        ->andWhere(['<', $table . '.date_buy', $time_current_month - $timeZone]);
                     $this->timeRange = date('d.m.Y - ', $time_prev_month) .
-                                       date('d.m.Y', $time_current_month - 3600 * 24);
+                        date('d.m.Y', $time_current_month - 3600 * 24);
                     break;
             }
         }
 
-        if(isset($this->search_field)) {
-            $query->andWhere(['or',
+        if (isset($this->search_field)) {
+            $query->andWhere([
+                'or',
                 ['like', Discounts::tableName() . '.header', $this->search_field],
                 ['like', $table . '.promo_code', $this->search_field],
             ]);

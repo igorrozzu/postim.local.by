@@ -47,7 +47,8 @@ class Region extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getCoutries(){
-        return $this->hasOne(Countries::className(),['id'=>'countries_id']);
+    public function getCoutries()
+    {
+        return $this->hasOne(Countries::className(), ['id' => 'countries_id']);
     }
 }

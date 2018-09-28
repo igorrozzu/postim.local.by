@@ -1,42 +1,50 @@
-@media (max-width:1319px) {
+@media (max-width: 1319px) {
 
     .header {
         width: calc(100% - 35px);
         margin: 0 15px 0 20px;
     }
-    .logo-menu{
+
+    .logo-menu {
         margin-left: 10px;
     }
+
     .header-selected-city,
     .btns-map {
         width: calc(100% - 60px);
         margin: 0 30px;
     }
-    .open-search .search_block{
+
+    .open-search .search_block {
         width: calc(100% - 169px);
     }
+
     .a-auto-complete,
-    .block-auto-complete-header{
+    .block-auto-complete-header {
         width: calc(100% - 60px);
         margin-left: auto;
         margin-right: auto;
     }
-    .block-footer-content{
+
+    .block-footer-content {
         width: calc(100% - 60px);
         margin: 0 30px;
     }
 
-    .search_block{
+    .search_block {
         width: calc(100% - 656px);
     }
-    .authorized .search_block{
+
+    .authorized .search_block {
         width: calc(100% - 748px);
     }
-    .block-content{
+
+    .block-content {
         width: calc(100% - 60px);
         margin: 0 30px;
     }
-    .block-flex-white.inside .block-content{
+
+    .block-flex-white.inside .block-content {
         margin: 0 0;
     }
 
@@ -55,15 +63,18 @@
     .container-cards-promo,
     .container-promo-statistic,
     .container-message,
-    .block-flex-white.inside{
+    .block-flex-white.inside {
         width: calc(100% - 315px);
     }
-    .block-сomments-post._reviews{
+
+    .block-сomments-post._reviews {
         width: 100%;
     }
-    .block-info-for-owner{
+
+    .block-info-for-owner {
         width: calc(100% - 345px);
     }
+
     .block-description-card,
     .container-settings,
     .container-add-place {
@@ -73,12 +84,11 @@
     .__first-column .container-add-place,
     .__first-column .block-description-card,
     .__first-column .container-post,
-    .__first-column .container-settings
-    {
+    .__first-column .container-settings {
         width: calc(100% - 40px);
     }
 
-    .__first-column .block-info-for-owner{
+    .__first-column .block-info-for-owner {
         width: calc(100% - 30px);
     }
 
@@ -89,64 +99,77 @@
     .__first-column .block-write-reviews,
     .__first-column .block-reviews,
     .__first-column .review-show-more,
-    .__first-column .block-info-card{
+    .__first-column .block-info-card {
         width: 100%;
     }
 
     .card-block,
-    .card-block-discount{
-        width: calc((100% - 20px)/2 );
+    .card-block-discount {
+        width: calc((100% - 20px) / 2);
     }
-    .photo, .photo-not-found{
-        width: calc((100% - 5px)/2 );
+
+    .photo, .photo-not-found {
+        width: calc((100% - 5px) / 2);
     }
-    .block-widgets{
+
+    .block-widgets {
         display: none;
     }
+
     .card-block:nth-child(even),
     .photo:nth-child(even),
-    .photo-not-found:nth-child(even){
+    .photo-not-found:nth-child(even) {
         margin-right: 0px;
     }
-    .block-cities{
+
+    .block-cities {
         width: calc(100% - 60px);
         margin: 0 30px;
     }
-    .autocomplete-result-search ul li{
+
+    .autocomplete-result-search ul li {
         width: 25%;
     }
 
-    .menu-info-cards{
+    .menu-info-cards {
         width: calc(100% - 60px);
         margin: 0 30px;
     }
+
     .n4,
-    .n3{
+    .n3 {
         display: none;
     }
-    .card-block-discount:nth-child(2n){
-        margin-right: 0px;
-    }
-    .block-li-photo{
-        width: calc((100% - 20px)/2 );
-    }
-    .block-li-photo:nth-child(3n){
-        margin-right: 20px;
-    }
-    .block-li-photo:nth-child(2n){
-        margin-right: 0px;
-    }
-    .container-discount-photos{
-        width: calc(100% - 355px);
-    }
-    .block-news-container .card-block:nth-child(3n){
-        margin-right: 20px;
-    }
-    .block-news-container .card-block:nth-child(2n){
+
+    .card-block-discount:nth-child(2n) {
         margin-right: 0px;
     }
 
-    .open-search .authorized .search_block{
+    .block-li-photo {
+        width: calc((100% - 20px) / 2);
+    }
+
+    .block-li-photo:nth-child(3n) {
+        margin-right: 20px;
+    }
+
+    .block-li-photo:nth-child(2n) {
+        margin-right: 0px;
+    }
+
+    .container-discount-photos {
+        width: calc(100% - 355px);
+    }
+
+    .block-news-container .card-block:nth-child(3n) {
+        margin-right: 20px;
+    }
+
+    .block-news-container .card-block:nth-child(2n) {
+        margin-right: 0px;
+    }
+
+    .open-search .authorized .search_block {
         width: calc(100% - 222px);
     }
 

@@ -39,7 +39,7 @@ class OtherPageSearch extends OtherPage
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$pagination)
+    public function search($params, $pagination)
     {
         $query = OtherPage::find();
 
@@ -47,7 +47,7 @@ class OtherPageSearch extends OtherPage
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);

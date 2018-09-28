@@ -1,5 +1,7 @@
 <?php
-namespace  app\models\sphinx\search;
+
+namespace app\models\sphinx\search;
+
 use app\models\Discounts;
 use app\models\sphinx\Discount;
 use Yii;
@@ -10,10 +12,12 @@ class DiscountSearch
     public function getAutoCompleteQuery(int $limit)
     {
         $query = Discount::find()
-            ->with(['discount' => function(ActiveQuery $query) {
-                $query->select(['id', 'header', 'url_name'])
-                    ->asArray();
-            }])
+            ->with([
+                'discount' => function (ActiveQuery $query) {
+                    $query->select(['id', 'header', 'url_name'])
+                        ->asArray();
+                },
+            ])
             ->limit($limit)
             ->asArray();
 
@@ -23,12 +27,14 @@ class DiscountSearch
     public function getMainSearchQuery(int $loadTime)
     {
         $query = Discount::find()
-            ->with(['discount' => function(ActiveQuery $query) {
+            ->with([
+                'discount' => function (ActiveQuery $query) {
 
-                if (!Yii::$app->user->isGuest) {
-                    $query->joinWith('hasLike');
-                }
-            }])
+                    if (!Yii::$app->user->isGuest) {
+                        $query->joinWith('hasLike');
+                    }
+                },
+            ])
             ->where('`date` <= ' . $loadTime);
 
         return $query;

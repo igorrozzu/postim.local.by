@@ -1,10 +1,11 @@
 <?php
+
 use yii\helpers\Html;
 
 $confirmLink = Yii::$app->urlManager->createAbsoluteUrl([
     'user/confirm-account',
     'id' => $data->user_id,
-    'token' => $data->hash
+    'token' => $data->hash,
 ]);
 ?>
 

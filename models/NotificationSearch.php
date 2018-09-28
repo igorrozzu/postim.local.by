@@ -19,7 +19,7 @@ class NotificationSearch extends NotificationUser
     public function rules()
     {
         return [
-            [['notification_id', 'user_id', 'is_showed'], 'integer']
+            [['notification_id', 'user_id', 'is_showed'], 'integer'],
         ];
     }
 

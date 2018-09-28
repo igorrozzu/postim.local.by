@@ -43,14 +43,26 @@ class BusinessOrder extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'post_id', 'status'], 'required'],
-            [['position'], 'required','message'=>'Введите должность'],
-            [['full_name'], 'required','message'=>'Введите имя и фамилию'],
-            [['phone'], 'required','message'=>'Введите телефон'],
+            [['position'], 'required', 'message' => 'Введите должность'],
+            [['full_name'], 'required', 'message' => 'Введите имя и фамилию'],
+            [['phone'], 'required', 'message' => 'Введите телефон'],
             [['user_id', 'post_id', 'status', 'premium_finish_date'], 'integer'],
-            [['position','phone'], 'string', 'max' => 100],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['user_id'], 'unique', 'targetAttribute' => ['user_id', 'post_id'], 'message'=>'Заявка уже отправлена'],
+            [['position', 'phone'], 'string', 'max' => 100],
+            [
+                ['post_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Posts::className(),
+                'targetAttribute' => ['post_id' => 'id'],
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
+            [['user_id'], 'unique', 'targetAttribute' => ['user_id', 'post_id'], 'message' => 'Заявка уже отправлена'],
         ];
     }
 
@@ -65,29 +77,32 @@ class BusinessOrder extends \yii\db\ActiveRecord
             'position' => 'Должность',
             'phone' => 'Телефон',
             'status' => 'Статус',
-            'premium_finish_date' => 'Оплачено до'
+            'premium_finish_date' => 'Оплачено до',
         ];
     }
 
-    public function getStatusText(int $status){
+    public function getStatusText(int $status)
+    {
 
-        return $this->mapStatusText[$status]??'';
+        return $this->mapStatusText[$status] ?? '';
     }
 
     public function beforeValidate()
     {
-        if(!$this->date){
+        if (!$this->date) {
             $this->date = time();
         }
 
         return parent::beforeValidate();
     }
 
-    public function getPost(){
+    public function getPost()
+    {
         return $this->hasOne(Posts::className(), ['id' => 'post_id']);
     }
 
-    public function getUser(){
+    public function getUser()
+    {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

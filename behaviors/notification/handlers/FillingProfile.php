@@ -14,7 +14,7 @@ class FillingProfile extends NotificationHandler
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_UPDATE => 'run'
+            ActiveRecord::EVENT_AFTER_UPDATE => 'run',
         ];
     }
 
@@ -41,7 +41,8 @@ class FillingProfile extends NotificationHandler
             'has_reward_for_filling_profile' => 1,
         ]);
 
-        $message = sprintf($template['text'],Yii::$app->params['site.hostName'].'/bonus', $template['exp'], $template['money']);
+        $message = sprintf($template['text'], Yii::$app->params['site.hostName'] . '/bonus', $template['exp'],
+            $template['money']);
         if ($updateResult) {
             parent::sendNotification($this->owner->getUserId(), [
                 'type' => '',

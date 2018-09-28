@@ -1,4 +1,5 @@
 <?php
+
 namespace app\repositories;
 
 use app\models\City;
@@ -21,7 +22,8 @@ class PostRepository extends Posts
             ->groupBy([self::tableName() . '.id']);
 
         if ($post->city['url_name']) {
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 [Region::tableName() . '.url_name' => $post->city['url_name']],
                 [City::tableName() . '.url_name' => $post->city['url_name']],
                 [Countries::tableName() . '.url_name' => $post->city['url_name']],

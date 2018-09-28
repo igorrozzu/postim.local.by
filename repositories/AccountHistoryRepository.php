@@ -1,4 +1,5 @@
 <?php
+
 namespace app\repositories;
 
 use app\models\entities\AccountHistory;

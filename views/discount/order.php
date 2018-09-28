@@ -1,11 +1,12 @@
 <?php
+
 use app\components\breadCrumb\BreadCrumb;
 
 $this->title = 'Покупка промокода на Postim.by';
 ?>
 
 <div class="block-content" style="margin-top: 80px">
-    <?=BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
+    <?= BreadCrumb::widget(['breadcrumbParams' => $breadcrumbParams]) ?>
     <h1 class="h1-v">Покупка промокода</h1>
 
 </div>
@@ -16,9 +17,9 @@ $this->title = 'Покупка промокода на Postim.by';
         <form id="discount-order-form" method="post">
             <div class="discount-order-content">
                 <div class="order-info" style="margin-bottom: 15px;">
-                    <div class="product-picture" style="background-image: url('<?=$discount->getCover();?>')"></div>
+                    <div class="product-picture" style="background-image: url('<?= $discount->getCover(); ?>')"></div>
                     <div class="product-info">
-                        <div class="product-header"><?=$discount->header?></div>
+                        <div class="product-header"><?= $discount->header ?></div>
                         <div class="product-select-count">
                             <div style="margin-right: 9px;">Колличество</div>
                             <div class="product-counter">
@@ -61,20 +62,20 @@ $this->title = 'Покупка промокода на Postim.by';
                     </div>
                 </div>
                 <input type="hidden" id="discount-order-count" name="discountOrder[count]" value="1">
-                <input type="hidden" name="discountOrder[discountType]" value="<?=$discount->type?>">
+                <input type="hidden" name="discountOrder[discountType]" value="<?= $discount->type ?>">
                 <input type="hidden" id="discount-order-paymentType" name="discountOrder[paymentType]" value="4">
             </div>
         </form>
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        <?php if (isset($errors[0])):?>
-        $().toastmessage('showToast', {
-            text: '<?=$errors[0]?>',
-            stayTime: 5000,
-            type: 'error'
-        });
-        <?php endif;?>
-    })
+	$(document).ready(function () {
+      <?php if (isset($errors[0])):?>
+		$().toastmessage('showToast', {
+			text: '<?=$errors[0]?>',
+			stayTime: 5000,
+			type: 'error'
+		});
+      <?php endif;?>
+	})
 </script>

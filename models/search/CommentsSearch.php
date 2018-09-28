@@ -47,14 +47,14 @@ class CommentsSearch extends Comments
             ->with('user.userInfo')
             ->where([
                 'tbl_comments.entity_id' => $entity_id,
-                'type_entity' => $params['type_entity']??null,
-                'main_comment_id' => null
+                'type_entity' => $params['type_entity'] ?? null,
+                'main_comment_id' => null,
             ])
             ->orderBy($sort);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         if (!Yii::$app->user->isGuest) {
@@ -76,17 +76,20 @@ class CommentsSearch extends Comments
     public static function getSortArray(string $paramSort): array
     {
         switch ($paramSort) {
-            case 'new': {
-                return ['date' => SORT_DESC];
-            }
+            case 'new':
+                {
+                    return ['date' => SORT_DESC];
+                }
                 break;
-            case 'old': {
-                return ['date' => SORT_ASC];
-            }
+            case 'old':
+                {
+                    return ['date' => SORT_ASC];
+                }
                 break;
-            default: {
-                return ['date' => SORT_DESC];
-            }
+            default:
+                {
+                    return ['date' => SORT_DESC];
+                }
                 break;
         }
     }

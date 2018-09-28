@@ -3,7 +3,7 @@
 use app\models\entities\DiscountOrder;
 
 $totalCount = $dataProvider->getTotalCount();
-$totalPrice = $totalCount > 0 ? $dataProvider->query->sum(DiscountOrder::tableName() . '.price'): null;
+$totalPrice = $totalCount > 0 ? $dataProvider->query->sum(DiscountOrder::tableName() . '.price') : null;
 ?>
 
 <div class="table-promo">
@@ -17,30 +17,31 @@ $totalPrice = $totalCount > 0 ? $dataProvider->query->sum(DiscountOrder::tableNa
     </div>
     <div class="row-content">
         <span class="r1">
-            <?php if($settings['column-status-view'] === 'certificate'):?>
+            <?php if ($settings['column-status-view'] === 'certificate'): ?>
                 Сертификатов
-            <?php else:?>
+            <?php else: ?>
                 Промокодов
-            <?php endif;?>
-            (<?=$totalCount?>), статистика за <?=$settings['time-range'] ? '(' . $settings['time-range'] . ')' : 'все время'?>
+            <?php endif; ?>
+            (<?= $totalCount ?>
+            ), статистика за <?= $settings['time-range'] ? '(' . $settings['time-range'] . ')' : 'все время' ?>
         </span>
         <span class="r2">-</span>
         <span class="r3">-</span>
         <span class="r4">-</span>
-        <span class="r5"><?=$totalPrice ?? '-';?></span>
+        <span class="r5"><?= $totalPrice ?? '-'; ?></span>
         <span class="r6">-</span>
     </div>
-<?php if($totalCount > 0) {
-    echo $this->render('rows', [
-        'dataProvider'=> $dataProvider,
-        'settings' => $settings
-    ]);
-};
-?>
+    <?php if ($totalCount > 0) {
+        echo $this->render('rows', [
+            'dataProvider' => $dataProvider,
+            'settings' => $settings,
+        ]);
+    };
+    ?>
 </div>
 <script>
-    $(document).ready(function () {
-        businessAccount.statisticTableScrollInit();
-    });
+	$(document).ready(function () {
+		businessAccount.statisticTableScrollInit();
+	});
 </script>
 

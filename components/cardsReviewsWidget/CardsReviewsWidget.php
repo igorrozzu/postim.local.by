@@ -19,8 +19,8 @@ class CardsReviewsWidget extends Widget
     public function run()
     {
         return $this->render('index', [
-            'dataProvider'=> $this->dataProvider,
-            'settings' => $this->settings
+            'dataProvider' => $this->dataProvider,
+            'settings' => $this->settings,
         ]);
     }
 }

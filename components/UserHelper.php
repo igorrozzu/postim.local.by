@@ -1,4 +1,5 @@
 <?php
+
 namespace app\components;
 
 use app\components\user\ExperienceCalc;
@@ -8,7 +9,8 @@ use app\models\Notification;
 use \app\models\User;
 use Yii;
 
-class UserHelper{
+class UserHelper
+{
 
     public static function sendNotification(int $userId, array $data, int $senderId = null)
     {
@@ -30,14 +32,21 @@ class UserHelper{
         return false;
     }
 
-    public static function chargeBonuses(int $user_id, $exp, $megaMoney = null, $message,$emailMessage = null,$emailLink = null){
+    public static function chargeBonuses(
+        int $user_id,
+        $exp,
+        $megaMoney = null,
+        $message,
+        $emailMessage = null,
+        $emailLink = null
+    ) {
 
-        $user = User::find()->with('userInfo')->where(['id'=>$user_id])->one();
+        $user = User::find()->with('userInfo')->where(['id' => $user_id])->one();
 
         $oldLevel = $user->userInfo->level;
         $newLevel = ExperienceCalc::getLevelByExperience($user->userInfo->exp_points + $exp);
 
-        if(!$megaMoney){
+        if (!$megaMoney) {
             $megaMoney = 0;
         }
 
@@ -67,16 +76,17 @@ class UserHelper{
                 return true;
             }
 
-            if($emailLink && $emailMessage){
+            if ($emailLink && $emailMessage) {
 
-                self::sendMessageToEmailCustomReward($user,$emailMessage,$emailLink);
+                self::sendMessageToEmailCustomReward($user, $emailMessage, $emailLink);
             }
 
         }
 
     }
 
-    public static function sendMessageToEmailCustomReward($user,$emailMessage,$emailLink){
+    public static function sendMessageToEmailCustomReward($user, $emailMessage, $emailLink)
+    {
         $task = new Task([
             'data' => json_encode([
                 'class' => 'SendMessageToEmail',
@@ -85,10 +95,10 @@ class UserHelper{
                     'params' => [
                         'name' => $user->name,
                         'message' => $emailMessage,
-                        'url' => $emailLink
+                        'url' => $emailLink,
                     ],
                     'toEmail' => $user->email,
-                    'subject'=>'Уведомление Postim.by'
+                    'subject' => 'Уведомление Postim.by',
                 ],
             ]),
             'type' => Task::TYPE['notification'],
@@ -97,7 +107,8 @@ class UserHelper{
         $task->save();
     }
 
-    public static function sendMessageToEmail($user,$emailMessage,$emailLink){
+    public static function sendMessageToEmail($user, $emailMessage, $emailLink)
+    {
         $task = new Task([
             'data' => json_encode([
                 'class' => 'SendMessageToEmail',
@@ -106,10 +117,10 @@ class UserHelper{
                     'params' => [
                         'name' => $user->name,
                         'message' => $emailMessage,
-                        'url' => $emailLink
+                        'url' => $emailLink,
                     ],
                     'toEmail' => $user->email,
-                    'subject'=>'Уведомление Postim.by'
+                    'subject' => 'Уведомление Postim.by',
                 ],
             ]),
             'type' => Task::TYPE['notification'],
@@ -117,10 +128,8 @@ class UserHelper{
 
         $task->save();
 
-        $lol =3 ;
+        $lol = 3;
     }
-
-
 
 
 }

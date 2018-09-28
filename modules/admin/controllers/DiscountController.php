@@ -29,14 +29,14 @@ class DiscountController extends AdminDefaultController
 
         $pagination = new Pagination([
             'pageSize' => \Yii::$app->request->get('per-page', 8),
-            'page' => \Yii::$app->request->get('page', 1)-1,
+            'page' => \Yii::$app->request->get('page', 1) - 1,
         ]);
 
         $dataProvider = $searchModel->getDiscountsInModeration($pagination);
 
         return $this->render('discounts', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -68,7 +68,8 @@ class DiscountController extends AdminDefaultController
                         $result = true;
                     }
                 }
-            } catch (Exception $e){}
+            } catch (Exception $e) {
+            }
 
             if ($result) {
                 $transaction->commit();
@@ -108,8 +109,8 @@ class DiscountController extends AdminDefaultController
         $response->success = false;
         $response->message = 'Ошибка скрытия. Попробуйте еще';
 
-        $message = Yii::$app->request->post('message',false);
-        $id = Yii::$app->request->post('id',false);
+        $message = Yii::$app->request->post('message', false);
+        $id = Yii::$app->request->post('id', false);
 
         if ($message && $id) {
             $discount = Discounts::find()

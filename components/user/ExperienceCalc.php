@@ -24,7 +24,7 @@ class ExperienceCalc
         $b = 2 * Yii::$app->params['user.experienceForFirstLevel'] - $increment;
         $c = -2 * $expPoints;
 
-        $d = (pow($b,2)) - (4 * $a * $c);
+        $d = (pow($b, 2)) - (4 * $a * $c);
 
         if ($d <= 0) {
             $d = (-1) * $d;
@@ -34,7 +34,7 @@ class ExperienceCalc
         $x2 = (-2 * $c) / ($b - (sqrt($d)));
         $maxRoot = $x1 > $x2 ? $x1 : $x2;
 
-        return (int) abs($maxRoot);
+        return (int)abs($maxRoot);
     }
 
     /**
@@ -51,7 +51,7 @@ class ExperienceCalc
         }
 
         $increment = Yii::$app->params['user.incrementExperience'];
-        return (int) ($increment * $level + (2 * Yii::$app->params['user.experienceForFirstLevel'] -
+        return (int)($increment * $level + (2 * Yii::$app->params['user.experienceForFirstLevel'] -
                     $increment)) * $level / 2;
     }
 
@@ -66,7 +66,7 @@ class ExperienceCalc
         $expForNextLevel = self::getMinExperienceByLevel($level + 1);
 
         $result = new \stdClass();
-        $result->persent = (int) (($expPoints - $expForCurrentLevel) /
+        $result->persent = (int)(($expPoints - $expForCurrentLevel) /
             ($expForNextLevel - $expForCurrentLevel) * 100);
         $result->needExpForNextLevel = $expForNextLevel - $expPoints;
 

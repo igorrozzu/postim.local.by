@@ -7,7 +7,7 @@ return [
             'clientId' => '5088327',
             'clientSecret' => 'Hn7Toih2jduSjZVtoLdl',
             'scope' => ['email'],
-            'attributeNames' => ['screen_name', 'photo_max_orig', 'photo_200', 'photo_max', 'photo_400_orig']
+            'attributeNames' => ['screen_name', 'photo_max_orig', 'photo_200', 'photo_max', 'photo_400_orig'],
         ],
         'odnoklassniki' => [
             'class' => 'app\components\social\clients\Odnoklassniki',
@@ -20,7 +20,7 @@ return [
             'attributeParams' => [
                 'include_email' => 'true',
                 'skip_status' => 'true',
-                'include_entities' => 'false'
+                'include_entities' => 'false',
             ],
             'consumerKey' => 'IXuThMKRMMLS1s8tsKc6dlioq',
             'consumerSecret' => 'RcsL58rQyFTrBquk8L1w9b3fsfpzj0DBEbKIoO4LmoSTTUZR1x',
@@ -35,7 +35,7 @@ return [
             'clientId' => '898590366900281',
             'clientSecret' => '8915a29680089617d0c279357c0ce2fb',
             'scope' => ['email'],
-            'attributeNames' => ['id', 'name', 'first_name', 'last_name', 'email', 'picture.type(large)']
+            'attributeNames' => ['id', 'name', 'first_name', 'last_name', 'email', 'picture.type(large)'],
         ],
     ],
 ];

@@ -1,5 +1,5 @@
 @media (max-width: 660px) {
-    body:not(.open-search) .authorized .search_block{
+    body:not(.open-search) .authorized .search_block {
         display: flex;
         float: right;
         padding: 0;
@@ -9,93 +9,102 @@
         height: 60px;
     }
 
-    body:not(.open-search) .authorized .search{
+    body:not(.open-search) .authorized .search {
         display: none;
     }
 
-    body:not(.open-search) .authorized .btn-search:after{
+    body:not(.open-search) .authorized .btn-search:after {
         width: 18px;
         height: 18px;
         background-image: url("../img/icons.png");
         background-position: 482px 830px;
     }
-    body:not(.open-search) .authorized .btn-search:hover:after{
+
+    body:not(.open-search) .authorized .btn-search:hover:after {
         background-position: 464px 830px;
     }
-    body:not(.open-search) .authorized .btn-search{
+
+    body:not(.open-search) .authorized .btn-search {
         height: auto;
         align-items: center;
         padding: 21px 10px;
     }
 }
+
 @media (max-height: 480px) {
-    .container-popup-window{
-        top:0;
+    .container-popup-window {
+        top: 0;
     }
-    .block-map{
+
+    .block-map {
         height: 300px;
     }
-    .preload-map{
+
+    .preload-map {
         height: 78px;
         background-image: url("../img/map.jpg");
     }
 }
 
-@media (min-width: 940px) and (max-width: 1040px){
-    .container-info-btn{
+@media (min-width: 940px) and (max-width: 1040px) {
+    .container-info-btn {
         flex-direction: column;
         align-items: flex-end;
         justify-content: flex-end;
     }
-    .block-promo-btns{
+
+    .block-promo-btns {
         margin-top: 20px;
     }
 }
-@media (min-width: 940px) and (max-width: 1093px){
+
+@media (min-width: 940px) and (max-width: 1093px) {
     /*start recommended-block*/
     .recommended-block.cards-block {
         margin-top: 88px;
     }
+
     /*end recommended-block*/
 }
 
 @media (max-width: 800px) {
 
-    .header-menu-title{
+    .header-menu-title {
         display: none;
     }
 
-    .header-menu-title.btn-select-city{
+    .header-menu-title.btn-select-city {
         display: block;
         margin-left: 0px;
     }
 
-    .select-city{
+    .select-city {
         display: none;
     }
 
-    .--with-message{
+    .--with-message {
         width: 500px;
         left: calc(50% - 250px);
         top: 0px;
     }
 
-    .block-columns-popup-authentication{
+    .block-columns-popup-authentication {
         justify-content: center;
         flex-direction: column;
     }
 
-    .left-column{
+    .left-column {
         width: 100%;
     }
 }
 
 @media (max-width: 530px) {
-    .--with-message{
+    .--with-message {
         width: 100%;
         left: 0px;
     }
 }
+
 /*@media (max-width: 588px) {
     .cards-block-discount{
         margin-top: 10px;

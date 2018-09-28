@@ -46,7 +46,7 @@ class UploadPostPhotosTmp extends Model
                 }
                 $rows = [];
                 foreach ($this->files as $file) {
-                    $photoName = Yii::$app->security->generateRandomString(8).time().'.jpg';
+                    $photoName = Yii::$app->security->generateRandomString(8) . time() . '.jpg';
 
                     if ($file->saveAs($dir . $photoName)) {
 
@@ -70,8 +70,8 @@ class UploadPostPhotosTmp extends Model
 
     public function getSavedFiles()
     {
-    	return $this->savedFiles;
-	}
+        return $this->savedFiles;
+    }
 
     /**
      * @return string

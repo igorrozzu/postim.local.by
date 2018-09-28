@@ -6,7 +6,7 @@ class m180127_123350_update_account_payment_columns extends Migration
 {
     public function safeUp()
     {
-        $this->createTable('tbl_account_payment',[
+        $this->createTable('tbl_account_payment', [
             'id' => \yii\db\Schema::TYPE_PK,
             'user_id' => \yii\db\Schema::TYPE_INTEGER,
             'money' => \yii\db\Schema::TYPE_DOUBLE,

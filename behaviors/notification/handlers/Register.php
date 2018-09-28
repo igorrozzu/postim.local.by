@@ -12,7 +12,7 @@ class Register extends NotificationHandler
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_INSERT => 'run'
+            ActiveRecord::EVENT_AFTER_INSERT => 'run',
         ];
     }
 
@@ -34,7 +34,8 @@ class Register extends NotificationHandler
             'level' => $newLevel - $oldLevel,
         ]);
 
-        $message = sprintf($template['text'],Yii::$app->params['site.hostName'].'/bonus', $template['exp'], $template['money']);
+        $message = sprintf($template['text'], Yii::$app->params['site.hostName'] . '/bonus', $template['exp'],
+            $template['money']);
         if ($updateResult) {
             parent::sendNotification($this->owner->getUserId(), [
                 'type' => '',

@@ -28,7 +28,7 @@ class ReviewUnderComment extends BaseCronNotificationHandler
             'data' => sprintf(
                 Yii::$app->params['notificationTemplates']['common.newUnderComment'],
                 $redirectLink
-            )
+            ),
         ], $this->params->user_id);
 
         if (!$comment->user->userInfo->hasAnswersToCommentsSub()) {

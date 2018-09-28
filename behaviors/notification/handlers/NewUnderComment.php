@@ -12,7 +12,7 @@ class NewUnderComment extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_INSERT => 'run'
+            ActiveRecord::EVENT_AFTER_INSERT => 'run',
         ];
     }
 
@@ -24,8 +24,10 @@ class NewUnderComment extends Behavior
 
         if ($this->owner->isRelatedWithNews()) {
             return $this->handleNewsUnderComment();
-        } else if ($this->owner->isRelatedWithReviews()) {
-            return $this->handleReviewUnderComment();
+        } else {
+            if ($this->owner->isRelatedWithReviews()) {
+                return $this->handleReviewUnderComment();
+            }
         }
 
         return false;

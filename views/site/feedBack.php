@@ -1,4 +1,5 @@
 <?php
+
 use \yii\widgets\Pjax;
 use \yii\widgets\ActiveForm;
 
@@ -13,69 +14,91 @@ Pjax::begin([
 ]);
 ?>
 
-<div class="margin-top60"></div>
-<div class="block-content">
+    <div class="margin-top60"></div>
+    <div class="block-content">
 
-    <div class="container-columns">
-        <div class="__first-column">
+        <div class="container-columns">
+            <div class="__first-column">
 
-            <h1 class="h1-c" style="margin-top: 35px">Обратная связь</h1>
+                <h1 class="h1-c" style="margin-top: 35px">Обратная связь</h1>
 
-            <div class="container-add-place container-feedback" style="margin-top: 30px">
-                <?php $form = ActiveForm::begin(['id' => 'form-feedback', 'enableClientScript' => false,'action'=>'/feedback','options'=>['pjax-container-feedback'=>'true']]) ?>
-                <div class="block-field-setting">
-                    <label class="label-field-setting">Тема обращения</label>
-                    <?= $form->field($feedBack, 'subject')
-                        ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                            'placeholder' => 'Введите тему', 'value' => $feedBack['subject']])
-                        ->label(false) ?>
-                </div>
-                <div class="block-field-setting">
-                    <label class="label-field-setting">Электронная почта</label>
-                    <?= $form->field($feedBack, 'email')
-                        ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                            'placeholder' => 'Введите email', 'value' => $feedBack['email']])
-                        ->label(false) ?>
-                </div>
-                <div class="block-field-setting">
-                    <label class="label-field-setting">Текст вашего сообщения</label>
-                    <?= $form->field($feedBack, 'message')
-                        ->textarea(['style' => 'margin-bottom: -10px;height: 44px;resize: none;', 'class' => 'input-field-setting',
-                            'placeholder' => 'Введите текст', 'value' => $feedBack['message']])
-                        ->label(false) ?>
-                </div>
-
-                <div class="block-field-setting js-mandatory-field" style="display: none">
-                    <label class="label-field-setting">Текст вашего сообщения</label>
-                    <?= $form->field($feedBack, 'additional')
-                        ->textarea(['style' => 'margin-bottom: -10px;height: 44px;resize: none;', 'class' => 'input-field-setting',
-                                    'placeholder' => 'Введите текст', 'value' => 'zlo'])
-                        ->label(false) ?>
-                </div>
-
-                <?=\yii\helpers\Html :: hiddenInput(\Yii :: $app->getRequest()->csrfParam, \Yii :: $app->getRequest()->getCsrfToken(), []);?>
-                <label>
-                    <div class="btn-send" style="z-index: 3;position: relative">
-                        <div class="large-wide-button"><p>Отправить</p></div>
+                <div class="container-add-place container-feedback" style="margin-top: 30px">
+                    <?php $form = ActiveForm::begin([
+                        'id' => 'form-feedback',
+                        'enableClientScript' => false,
+                        'action' => '/feedback',
+                        'options' => ['pjax-container-feedback' => 'true'],
+                    ]) ?>
+                    <div class="block-field-setting">
+                        <label class="label-field-setting">Тема обращения</label>
+                        <?= $form->field($feedBack, 'subject')
+                            ->textInput([
+                                'style' => 'margin-bottom: 15px;',
+                                'class' => 'input-field-setting',
+                                'placeholder' => 'Введите тему',
+                                'value' => $feedBack['subject'],
+                            ])
+                            ->label(false) ?>
                     </div>
-                    <input id="btn-form-feedback" type="submit" style="display: none;">
-                </label>
+                    <div class="block-field-setting">
+                        <label class="label-field-setting">Электронная почта</label>
+                        <?= $form->field($feedBack, 'email')
+                            ->textInput([
+                                'style' => 'margin-bottom: 15px;',
+                                'class' => 'input-field-setting',
+                                'placeholder' => 'Введите email',
+                                'value' => $feedBack['email'],
+                            ])
+                            ->label(false) ?>
+                    </div>
+                    <div class="block-field-setting">
+                        <label class="label-field-setting">Текст вашего сообщения</label>
+                        <?= $form->field($feedBack, 'message')
+                            ->textarea([
+                                'style' => 'margin-bottom: -10px;height: 44px;resize: none;',
+                                'class' => 'input-field-setting',
+                                'placeholder' => 'Введите текст',
+                                'value' => $feedBack['message'],
+                            ])
+                            ->label(false) ?>
+                    </div>
+
+                    <div class="block-field-setting js-mandatory-field" style="display: none">
+                        <label class="label-field-setting">Текст вашего сообщения</label>
+                        <?= $form->field($feedBack, 'additional')
+                            ->textarea([
+                                'style' => 'margin-bottom: -10px;height: 44px;resize: none;',
+                                'class' => 'input-field-setting',
+                                'placeholder' => 'Введите текст',
+                                'value' => 'zlo',
+                            ])
+                            ->label(false) ?>
+                    </div>
+
+                    <?= \yii\helpers\Html:: hiddenInput(\Yii:: $app->getRequest()->csrfParam,
+                        \Yii:: $app->getRequest()->getCsrfToken(), []); ?>
+                    <label>
+                        <div class="btn-send" style="z-index: 3;position: relative">
+                            <div class="large-wide-button"><p>Отправить</p></div>
+                        </div>
+                        <input id="btn-form-feedback" type="submit" style="display: none;">
+                    </label>
 
 
-                <?php ActiveForm::end()?>
+                    <?php ActiveForm::end() ?>
+                </div>
+                <div class="margin-top60"></div>
+
             </div>
-            <div class="margin-top60"></div>
+            <div class="__second-column">
+                <?= \app\components\rightMenu\RightMenuWidget::widget() ?>
+            </div>
+        </div>
 
-        </div>
-        <div class="__second-column">
-            <?=\app\components\rightMenu\RightMenuWidget::widget()?>
-        </div>
     </div>
 
-</div>
-
 <?php
-if(isset($toastMessage)) {
+if (isset($toastMessage)) {
     $js = <<<JS
     $(document).ready(function () {
         $().toastmessage('showToast', {

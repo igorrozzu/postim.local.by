@@ -33,8 +33,20 @@ class FavoritesNews extends \yii\db\ActiveRecord
         return [
             [['user_id', 'news_id'], 'required'],
             [['user_id', 'news_id'], 'integer'],
-            [['news_id'], 'exist', 'skipOnError' => true, 'targetClass' => News::className(), 'targetAttribute' => ['news_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['news_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => News::className(),
+                'targetAttribute' => ['news_id' => 'id'],
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 

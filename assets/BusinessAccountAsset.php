@@ -19,10 +19,10 @@ class BusinessAccountAsset extends AssetBundle
     public $baseUrl = '@web';
     public $js = [
         '/js/business-account.js',
-        '/js/libs/datepicker-ru.js'
+        '/js/libs/datepicker-ru.js',
     ];
     public $css = [
-        'css/jquery-ui-datepicker.css'
+        'css/jquery-ui-datepicker.css',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

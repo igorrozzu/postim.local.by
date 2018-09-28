@@ -20,7 +20,7 @@ use yii\helpers\Json;
  */
 class PostInfo extends \yii\db\ActiveRecord
 {
-	public $editors_users = [];
+    public $editors_users = [];
 
     /**
      * @inheritdoc
@@ -41,7 +41,13 @@ class PostInfo extends \yii\db\ActiveRecord
             [['post_id'], 'integer'],
             [['web_site'], 'string', 'max' => 500],
             [['post_id'], 'unique'],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
+            [
+                ['post_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Posts::className(),
+                'targetAttribute' => ['post_id' => 'id'],
+            ],
         ];
     }
 
@@ -67,12 +73,12 @@ class PostInfo extends \yii\db\ActiveRecord
 
             'SaveJson' => [
                 'class' => 'app\behaviors\SaveJson',
-                'in_attributes' => ['phones','social_networks','editors'],
+                'in_attributes' => ['phones', 'social_networks', 'editors'],
             ],
             'Purifier' => [
                 'class' => 'app\behaviors\Purifier',
                 'in_attribute' => 'article',
-            ]
+            ],
 
         ];
     }
@@ -89,25 +95,25 @@ class PostInfo extends \yii\db\ActiveRecord
     {
         parent::afterFind();
 
-        if($this->phones){
-            $this->phones=Json::decode($this->phones);
+        if ($this->phones) {
+            $this->phones = Json::decode($this->phones);
         }
-        if($this->editors){
-			$idsUsers = $this->editors = Json::decode($this->editors);
-			$users = [];
-			$usersFromDb = User::find()->where(['id'=>$idsUsers])->all();
+        if ($this->editors) {
+            $idsUsers = $this->editors = Json::decode($this->editors);
+            $users = [];
+            $usersFromDb = User::find()->where(['id' => $idsUsers])->all();
 
-			foreach ($idsUsers as $item){
-				foreach ($usersFromDb as $user){
-					if($item == $user->id){
-						array_push($users,$user);
-					}
-				}
-			}
-			$this->editors_users = $users;
-		}
-        if($this->social_networks){
-            $this->social_networks=Json::decode($this->social_networks);
+            foreach ($idsUsers as $item) {
+                foreach ($usersFromDb as $user) {
+                    if ($item == $user->id) {
+                        array_push($users, $user);
+                    }
+                }
+            }
+            $this->editors_users = $users;
+        }
+        if ($this->social_networks) {
+            $this->social_networks = Json::decode($this->social_networks);
         }
 
     }

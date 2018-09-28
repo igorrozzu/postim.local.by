@@ -27,8 +27,12 @@ class UploadPhotosByUrl extends Model
     public function rules()
     {
         return [
-            [['urlToImg'], 'match', 'pattern' => '/.+\.(jpg)|(png)|(gif)|(jpeg)$/',
-                'message' => 'Изображение должно быть в формате JPG, GIF или PNG.'],
+            [
+                ['urlToImg'],
+                'match',
+                'pattern' => '/.+\.(jpg)|(png)|(gif)|(jpeg)$/',
+                'message' => 'Изображение должно быть в формате JPG, GIF или PNG.',
+            ],
         ];
     }
 
@@ -45,14 +49,15 @@ class UploadPhotosByUrl extends Model
                 }
                 $rows = [];
 
-                $photoName = Yii::$app->security->generateRandomString(8).time().'.'.pathinfo($this->urlToImg,PATHINFO_EXTENSION);
+                $photoName = Yii::$app->security->generateRandomString(8) . time() . '.' . pathinfo($this->urlToImg,
+                        PATHINFO_EXTENSION);
 
                 $curl = new Curl();
 
                 $img = $curl->get($this->urlToImg);
-                file_put_contents($full_path.$photoName,$img);
+                file_put_contents($full_path . $photoName, $img);
 
-                if(file_exists($full_path.$photoName)){
+                if (file_exists($full_path . $photoName)) {
                     $rows[] = [
                         'link' => $this->directory . $photoName,
                     ];
@@ -71,6 +76,6 @@ class UploadPhotosByUrl extends Model
 
     public function getSavedFiles()
     {
-    	return $this->savedFiles;
-	}
+        return $this->savedFiles;
+    }
 }

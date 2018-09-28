@@ -25,7 +25,8 @@ class FeaturesController extends AdminDefaultController
      * @return string
      */
 
-    public function actionIndex(){
+    public function actionIndex()
+    {
 
 
         $searchModel = new FeaturesSearch();
@@ -37,21 +38,22 @@ class FeaturesController extends AdminDefaultController
             'selfParams' => [
                 'sort' => true,
                 'FeaturesSearch' => true,
-            ]
+            ],
         ]);
 
         $dataProvider = $searchModel->search(Yii::$app->request->get(), $pagination);
 
-        return $this->render('index',['dataProvider' => $dataProvider,'searchModel'=>$searchModel]);
+        return $this->render('index', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
 
 
     }
 
-    public function actionDelete(string $id){
+    public function actionDelete(string $id)
+    {
 
-        $features = Features::find()->where(['id'=>$id])->one();
+        $features = Features::find()->where(['id' => $id])->one();
 
-        if($features){
+        if ($features) {
             $features->delete();
         }
 
@@ -62,21 +64,22 @@ class FeaturesController extends AdminDefaultController
             'page' => Yii::$app->request->get('page', 1) - 1,
             'route' => '/admin/features/index',
             'selfParams' => [
-                'sort' => true
-            ]
+                'sort' => true,
+            ],
         ]);
 
         $dataProvider = $searchModel->search(Yii::$app->request->get(), $pagination);
 
-        return $this->render('index',['dataProvider' => $dataProvider,'searchModel'=>$searchModel]);
+        return $this->render('index', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
 
     }
 
-    public function actionChange(int $status, $id){
+    public function actionChange(int $status, $id)
+    {
 
-        $features = Features::find()->where(['id'=>$id])->one();
+        $features = Features::find()->where(['id' => $id])->one();
 
-        if($features){
+        if ($features) {
             $features->filter_status = $status;
             $features->setScenario(Features::$SCENARIO['main']);
             $features->update();
@@ -89,17 +92,18 @@ class FeaturesController extends AdminDefaultController
             'page' => Yii::$app->request->get('page', 1) - 1,
             'route' => '/admin/features/index',
             'selfParams' => [
-                'sort' => true
-            ]
+                'sort' => true,
+            ],
         ]);
 
         $dataProvider = $searchModel->search(Yii::$app->request->get(), $pagination);
 
-        return $this->render('index',['dataProvider' => $dataProvider,'searchModel'=>$searchModel]);
+        return $this->render('index', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
 
     }
 
-    public function actionBindCategoryAndFeatures(){
+    public function actionBindCategoryAndFeatures()
+    {
 
         $model = new CategoryFeatures();
 
@@ -108,16 +112,16 @@ class FeaturesController extends AdminDefaultController
         $params = [];
 
 
-        if(Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
 
-            if($model->load(Yii::$app->request->post())){
-                if($model->save()){
+            if ($model->load(Yii::$app->request->post())) {
+                if ($model->save()) {
                     $model = new CategoryFeatures();
                     $params['toastMessage'] = [
                         'type' => 'success',
                         'message' => 'Особенность добавлена в категорию',
                     ];
-                }else{
+                } else {
                     $nameAttribute = key($model->getErrors());
 
                     $params['toastMessage'] = [
@@ -127,14 +131,14 @@ class FeaturesController extends AdminDefaultController
                 }
             }
 
-            if($modelUnder->load(Yii::$app->request->post())){
-                if($modelUnder->save()){
+            if ($modelUnder->load(Yii::$app->request->post())) {
+                if ($modelUnder->save()) {
                     $modelUnder = new UnderCategoryFeatures();
                     $params['toastMessage'] = [
                         'type' => 'success',
                         'message' => 'Особенность добавлена в подкатегорию',
                     ];
-                }else{
+                } else {
                     $nameAttribute = key($modelUnder->getErrors());
 
                     $params['toastMessage'] = [
@@ -150,11 +154,12 @@ class FeaturesController extends AdminDefaultController
         $params['model'] = $model;
         $params['modelUnder'] = $modelUnder;
 
-        return $this->render('category_features',$params);
+        return $this->render('category_features', $params);
 
     }
 
-    public function actionAdd(){
+    public function actionAdd()
+    {
 
         $model = new Features();
         $model->setScenario(Features::$SCENARIO['main']);
@@ -169,13 +174,13 @@ class FeaturesController extends AdminDefaultController
 
         $params = [];
 
-        if(Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
 
-            if($model->load(Yii::$app->request->post())){
-                if($model->save()){
+            if ($model->load(Yii::$app->request->post())) {
+                if ($model->save()) {
                     $model = new Features([
                         'filter_status' => Features::$FILTER_STATUS['no'],
-                        'type' => Features::$TYPE['regular']
+                        'type' => Features::$TYPE['regular'],
                     ]);
                     $model->setScenario(Features::$SCENARIO['main']);
                     $params['toastMessage'] = [
@@ -185,11 +190,11 @@ class FeaturesController extends AdminDefaultController
                 }
             }
 
-            if($modelUnder->load(Yii::$app->request->post())){
-                if($modelUnder->save()){
+            if ($modelUnder->load(Yii::$app->request->post())) {
+                if ($modelUnder->save()) {
                     $modelUnder = new Features([
                         'filter_status' => Features::$FILTER_STATUS['no'],
-                        'type' => Features::$TYPE['regular']
+                        'type' => Features::$TYPE['regular'],
                     ]);
                     $modelUnder->setFormName('FeaturesUnder');
                     $modelUnder->setScenario(Features::$SCENARIO['under']);
@@ -205,34 +210,36 @@ class FeaturesController extends AdminDefaultController
         $params['model'] = $model;
         $params['modelUnder'] = $modelUnder;
 
-        return $this->render('add',$params);
+        return $this->render('add', $params);
 
     }
 
-    public function actionDeleteCategoryAndFeatures(){
+    public function actionDeleteCategoryAndFeatures()
+    {
 
-        $act = Yii::$app->request->get('act',false);
-        $features_id = Yii::$app->request->get('features_id',false);
-        $category_id = Yii::$app->request->get('category_id',false);
-        $under_category_id = Yii::$app->request->get('under_category_id',false);
+        $act = Yii::$app->request->get('act', false);
+        $features_id = Yii::$app->request->get('features_id', false);
+        $category_id = Yii::$app->request->get('category_id', false);
+        $under_category_id = Yii::$app->request->get('under_category_id', false);
 
-        if($act){
+        if ($act) {
 
-            if($category_id){
+            if ($category_id) {
                 $category = CategoryFeatures::find()
-                    ->where(['category_id'=>$category_id,'features_id' => $features_id])->one();
-                if($category){
+                    ->where(['category_id' => $category_id, 'features_id' => $features_id])->one();
+                if ($category) {
                     $category->delete();
                 }
-            }elseif ($under_category_id){
+            } elseif ($under_category_id) {
                 $under_category = UnderCategoryFeatures::find()
                     ->where([
-                        'under_category_id'=>$under_category_id,
-                        'features_id' => $features_id]
+                            'under_category_id' => $under_category_id,
+                            'features_id' => $features_id,
+                        ]
                     )
                     ->one();
 
-                if($under_category){
+                if ($under_category) {
                     $under_category->delete();
                 }
             }
@@ -248,8 +255,8 @@ class FeaturesController extends AdminDefaultController
             'route' => '/admin/features/delete-category-and-features',
             'selfParams' => [
                 'CategoryFeaturesSearch' => true,
-                'sort' => true
-            ]
+                'sort' => true,
+            ],
         ]);
 
         $dataProvider = $searchModel->search(Yii::$app->request->get(), $pagination);
@@ -263,17 +270,17 @@ class FeaturesController extends AdminDefaultController
             'route' => '/admin/features/delete-category-and-features',
             'selfParams' => [
                 'UnderCategoryFeaturesSearch' => true,
-                'dp-1-sort' => true
-            ]
+                'dp-1-sort' => true,
+            ],
         ]);
 
         $dataProviderUnder = $searchModelUnder->search(Yii::$app->request->get(), $pagination2);
 
-        return $this->render('delete_category_features.php',[
+        return $this->render('delete_category_features.php', [
             'dataProvider' => $dataProvider,
             'dataProviderUnder' => $dataProviderUnder,
-            'searchModel'=>$searchModel,
-            'searchModelUnder'=>$searchModelUnder
+            'searchModel' => $searchModel,
+            'searchModelUnder' => $searchModelUnder,
         ]);
 
 

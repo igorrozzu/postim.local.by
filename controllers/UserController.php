@@ -42,7 +42,7 @@ class UserController extends MainController
             'pageSize' => 5,
             'page' => 0,
             'route' => Url::to(['user/reviews']),
-            'selfParams'=> [
+            'selfParams' => [
                 'id' => true,
             ],
         ]);
@@ -67,26 +67,26 @@ class UserController extends MainController
             'initPhotoSliderParams' => [
                 'photoId' => $photo_id,
                 'reviewId' => $review_id,
-            ]
+            ],
         ]);
     }
 
     public function actionSettings()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             throw new NotFoundHttpException('Cтраница не найдена');
         }
         $user = User::find()
             ->innerJoinWith('userInfo')
-            ->where([User::tableName().'.id' => Yii::$app->user->id])
+            ->where([User::tableName() . '.id' => Yii::$app->user->id])
             ->one();
         $model = new UserSettings();
         $model->setUser($user);
         $toastMessage = null;
 
-        if($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
             $validation = $model->validate();
-            if($model->changePassword() && $validation) {
+            if ($model->changePassword() && $validation) {
                 $model->saveSettings();
                 $model->resetPasswordFields();
                 $toastMessage = [
@@ -102,17 +102,17 @@ class UserController extends MainController
         }
 
         $socialBindings = $user->socialBindings;
-        if(!$cities = Yii::$app->cache->get('cities_for_user_settings_form')){
+        if (!$cities = Yii::$app->cache->get('cities_for_user_settings_form')) {
             $cities = City::find()
                 ->select(['id', 'name'])
                 ->orderBy(['name' => SORT_ASC])
                 ->asArray()
                 ->all();
-            Yii::$app->cache->add('cities_for_user_settings_form', $cities,3600);
+            Yii::$app->cache->add('cities_for_user_settings_form', $cities, 3600);
         }
         $userCityName = null;
-        if(isset($model->cityId) || $user->isCityDefined()) {
-            $userCityName =  City::removeCityById($cities, $model->cityId ?? $user->city_id);
+        if (isset($model->cityId) || $user->isCityDefined()) {
+            $userCityName = City::removeCityById($cities, $model->cityId ?? $user->city_id);
         }
         return $this->render('settings-form', [
             'model' => $model,
@@ -132,7 +132,7 @@ class UserController extends MainController
         $model->scenario = UserSettings::SCENARIO_EMAIL_RESET;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if($tempData = $model->createTempEmailData()) {
+            if ($tempData = $model->createTempEmailData()) {
                 Yii::$app->mailer->compose(['html' => 'confirmEmail'], ['data' => $tempData])
                     ->setFrom([Yii::$app->params['mail.supportEmail'] => 'Postim.by'])
                     ->setTo($tempData->email)
@@ -149,11 +149,11 @@ class UserController extends MainController
 
     public function actionUploadPhoto()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             throw new NotFoundHttpException('Cтраница не найдена');
         }
 
-        if(Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             $model = new UploadUserPhoto();
             $model->imageFile = UploadedFile::getInstanceByName('user-photo');
             $user = Yii::$app->user->identity;
@@ -167,7 +167,7 @@ class UserController extends MainController
                 return $this->asJson([
                     'success' => false,
                     'message' => 'Изображение должно быть не меньше, чем 300 x 300 ' .
-                        'пикселей в формате JPG, GIF или PNG. Макс. размер файла: 5 МБ.'
+                        'пикселей в формате JPG, GIF или PNG. Макс. размер файла: 5 МБ.',
                 ]);
             }
         }
@@ -177,18 +177,18 @@ class UserController extends MainController
     {
         $tempData = TempEmail::findOne(['user_id' => $id, 'hash' => $token]);
 
-        if(Yii::$app->user->isGuest) {
-            if(isset($tempData)) {
+        if (Yii::$app->user->isGuest) {
+            if (isset($tempData)) {
                 $tempData->delete();
             }
         } else {
-            if(isset($tempData)) {
+            if (isset($tempData)) {
                 $user = Yii::$app->user->identity;
-                if($user->changeEmail($tempData->email)) {
+                if ($user->changeEmail($tempData->email)) {
                     $tempData->delete();
                     Yii::$app->session->setFlash('toastMessage', $toastMessage = [
                         'type' => 'success',
-                        'message'=> 'Изменения сохранены',
+                        'message' => 'Изменения сохранены',
                     ]);
                 }
                 return $this->redirect(['user/settings']);
@@ -200,13 +200,13 @@ class UserController extends MainController
 
     public function actionReviews()
     {
-        if(Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax) {
             $searchModel = new ReviewsSearch();
             $_GET['id'] = Yii::$app->request->get('id', Yii::$app->user->id);
             $pagination = new Pagination([
                 'pageSize' => Yii::$app->request->get('per-page', 5),
                 'page' => Yii::$app->request->get('page', 1) - 1,
-                'selfParams'=> [
+                'selfParams' => [
                     'id' => true,
                 ],
             ]);
@@ -217,16 +217,16 @@ class UserController extends MainController
                 $loadTime
             );
 
-            if(!Yii::$app->request->get('_pjax',false) ){
+            if (!Yii::$app->request->get('_pjax', false)) {
                 return CardsReviewsWidget::widget([
                     'dataProvider' => $dataProvider,
                     'settings' => [
                         'show-more-btn' => true,
                         'replace-container-id' => 'feed-reviews',
                         'load-time' => $loadTime,
-                    ]
+                    ],
                 ]);
-            }else{
+            } else {
                 $user = User::find()
                     ->with(['userInfo'])
                     ->where(['tbl_users.id' => Yii::$app->request->get('id')])
@@ -242,18 +242,18 @@ class UserController extends MainController
 
     public function actionPlaces()
     {
-        if(Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax) {
             $searchModel = new PostsSearch();
-            if(Yii::$app->request->get('moderation', null) === null ? false : true){
-				$searchModel = new PostsModerationSearch();
-			}
+            if (Yii::$app->request->get('moderation', null) === null ? false : true) {
+                $searchModel = new PostsModerationSearch();
+            }
             $pagination = new Pagination([
                 'pageSize' => Yii::$app->request->get('per-page', 8),
                 'page' => Yii::$app->request->get('page', 1) - 1,
-				'selfParams'=>[
-					'id'=>true,
-					'moderation'=>true
-				]
+                'selfParams' => [
+                    'id' => true,
+                    'moderation' => true,
+                ],
             ]);
             $loadTime = Yii::$app->request->get('loadTime', time());
             $dataProvider = $searchModel->search(
@@ -263,17 +263,17 @@ class UserController extends MainController
                 $loadTime
             );
 
-            if(!Yii::$app->request->get('_pjax',false) ){
-                return  CardsPlaceWidget::widget([
+            if (!Yii::$app->request->get('_pjax', false)) {
+                return CardsPlaceWidget::widget([
                     'dataprovider' => $dataProvider,
                     'settings' => [
                         'show-more-btn' => true,
                         'replace-container-id' => 'feed-posts',
                         'load-time' => $loadTime,
-						'moderation' => Yii::$app->request->get('moderation', null) === null ? false : true,
-                    ]
+                        'moderation' => Yii::$app->request->get('moderation', null) === null ? false : true,
+                    ],
                 ]);
-            }else{
+            } else {
                 $user = User::find()
                     ->with(['userInfo'])
                     ->where(['tbl_users.id' => Yii::$app->request->get('id')])
@@ -282,7 +282,7 @@ class UserController extends MainController
                     'user' => $user,
                     'dataProvider' => $dataProvider,
                     'loadTime' => $loadTime,
-                    'moderation' => Yii::$app->request->get('moderation', null)
+                    'moderation' => Yii::$app->request->get('moderation', null),
                 ]);
             }
         }
@@ -299,9 +299,9 @@ class UserController extends MainController
         $pagination = new Pagination([
             'pageSize' => $request->get('per-page', 8),
             'page' => $request->get('page', 1) - 1,
-            'selfParams'=> [
+            'selfParams' => [
                 'status' => true,
-                'type' => true
+                'type' => true,
             ],
         ]);
         $loadTime = $request->get('loadTime', time());
@@ -313,7 +313,7 @@ class UserController extends MainController
             $loadTime
         );
 
-        if($request->isAjax && !$request->get('_pjax',false)) {
+        if ($request->isAjax && !$request->get('_pjax', false)) {
             return CardsPromoWidget::widget([
                 'dataProvider' => $dataProvider,
                 'settings' => [
@@ -323,21 +323,21 @@ class UserController extends MainController
                     'show-more-btn-text' => 'Показать больше промокодов',
                     'not-found-text' => 'Промокодов не найдено.',
                     'status' => $request->queryParams['status'],
-                ]
+                ],
             ]);
         } else {
             $breadcrumbParams = $this->getParamsForBreadcrumb();
             $breadcrumbParams[] = [
                 'name' => 'Мои промокоды',
                 'url_name' => Url::to(['user/get-promocodes']),
-                'pjax' => 'class="main-pjax a"'
+                'pjax' => 'class="main-pjax a"',
             ];
 
             return $this->render('feed-promo', [
                 'breadcrumbParams' => $breadcrumbParams,
                 'dataProvider' => $dataProvider,
                 'loadTime' => $loadTime,
-                'status' => $request->queryParams['status']
+                'status' => $request->queryParams['status'],
             ]);
         }
     }
@@ -349,9 +349,9 @@ class UserController extends MainController
         $pagination = new Pagination([
             'pageSize' => $request->get('per-page', 2),
             'page' => $request->get('page', 1) - 1,
-            'selfParams'=> [
+            'selfParams' => [
                 'status' => true,
-                'type' => true
+                'type' => true,
             ],
         ]);
         $loadTime = $request->get('loadTime', time());
@@ -363,7 +363,7 @@ class UserController extends MainController
             $loadTime
         );
 
-        if($request->isAjax && !$request->get('_pjax',false)) {
+        if ($request->isAjax && !$request->get('_pjax', false)) {
             return CardsPromoWidget::widget([
                 'dataProvider' => $dataProvider,
                 'settings' => [
@@ -372,13 +372,13 @@ class UserController extends MainController
                     'load-time' => $loadTime,
                     'show-more-btn-text' => 'Показать больше сертификатов',
                     'not-found-text' => 'Вы пока не купили ни одного сертификата.',
-                ]
+                ],
             ]);
         } else {
             return $this->render('feed-certificate', [
                 'dataProvider' => $dataProvider,
                 'loadTime' => $loadTime,
-                'status' => $request->queryParams['status']
+                'status' => $request->queryParams['status'],
             ]);
         }
     }
@@ -396,7 +396,7 @@ class UserController extends MainController
         $pagination = new Pagination([
             'pageSize' => $request->get('per-page', 6),
             'page' => $request->get('page', 1) - 1,
-            'selfParams'=> [
+            'selfParams' => [
                 'favorite' => true,
                 'favorite_id' => true,
             ],
@@ -413,12 +413,12 @@ class UserController extends MainController
         $breadcrumbParams[] = [
             'name' => 'Избранное',
             'url_name' => Yii::$app->request->getUrl(),
-            'pjax' => 'class="main-pjax a"'
+            'pjax' => 'class="main-pjax a"',
         ];
 
         $widgetClassName = $helper->getWidgetClassName();
 
-        if ($request->isAjax && !$request->get('_pjax',false)) {
+        if ($request->isAjax && !$request->get('_pjax', false)) {
             return $widgetClassName::widget([
                 'dataprovider' => $dataProvider,
                 'settings' => [
@@ -434,29 +434,29 @@ class UserController extends MainController
                 'feed' => $_GET['favorite'],
                 'widgetClassName' => $widgetClassName,
                 'widgetWrapAttributes' => $helper->getWidgetWrapAttributes(),
-                'breadcrumbParams' => $breadcrumbParams
+                'breadcrumbParams' => $breadcrumbParams,
             ]);
         }
     }
 
     private function getParamsForBreadcrumb()
     {
-        $breadcrumbParams=[];
+        $breadcrumbParams = [];
 
         $currentUrl = Yii::$app->getRequest()->getHostInfo();
         $breadcrumbParams[] = [
             'name' => ucfirst(Yii::$app->getRequest()->serverName),
             'url_name' => $currentUrl,
-            'pjax' => 'class="main-header-pjax a"'
+            'pjax' => 'class="main-header-pjax a"',
         ];
 
-        if($city = Yii::$app->city->getSelected_city()){
-            if($city['url_name']){
-                $currentUrl=$currentUrl.'/'.$city['url_name'];
-                $breadcrumbParams[]=[
-                    'name'=>$city['name'],
-                    'url_name'=>$currentUrl,
-                    'pjax'=>'class="main-pjax a"'
+        if ($city = Yii::$app->city->getSelected_city()) {
+            if ($city['url_name']) {
+                $currentUrl = $currentUrl . '/' . $city['url_name'];
+                $breadcrumbParams[] = [
+                    'name' => $city['name'],
+                    'url_name' => $currentUrl,
+                    'pjax' => 'class="main-pjax a"',
                 ];
             }
         }
@@ -475,7 +475,7 @@ class UserController extends MainController
         $pagination = new Pagination([
             'pageSize' => $request->get('per-page', 2),
             'page' => $request->get('page', 1) - 1,
-            'selfParams'=> [
+            'selfParams' => [
                 'status' => true,
                 'type' => true,
                 'order_time' => true,
@@ -491,7 +491,7 @@ class UserController extends MainController
             $loadTime
         );
 
-        if($request->isAjax && !$request->get('_pjax',false)) {
+        if ($request->isAjax && !$request->get('_pjax', false)) {
             return OrderStatisticsWidget::widget([
                 'dataProvider' => $dataProvider,
                 'settings' => [
@@ -501,12 +501,12 @@ class UserController extends MainController
                     'view-name' => $request->get('only_rows', false) ? 'rows' : 'index',
                     'column-status-view' => 'certificate',
                     'time-range' => $searchModel->getTimeRange(),
-                ]
+                ],
             ]);
         } else {
             $allOrderCount = DiscountOrder::getAllCount(DiscountOrder::TYPE['certificate']);
             $activeOrderCount = DiscountOrder::getActiveCount(DiscountOrder::TYPE['certificate'],
-                                DiscountOrder::STATUS['active']);
+                DiscountOrder::STATUS['active']);
             return $this->render('statistics-certificate', [
                 'dataProvider' => $dataProvider,
                 'loadTime' => $loadTime,
@@ -514,10 +514,10 @@ class UserController extends MainController
                 'order_time' => $request->queryParams['order_time'] ?? null,
                 'timeRange' => $searchModel->getTimeRange(),
                 'countItems' => [
-                    'all'=> $allOrderCount,
+                    'all' => $allOrderCount,
                     'active' => $activeOrderCount,
                     'inactive' => $allOrderCount - $activeOrderCount,
-                ]
+                ],
             ]);
         }
     }
@@ -527,12 +527,12 @@ class UserController extends MainController
         if (Yii::$app->request->isAjax) {
             $request = Yii::$app->request;
             $searchModel = new GallerySearch();
-            $perPage = (int) $request->get('per-page', 16);
+            $perPage = (int)$request->get('per-page', 16);
 
             $pagination = new Pagination([
                 'pageSize' => $perPage,
                 'page' => $request->get('page', 1) - 1,
-                'selfParams'=> [
+                'selfParams' => [
                     'type' => true,
                     'userId' => true,
                     'photo_id' => true,
@@ -549,7 +549,7 @@ class UserController extends MainController
 
             if (isset($request->queryParams['photo_id'])) {
                 $count = $searchModel->getProfilePreviewsPhotoCount($loadTime);
-                $page = (int) ($count / 16);
+                $page = (int)($count / 16);
                 $dataProvider->pagination->pageSize = ($page === 0) ? 16 : ($page + 1) * 16;
                 $response->data = $dataProvider->getModels();
                 $dataProvider->pagination->page = $page;
@@ -579,7 +579,7 @@ class UserController extends MainController
             $order = DiscountOrder::find()
                 ->where([
                     'user_id' => Yii::$app->user->getId(),
-                    'id' => $id
+                    'id' => $id,
                 ])->one();
 
             if (!isset($order)) {

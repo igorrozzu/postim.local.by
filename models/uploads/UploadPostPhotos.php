@@ -38,7 +38,7 @@ class UploadPostPhotos extends Model
             [['files'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif', 'maxFiles' => 10],
             [['files'], 'file', 'maxSize' => 15728640, 'maxFiles' => 10],
             ['postId', 'integer'],
-            ['userStatus', 'safe']
+            ['userStatus', 'safe'],
         ];
     }
 
@@ -50,11 +50,11 @@ class UploadPostPhotos extends Model
                 if (!is_dir($dir)) {
                     FileHelper::createDirectory($dir);
                 }
-                $headers = ['link', 'post_id', 'user_id', 'user_status','status', 'date'];
+                $headers = ['link', 'post_id', 'user_id', 'user_status', 'status', 'date'];
                 $rows = [];
                 $user = Yii::$app->user->identity;
                 foreach ($this->files as $file) {
-                    $photoName = Yii::$app->security->generateRandomString(8).time().'.jpg';
+                    $photoName = Yii::$app->security->generateRandomString(8) . time() . '.jpg';
 
                     if ($file->saveAs($dir . $photoName)) {
 

@@ -45,15 +45,17 @@ class Geocoding extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function buildQuery(string $cityName){
+    public static function buildQuery(string $cityName)
+    {
 
-        $query = 'Беларусь+'.str_replace(' ','+',$cityName);
+        $query = 'Беларусь+' . str_replace(' ', '+', $cityName);
 
         return $query;
 
     }
 
-    public function getBounds(){
+    public function getBounds()
+    {
 
         $geo = Json::decode($this->data);
 

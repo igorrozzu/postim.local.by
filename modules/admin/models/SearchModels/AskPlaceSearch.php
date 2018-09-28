@@ -47,7 +47,7 @@ class AskPlaceSearch extends Comments
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);
@@ -58,7 +58,7 @@ class AskPlaceSearch extends Comments
 
         $query->select('tbl_comments.*, COUNT(under_comments.id) as number_under_comments');
         $query->with(['user', 'post', 'underComments']);
-        $query->leftJoin('tbl_comments AS under_comments','under_comments.main_comment_id = tbl_comments.id');
+        $query->leftJoin('tbl_comments AS under_comments', 'under_comments.main_comment_id = tbl_comments.id');
         $query->groupBy('tbl_comments.id');
         $query->addOrderBy(['number_under_comments' => SORT_ASC, 'date' => SORT_DESC]);
         $query->where(['tbl_comments.type_entity' => Comments::TYPE['posts'], 'tbl_comments.main_comment_id' => null]);
@@ -66,21 +66,24 @@ class AskPlaceSearch extends Comments
         return $dataProvider;
     }
 
-    public function getHrefToPost(){
+    public function getHrefToPost()
+    {
 
-        if($this->post){
+        if ($this->post) {
             return $this->post->getUrl();
         }
 
     }
 
-    public function getPost(){
+    public function getPost()
+    {
         return $this->hasOne(Posts::className(), ['id' => 'entity_id']);
     }
 
-    public function hasAnswer(){
+    public function hasAnswer()
+    {
 
-        if($this->underComments){
+        if ($this->underComments) {
             return true;
         }
 

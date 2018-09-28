@@ -12,7 +12,8 @@ namespace app\behaviors;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 
-class RestrictionActions extends Behavior{
+class RestrictionActions extends Behavior
+{
 
     const EVENT_CHECK_LIMIT = 'checkLimit';
 
@@ -24,21 +25,22 @@ class RestrictionActions extends Behavior{
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_VALIDATE => 'checkLimit'
+            ActiveRecord::EVENT_AFTER_VALIDATE => 'checkLimit',
         ];
     }
 
-    public function checkLimit(){
+    public function checkLimit()
+    {
 
-        $key = [\Yii::$app->user->getId(),$this->type,'action_limit'];
+        $key = [\Yii::$app->user->getId(), $this->type, 'action_limit'];
 
-        if($this->owner->isLimit && !$this->owner->getErrors() && !\Yii::$app->user->isModerator()){
+        if ($this->owner->isLimit && !$this->owner->getErrors() && !\Yii::$app->user->isModerator()) {
 
             if ($recordsActive = \Yii::$app->cache->get($key)) {
 
                 if ($recordsActive['value'] > $this->limitPerMinute) {
 
-                    if($recordsActive['is_ban']??true){
+                    if ($recordsActive['is_ban'] ?? true) {
                         $recordsActive['value'] = $this->limitPerMinute + 4;
                         $recordsActive['timeStart'] = time();
                         $recordsActive['is_ban'] = false;
@@ -70,7 +72,6 @@ class RestrictionActions extends Behavior{
 
 
         }
-
 
 
     }

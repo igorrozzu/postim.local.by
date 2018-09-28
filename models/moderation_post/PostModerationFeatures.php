@@ -33,10 +33,22 @@ class PostModerationFeatures extends \yii\db\ActiveRecord
         return [
             [['post_id', 'features_id'], 'required'],
             [['post_id'], 'integer'],
-            [['value'],'double'],
+            [['value'], 'double'],
             [['features_id'], 'string', 'max' => 30],
-            [['features_id'], 'exist', 'skipOnError' => true, 'targetClass' => Features::className(), 'targetAttribute' => ['features_id' => 'id']],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => PostsModeration::className(), 'targetAttribute' => ['post_id' => 'id']],
+            [
+                ['features_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Features::className(),
+                'targetAttribute' => ['features_id' => 'id'],
+            ],
+            [
+                ['post_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => PostsModeration::className(),
+                'targetAttribute' => ['post_id' => 'id'],
+            ],
         ];
     }
 
@@ -67,8 +79,10 @@ class PostModerationFeatures extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PostsModeration::className(), ['id' => 'post_id']);
     }
-    public function getUnderPostFeatures(){
+
+    public function getUnderPostFeatures()
+    {
         return $this->hasMany(self::className(), ['features_main_id' => 'features_id'])
-            ->where(['post_id'=>$this->post_id]);
+            ->where(['post_id' => $this->post_id]);
     }
 }

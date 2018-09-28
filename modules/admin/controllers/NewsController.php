@@ -24,24 +24,25 @@ class NewsController extends AdminDefaultController
 
         $params = [
             'news' => $news,
-            'cities' => $cities
+            'cities' => $cities,
         ];
 
-        return $this->render('index',$params);
+        return $this->render('index', $params);
     }
 
-    public function actionSave(){
+    public function actionSave()
+    {
 
         $news = new News();
 
-        if(\Yii::$app->request->isPost && $news->load(\Yii::$app->request->post())){
-            if($news->id){
-                $news = News::find()->where(['id'=>$news->id])->one();
+        if (\Yii::$app->request->isPost && $news->load(\Yii::$app->request->post())) {
+            if ($news->id) {
+                $news = News::find()->where(['id' => $news->id])->one();
                 $news->load(\Yii::$app->request->post());
             }
-            if($news->validate() && $news->save()){
-                $this->redirect('/'.$news->url_name.'-n'.$news->id);
-            }else{
+            if ($news->validate() && $news->save()) {
+                $this->redirect('/' . $news->url_name . '-n' . $news->id);
+            } else {
                 $cities = City::find()->select('id, name')
                     ->orderBy('name')->asArray()->all();
 
@@ -53,18 +54,19 @@ class NewsController extends AdminDefaultController
                 $params = [
                     'news' => $news,
                     'cities' => $cities,
-                    'toastMessage' => $toastMessage
+                    'toastMessage' => $toastMessage,
                 ];
 
-                return $this->render('edit_news',$params);
+                return $this->render('edit_news', $params);
             }
         }
 
     }
 
-    public function actionEditNews(int $id){
+    public function actionEditNews(int $id)
+    {
 
-        $news = News::find()->where(['id'=>$id])->one();
+        $news = News::find()->where(['id' => $id])->one();
 
         $cities = City::find()->select('id, name')
             ->orderBy('name')->asArray()->all();
@@ -74,6 +76,6 @@ class NewsController extends AdminDefaultController
             'cities' => $cities,
         ];
 
-        return $this->render('edit_news',$params);
+        return $this->render('edit_news', $params);
     }
 }

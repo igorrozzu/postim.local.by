@@ -1,4 +1,5 @@
 <?php
+
 use app\components\breadCrumb\BreadCrumb;
 use \app\components\Helper;
 use yii\helpers\Url;
@@ -18,7 +19,7 @@ Pjax::begin([
 ])
 ?>
 <div class="block-content" style="margin-top: 80px">
-    <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
+    <?= BreadCrumb::widget(['breadcrumbParams' => $breadcrumbParams]) ?>
     <h1 class="h1-v">Подключить премиум аккаунт</h1>
 
 </div>
@@ -30,27 +31,27 @@ Pjax::begin([
                     <label class="label-field-setting">Название</label>
                     <div class="selected-field">
                         <div id="select-place-value" data-value="" class="select-value">
-                            <?php if ($hasOnePost):?>
-                                <?=$posts[0]->data . ' (' . $posts[0]->address . ')'?>
-                            <?php else:?>
+                            <?php if ($hasOnePost): ?>
+                                <?= $posts[0]->data . ' (' . $posts[0]->address . ')' ?>
+                            <?php else: ?>
                                 <span class="placeholder-select">Выберите название</span>
-                            <?php endif?>
+                            <?php endif ?>
                         </div>
                         <div data-open-id="select-place" class="open-select-field"></div>
                     </div>
                     <div id="select-place" class="container-scroll auto-height">
                         <div class="container-option-select option-active">
-                            <?php if (!$hasOnePost):?>
-                                <?php foreach ($posts as $post):?>
-                                    <div data-value="<?=$post->id?>" class="option-select-field">
-                                        <?=$post->data . ' (' . $post->address . ')'?>
+                            <?php if (!$hasOnePost): ?>
+                                <?php foreach ($posts as $post): ?>
+                                    <div data-value="<?= $post->id ?>" class="option-select-field">
+                                        <?= $post->data . ' (' . $post->address . ')' ?>
                                     </div>
-                                <?php endforeach?>
-                            <?php endif?>
+                                <?php endforeach ?>
+                            <?php endif ?>
                         </div>
                     </div>
                     <input type="hidden" id="select-place-hidden" name="premium-account[postId]"
-                           value="<?= $hasOnePost ? $posts[0]->id : ''?>">
+                           value="<?= $hasOnePost ? $posts[0]->id : '' ?>">
                 </div>
 
 
@@ -98,24 +99,24 @@ Pjax::begin([
 </div>
 
 <script>
-    $(document).ready(function () {
+	$(document).ready(function () {
 
-        <?php if (isset($errors[0])):?>
-            $().toastmessage('showToast', {
-                text: '<?=$errors[0]?>',
-                stayTime: 5000,
-                type: 'error'
-            });
-        <?php endif;?>
+      <?php if (isset($errors[0])):?>
+		$().toastmessage('showToast', {
+			text: '<?=$errors[0]?>',
+			stayTime: 5000,
+			type: 'error'
+		});
+      <?php endif;?>
 
-        <?php if ($message = Yii::$app->session->getFlash('message')):?>
-            $().toastmessage('showToast', {
-                text: '<?=$message['text']?>',
-                stayTime: 8000,
-                type: '<?=$message['type']?>'
-            });
-        <?php endif;?>
-    });
+      <?php if ($message = Yii::$app->session->getFlash('message')):?>
+		$().toastmessage('showToast', {
+			text: '<?=$message['text']?>',
+			stayTime: 8000,
+			type: '<?=$message['type']?>'
+		});
+      <?php endif;?>
+	});
 </script>
 <?php
 Pjax::end();

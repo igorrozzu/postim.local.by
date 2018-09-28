@@ -17,6 +17,7 @@ class GallerySearch extends Gallery
     public $postId;
     public $userId;
     public $photo_id;
+
     /**
      * @inheritdoc
      */
@@ -55,7 +56,7 @@ class GallerySearch extends Gallery
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params, '');
@@ -64,14 +65,16 @@ class GallerySearch extends Gallery
         }
 
         $query->andWhere(['post_id' => $this->postId]);
-        if($this->type === 'user') {
+        if ($this->type === 'user') {
             $query->andWhere(['user_status' => Gallery::USER_STATUS['user']]);
         }
 
-        if($params['hasTitle']??false){
-            $query->with(['post'=>function ($query) {
-                $query->select(['data','id']);
-            }]);
+        if ($params['hasTitle'] ?? false) {
+            $query->with([
+                'post' => function ($query) {
+                    $query->select(['data', 'id']);
+                },
+            ]);
         }
 
         return $dataProvider;
@@ -88,12 +91,12 @@ class GallerySearch extends Gallery
     {
         $query = Gallery::find()
             ->innerJoinWith('post')
-            ->where(['<=', Gallery::tableName().'.date', $loadTime])
+            ->where(['<=', Gallery::tableName() . '.date', $loadTime])
             ->orderBy(['id' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params, '');
@@ -101,7 +104,7 @@ class GallerySearch extends Gallery
             return $dataProvider;
         }
 
-		$query->andWhere(['tbl_gallery.user_id' => $this->userId,'tbl_posts.status'=>1]);
+        $query->andWhere(['tbl_gallery.user_id' => $this->userId, 'tbl_posts.status' => 1]);
         return $dataProvider;
     }
 
@@ -118,9 +121,10 @@ class GallerySearch extends Gallery
         $query = Gallery::find()
             ->where(['<=', 'date', $loadTime])
             ->andWhere(['post_id' => $this->postId])
-            ->andWhere(['or',
-                ['>=', 'id', (int) $photoId],
-                ['>', 'user_status', (int) $userStatus]
+            ->andWhere([
+                'or',
+                ['>=', 'id', (int)$photoId],
+                ['>', 'user_status', (int)$userStatus],
             ]);
 
         return $query->count();
@@ -130,8 +134,8 @@ class GallerySearch extends Gallery
     {
         $query = Gallery::find()
             ->where(['<=', 'date', $loadTime])
-            ->andWhere([Gallery::tableName().'.user_id' => $this->userId])
-            ->andWhere(['>=', 'id', (int) $this->photo_id]);
+            ->andWhere([Gallery::tableName() . '.user_id' => $this->userId])
+            ->andWhere(['>=', 'id', (int)$this->photo_id]);
 
         return $query->count();
     }

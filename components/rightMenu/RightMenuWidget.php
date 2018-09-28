@@ -12,7 +12,6 @@ use app\models\OtherPage;
 use yii\base\Widget;
 
 
-
 class RightMenuWidget extends Widget
 {
     public $list = [];
@@ -22,16 +21,16 @@ class RightMenuWidget extends Widget
         parent::init();
 
         $this->list = OtherPage::find()
-            ->where(['status'=>OtherPage::$STATUS['showMenu']])
-            ->orderBy(['id'=>SORT_ASC])
+            ->where(['status' => OtherPage::$STATUS['showMenu']])
+            ->orderBy(['id' => SORT_ASC])
             ->all();
 
     }
 
     public function run()
     {
-        echo $this->render('index',[
-            'list'=>$this->list,
+        echo $this->render('index', [
+            'list' => $this->list,
         ]);
     }
 }

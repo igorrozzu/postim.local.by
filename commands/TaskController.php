@@ -6,6 +6,7 @@
  */
 
 namespace app\commands;
+
 use app\behaviors\notification\handlers\NotificationHandler;
 use app\commands\cron\siteMap\models\SiteMap;
 use app\commands\cron\taskFactory\TaskFactory;
@@ -89,7 +90,8 @@ class TaskController extends Controller
             ->where(['>=', User::tableName() . '.last_visit', $dayBefore]);
 
         $template = Yii::$app->params['notificationTemplates']['reward.everyday'];
-        $message = sprintf($template['text'],Yii::$app->params['site.hostName'].'/bonus', $template['exp'], $template['money']);
+        $message = sprintf($template['text'], Yii::$app->params['site.hostName'] . '/bonus', $template['exp'],
+            $template['money']);
 
         $userIds = new \stdClass();
         $transaction = Yii::$app->db->beginTransaction();
@@ -145,7 +147,7 @@ class TaskController extends Controller
             }
 
             $transaction->commit();
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             $transaction->rollBack();
 
             return false;
@@ -154,31 +156,32 @@ class TaskController extends Controller
         return true;
     }
 
-    public function actionCreatingSiteMap(){
+    public function actionCreatingSiteMap()
+    {
 
         $cities = City::find()->all();
         $siteMapMain = new SiteMap();
         $host = Yii::$app->params['site.hostName'];
 
-        foreach ($cities as $city){
+        foreach ($cities as $city) {
 
             $siteMapCity = new SiteMap();
 
             $isIssetSection = false;
 
-            $pathToCitySiteMap = '/sitemaps/sitemap_city_'.$city['id'].'.xml';
+            $pathToCitySiteMap = '/sitemaps/sitemap_city_' . $city['id'] . '.xml';
 
-            if (!is_dir(Yii::getAlias('@webroot').'/sitemaps')) {
-                FileHelper::createDirectory(Yii::getAlias('@webroot').'/sitemaps');
+            if (!is_dir(Yii::getAlias('@webroot') . '/sitemaps')) {
+                FileHelper::createDirectory(Yii::getAlias('@webroot') . '/sitemaps');
             }
 
             $newDate = 0;
 
             $underCategoryCityQuery = PostUnderCategory::find()
                 ->select('tbl_under_category.url_name, tbl_category.url_name as category_url_name, tbl_posts.date')
-                ->innerJoinWith(['post.city','underCategory.category'])
-                ->where(['tbl_city.url_name'=>$city->url_name])
-                ->orderBy(['tbl_posts.date'=>SORT_DESC])
+                ->innerJoinWith(['post.city', 'underCategory.category'])
+                ->where(['tbl_city.url_name' => $city->url_name])
+                ->orderBy(['tbl_posts.date' => SORT_DESC])
                 ->prepare(Yii::$app->db->queryBuilder)
                 ->createCommand()->rawSql;
 
@@ -186,24 +189,27 @@ class TaskController extends Controller
             $underCategoryUncl = [];
             $category = [];
 
-            foreach ($underCategoryCity as $item){
-                if(!isset($underCategoryUncl[$item['url_name']])){
+            foreach ($underCategoryCity as $item) {
+                if (!isset($underCategoryUncl[$item['url_name']])) {
                     $underCategoryUncl[$item['url_name']] = true;
                     $siteMapCity->addUrl(
-                        '/'.$city->url_name.'/'.$item['url_name'],
+                        '/' . $city->url_name . '/' . $item['url_name'],
                         SiteMap::DAILY,
                         0.7,
                         $item['date']
                     );
-                    $category[$item['category_url_name']] = ['url_name'=> $item['category_url_name'],'date'=>$item['date']];
+                    $category[$item['category_url_name']] = [
+                        'url_name' => $item['category_url_name'],
+                        'date' => $item['date'],
+                    ];
                     $isIssetSection = true;
                 }
 
             }
 
-            foreach ($category as $item){
+            foreach ($category as $item) {
                 $siteMapCity->addUrl(
-                    '/'.$city->url_name.'/'.$item['url_name'],
+                    '/' . $city->url_name . '/' . $item['url_name'],
                     SiteMap::DAILY,
                     0.7,
                     $item['date']
@@ -212,34 +218,34 @@ class TaskController extends Controller
 
 
             $posts = Posts::find()
-                ->select(['city_id','tbl_posts.url_name','tbl_posts.data','tbl_posts.id','date'])
+                ->select(['city_id', 'tbl_posts.url_name', 'tbl_posts.data', 'tbl_posts.id', 'date'])
                 ->innerJoinWith(['city'])
-                ->where(['tbl_city.url_name'=>$city->url_name])
+                ->where(['tbl_city.url_name' => $city->url_name])
                 ->orderBy(['date' => SORT_DESC])
                 ->all();
 
-            if($posts){
-                $siteMapCity->addUrl('/'.$city->url_name,SiteMap::WEEKLY,1,$posts[0]->date);
-                $siteMapCity->addModels($posts,SiteMap::WEEKLY,1);
+            if ($posts) {
+                $siteMapCity->addUrl('/' . $city->url_name, SiteMap::WEEKLY, 1, $posts[0]->date);
+                $siteMapCity->addModels($posts, SiteMap::WEEKLY, 1);
                 $newDate = $posts[0]->date > $newDate ? $posts[0]->date : $newDate;
                 $isIssetSection = true;
             }
 
 
             $news = News::find()
-                ->select(['city_id','tbl_news.url_name','tbl_news.id','date'])
+                ->select(['city_id', 'tbl_news.url_name', 'tbl_news.id', 'date'])
                 ->innerJoinWith(['city'])
-                ->where(['tbl_city.url_name'=>$city->url_name])
+                ->where(['tbl_city.url_name' => $city->url_name])
                 ->orderBy(['date' => SORT_DESC])
                 ->all();
 
-            if($news){
-                $siteMapCity->addUrl('/'.$city->url_name.'/novosti',
+            if ($news) {
+                $siteMapCity->addUrl('/' . $city->url_name . '/novosti',
                     SiteMap::DAILY,
                     0.6,
                     $news[0]->date
                 );
-                $siteMapCity->addModels($news,SiteMap::WEEKLY,0.6);
+                $siteMapCity->addModels($news, SiteMap::WEEKLY, 0.6);
                 $newDate = $news[0]->date > $newDate ? $news[0]->date : $newDate;
                 $isIssetSection = true;
             }
@@ -247,16 +253,16 @@ class TaskController extends Controller
 
             $reviewsQuery = Reviews::find()
                 ->innerJoinWith(['post.city'])
-                ->where(['tbl_city.url_name'=>$city->url_name])
-                ->orderBy(['tbl_reviews.date'=>SORT_DESC])
+                ->where(['tbl_city.url_name' => $city->url_name])
+                ->orderBy(['tbl_reviews.date' => SORT_DESC])
                 ->prepare(Yii::$app->db->queryBuilder)
                 ->createCommand()->rawSql;
 
             $reviews = Yii::$app->db->createCommand($reviewsQuery)->queryOne();
 
-            if($reviews){
+            if ($reviews) {
                 $siteMapCity->addUrl(
-                    '/'.$city->url_name.'/otzyvy',
+                    '/' . $city->url_name . '/otzyvy',
                     SiteMap::DAILY,
                     0.7,
                     $reviews['date']
@@ -267,23 +273,23 @@ class TaskController extends Controller
 
 
             $item = [];
-            $item['loc'] = $host. $pathToCitySiteMap;
+            $item['loc'] = $host . $pathToCitySiteMap;
 
-            if($newDate){
+            if ($newDate) {
                 $item['lastmod'] = $newDate;
             }
 
-            if($isIssetSection){
+            if ($isIssetSection) {
                 $siteMapMain->addSections([$item]);
 
                 $xmlCity = $siteMapCity->render();
-                file_put_contents(Yii::getAlias('@webroot').$pathToCitySiteMap,$xmlCity);
+                file_put_contents(Yii::getAlias('@webroot') . $pathToCitySiteMap, $xmlCity);
             }
 
         }
 
         $mainXml = $siteMapMain->renderSections();
-        file_put_contents(Yii::getAlias('@webroot'.'/sitemap.xml'),$mainXml);
+        file_put_contents(Yii::getAlias('@webroot' . '/sitemap.xml'), $mainXml);
 
     }
 

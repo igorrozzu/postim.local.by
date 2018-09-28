@@ -7,7 +7,6 @@ $currentUrl = yii\helpers\Url::current([], true);
 $this->title = 'Модерация жалоб';
 
 
-
 Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => false,
@@ -26,28 +25,28 @@ Pjax::begin([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions' => [
-            'class' => 'table --custom-tbl-p'
+            'class' => 'table --custom-tbl-p',
         ],
-        'layout'=>"{items}\n{pager}",
+        'layout' => "{items}\n{pager}",
         'columns' => [
             [
                 'attribute' => 'data',
                 'format' => 'raw',
                 'label' => 'Название',
-                'headerOptions' => ['width'=>'550px','class' => '--header-p'],
-                'value'=>function($data){
+                'headerOptions' => ['width' => '550px', 'class' => '--header-p'],
+                'value' => function ($data) {
                     return $data->getInfoForName();
-                }
+                },
 
             ],
             [
                 'attribute' => 'user_id',
                 'format' => 'raw',
                 'label' => 'Пользователь',
-                'headerOptions' => ['width'=>'100px','class' => '--header-p'],
-                'value' => function($data){
-                    return "<a data-pjax=false target=\"_blank\" class='data-link' href='/id{$data->user->id}'>{$data->user->name} {$data->user->surname}</a>" ;
-                }
+                'headerOptions' => ['width' => '100px', 'class' => '--header-p'],
+                'value' => function ($data) {
+                    return "<a data-pjax=false target=\"_blank\" class='data-link' href='/id{$data->user->id}'>{$data->user->name} {$data->user->surname}</a>";
+                },
             ],
 
             [
@@ -55,7 +54,7 @@ Pjax::begin([
                 'format' => 'raw',
                 'label' => 'Статус',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->getStatus();
                 },
             ],
@@ -65,54 +64,54 @@ Pjax::begin([
                 'format' => 'raw',
                 'label' => 'Действие',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->getButtons();
                 },
             ],
         ],
-    ]);?>
+    ]); ?>
 </div>
 
 <script>
-    $(document).ready(function () {
-        $(document).off('click','.btn-moderation.--cancels')
-            .on('click','.btn-moderation.--cancels',function () {
-                var $btn_confirm = $(this).parents('.data-grid-container-btn').find('.--confirm');
-                var id = $(this).data('id');
-                adminMain.initFormCancels(function (message) {
+	$(document).ready(function () {
+		$(document).off('click', '.btn-moderation.--cancels')
+				.on('click', '.btn-moderation.--cancels', function () {
+					var $btn_confirm = $(this).parents('.data-grid-container-btn').find('.--confirm');
+					var id = $(this).data('id');
+					adminMain.initFormCancels(function (message) {
 
-                    $.ajax({
-                        url: '/admin/moderation/cancels-reviews',
-                        type: "POST",
-                        dataType: "json",
-                        data: {
-                            id: id,
-                            message: message
-                        },
-                        success: function (response) {
-                            if (response.success){
-                                $().toastmessage('showToast', {
-                                    text: response.message,
-                                    stayTime:5000,
-                                    type: 'success'
-                                });
+						$.ajax({
+							url: '/admin/moderation/cancels-reviews',
+							type: "POST",
+							dataType: "json",
+							data: {
+								id: id,
+								message: message
+							},
+							success: function (response) {
+								if (response.success) {
+									$().toastmessage('showToast', {
+										text: response.message,
+										stayTime: 5000,
+										type: 'success'
+									});
 
-                                $btn_confirm.trigger('click');
+									$btn_confirm.trigger('click');
 
-                                $('.container-blackout-popup-window').html('').hide();
-                            } else {
-                                $().toastmessage('showToast', {
-                                    text: response.message,
-                                    stayTime:8000,
-                                    type: 'error'
-                                });
-                            }
-                        }
-                    });
+									$('.container-blackout-popup-window').html('').hide();
+								} else {
+									$().toastmessage('showToast', {
+										text: response.message,
+										stayTime: 8000,
+										type: 'error'
+									});
+								}
+							}
+						});
 
-                });
-            });
-    })
+					});
+				});
+	})
 </script>
 
 <?php

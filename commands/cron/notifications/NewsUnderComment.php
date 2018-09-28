@@ -22,7 +22,7 @@ class NewsUnderComment extends BaseCronNotificationHandler
             ->where([Comments::tableName() . '.id' => $this->params->receiver_comment_id])
             ->one();
 
-        $redirectLink = $comment->news->url_name . '-n' . $comment->news->id . '?comment_id='.
+        $redirectLink = $comment->news->url_name . '-n' . $comment->news->id . '?comment_id=' .
             $this->params->receiver_comment_id . '#comment-' . $this->params->receiver_comment_id;
 
         NotificationHandler::sendNotification($comment->user_id, [
@@ -30,7 +30,7 @@ class NewsUnderComment extends BaseCronNotificationHandler
             'data' => sprintf(
                 Yii::$app->params['notificationTemplates']['common.newUnderComment'],
                 $redirectLink
-            )
+            ),
         ], $this->params->user_id);
 
         if (!$comment->user->userInfo->hasAnswersToCommentsSub()) {

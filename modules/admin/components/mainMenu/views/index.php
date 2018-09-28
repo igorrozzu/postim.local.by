@@ -1,5 +1,7 @@
 <?php
+
 use yii\web\View;
+
 ?>
 <div class="main-menu">
     <div class="header-menu">
@@ -8,11 +10,11 @@ use yii\web\View;
     </div>
     <div class="menu-content">
         <ul class="menu-category">
-            <?php foreach ($data as $item):?>
+            <?php foreach ($data as $item): ?>
                 <?php
-                    echo  $this->render('list_category',['item'=>$item]);
+                echo $this->render('list_category', ['item' => $item]);
                 ?>
-            <?php endforeach;?>
+            <?php endforeach; ?>
         </ul>
 
     </div>

@@ -29,11 +29,28 @@ class OfficialAnswer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['comment_id', 'user_id','entity_id'], 'required'],
+            [['comment_id', 'user_id', 'entity_id'], 'required'],
             [['comment_id', 'user_id'], 'integer'],
-            [['comment_id', 'user_id'], 'unique', 'targetAttribute' => ['comment_id', 'user_id'], 'message' => 'The combination of Comments ID and User ID has already been taken.'],
-            [['comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comments::className(), 'targetAttribute' => ['comment_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['comment_id', 'user_id'],
+                'unique',
+                'targetAttribute' => ['comment_id', 'user_id'],
+                'message' => 'The combination of Comments ID and User ID has already been taken.',
+            ],
+            [
+                ['comment_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Comments::className(),
+                'targetAttribute' => ['comment_id' => 'id'],
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 

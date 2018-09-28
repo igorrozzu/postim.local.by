@@ -47,7 +47,7 @@ class FeaturesSearch extends Features
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);
@@ -66,7 +66,7 @@ class FeaturesSearch extends Features
 
         $query->joinWith(['mainFeatures m']);
 
-        if($this->main_features){
+        if ($this->main_features) {
 
             $query->andFilterWhere(['like', 'm.name', $this->main_features]);
         }

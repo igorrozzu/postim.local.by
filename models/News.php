@@ -26,6 +26,7 @@ class News extends \yii\db\ActiveRecord
 {
 
     public $is_like = false;
+
     /**
      * @inheritdoc
      */
@@ -33,7 +34,6 @@ class News extends \yii\db\ActiveRecord
     {
         return 'tbl_news';
     }
-
 
 
     /**
@@ -74,19 +74,24 @@ class News extends \yii\db\ActiveRecord
      */
     public function getComments()
     {
-        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['news']]);
+        return $this->hasMany(Comments::className(),
+            ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['news']]);
     }
 
-    public function getTotalComments(){
-        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['news']])->count();
+    public function getTotalComments()
+    {
+        return $this->hasMany(Comments::className(),
+            ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['news']])->count();
     }
 
-    public function getTotalView(){
-        return $this->hasOne(TotalView::className(),['id'=>'total_view_id']);
+    public function getTotalView()
+    {
+        return $this->hasOne(TotalView::className(), ['id' => 'total_view_id']);
     }
 
-    public function getCity(){
-        return $this->hasOne(City::className(),['id'=>'city_id']);
+    public function getCity()
+    {
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
 
     /**
@@ -94,13 +99,13 @@ class News extends \yii\db\ActiveRecord
      */
     public function getFavoriteNews()
     {
-        return $this->hasMany(FavoritesNews::className(),['news_id' => 'id']);
+        return $this->hasMany(FavoritesNews::className(), ['news_id' => 'id']);
     }
 
     public function getHasLike()
     {
-        return $this->hasOne(FavoritesNews::className(),['news_id' => 'id'])
-            ->onCondition([FavoritesNews::tableName().'.user_id' => Yii::$app->user->id]);
+        return $this->hasOne(FavoritesNews::className(), ['news_id' => 'id'])
+            ->onCondition([FavoritesNews::tableName() . '.user_id' => Yii::$app->user->id]);
     }
 
     public function afterFind()
@@ -112,18 +117,20 @@ class News extends \yii\db\ActiveRecord
         }
     }
 
-    public function getPatchCover(){
-        if($this->cover){
-            $dir = Yii::getAlias('@webroot/post-img/' . $this->id . '/'.$this->cover);
-            if(file_exists($dir)){
-                return '/post-img/'. $this->id . '/'.$this->cover;
+    public function getPatchCover()
+    {
+        if ($this->cover) {
+            $dir = Yii::getAlias('@webroot/post-img/' . $this->id . '/' . $this->cover);
+            if (file_exists($dir)) {
+                return '/post-img/' . $this->id . '/' . $this->cover;
             }
         }
 
         return '';
     }
 
-    public function getUrl(){
-       return   '/'.$this->url_name.'-n'.$this->id;
+    public function getUrl()
+    {
+        return '/' . $this->url_name . '-n' . $this->id;
     }
 }

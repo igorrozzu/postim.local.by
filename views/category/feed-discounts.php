@@ -33,11 +33,11 @@ $descriptionPage = DescriptionPage::initMetaTags(function () use ($h1_text, $cat
 $this->title = $descriptionPage['title'];
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => $descriptionPage['description']
+    'content' => $descriptionPage['description'],
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
-    'content' => $descriptionPage['keywords']
+    'content' => $descriptionPage['keywords'],
 ]);
 
 MetaTagsSocialNetwork::registerOgTags($this, [
@@ -96,26 +96,27 @@ Pjax::begin([
     <div class="block-flex-white">
         <div class="block-content">
             <div class="block-sort">
-                <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort'=>'new'])?>"
-                   class="btn-sort <?=$sort === 'new' ? 'active': ''?>">
+                <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort' => 'new']) ?>"
+                   class="btn-sort <?= $sort === 'new' ? 'active' : '' ?>">
                     <span class="under-line">Новые</span>
                 </a>
-                <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort'=>'popular'])?>"
-                   class="btn-sort <?=$sort === 'popular' ? 'active': ''?>">
+                <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort' => 'popular']) ?>"
+                   class="btn-sort <?= $sort === 'popular' ? 'active' : '' ?>">
                     <span class="under-line">Популярные</span>
                 </a>
-                <?php if(Yii::$app->request->cookies->getValue('geolocation')):?>
-                    <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort'=>'nigh'])?>"
-                       class="btn-sort <?=$sort === 'nigh' ? 'active' : ''?>">
+                <?php if (Yii::$app->request->cookies->getValue('geolocation')): ?>
+                    <a href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort' => 'nigh']) ?>"
+                       class="btn-sort <?= $sort === 'nigh' ? 'active' : '' ?>">
                         <span class="under-line">Рядом</span>
                     </a>
-                <?php else:?>
-                    <a style="display: none" href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort'=>'nigh'])?>"
-                       class="btn-nigh btn-sort <?=$sort === 'nigh' ? 'active': ''?>">
+                <?php else: ?>
+                    <a style="display: none"
+                       href="<?= Helper::createUrlWithSelfParams($selfParams, ['sort' => 'nigh']) ?>"
+                       class="btn-nigh btn-sort <?= $sort === 'nigh' ? 'active' : '' ?>">
                         <span class="under-line">Рядом</span>
                     </a>
                     <a class="btn-sort no-geolocation"><span class="under-line">Рядом</span></a>
-                <?php endif;?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -130,7 +131,7 @@ Pjax::begin([
                         'load-time' => $loadTime,
                         'postId' => false,
                         'show-distance' => true,
-                    ]
+                    ],
                 ]); ?>
             </div>
         <?php else: ?>
@@ -143,7 +144,7 @@ Pjax::begin([
         <?php endif; ?>
 
         <div class="description-text">
-            <?=$descriptionPage['descriptionText']?>
+            <?= $descriptionPage['descriptionText'] ?>
         </div>
     </div>
 <?php
@@ -159,7 +160,7 @@ Pjax::end();
 
 $settings = [
     'select_category' => $this->context->category ?? false,
-    'select_under_category' => $this->context->under_category ?? false
+    'select_under_category' => $this->context->under_category ?? false,
 ];
 
 if ($settings['select_category']) {

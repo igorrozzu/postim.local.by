@@ -32,15 +32,15 @@ class BizController extends AdminDefaultController
         $biz_account = new BusinessOrder();
 
         $searchModel = new BusinessOrderSearch();
-        $dataProvider = $searchModel->search(\Yii::$app->request->get(),BusinessOrder::$BIZ_AC);
-        $dataProviderOrder = $searchModel->search(\Yii::$app->request->get(),BusinessOrder::$BIZ_ORDER);
+        $dataProvider = $searchModel->search(\Yii::$app->request->get(), BusinessOrder::$BIZ_AC);
+        $dataProviderOrder = $searchModel->search(\Yii::$app->request->get(), BusinessOrder::$BIZ_ORDER);
         $dataProviderPremiumAccount = $searchModel->searchPremiumAccounts(
             Yii::$app->request->get()
         );
 
-        return $this->render('index',[
-            'biz'=>$biz,
-            'biz_account'=>$biz_account,
+        return $this->render('index', [
+            'biz' => $biz,
+            'biz_account' => $biz_account,
             'dataProvider' => $dataProvider,
             'dataProviderOrder' => $dataProviderOrder,
             'dataProviderPremiumAccount' => $dataProviderPremiumAccount,
@@ -50,7 +50,8 @@ class BizController extends AdminDefaultController
     }
 
 
-    public function actionSave(){
+    public function actionSave()
+    {
 
         if (\Yii::$app->request->isPost) {
 
@@ -70,21 +71,21 @@ class BizController extends AdminDefaultController
                     $transaction->commit();
 
 
-                    $linkToPost = '/'.$biz_account->post->url_name.'-p'.$biz_account->post->id;
+                    $linkToPost = '/' . $biz_account->post->url_name . '-p' . $biz_account->post->id;
                     $titlePost = $biz_account->post->data;
                     $templateMessage = \Yii::$app->params['notificationTemplates']['biz_ac'];
-                    $message = sprintf($templateMessage['confirm'], $linkToPost,$titlePost);
-                    $emailMessage = sprintf($templateMessage['emailConfirm'],$titlePost);
+                    $message = sprintf($templateMessage['confirm'], $linkToPost, $titlePost);
+                    $emailMessage = sprintf($templateMessage['emailConfirm'], $titlePost);
 
-                    UserHelper::sendNotification($biz_account->user_id,[
+                    UserHelper::sendNotification($biz_account->user_id, [
                         'type' => '',
-                        'data' => $message
+                        'data' => $message,
                     ]);
 
                     $user = $biz_account->user;
                     $user->name = $biz_account->full_name;
 
-                    UserHelper::sendMessageToEmailCustomReward($user,$emailMessage,$linkToPost);
+                    UserHelper::sendMessageToEmailCustomReward($user, $emailMessage, $linkToPost);
 
 
                     $toastMessage = [
@@ -92,7 +93,7 @@ class BizController extends AdminDefaultController
                         'message' => 'Пользователь добавлен',
                     ];
 
-                    \Yii::$app->session->setFlash('toastMessage',$toastMessage);
+                    \Yii::$app->session->setFlash('toastMessage', $toastMessage);
 
                     return $this->redirect('/admin/biz');
 
@@ -109,7 +110,7 @@ class BizController extends AdminDefaultController
                         'dataProvider' => $dataProvider,
                         'dataProviderOrder' => $dataProviderOrder,
                         'searchModel' => $searchModel,
-                        'dataProviderPremiumAccount' => $dataProviderPremiumAccount
+                        'dataProviderPremiumAccount' => $dataProviderPremiumAccount,
                     ];
 
                 }
@@ -121,86 +122,91 @@ class BizController extends AdminDefaultController
         }
     }
 
-    public function actionChangeStatus(){
-        if(\Yii::$app->request->isPost){
-            $request =\Yii::$app->request;
+    public function actionChangeStatus()
+    {
+        if (\Yii::$app->request->isPost) {
+            $request = \Yii::$app->request;
 
-            $biz_account =  BusinessOrder::find()->where([
-                'user_id'=>$request->post('user_id',null),
-                'post_id'=>$request->post('post_id',null),
+            $biz_account = BusinessOrder::find()->where([
+                'user_id' => $request->post('user_id', null),
+                'post_id' => $request->post('post_id', null),
             ])->one();
 
-            switch ($request->post('action',null)){
-                case 'remove':{
+            switch ($request->post('action', null)) {
+                case 'remove':
+                    {
 
-                    $biz = OwnerPost::find()->where([
-                        'owner_id'=>$request->post('user_id',null),
-                        'post_id'=>$request->post('post_id',null),
-                    ])->one();
+                        $biz = OwnerPost::find()->where([
+                            'owner_id' => $request->post('user_id', null),
+                            'post_id' => $request->post('post_id', null),
+                        ])->one();
 
-                    if($biz){
-                        $biz->delete();
+                        if ($biz) {
+                            $biz->delete();
+                        }
+
+                        if ($biz_account) {
+                            if ($biz_account->status == BusinessOrder::$BIZ_ORDER) {
+                                $biz_account->delete();
+                            } else {
+                                $biz_account->status = BusinessOrder::$BIZ_ORDER;
+                                $biz_account->update();
+
+                                $linkToPost = '/' . $biz_account->post->url_name . '-p' . $biz_account->post->id;
+                                $titlePost = $biz_account->post->data;
+                                $templateMessage = \Yii::$app->params['notificationTemplates']['biz_ac'];
+                                $message = sprintf($templateMessage['deActive'], $linkToPost, $titlePost);
+                                $emailMessage = sprintf($templateMessage['emailDeActive'], $titlePost);
+
+                                UserHelper::sendNotification($biz_account->user_id, [
+                                    'type' => '',
+                                    'data' => $message,
+                                ]);
+
+                                $user = $biz_account->user;
+                                $user->name = $biz_account->full_name;
+
+                                UserHelper::sendMessageToEmailCustomReward($user, $emailMessage, $linkToPost);
+
+                            }
+                        }
+
                     }
+                    break;
+                case 'confirm':
+                    {
+                        $biz_account->status = BusinessOrder::$BIZ_AC;
+                        $biz_account->date = time();
+                        $biz_account->update();
+                        $biz = new OwnerPost([
+                            'owner_id' => $biz_account->user_id,
+                            'post_id' => $biz_account->post_id,
+                        ]);
 
-                    if($biz_account){
-                        if($biz_account->status == BusinessOrder::$BIZ_ORDER){
-                            $biz_account->delete();
-                        }else{
-                            $biz_account->status = BusinessOrder::$BIZ_ORDER;
-                            $biz_account->update();
+                        if ($biz->save()) {
 
-                            $linkToPost = '/'.$biz_account->post->url_name.'-p'.$biz_account->post->id;
+                            $linkToPost = '/' . $biz_account->post->url_name . '-p' . $biz_account->post->id;
                             $titlePost = $biz_account->post->data;
                             $templateMessage = \Yii::$app->params['notificationTemplates']['biz_ac'];
-                            $message = sprintf($templateMessage['deActive'], $linkToPost,$titlePost);
-                            $emailMessage = sprintf($templateMessage['emailDeActive'],$titlePost);
+                            $message = sprintf($templateMessage['confirm'], $linkToPost, $titlePost);
+                            $emailMessage = sprintf($templateMessage['emailConfirm'], $titlePost);
 
-                            UserHelper::sendNotification($biz_account->user_id,[
+                            UserHelper::sendNotification($biz_account->user_id, [
                                 'type' => '',
-                                'data' => $message
+                                'data' => $message,
                             ]);
 
                             $user = $biz_account->user;
                             $user->name = $biz_account->full_name;
 
-                            UserHelper::sendMessageToEmailCustomReward($user,$emailMessage,$linkToPost);
-
+                            UserHelper::sendMessageToEmailCustomReward($user, $emailMessage, $linkToPost);
                         }
+
                     }
-
-                }break;
-                case 'confirm':{
-                    $biz_account->status = BusinessOrder::$BIZ_AC;
-                    $biz_account->date = time();
-                    $biz_account->update();
-                    $biz = new OwnerPost([
-                        'owner_id' => $biz_account->user_id,
-                        'post_id' => $biz_account->post_id
-                    ]);
-
-                    if($biz->save()){
-
-                        $linkToPost = '/'.$biz_account->post->url_name.'-p'.$biz_account->post->id;
-                        $titlePost = $biz_account->post->data;
-                        $templateMessage = \Yii::$app->params['notificationTemplates']['biz_ac'];
-                        $message = sprintf($templateMessage['confirm'], $linkToPost,$titlePost);
-                        $emailMessage = sprintf($templateMessage['emailConfirm'],$titlePost);
-
-                        UserHelper::sendNotification($biz_account->user_id,[
-                            'type' => '',
-                            'data' => $message
-                        ]);
-
-                        $user = $biz_account->user;
-                        $user->name = $biz_account->full_name;
-
-                        UserHelper::sendMessageToEmailCustomReward($user,$emailMessage,$linkToPost);
-                    }
-
-                }break;
+                    break;
             }
 
-            return $this->asJson(['success'=>true,'action'=>'remove']);
+            return $this->asJson(['success' => true, 'action' => 'remove']);
 
         }
     }
@@ -252,39 +258,43 @@ class BizController extends AdminDefaultController
         if (Yii::$app->request->isPost) {
             $request = Yii::$app->request;
 
-            $account =  BusinessOrder::find()->where([
-                'user_id'=>$request->post('user_id',null),
-                'post_id'=>$request->post('post_id',null),
+            $account = BusinessOrder::find()->where([
+                'user_id' => $request->post('user_id', null),
+                'post_id' => $request->post('post_id', null),
             ])->one();
 
-            switch ($request->post('action',null)) {
-                case 'remove': {
-                    $account->status = BusinessOrder::$BIZ_AC;
-                    /*$linkToPost = '/'.$biz_account->post->url_name.'-p'.$biz_account->post->id;
-                    $titlePost = $biz_account->post->data;
-                    $templateMessage = \Yii::$app->params['notificationTemplates']['biz_ac'];
-                    $message = sprintf($templateMessage['deActive'], $linkToPost,$titlePost);
-                    $emailMessage = sprintf($templateMessage['emailDeActive'],$titlePost);
+            switch ($request->post('action', null)) {
+                case 'remove':
+                    {
+                        $account->status = BusinessOrder::$BIZ_AC;
+                        /*$linkToPost = '/'.$biz_account->post->url_name.'-p'.$biz_account->post->id;
+                        $titlePost = $biz_account->post->data;
+                        $templateMessage = \Yii::$app->params['notificationTemplates']['biz_ac'];
+                        $message = sprintf($templateMessage['deActive'], $linkToPost,$titlePost);
+                        $emailMessage = sprintf($templateMessage['emailDeActive'],$titlePost);
 
-                    UserHelper::sendNotification($biz_account->user_id,[
-                        'type' => '',
-                        'data' => $message
-                    ]);
+                        UserHelper::sendNotification($biz_account->user_id,[
+                            'type' => '',
+                            'data' => $message
+                        ]);
 
-                    $user = $biz_account->user;
-                    $user->name = $biz_account->full_name;
+                        $user = $biz_account->user;
+                        $user->name = $biz_account->full_name;
 
-                    UserHelper::sendMessageToEmailCustomReward($user,$emailMessage,$linkToPost);*/
-                } break;
-                case 'confirm': {
-                    $account->status = BusinessOrder::$PREMIUM_BIZ_AC;
-                } break;
+                        UserHelper::sendMessageToEmailCustomReward($user,$emailMessage,$linkToPost);*/
+                    }
+                    break;
+                case 'confirm':
+                    {
+                        $account->status = BusinessOrder::$PREMIUM_BIZ_AC;
+                    }
+                    break;
             }
 
             $account->update();
 
             return $this->asJson([
-                'success'=> true,
+                'success' => true,
                 'action' => 'remove',
             ]);
         }
@@ -296,7 +306,7 @@ class BizController extends AdminDefaultController
         $searchModel = new BusinessBidSearch();
         $dataProvider = $searchModel->search(\Yii::$app->request->get());
 
-        return $this->render('bid_oreder',[
+        return $this->render('bid_oreder', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
         ]);
@@ -305,14 +315,14 @@ class BizController extends AdminDefaultController
     public function actionChangeStatusOrder()
     {
 
-        $id = Yii::$app->request->get( 'id', false );
-        $action = Yii::$app->request->get( 'action', false );
-        $order = BidBusinessOrder::find()->where( [ 'id' => $id ] )->one();
+        $id = Yii::$app->request->get('id', false);
+        $action = Yii::$app->request->get('action', false);
+        $order = BidBusinessOrder::find()->where(['id' => $id])->one();
 
 
-        if ( $order ) {
+        if ($order) {
 
-            switch ( $action ) {
+            switch ($action) {
                 case 'delete':
                     {
                         $order->delete();

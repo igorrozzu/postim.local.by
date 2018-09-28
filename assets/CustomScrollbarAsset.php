@@ -18,10 +18,10 @@ class CustomScrollbarAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/jquery.mCustomScrollbar.css'
+        'css/jquery.mCustomScrollbar.css',
     ];
     public $js = [
-        'js/libs/jquery.mCustomScrollbar.concat.min.js'
+        'js/libs/jquery.mCustomScrollbar.concat.min.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

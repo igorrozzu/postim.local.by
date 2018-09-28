@@ -33,12 +33,25 @@ class UserSettings extends Model
     {
         return [
             self::SCENARIO_DEFAULT => [
-                'name', 'surname', 'cityId', 'gender', 'email', 'oldPassword', 'newPassword', 'newPasswordRepeat',
-                'answersToReviews', 'answersToComments', 'reviewsToMyPlaces', 'reviewsToFavoritePlaces',
-                'experienceAndBonus', 'placesAndDiscounts'
+                'name',
+                'surname',
+                'cityId',
+                'gender',
+                'email',
+                'oldPassword',
+                'newPassword',
+                'newPasswordRepeat',
+                'answersToReviews',
+                'answersToComments',
+                'reviewsToMyPlaces',
+                'reviewsToFavoritePlaces',
+                'experienceAndBonus',
+                'placesAndDiscounts',
             ],
             self::SCENARIO_PASSWORD_RESET => [
-                'oldPassword', 'newPassword', 'newPasswordRepeat'
+                'oldPassword',
+                'newPassword',
+                'newPasswordRepeat',
             ],
             self::SCENARIO_EMAIL_RESET => [
                 'email',
@@ -54,17 +67,42 @@ class UserSettings extends Model
         return [
             [['name'], 'required', 'message' => 'Поле обязательно для заполнения'],
             [['name', 'surname'], 'string', 'max' => 25, 'tooLong' => 'Не более {max} символов'],
-            [['cityId', 'gender', 'answersToReviews', 'answersToComments', 'reviewsToMyPlaces',
-                'reviewsToFavoritePlaces', 'experienceAndBonus', 'placesAndDiscounts'], 'integer'],
-            [['oldPassword', 'newPassword', 'newPasswordRepeat'], 'required', 'message' => 'Поле обязательно для заполнения',
-                'on' => self::SCENARIO_PASSWORD_RESET],
+            [
+                [
+                    'cityId',
+                    'gender',
+                    'answersToReviews',
+                    'answersToComments',
+                    'reviewsToMyPlaces',
+                    'reviewsToFavoritePlaces',
+                    'experienceAndBonus',
+                    'placesAndDiscounts',
+                ],
+                'integer',
+            ],
+            [
+                ['oldPassword', 'newPassword', 'newPasswordRepeat'],
+                'required',
+                'message' => 'Поле обязательно для заполнения',
+                'on' => self::SCENARIO_PASSWORD_RESET,
+            ],
             ['oldPassword', 'validateOldPassword', 'on' => self::SCENARIO_PASSWORD_RESET],
-            ['newPasswordRepeat', 'compare', 'compareAttribute' => 'newPassword', 'message' => 'Пароли не совпадают',
-                'on' => self::SCENARIO_PASSWORD_RESET],
+            [
+                'newPasswordRepeat',
+                'compare',
+                'compareAttribute' => 'newPassword',
+                'message' => 'Пароли не совпадают',
+                'on' => self::SCENARIO_PASSWORD_RESET,
+            ],
             [['email'], 'required', 'message' => 'Поле обязательно для заполнения', 'on' => self::SCENARIO_EMAIL_RESET],
             ['email', 'email', 'message' => 'Некорректный email-адрес.', 'on' => self::SCENARIO_EMAIL_RESET],
-            ['email', 'unique', 'targetClass' => '\app\models\User', 'on' => self::SCENARIO_EMAIL_RESET,
-                'message' => 'Пользователь с таким email-адресом уже существует'],
+            [
+                'email',
+                'unique',
+                'targetClass' => '\app\models\User',
+                'on' => self::SCENARIO_EMAIL_RESET,
+                'message' => 'Пользователь с таким email-адресом уже существует',
+            ],
         ];
 
     }

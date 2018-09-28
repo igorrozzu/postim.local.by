@@ -7,7 +7,6 @@ $currentUrl = yii\helpers\Url::current([], true);
 $this->title = 'Удаление категорий';
 
 
-
 Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => false,
@@ -26,20 +25,20 @@ Pjax::begin([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions' => [
-            'class' => 'table --custom-tbl-p'
+            'class' => 'table --custom-tbl-p',
         ],
-        'layout'=>"{items}\n{pager}",
+        'layout' => "{items}\n{pager}",
         'columns' => [
             [
                 'attribute' => 'name',
                 'label' => 'Название',
-                'headerOptions' => ['width'=>'400px','class' => '--header-p'],
+                'headerOptions' => ['width' => '400px', 'class' => '--header-p'],
             ],
             [
                 'attribute' => 'url_name',
                 'format' => 'raw',
                 'label' => 'Url',
-                'headerOptions' => ['width'=>'400px','class' => '--header-p'],
+                'headerOptions' => ['width' => '400px', 'class' => '--header-p'],
             ],
 
             [
@@ -47,12 +46,12 @@ Pjax::begin([
                 'format' => 'raw',
                 'label' => 'Действие',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->getButtons();
                 },
             ],
         ],
-    ]);?>
+    ]); ?>
 
     <h1 class="h1-c" style="margin-top: 35px">Удаление подкатегорий</h1>
 
@@ -60,20 +59,20 @@ Pjax::begin([
         'dataProvider' => $dataProviderUnder,
         'filterModel' => $searchModelUnder,
         'tableOptions' => [
-            'class' => 'table --custom-tbl-p'
+            'class' => 'table --custom-tbl-p',
         ],
-        'layout'=>"{items}\n{pager}",
+        'layout' => "{items}\n{pager}",
         'columns' => [
             [
                 'attribute' => 'name',
                 'label' => 'Название',
-                'headerOptions' => ['width'=>'400px','class' => '--header-p'],
+                'headerOptions' => ['width' => '400px', 'class' => '--header-p'],
             ],
             [
                 'attribute' => 'url_name',
                 'format' => 'raw',
                 'label' => 'Url',
-                'headerOptions' => ['width'=>'400px','class' => '--header-p'],
+                'headerOptions' => ['width' => '400px', 'class' => '--header-p'],
             ],
 
             [
@@ -81,12 +80,12 @@ Pjax::begin([
                 'format' => 'raw',
                 'label' => 'Действие',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->getButtons();
                 },
             ],
         ],
-    ]);?>
+    ]); ?>
 </div>
 
 

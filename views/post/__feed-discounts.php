@@ -2,6 +2,7 @@
 
 use app\widgets\cardsDiscounts\CardsDiscounts;
 use yii\helpers\Url;
+
 ?>
 
 <div class="block-content">
@@ -29,7 +30,7 @@ use yii\helpers\Url;
                     'load-time' => time(),
                     'postId' => $post['id'],
                     'show-distance' => false,
-                ]
+                ],
             ]); ?>
         </div>
     <?php endif; ?>

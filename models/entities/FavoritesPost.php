@@ -33,8 +33,20 @@ class FavoritesPost extends \yii\db\ActiveRecord
         return [
             [['user_id', 'post_id'], 'required'],
             [['user_id', 'post_id'], 'integer'],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['post_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Posts::className(),
+                'targetAttribute' => ['post_id' => 'id'],
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 

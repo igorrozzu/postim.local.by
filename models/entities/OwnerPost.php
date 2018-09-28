@@ -33,8 +33,20 @@ class OwnerPost extends \yii\db\ActiveRecord
         return [
             [['owner_id', 'post_id'], 'required'],
             [['owner_id', 'post_id'], 'integer'],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
-            [['owner_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['owner_id' => 'id']],
+            [
+                ['post_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Posts::className(),
+                'targetAttribute' => ['post_id' => 'id'],
+            ],
+            [
+                ['owner_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['owner_id' => 'id'],
+            ],
         ];
     }
 

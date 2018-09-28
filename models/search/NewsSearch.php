@@ -17,6 +17,7 @@ class NewsSearch extends News
 {
     public $favorite_id;
     public $city;
+
     /**
      * @inheritdoc
      */
@@ -24,8 +25,19 @@ class NewsSearch extends News
     {
         return [
             [['id', 'city_id', 'total_view_id', 'count_favorites', 'date'], 'integer'],
-            [['header', 'description', 'data', 'description_s', 'key_word_s',
-                'cover','city', 'favorite_id'], 'safe'],
+            [
+                [
+                    'header',
+                    'description',
+                    'data',
+                    'description_s',
+                    'key_word_s',
+                    'cover',
+                    'city',
+                    'favorite_id',
+                ],
+                'safe',
+            ],
         ];
     }
 
@@ -55,27 +67,28 @@ class NewsSearch extends News
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
-        if (!$this->load($params,'') && !$this->validate()) {
+        if (!$this->load($params, '') && !$this->validate()) {
             return $dataProvider;
         }
 
-        if(!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             $query->joinWith('hasLike');
         }
 
-        if(!empty($this->city) && $this->city['name']!='Беларусь'){
+        if (!empty($this->city) && $this->city['name'] != 'Беларусь') {
             $city = City::find()->with('region')->where(['url_name' => $this->city['url_name']])->one();
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 ['tbl_region.url_name' => $city->region->url_name],
                 ['tbl_city.url_name' => $city->url_name],
-                ['tbl_city.name' => 'Беларусь']
+                ['tbl_city.name' => 'Беларусь'],
             ]);
         }
 
-        if(isset($params['loadTime']) || isset($loadTime) ){
+        if (isset($params['loadTime']) || isset($loadTime)) {
             $query->andWhere(['<=', 'tbl_news.date', $params['loadTime'] ?? $loadTime]);
         }
 
@@ -92,10 +105,10 @@ class NewsSearch extends News
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
-        if (!$this->load($params,'') && !$this->validate()) {
+        if (!$this->load($params, '') && !$this->validate()) {
             return $dataProvider;
         }
 

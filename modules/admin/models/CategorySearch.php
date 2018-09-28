@@ -45,7 +45,7 @@ class CategorySearch extends Category
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=> $pagination,
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);
@@ -58,7 +58,7 @@ class CategorySearch extends Category
         $query->andFilterWhere([
             'id' => $this->id,
         ]);
-        $query->orderBy(['name'=>SORT_ASC]);
+        $query->orderBy(['name' => SORT_ASC]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'url_name', $this->url_name]);

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\components;
 
 use app\models\Category;
@@ -10,26 +11,30 @@ use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\Request;
 
-class Helper{
+class Helper
+{
 
-    public static function addViews(TotalView $totalView){
+    public static function addViews(TotalView $totalView)
+    {
         $session = Yii::$app->session;
 
-        if($session->get('totalView_'.$totalView['id'])==null){
+        if ($session->get('totalView_' . $totalView['id']) == null) {
             $totalView->updateCounters(['count' => 1]);
-            $session->set('totalView_'.$totalView['id'],true);
+            $session->set('totalView_' . $totalView['id'], true);
         }
     }
 
-    public static function getDomainNameByUrl($url){
-        return self::mb_ucasefirst(preg_replace('/(https?:\/\/)|(www.)/','',$url));
+    public static function getDomainNameByUrl($url)
+    {
+        return self::mb_ucasefirst(preg_replace('/(https?:\/\/)|(www.)/', '', $url));
     }
 
-    public static function getShortNameDayById($id){
-        $mapNameDay=['Вск','Пн','Вт','Ср','Чт','Пт','Сб','Вск'];
-        if(isset($mapNameDay[$id])){
+    public static function getShortNameDayById($id)
+    {
+        $mapNameDay = ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вск'];
+        if (isset($mapNameDay[$id])) {
             return $mapNameDay[$id];
-        }else{
+        } else {
             return '';
         }
     }
@@ -37,51 +42,25 @@ class Helper{
 
     public static $feature_map = [
         'average_bill2' => 'средний чек: ',
-        'type_cuisine'=>'кухня: ',
-        'beer_price'=>'бокал пива: ',
-        'price_category'=>'ценовая категокрия: '
+        'type_cuisine' => 'кухня: ',
+        'beer_price' => 'бокал пива: ',
+        'price_category' => 'ценовая категокрия: ',
     ];
 
     public static function getFeature($features)
     {
 
         if ($features->rubrics) {
-            foreach ($features->rubrics as $rubric){
-                ?>
-                    <div class="info-row">
-                        <div class="left-block-f">
-                            <div class="title-info-card"><?=self::mb_ucasefirst($rubric['name'])?></div>
-                            <div class="block-inside">
-                                <ul class="lists-features">
-                                    <?php foreach ($rubric['values'] as $feature):?>
-                                        <li class="lists-feature"><?=self::mb_ucasefirst($feature['name'])?></li>
-                                    <?php endforeach;?>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="right-block-f">
-                            <div class="btn-info-card"></div>
-                        </div>
-                    </div>
-                <?php
-
-            }
-        }
-
-        if ($features->features) {
+            foreach ($features->rubrics as $rubric) {
                 ?>
                 <div class="info-row">
                     <div class="left-block-f">
-                        <div class="title-info-card">Особености</div>
+                        <div class="title-info-card"><?= self::mb_ucasefirst($rubric['name']) ?></div>
                         <div class="block-inside">
                             <ul class="lists-features">
-                                <?php foreach ($features->features as $feature):?>
-                                    <?php if($feature['type']==1):?>
-                                    <li class="lists-feature"><?=self::mb_ucasefirst($feature['name'])?></li>
-                                    <?php else:?>
-                                        <li class="lists-feature"><?=self::mb_ucasefirst($feature['name'])?>: <?=self::getPriceFeature($feature)?></li>
-                                    <?php endif;?>
-                                <?php endforeach;?>
+                                <?php foreach ($rubric['values'] as $feature): ?>
+                                    <li class="lists-feature"><?= self::mb_ucasefirst($feature['name']) ?></li>
+                                <?php endforeach; ?>
                             </ul>
                         </div>
                     </div>
@@ -90,49 +69,98 @@ class Helper{
                     </div>
                 </div>
                 <?php
+
+            }
+        }
+
+        if ($features->features) {
+            ?>
+            <div class="info-row">
+                <div class="left-block-f">
+                    <div class="title-info-card">Особености</div>
+                    <div class="block-inside">
+                        <ul class="lists-features">
+                            <?php foreach ($features->features as $feature): ?>
+                                <?php if ($feature['type'] == 1): ?>
+                                    <li class="lists-feature"><?= self::mb_ucasefirst($feature['name']) ?></li>
+                                <?php else: ?>
+                                    <li class="lists-feature"><?= self::mb_ucasefirst($feature['name']) ?>
+                                        : <?= self::getPriceFeature($feature) ?></li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+                <div class="right-block-f">
+                    <div class="btn-info-card"></div>
+                </div>
+            </div>
+            <?php
         }
 
     }
 
-    public static function getPriceFeature($feature){
+    public static function getPriceFeature($feature)
+    {
 
-        $featurePrice = ['average_bill2','beer_price','price_per_hour_sauna2','price_rolls','price_per_month2','price_room','price_cup_cappuccino','price_evening'];
-        if(in_array($feature['features_id'],$featurePrice)){
-            return self::mb_ucasefirst($feature['value']) .' BYN';
+        $featurePrice = [
+            'average_bill2',
+            'beer_price',
+            'price_per_hour_sauna2',
+            'price_rolls',
+            'price_per_month2',
+            'price_room',
+            'price_cup_cappuccino',
+            'price_evening',
+        ];
+        if (in_array($feature['features_id'], $featurePrice)) {
+            return self::mb_ucasefirst($feature['value']) . ' BYN';
         }
         return self::mb_ucasefirst($feature['value']);
     }
 
-    public static function getCostFeature($feature){
-        $featurePrice = ['average_bill2','beer_price','price_per_hour_sauna2','price_rolls','price_per_month2','price_room','price_cup_cappuccino','price_evening'];
-        if(in_array($feature['id'],$featurePrice)){
+    public static function getCostFeature($feature)
+    {
+        $featurePrice = [
+            'average_bill2',
+            'beer_price',
+            'price_per_hour_sauna2',
+            'price_rolls',
+            'price_per_month2',
+            'price_room',
+            'price_cup_cappuccino',
+            'price_evening',
+        ];
+        if (in_array($feature['id'], $featurePrice)) {
             return 'BYN';
         }
         return '';
     }
 
-    public static function mb_ucasefirst($str, $encoding='UTF-8'){
+    public static function mb_ucasefirst($str, $encoding = 'UTF-8')
+    {
         $str = mb_ereg_replace('^[\ ]+', '', $str);
-        $str = mb_strtoupper(mb_substr($str, 0, 1, $encoding), $encoding).
+        $str = mb_strtoupper(mb_substr($str, 0, 1, $encoding), $encoding) .
             mb_substr($str, 1, mb_strlen($str), $encoding);
         return $str;
     }
 
-    public static function createUrlWithSelfParams($selfParams,$params=false){
+    public static function createUrlWithSelfParams($selfParams, $params = false)
+    {
 
         $request = Yii::$app->getRequest();
 
         $queryParams = $request instanceof Request ? $request->getQueryParams() : [];
-        if($params){
-            $queryParams= ArrayHelper::merge($queryParams,$params);
+        if ($params) {
+            $queryParams = ArrayHelper::merge($queryParams, $params);
         }
-        $newParams=[];
-        foreach ($queryParams as $key => $param){
-            if(isset($selfParams[$key]) && $selfParams[$key]){
-                $newParams[$key]=$param;
+        $newParams = [];
+        foreach ($queryParams as $key => $param) {
+            if (isset($selfParams[$key]) && $selfParams[$key]) {
+                $newParams[$key] = $param;
             }
         }
-        $newParams[0]=Yii::$app->request->getPathInfo();
+        $newParams[0] = Yii::$app->request->getPathInfo();
 
         $urlManager = Yii::$app->getUrlManager();
         return $urlManager->createUrl($newParams);
@@ -140,7 +168,8 @@ class Helper{
     }
 
 
-    public static function getDistanceBP($φA, $λA, $φB, $λB){
+    public static function getDistanceBP($φA, $λA, $φB, $λB)
+    {
 
         $lat1 = $φA * M_PI / 180;
         $lat2 = $φB * M_PI / 180;
@@ -166,41 +195,46 @@ class Helper{
         return $dist;
     }
 
-    public static function saveQueryForMap($query){
-        $queryReplaceTime = preg_replace('/WHERE \("tbl_posts"\."date" <= [0-9]+\)/','',$query);
-        $key=md5(serialize($queryReplaceTime));
-        Yii::$app->cache->set($key,serialize($query));
+    public static function saveQueryForMap($query)
+    {
+        $queryReplaceTime = preg_replace('/WHERE \("tbl_posts"\."date" <= [0-9]+\)/', '', $query);
+        $key = md5(serialize($queryReplaceTime));
+        Yii::$app->cache->set($key, serialize($query));
         return $key;
     }
 
-    public static function parserWorktime($workingHours):array {
-        $arrayResult = [1=>['day_type'=>1,'time_start'=>null,'time_finish'=>null],
-			['day_type'=>2,'time_start'=>null,'time_finish'=>null],
-			['day_type'=>3,'time_start'=>null,'time_finish'=>null],
-			['day_type'=>4,'time_start'=>null,'time_finish'=>null],
-			['day_type'=>5,'time_start'=>null,'time_finish'=>null],
-			['day_type'=>6,'time_start'=>null,'time_finish'=>null],
-			['day_type'=>7,'time_start'=>null,'time_finish'=>null],
+    public static function parserWorktime($workingHours): array
+    {
+        $arrayResult = [
+            1 => ['day_type' => 1, 'time_start' => null, 'time_finish' => null],
+            ['day_type' => 2, 'time_start' => null, 'time_finish' => null],
+            ['day_type' => 3, 'time_start' => null, 'time_finish' => null],
+            ['day_type' => 4, 'time_start' => null, 'time_finish' => null],
+            ['day_type' => 5, 'time_start' => null, 'time_finish' => null],
+            ['day_type' => 6, 'time_start' => null, 'time_finish' => null],
+            ['day_type' => 7, 'time_start' => null, 'time_finish' => null],
         ];
 
-        foreach ($workingHours as $workingHour){
-            $arrayResult[$workingHour['day_type']]['time_start'] = Yii::$app->formatter->asTime($workingHour['time_start'], 'HH:mm');
-            $arrayResult[$workingHour['day_type']]['time_finish'] = Yii::$app->formatter->asTime($workingHour['time_finish'], 'HH:mm');
+        foreach ($workingHours as $workingHour) {
+            $arrayResult[$workingHour['day_type']]['time_start'] = Yii::$app->formatter->asTime($workingHour['time_start'],
+                'HH:mm');
+            $arrayResult[$workingHour['day_type']]['time_finish'] = Yii::$app->formatter->asTime($workingHour['time_finish'],
+                'HH:mm');
         }
 
         return $arrayResult;
     }
 
-    public static function parserForEditor(string $html, bool $editorDefault = false):string
+    public static function parserForEditor(string $html, bool $editorDefault = false): string
     {
-		$insertItems = \phpQuery::newDocument($html);
+        $insertItems = \phpQuery::newDocument($html);
 
-		$containerEditor = pq('<div></div>');
+        $containerEditor = pq('<div></div>');
 
-		$numberItem = 0;
+        $numberItem = 0;
 
-		foreach ($insertItems['.insert-item'] as $insertItem){
-            if(pq($insertItem)->hasClass('video')){
+        foreach ($insertItems['.insert-item'] as $insertItem) {
+            if (pq($insertItem)->hasClass('video')) {
                 $tmpContainerItem = pq('<div class="item-editor item container-insert">
                                             <div class="container-toolbar"> 
                                                 <div class="title-toolbar">Видео</div> 
@@ -216,7 +250,7 @@ class Helper{
                 $insert->html(pq($insertItem)->html());
                 $containerEditor->append($tmpContainerItem);
 
-            }elseif (pq($insertItem)->find('.block-photo-post')->length()){
+            } elseif (pq($insertItem)->find('.block-photo-post')->length()) {
 
                 $tmpContainerItem = pq('<div class="item-editor item container-insert">
                                             <div class="container-toolbar"> 
@@ -237,7 +271,7 @@ class Helper{
 
                 $input = pq('<input placeholder="Подпись к фото" class="img-source">');
 
-                if($insert->find('.photo-desc')->length()){
+                if ($insert->find('.photo-desc')->length()) {
                     $input->val($insert->find('.photo-desc')->text());
                     $insert->find('.photo-desc')->remove();
                 }
@@ -246,13 +280,11 @@ class Helper{
 
                 $containerEditor->append($tmpContainerItem);
 
-            }
-
-            else{
+            } else {
                 $tmpContainerItem = pq('<div class="item  container-editor"><div class="editable"></div></div>');
-                if($editorDefault && $numberItem++ == 0){
-					$tmpContainerItem->addClass('item-editor-default');
-                }else{
+                if ($editorDefault && $numberItem++ == 0) {
+                    $tmpContainerItem->addClass('item-editor-default');
+                } else {
                     $tmpContainerItem = pq('<div class="item-editor item container-editor"><div class="container-toolbar"> <div class="title-toolbar">Текст</div> <div class="btns-toolbar-container"><div class="btn-toolbar-top"></div> <div class="btn-toolbar-down"></div> <div class="btn-toolbar-close"></div></div></div> <div class="editable"></div></div>');
                 }
                 $editable = pq($tmpContainerItem->find('.editable'));
@@ -264,42 +296,46 @@ class Helper{
         return $containerEditor->html();
     }
 
-    public  static function getTextMarkReviews(int $mark):string {
-        switch ($mark){
-			case 1:
-				return 'Очень плохо';
-				break;
-			case 2:
-				return 'Не понравилось';
-				break;
-			case 3:
-				return 'Нормально';
-				break;
-			case 4:
-				return 'Хорошо';
-				break;
-			case 5:
-				return 'Отлично';
-				break;
-			default :
-				return 'Поставьте вашу оценку';
-				break;
+    public static function getTextMarkReviews(int $mark): string
+    {
+        switch ($mark) {
+            case 1:
+                return 'Очень плохо';
+                break;
+            case 2:
+                return 'Не понравилось';
+                break;
+            case 3:
+                return 'Нормально';
+                break;
+            case 4:
+                return 'Хорошо';
+                break;
+            case 5:
+                return 'Отлично';
+                break;
+            default :
+                return 'Поставьте вашу оценку';
+                break;
         }
     }
 
-    public static function checkValidUrl(string $currentUrl, string $validUrl){
+    public static function checkValidUrl(string $currentUrl, string $validUrl)
+    {
 
-        if($currentUrl == $validUrl){
+        if ($currentUrl == $validUrl) {
             return true;
-        }else{
-            return Yii::$app->getResponse()->redirect(array($validUrl), 301);
+        } else {
+            return Yii::$app->getResponse()->redirect([$validUrl], 301);
         }
 
     }
 
-    public static function getMetro(){
+    public static function getMetro()
+    {
 
-        $metro = [['id' => 'Уручье', 'name' => 'Уручье'],
+        $metro = [
+            ['id' => 'Уручье', 'name' => 'Уручье'],
             ['id' => 'Борисовский тракт', 'name' => 'Борисовский тракт'],
             ['id' => 'Восток', 'name' => 'Восток'],
             ['id' => 'Московская', 'name' => 'Московская'],
@@ -330,7 +366,7 @@ class Helper{
             ['id' => 'Могилёвская', 'name' => 'Могилёвская'],
         ];
 
-        ArrayHelper::multisort($metro,'id');
+        ArrayHelper::multisort($metro, 'id');
 
         return $metro;
 

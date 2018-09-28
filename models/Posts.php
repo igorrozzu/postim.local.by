@@ -44,7 +44,7 @@ class Posts extends \yii\db\ActiveRecord
     public static $STATUS = [
         'moderation' => 0,
         'confirm' => 1,
-        'private'=> 2,
+        'private' => 2,
     ];
 
     /**
@@ -86,12 +86,15 @@ class Posts extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         return [
             'OpenPlace' => [
                 'class' => 'app\behaviors\OpenPlace',
-                'only_is_open' => false
+                'only_is_open' => false,
             ],
             'slug' => [
                 'class' => 'app\behaviors\Slug',
@@ -101,17 +104,26 @@ class Posts extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @return mixed
+     */
     public function getPostUnderCategory()
     {
         return $this->hasMany(PostUnderCategory::className(), ['post_id' => 'id']);
     }
 
+    /**
+     * @return mixed
+     */
     public function getCategories()
     {
         return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
             ->via('postUnderCategory');
     }
 
+    /**
+     * @return mixed
+     */
     public function getOnlyOnceCategories()
     {
         return $this->hasMany(UnderCategory::className(), ['id' => 'under_category_id'])
@@ -121,6 +133,9 @@ class Posts extends \yii\db\ActiveRecord
             });
     }
 
+    /**
+     * @return mixed
+     */
     public function getMainCategory()
     {
         return $this->hasOne(UnderCategory::className(), ['id' => 'under_category_id'])
@@ -212,8 +227,10 @@ class Posts extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    public function getTotalComments(){
-        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['posts']])->count();
+    public function getTotalComments()
+    {
+        return $this->hasMany(Comments::className(),
+            ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['posts']])->count();
     }
 
     public function getHasLike()
@@ -284,7 +301,8 @@ class Posts extends \yii\db\ActiveRecord
     {
         parent::afterFind();
 
-        if (strpos($this->cover, 'default') !== false && $this->isRelationPopulated('lastPhoto') && isset($this->lastPhoto)) {
+        if (strpos($this->cover,
+                'default') !== false && $this->isRelationPopulated('lastPhoto') && isset($this->lastPhoto)) {
             $this->cover = $this->lastPhoto->getPhotoPath();
         }
 
@@ -294,11 +312,11 @@ class Posts extends \yii\db\ActiveRecord
             $this->is_like = true;
         }
 
-        if($this->isRelationPopulated('hasSendBs') && !empty($this->hasSendBs)){
+        if ($this->isRelationPopulated('hasSendBs') && !empty($this->hasSendBs)) {
             $this->has_send_bs = true;
         }
 
-        if($this->isRelationPopulated('actualDiscounts') && !empty($this->actualDiscounts)){
+        if ($this->isRelationPopulated('actualDiscounts') && !empty($this->actualDiscounts)) {
             $this->hasActualDiscounts = true;
         }
 
@@ -310,7 +328,8 @@ class Posts extends \yii\db\ActiveRecord
         if (isset(Yii::$app->request->cookies)) {
             if ($this->distance == null && $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation') ? \yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')) : false) {
                 if ($this->lat && $this->lon) {
-                    $this->distanceText = Yii::$app->oldFormatter->asShortLength(Helper::getDistanceBP($this->lat, $this->lon,
+                    $this->distanceText = Yii::$app->oldFormatter->asShortLength(Helper::getDistanceBP($this->lat,
+                        $this->lon,
                         $CurrentMePosition['lat'], $CurrentMePosition['lon']));
                 }
             }
@@ -325,7 +344,7 @@ class Posts extends \yii\db\ActiveRecord
     public function beforeValidate()
     {
 
-        if($this->lat && $this->lon){
+        if ($this->lat && $this->lon) {
             $this->coordinates = '(' . $this->lat . ',' . $this->lon . ')';
         }
 
@@ -370,18 +389,19 @@ class Posts extends \yii\db\ActiveRecord
         return $features_result;
     }
 
-    public function getUrl(){
-        return   '/'.$this->url_name.'-p'.$this->id;
+    public function getUrl()
+    {
+        return '/' . $this->url_name . '-p' . $this->id;
     }
 
-    private function getImgsForSiteMap():array
+    private function getImgsForSiteMap(): array
     {
 
         $photos = Gallery::find()->select(new Expression("CONCAT('/Fotografiya-{$this->url_name}-f', \"id\") as link"))
-            ->where(['post_id'=> $this->id])
+            ->where(['post_id' => $this->id])
             ->indexBy('id')->column();
 
-        if(!$photos){
+        if (!$photos) {
             return [];
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 use \yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 
@@ -17,12 +18,21 @@ Pjax::begin([
     <div class="block-content">
         <h1 class="h1-c" style="margin-top: 35px">Добавить страницу</h1>
         <div class="container-add-place container-feedback" style="margin-top: 30px">
-            <?php $form = ActiveForm::begin(['id' => 'form-edit-page', 'enableClientScript' => false,'action'=>'/admin/post/other-page','options'=>['pjax-container-edit-page'=>'true']]) ?>
+            <?php $form = ActiveForm::begin([
+                'id' => 'form-edit-page',
+                'enableClientScript' => false,
+                'action' => '/admin/post/other-page',
+                'options' => ['pjax-container-edit-page' => 'true'],
+            ]) ?>
             <div class="block-field-setting">
                 <label class="label-field-setting">URL страницы</label>
                 <?= $form->field($editPage, 'url_name')
-                    ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                        'placeholder' => 'Вставьте адрес страницы', 'value' => $editPage['url_name']])
+                    ->textInput([
+                        'style' => 'margin-bottom: 15px;',
+                        'class' => 'input-field-setting',
+                        'placeholder' => 'Вставьте адрес страницы',
+                        'value' => $editPage['url_name'],
+                    ])
                     ->label(false) ?>
             </div>
 
@@ -32,14 +42,14 @@ Pjax::begin([
                 </div>
                 <input id="btn-form-edit-page" type="submit" style="display: none;">
             </label>
-            <?php ActiveForm::end()?>
+            <?php ActiveForm::end() ?>
 
         </div>
         <div class="margin-top60"></div>
     </div>
 <?php
 
-if(isset($toastMessage)) {
+if (isset($toastMessage)) {
     $js = <<<JS
     $(document).ready(function () {
         $().toastmessage('showToast', {

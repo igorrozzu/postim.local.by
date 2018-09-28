@@ -38,7 +38,7 @@ class GallerySearch extends Gallery
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$pagination)
+    public function search($params, $pagination)
     {
         $query = Gallery::find();
 
@@ -46,20 +46,19 @@ class GallerySearch extends Gallery
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=>$pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);
-        $query->orderBy(['status'=>SORT_ASC]);
+        $query->orderBy(['status' => SORT_ASC]);
         $query->with(['post', 'user']);
-        $query->leftJoin(ReviewsGallery::tableName(),ReviewsGallery::tableName().'.gallery_id = '.Gallery::tableName().'.id');
-        $query->where(['review_id'=>null]);
+        $query->leftJoin(ReviewsGallery::tableName(),
+            ReviewsGallery::tableName() . '.gallery_id = ' . Gallery::tableName() . '.id');
+        $query->where(['review_id' => null]);
 
         if (!$this->validate()) {
             return $dataProvider;
         }
-
-
 
 
         return $dataProvider;

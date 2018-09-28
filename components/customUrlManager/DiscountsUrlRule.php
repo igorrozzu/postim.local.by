@@ -31,8 +31,10 @@ class DiscountsUrlRule extends CityUrlRule
             $params['city']['name'] = $arrIndex['indexCities'][$queryParams[0]]['name'];
             $params['city']['url_name'] = $arrIndex['indexCities'][$queryParams[0]]['url_name'];
 
-            \Yii::$app->city->setCity(['name' => $params['city']['name'],
-                'url_name' => $params['city']['url_name']]);
+            \Yii::$app->city->setCity([
+                'name' => $params['city']['name'],
+                'url_name' => $params['city']['url_name'],
+            ]);
 
             return [$route, $params];
         }

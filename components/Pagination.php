@@ -1,11 +1,13 @@
 <?php
+
 namespace app\components;
 
 use Yii;
 use yii\web\Link;
 use yii\web\Request;
 
-class Pagination extends \yii\data\Pagination{
+class Pagination extends \yii\data\Pagination
+{
 
     public $selfParams = [
         'moderation' => true,
@@ -13,8 +15,8 @@ class Pagination extends \yii\data\Pagination{
 
     public function createUrl($page, $pageSize = null, $absolute = false)
     {
-        $page = (int) $page;
-        $pageSize = (int) $pageSize;
+        $page = (int)$page;
+        $pageSize = (int)$pageSize;
         if (($params = $this->params) === null) {
             $request = Yii::$app->getRequest();
             $params = $request instanceof Request ? $request->getQueryParams() : [];
@@ -42,12 +44,13 @@ class Pagination extends \yii\data\Pagination{
         }
     }
 
-    private function trimParams($params){
-        $resultParams=[];
+    private function trimParams($params)
+    {
+        $resultParams = [];
 
-        foreach ($params as $key => $param){
-            if(isset($this->selfParams[$key]) && $this->selfParams[$key]){
-                $resultParams[$key]=$param;
+        foreach ($params as $key => $param) {
+            if (isset($this->selfParams[$key]) && $this->selfParams[$key]) {
+                $resultParams[$key] = $param;
             }
         }
 

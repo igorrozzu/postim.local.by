@@ -39,7 +39,7 @@ class ReviewsSearch extends Reviews
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$pagination)
+    public function search($params, $pagination)
     {
         $query = Reviews::find();
 
@@ -47,7 +47,7 @@ class ReviewsSearch extends Reviews
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);
@@ -58,8 +58,8 @@ class ReviewsSearch extends Reviews
             return $dataProvider;
         }
 
-        $query->orderBy(['status'=>SORT_ASC,'date'=>SORT_DESC]);
-        $query->with(['post','user','gallery']);
+        $query->orderBy(['status' => SORT_ASC, 'date' => SORT_DESC]);
+        $query->with(['post', 'user', 'gallery']);
 
 
         // grid filtering conditions

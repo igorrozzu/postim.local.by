@@ -4,17 +4,19 @@
     .block-widgets,
     .block-footer-content,
     .menu-info-cards,
-    .header{
+    .header {
         width: 1260px;
         margin: 0 auto;
     }
+
     .a-auto-complete,
-    .block-auto-complete-header{
+    .block-auto-complete-header {
         width: 1260px;
         margin-left: auto;
         margin-right: auto;
     }
-    .btn_br{
+
+    .btn_br {
         display: flex;
         float: right;
         width: 300px;
@@ -27,15 +29,17 @@
         margin-left: 15px;
         cursor: pointer;
     }
-    .btn_br:hover{
+
+    .btn_br:hover {
         background-color: #bc3737;
     }
+
     /*Cтили toastMessage*/
     .toast-position-top-right {
-        right: calc((100% - 1260px)/2);
+        right: calc((100% - 1260px) / 2);
     }
-    /*end Cтили toastMessage*/
 
+    /*end Cтили toastMessage*/
     .cards-block-discount.row-3 .card-block-discount:nth-child(3n) {
         margin-right: 0px;
     }

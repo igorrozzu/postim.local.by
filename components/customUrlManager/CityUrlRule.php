@@ -9,7 +9,8 @@ use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use app\models\City;
 
-class CityUrlRule extends Object implements UrlRuleInterface{
+class CityUrlRule extends Object implements UrlRuleInterface
+{
 
     public function createUrl($manager, $route, $params)
     {
@@ -22,14 +23,15 @@ class CityUrlRule extends Object implements UrlRuleInterface{
         return false;
     }
 
-    protected function getIndexArray(){
-        if(!$indexCities = \Yii::$app->cache->get('list_citi_from_bd')){
+    protected function getIndexArray()
+    {
+        if (!$indexCities = \Yii::$app->cache->get('list_citi_from_bd')) {
             $indexCities = ArrayHelper::index(City::find()
-                ->select(['name','url_name'])
-                ->orderBy(['name'=>SORT_ASC])
-                ->all(),'url_name');
+                ->select(['name', 'url_name'])
+                ->orderBy(['name' => SORT_ASC])
+                ->all(), 'url_name');
 
-            \Yii::$app->cache->add('list_citi_from_bd',$indexCities,600);
+            \Yii::$app->cache->add('list_citi_from_bd', $indexCities, 600);
         }
 
 

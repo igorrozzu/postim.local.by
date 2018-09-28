@@ -21,13 +21,13 @@ $this->title = 'Оплата через систему "Расчет" (ЕРИП)
                 <tr>
                     <td><span class="fill-account-text style1">Заказ №</span></td>
                     <td style="padding: 0 0 10px 10px;">
-                        <input type="text" class="payment-text-input" value="<?=$model->id?>" readonly>
+                        <input type="text" class="payment-text-input" value="<?= $model->id ?>" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td><span class="fill-account-text style1">Стоимость</span></td>
                     <td style="padding: 0 0 0 10px;">
-                        <input type="text" class="payment-text-input" value="<?=$model->money?>" readonly>
+                        <input type="text" class="payment-text-input" value="<?= $model->money ?>" readonly>
                     </td>
                 </tr>
             </table>

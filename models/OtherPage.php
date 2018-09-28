@@ -65,41 +65,43 @@ class OtherPage extends \yii\db\ActiveRecord
     }
 
 
-    public static function convertUrl(string $url){
-        $newUrl = preg_replace('/(https?:\/\/.+(?=\/))|\?.+/','',$url);
+    public static function convertUrl(string $url)
+    {
+        $newUrl = preg_replace('/(https?:\/\/.+(?=\/))|\?.+/', '', $url);
         return $newUrl;
     }
 
-    public static function initMetaTags($func){
+    public static function initMetaTags($func)
+    {
 
         $response = [
             'title' => '',
             'description' => '',
             'keywords' => '',
             'descriptionText' => '',
-            'h1' => ''
+            'h1' => '',
         ];
 
-        $response = ArrayHelper::merge($response,call_user_func($func));
+        $response = ArrayHelper::merge($response, call_user_func($func));
 
-        $currentUrl = Url::to('',true);
+        $currentUrl = Url::to('', true);
 
-        $descPage = self::find()->where(['url_name'=>self::convertUrl($currentUrl)])->one();
-        if($descPage){
+        $descPage = self::find()->where(['url_name' => self::convertUrl($currentUrl)])->one();
+        if ($descPage) {
 
-            if($descPage['title']){
+            if ($descPage['title']) {
                 $response['title'] = $descPage['title'];
             }
-            if($descPage['description']){
+            if ($descPage['description']) {
                 $response['description'] = $descPage['description'];
             }
-            if($descPage['key_word']){
+            if ($descPage['key_word']) {
                 $response['keywords'] = $descPage['key_word'];
             }
-            if($descPage['description_text']){
+            if ($descPage['description_text']) {
                 $response['descriptionText'] = $descPage['description_text'];
             }
-            if($descPage['h1']){
+            if ($descPage['h1']) {
                 $response['h1'] = $descPage['h1'];
             }
         }
@@ -107,8 +109,7 @@ class OtherPage extends \yii\db\ActiveRecord
         return $response;
 
 
-
     }
-    
-    
+
+
 }

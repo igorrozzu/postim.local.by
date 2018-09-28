@@ -39,16 +39,16 @@ class UnderCategoryFeaturesSearch extends UnderCategoryFeatures
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$pagination)
+    public function search($params, $pagination)
     {
         $query = UnderCategoryFeatures::find();
-        $query->joinWith(['features','underCategory']);
+        $query->joinWith(['features', 'underCategory']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);

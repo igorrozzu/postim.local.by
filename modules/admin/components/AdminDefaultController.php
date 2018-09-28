@@ -17,23 +17,23 @@ class AdminDefaultController extends Controller
     {
         parent::init();
 
-        if(!\Yii::$app->user->isModerator()){
+        if (!\Yii::$app->user->isModerator()) {
             throw new NotFoundHttpException('Cтраница не найдена');
         }
 
         $secretCookies = \Yii::$app->request->cookies->getValue('tokenWewefwf');
 
-        if (\Yii::$app->user->generationSecretToken() === $secretCookies){
+        if (\Yii::$app->user->generationSecretToken() === $secretCookies) {
 
-        }elseIf($tokenWewefwf = \Yii::$app->request->get('tokenWewefwf',false)){
+        } elseIf ($tokenWewefwf = \Yii::$app->request->get('tokenWewefwf', false)) {
 
             $currentUrl = \Yii::$app->request->getPathInfo();
-            if($currentUrl != 'admin/default/set-wewefwf'){
+            if ($currentUrl != 'admin/default/set-wewefwf') {
 
                 throw new NotFoundHttpException('Cтраница не найдена');
             }
 
-        }else{
+        } else {
             throw new NotFoundHttpException('Cтраница не найдена');
         }
 

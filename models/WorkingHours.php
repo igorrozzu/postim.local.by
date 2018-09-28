@@ -33,7 +33,13 @@ class WorkingHours extends \yii\db\ActiveRecord
         return [
             [['time_start', 'time_finish', 'post_id'], 'integer'],
             [['post_id'], 'required'],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
+            [
+                ['post_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Posts::className(),
+                'targetAttribute' => ['post_id' => 'id'],
+            ],
         ];
     }
 

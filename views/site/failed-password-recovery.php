@@ -5,7 +5,8 @@
     </div>
     <div class="body-popup-authentication">
         <div class="text-label" style="line-height: 18px;">Ссылка для восстановления пароля аккаунта на
-            Постим уже устарела. Ничего страшного. Просто отправьте ещё раз. Ждём!</div>
+            Постим уже устарела. Ничего страшного. Просто отправьте ещё раз. Ждём!
+        </div>
 
         <div class="field-btn" style="margin-top: 20px;">
             <div class="btn-red recovery-btn">Восстановить пароль</div>

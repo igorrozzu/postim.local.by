@@ -24,7 +24,7 @@ class UploadUserPhoto extends Model
         return [
             [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif'],
             [['imageFile'], 'file', 'maxSize' => 5242880],
-            ['imageFile', 'image', 'minWidth' => 300, 'minHeight' => 300,]
+            ['imageFile', 'image', 'minWidth' => 300, 'minHeight' => 300,],
         ];
     }
 
@@ -33,11 +33,11 @@ class UploadUserPhoto extends Model
         try {
             if ($this->validate()) {
                 $dir = Yii::getAlias('@webroot/user_photo/' . $user->getId() . '/');
-                if(!is_dir($dir)){
+                if (!is_dir($dir)) {
                     FileHelper::createDirectory($dir);
                 }
                 $pathToPhoto = $dir . Yii::$app->params['user.photoName'];
-                if($this->imageFile->saveAs($pathToPhoto)) {
+                if ($this->imageFile->saveAs($pathToPhoto)) {
                     ImageHelper::createSquarePicture($pathToPhoto);
                     $user->photo_hash = time();
                     $user->save();

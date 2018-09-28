@@ -9,7 +9,7 @@ $this->title = 'Мои промокоды на Postim.by';
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
-    <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
+    <?= BreadCrumb::widget(['breadcrumbParams' => $breadcrumbParams]) ?>
     <h1 class="h1-v">Мои промокоды</h1>
 </div>
 <?php
@@ -24,18 +24,18 @@ Pjax::begin([
 <div class="block-flex-white">
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
-            <a href="<?=Url::to(['user/get-promocodes'])?>">
-                <div class="btn2-menu <?=($status === 'active') ? 'active' : ''?>">
+            <a href="<?= Url::to(['user/get-promocodes']) ?>">
+                <div class="btn2-menu <?= ($status === 'active') ? 'active' : '' ?>">
                     Действующие
                 </div>
             </a>
-            <a href="<?=Url::to(['user/get-promocodes', 'status' => 'inactive', 'type' => 'promocode'])?>">
-                <div class="btn2-menu <?=($status === 'inactive') ? 'active' : ''?>">
+            <a href="<?= Url::to(['user/get-promocodes', 'status' => 'inactive', 'type' => 'promocode']) ?>">
+                <div class="btn2-menu <?= ($status === 'inactive') ? 'active' : '' ?>">
                     Использованые
                 </div>
             </a>
-            <a href="<?=Url::to(['user/get-promocodes', 'status' => 'expired', 'type' => 'promocode'])?>" >
-                <div class="btn2-menu <?=($status === 'expired') ? 'active' : ''?>">
+            <a href="<?= Url::to(['user/get-promocodes', 'status' => 'expired', 'type' => 'promocode']) ?>">
+                <div class="btn2-menu <?= ($status === 'expired') ? 'active' : '' ?>">
                     Просроченные
                 </div>
             </a>
@@ -45,17 +45,17 @@ Pjax::begin([
 
 <div class="block-content">
     <div class="container-cards-promo">
-    <?= CardsPromoWidget::widget([
-        'dataProvider' => $dataProvider,
-        'settings' => [
-            'show-more-btn' => true,
-            'replace-container-id' => 'feed-promo',
-            'load-time' => $loadTime,
-            'show-more-btn-text' => 'Показать больше промокодов',
-            'not-found-text' => 'Промокодов не найдено.',
-            'status' => $status,
-        ]
-    ]);?>
+        <?= CardsPromoWidget::widget([
+            'dataProvider' => $dataProvider,
+            'settings' => [
+                'show-more-btn' => true,
+                'replace-container-id' => 'feed-promo',
+                'load-time' => $loadTime,
+                'show-more-btn-text' => 'Показать больше промокодов',
+                'not-found-text' => 'Промокодов не найдено.',
+                'status' => $status,
+            ],
+        ]); ?>
     </div>
 </div>
 <?php

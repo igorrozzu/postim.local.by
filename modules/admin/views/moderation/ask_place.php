@@ -7,7 +7,6 @@ $currentUrl = yii\helpers\Url::current([], true);
 $this->title = 'Вопросы и ответы';
 
 
-
 Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => false,
@@ -26,18 +25,18 @@ Pjax::begin([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions' => [
-            'class' => 'table --custom-tbl-p'
+            'class' => 'table --custom-tbl-p',
         ],
-        'layout'=>"{items}\n{pager}",
+        'layout' => "{items}\n{pager}",
         'columns' => [
             [
                 'attribute' => 'data',
                 'format' => 'raw',
                 'label' => 'Текст',
-                'headerOptions' => ['width'=>'550px','class' => '--header-p'],
-                'value'=>function($data){
+                'headerOptions' => ['width' => '550px', 'class' => '--header-p'],
+                'value' => function ($data) {
                     return "<a data-pjax=false target=\"_blank\" class='data-link' href='{$data->getHrefToPost()}'>{$data->data}</a>";
-                }
+                },
 
             ],
 
@@ -45,28 +44,28 @@ Pjax::begin([
                 'attribute' => 'user_id',
                 'format' => 'raw',
                 'label' => 'Пользователь',
-                'headerOptions' => ['width'=>'30px','class' => '--header-p'],
-                'value' => function($data){
+                'headerOptions' => ['width' => '30px', 'class' => '--header-p'],
+                'value' => function ($data) {
                     return "<a data-pjax=false target=\"_blank\" class='data-link' href='/id{$data->user->id}'>{$data->user->name} {$data->user->surname}</a>";
-                }
+                },
             ],
 
             [
                 'attribute' => null,
                 'format' => 'raw',
                 'label' => 'Есть ответ?',
-                'headerOptions' => ['width'=>'100px','class' => '--header-p'],
-                'value' => function($data){
-                    if($data->hasAnswer()){
+                'headerOptions' => ['width' => '100px', 'class' => '--header-p'],
+                'value' => function ($data) {
+                    if ($data->hasAnswer()) {
                         return 'Да';
                     }
                     return 'Нет';
-                }
+                },
             ],
 
 
         ],
-    ]);?>
+    ]); ?>
 </div>
 
 

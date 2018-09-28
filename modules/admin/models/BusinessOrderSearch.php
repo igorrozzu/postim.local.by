@@ -50,7 +50,7 @@ class BusinessOrderSearch extends BusinessOrder
             ],
         ]);
         $query->with('user');
-        $query->orderBy(['date'=>SORT_DESC]);
+        $query->orderBy(['date' => SORT_DESC]);
 
         $this->load($params);
 

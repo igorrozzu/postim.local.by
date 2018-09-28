@@ -1,210 +1,210 @@
 var Post_add = (function (window, document, undefined, $) {
 
-    return function () {
+	return function () {
 
-        var that = {
+		var that = {
 
-            initEvents: function () {
-                $(document).off('click', '.btn-open-field')
-                    .on('click', '.btn-open-field', function (e) {
-                        if ($(this).data('open') == false) {
+			initEvents: function () {
+				$(document).off('click', '.btn-open-field')
+						.on('click', '.btn-open-field', function (e) {
+							if ($(this).data('open') == false) {
+								that.selectorFields.closeSelector();
+								that.selectorFields.init({
+									$selectedFieldContainer: $(this).parents('.selectorFields')
+								});
+								$(this).data('open', true);
+								$(this).attr('data-open', true);
+							} else {
+								if ($(e.target).is('input')) return false;
+								that.selectorFields.destruction({
+									$selectedFieldContainer: $(this).parents('.selectorFields')
+								});
+								$(this).data('open', false);
+								$(this).attr('data-open', false);
+							}
+						});
+
+				$(document).off('click', '.close-selected-option')
+						.on('click', '.close-selected-option', function () {
+							that.selectorFields.showSelected($(this).parents('.selectorFields')
+									.find('.between-selected-field')
+									.selector
+							);
+							$(this).parents('.btn-selected-option').remove();
 							that.selectorFields.closeSelector();
-                            that.selectorFields.init({
-                                $selectedFieldContainer: $(this).parents('.selectorFields')
-                            });
-                            $(this).data('open',true);
-                            $(this).attr('data-open',true);
-                        } else {
-							if($(e.target).is('input')) return false;
-							that.selectorFields.destruction({
-								$selectedFieldContainer: $(this).parents('.selectorFields')
-							});
-							$(this).data('open',false);
-							$(this).attr('data-open',false);
-                        }
-                    });
-
-				$(document).off('click','.close-selected-option')
-					.on('click','.close-selected-option',function () {
-						that.selectorFields.showSelected($(this).parents('.selectorFields')
-							.find('.between-selected-field')
-							.selector
-						);
-						$(this).parents('.btn-selected-option').remove();
-						that.selectorFields.closeSelector();
-					});
+						});
 
 				$(document).off('click', '.add-field-contact .option-select-field')
-					.on('click', '.add-field-contact .option-select-field', function () {
-						var caseField = $(this).data('value');
-						var elemAfterInsert = $('#' + $(this).parents('.container-scroll').attr('id') + '-value').parents('.selected-field');
-						that.contacts.init(elemAfterInsert);
-						that.contacts.caseStart(caseField);
-						if(caseField == 'Веб-сайт'){
-							$(this).hide();
-						}
-						$('#' + $(this).parents('.container-scroll').attr('id') + '-value').click();
-					});
-
-				$(document).off('keydown','.validator')
-					.on('keydown','.validator',function () {
-						var $input = $(this);
-						setTimeout(function () {
-							var regexp = new RegExp($input.attr('data-regex'));
-							if(!regexp.test($input.val())){
-								$input.parents('.'+$input.attr('data-error-parents')).addClass('error');
-								that.validation.addError({$elem:$input,message:$input.attr('data-message')});
-							}else {
-								if($input.parents('.'+$input.attr('data-error-parents')).hasClass('error')){
-									$input.parents('.'+$input.attr('data-error-parents')).removeClass('error');
-									that.validation.removeError($input);
-								}
+						.on('click', '.add-field-contact .option-select-field', function () {
+							var caseField = $(this).data('value');
+							var elemAfterInsert = $('#' + $(this).parents('.container-scroll').attr('id') + '-value').parents('.selected-field');
+							that.contacts.init(elemAfterInsert);
+							that.contacts.caseStart(caseField);
+							if (caseField == 'Веб-сайт') {
+								$(this).hide();
 							}
-						},10)
-					});
+							$('#' + $(this).parents('.container-scroll').attr('id') + '-value').click();
+						});
+
+				$(document).off('keydown', '.validator')
+						.on('keydown', '.validator', function () {
+							var $input = $(this);
+							setTimeout(function () {
+								var regexp = new RegExp($input.attr('data-regex'));
+								if (!regexp.test($input.val())) {
+									$input.parents('.' + $input.attr('data-error-parents')).addClass('error');
+									that.validation.addError({$elem: $input, message: $input.attr('data-message')});
+								} else {
+									if ($input.parents('.' + $input.attr('data-error-parents')).hasClass('error')) {
+										$input.parents('.' + $input.attr('data-error-parents')).removeClass('error');
+										that.validation.removeError($input);
+									}
+								}
+							}, 10)
+						});
 
 				$(document).off('click', '.close-input-contact')
-					.on('click', '.close-input-contact', function () {
-						$(this).parents('.block-input-contact').remove();
-						if($(this).parents('.block-input-contact').find('input[name="contacts[web_site]"]').length){
-							$('.add-field-contact .option-select-field[data-value="Веб-сайт"]').show();
-						}
-					});
-				$(document).off('click','.select-all')
-					.on('click', '.select-all', function () {
-						if($(this).hasClass('active')){
-							that.workTime.clearBtns(true);
-						}else {
-							that.workTime.clearBtns(true);
-							that.workTime.selectedAll();
-							$(this).addClass('active');
-						}
-
-
-					});
-				$(document).off('click','.unselect-all')
-					.on('click', '.unselect-all', function () {
-						if($(this).hasClass('active')){
-							that.workTime.clearBtns(true);
-						}else {
-							that.workTime.clearBtns(true);
-							$(this).addClass('active');
-							that.workTime.unSelectedAll()
-						}
-
-
-					});
-
-				$(document).off('click','#categories .option-select-field')
-					.on('click','#categories .option-select-field',function () {
-						that.features.getFeatures()
-					});
-
-				$(document).off('click','#categories .close-selected-option')
-					.on('click','#categories .close-selected-option',function () {
-						that.features.getFeatures()
-					});
-				$(document).off('change','.photo-add').on('change','.photo-add',function (e) {
-					that.photos.addPhotos.call(this, e, '/post/upload-tmp-photo');
-				});
-				$(document).off('click','.btn-add-photos-gallery')
-					.on('click','.btn-add-photos-gallery',function () {
-						$('.photo-add').trigger('click');
-					});
-				$(document).off('click','.btn-close-photo-gallery')
-					.on('click','.btn-close-photo-gallery',function () {
-						that.photos.deletePhoto($(this).parents('.item-photo-from-gallery').attr('id'));
-					});
-				$(document).off('click','.btn-edit-photo-gallery')
-					.on('click','.btn-edit-photo-gallery',function () {
-						that.photos.editPhoto($(this).parents('.item-photo-from-gallery').attr('id'));
-					});
-				$(document).off('click','.close-photo-info')
-					.on('click','.close-photo-info',function () {
-						$(this).parents('.container-blackout-popup-window').hide();
-					});
-				$(document).off('click','.btn-confirm-photo-gallery')
-					.on('click','.btn-confirm-photo-gallery',function () {
-						that.photos.confirmPhoto($(this).parents('.item-photo-from-gallery').attr('id'));
-						$('.btn-confirm-photo-gallery').removeClass('active');
-						$(this).addClass('active');
-					});
-				$(document).off('click','.btn-place-save')
-					.on('click','.btn-place-save',function () {
-						if(editable.parserEditable()){
-							if(that.validation.validate()){
-								$('#post-form').submit();
-							}else {
-								that.showMessage(that.validation.getLastMessage(),'error');
+						.on('click', '.close-input-contact', function () {
+							$(this).parents('.block-input-contact').remove();
+							if ($(this).parents('.block-input-contact').find('input[name="contacts[web_site]"]').length) {
+								$('.add-field-contact .option-select-field[data-value="Веб-сайт"]').show();
+							}
+						});
+				$(document).off('click', '.select-all')
+						.on('click', '.select-all', function () {
+							if ($(this).hasClass('active')) {
+								that.workTime.clearBtns(true);
+							} else {
+								that.workTime.clearBtns(true);
+								that.workTime.selectedAll();
+								$(this).addClass('active');
 							}
 
-						}
-					});
+
+						});
+				$(document).off('click', '.unselect-all')
+						.on('click', '.unselect-all', function () {
+							if ($(this).hasClass('active')) {
+								that.workTime.clearBtns(true);
+							} else {
+								that.workTime.clearBtns(true);
+								$(this).addClass('active');
+								that.workTime.unSelectedAll()
+							}
+
+
+						});
+
+				$(document).off('click', '#categories .option-select-field')
+						.on('click', '#categories .option-select-field', function () {
+							that.features.getFeatures()
+						});
+
+				$(document).off('click', '#categories .close-selected-option')
+						.on('click', '#categories .close-selected-option', function () {
+							that.features.getFeatures()
+						});
+				$(document).off('change', '.photo-add').on('change', '.photo-add', function (e) {
+					that.photos.addPhotos.call(this, e, '/post/upload-tmp-photo');
+				});
+				$(document).off('click', '.btn-add-photos-gallery')
+						.on('click', '.btn-add-photos-gallery', function () {
+							$('.photo-add').trigger('click');
+						});
+				$(document).off('click', '.btn-close-photo-gallery')
+						.on('click', '.btn-close-photo-gallery', function () {
+							that.photos.deletePhoto($(this).parents('.item-photo-from-gallery').attr('id'));
+						});
+				$(document).off('click', '.btn-edit-photo-gallery')
+						.on('click', '.btn-edit-photo-gallery', function () {
+							that.photos.editPhoto($(this).parents('.item-photo-from-gallery').attr('id'));
+						});
+				$(document).off('click', '.close-photo-info')
+						.on('click', '.close-photo-info', function () {
+							$(this).parents('.container-blackout-popup-window').hide();
+						});
+				$(document).off('click', '.btn-confirm-photo-gallery')
+						.on('click', '.btn-confirm-photo-gallery', function () {
+							that.photos.confirmPhoto($(this).parents('.item-photo-from-gallery').attr('id'));
+							$('.btn-confirm-photo-gallery').removeClass('active');
+							$(this).addClass('active');
+						});
+				$(document).off('click', '.btn-place-save')
+						.on('click', '.btn-place-save', function () {
+							if (editable.parserEditable()) {
+								if (that.validation.validate()) {
+									$('#post-form').submit();
+								} else {
+									that.showMessage(that.validation.getLastMessage(), 'error');
+								}
+
+							}
+						});
 				$(document).ready(function () {
-                    $(document).on('keydown','.js-search-on-map', $.debounce(1400,that.searchOnMap));
-                });
+					$(document).on('keydown', '.js-search-on-map', $.debounce(1400, that.searchOnMap));
+				});
 
 				that.workTime.initInputEvents();
 
-            },
+			},
 			setPlace: function (latlng) {
 				var $block_coords_address = $('#coords_address');
 				$block_coords_address.val(latlng.lat + ',' + latlng.lng);
-				$block_coords_address.attr('value',latlng.lat + ',' + latlng.lng);
+				$block_coords_address.attr('value', latlng.lat + ',' + latlng.lng);
 			},
 
-			searchOnMap:function () {
+			searchOnMap: function () {
 
-            	var inputSearchText = $(this).val();
-            	var zoom = /(ул\.?(ица)?)/.test(inputSearchText)?17:12;
+				var inputSearchText = $(this).val();
+				var zoom = /(ул\.?(ица)?)/.test(inputSearchText) ? 17 : 12;
 
-                $.ajax({
-                    url: '/site/search-coords-by-address',
-                    type: "get",
-                    dataType: "json",
-                    data: {
-                        address: inputSearchText
-                    },
-                    success: function (response) {
-                        if(response.error == false){
-                            map.moveToMap({lat:response.response.lat,lon:response.response.lng},zoom)
-                        }
-                    }
-                });
+				$.ajax({
+					url: '/site/search-coords-by-address',
+					type: "get",
+					dataType: "json",
+					data: {
+						address: inputSearchText
+					},
+					success: function (response) {
+						if (response.error == false) {
+							map.moveToMap({lat: response.response.lat, lon: response.response.lng}, zoom)
+						}
+					}
+				});
 
 
-            },
+			},
 
-            selectorFields: {
-                $selectedFieldContainer: null,
+			selectorFields: {
+				$selectedFieldContainer: null,
 				$containerOptions: null,
-                is_many: false,
-				max_block:null,
-                $inputSearch:null,
-                info: null,
+				is_many: false,
+				max_block: null,
+				$inputSearch: null,
+				info: null,
 				id: null,
 
-                init: function (p) {
+				init: function (p) {
 
-                    that.selectorFields.$selectedFieldContainer = p.$selectedFieldContainer;
-                    that.selectorFields.$inputSearch = that.selectorFields.$selectedFieldContainer.find('.search-selected-field');
-                    that.selectorFields.$containerOptions = that.selectorFields.$selectedFieldContainer.find('.container-options');
+					that.selectorFields.$selectedFieldContainer = p.$selectedFieldContainer;
+					that.selectorFields.$inputSearch = that.selectorFields.$selectedFieldContainer.find('.search-selected-field');
+					that.selectorFields.$containerOptions = that.selectorFields.$selectedFieldContainer.find('.container-options');
 
-                    if (that.selectorFields.$selectedFieldContainer.data('is-many')) {
-                        that.selectorFields.is_many = true;
+					if (that.selectorFields.$selectedFieldContainer.data('is-many')) {
+						that.selectorFields.is_many = true;
 						that.selectorFields.max_block = that.selectorFields.$selectedFieldContainer.data('max');
-                    }else{
-                    	that.selectorFields.max_block = 1;
+					} else {
+						that.selectorFields.max_block = 1;
 						that.selectorFields.is_many = false;
 					}
 
 					that.selectorFields.id = that.selectorFields.$selectedFieldContainer.data('id');
 
-                    that.selectorFields.$selectedFieldContainer.addClass('active');
-                    that.selectorFields.info = that.selectorFields.$selectedFieldContainer.data('info');
-                    that.selectorFields.updateInfo();
+					that.selectorFields.$selectedFieldContainer.addClass('active');
+					that.selectorFields.info = that.selectorFields.$selectedFieldContainer.data('info');
+					that.selectorFields.updateInfo();
 
-					that.selectorFields.$inputSearch.attr('type','text');
+					that.selectorFields.$inputSearch.attr('type', 'text');
 					that.selectorFields.$inputSearch.val('');
 
 					that.selectorFields.$inputSearch.blur();
@@ -212,18 +212,18 @@ var Post_add = (function (window, document, undefined, $) {
 
 					that.selectorFields.renderLists(that.selectorFields.info);
 
-                    that.selectorFields.initScrollBar(that.selectorFields.$selectedFieldContainer.find('.container-scroll-fields'));
-                    that.selectorFields.initEvents();
+					that.selectorFields.initScrollBar(that.selectorFields.$selectedFieldContainer.find('.container-scroll-fields'));
+					that.selectorFields.initEvents();
 
-                },
+				},
 
-				renderLists:function (lists) {
+				renderLists: function (lists) {
 					var $container_tmp = $('<div></div>');
 					var $list_tmp = $('<div data-value="" class="option-select-field"></div>');
 					if (that.selectorFields.$containerOptions != null) {
 						var number = lists.length;
-						for (var i = 0; i < number; i++){
-							$list_tmp.attr('data-value',lists[i].id);
+						for (var i = 0; i < number; i++) {
+							$list_tmp.attr('data-value', lists[i].id);
 							$list_tmp.text(lists[i].name);
 							$container_tmp.append($list_tmp.clone());
 						}
@@ -232,15 +232,15 @@ var Post_add = (function (window, document, undefined, $) {
 					}
 				},
 
-                initEvents: function () {
-                    $(document).on('keydown',that.selectorFields.$inputSearch.selector,function () {
-                        setTimeout(function () {
+				initEvents: function () {
+					$(document).on('keydown', that.selectorFields.$inputSearch.selector, function () {
+						setTimeout(function () {
 							var new_lists = [];
-							var textFil=that.selectorFields.$inputSearch.val();
+							var textFil = that.selectorFields.$inputSearch.val();
 							var expr = new RegExp(textFil, 'i');
 							var number = that.selectorFields.info.length;
 
-							for (var i = 0; i < number; i++){
+							for (var i = 0; i < number; i++) {
 
 								if (expr.test(that.selectorFields.info[i].name)) {
 									new_lists.push(that.selectorFields.info[i]);
@@ -249,56 +249,56 @@ var Post_add = (function (window, document, undefined, $) {
 							}
 							that.selectorFields.renderLists(new_lists);
 
-						},10)
+						}, 10)
 					});
 
-					if(that.selectorFields.is_many){
-                    	$(document).on('click','.option-select-field',function () {
+					if (that.selectorFields.is_many) {
+						$(document).on('click', '.option-select-field', function () {
 
 							$block_inputs = that.selectorFields.$selectedFieldContainer.find('.block-inputs');
-                    		if($block_inputs.find('.btn-selected-option').length < that.selectorFields.max_block){
+							if ($block_inputs.find('.btn-selected-option').length < that.selectorFields.max_block) {
 								var $content = $('<div class="btn-selected-option"><span class="option-text">Текст</span> <span class="close-selected-option"></span> <input name="" value="" style="display: none"> </div>');
 
 								$content.find('.option-text').text($(this).text());
 								$content.find('input').val($(this).attr('data-value'));
 								$content.find('input').attr('value', $(this).attr('data-value'));
-								$content.find('input').attr('name',that.selectorFields.id+'[]');
+								$content.find('input').attr('name', that.selectorFields.id + '[]');
 								$block_inputs.append($content.clone());
 
-								if(($block_inputs.find('.btn-selected-option').length == that.selectorFields.max_block)){
+								if (($block_inputs.find('.btn-selected-option').length == that.selectorFields.max_block)) {
 									that.selectorFields.hideSelected(that.selectorFields.$selectedFieldContainer
-										.find('.between-selected-field')
+											.find('.between-selected-field')
 									);
 								}
 
 								that.selectorFields.closeSelector();
-							}else {
-                    			// TODO показать сообщение о ошибки
+							} else {
+								// TODO показать сообщение о ошибки
 							}
 						})
-					}else {
+					} else {
 
-						$(document).on('click','.option-select-field',function () {
+						$(document).on('click', '.option-select-field', function () {
 
 							$block_inputs = that.selectorFields.$selectedFieldContainer.find('.block-inputs');
-							$block_inputs.css('display','none');
+							$block_inputs.css('display', 'none');
 
 							var $content = $('<div class="btn-selected-option"><span class="option-text">Текст</span> <span class="close-selected-option"></span> <input name="" value="" style="display: none"> </div>');
 
 							$content.find('.option-text').text($(this).text());
 							$content.find('input').val($(this).attr('data-value'));
 							$content.find('input').attr('value', $(this).attr('data-value'));
-							$content.find('input').attr('name',that.selectorFields.id);
+							$content.find('input').attr('name', that.selectorFields.id);
 							$block_inputs.html($content.clone());
-							that.selectorFields.$inputSearch.attr('data-value',$(this).text()).css('color','#444444');
+							that.selectorFields.$inputSearch.attr('data-value', $(this).text()).css('color', '#444444');
 
-							if(that.selectorFields.id == 'city'){
+							if (that.selectorFields.id == 'city') {
 								that.selectorFields.moveToMapByCity(that.selectorFields.$inputSearch.attr('data-value'));
 
-								if($(this).text() == 'Минск'){
+								if ($(this).text() == 'Минск') {
 									that.selectorFields.openBlockMetro();
-								}else {
-                                    that.selectorFields.closeBlockMetro();
+								} else {
+									that.selectorFields.closeBlockMetro();
 								}
 							}
 
@@ -307,31 +307,31 @@ var Post_add = (function (window, document, undefined, $) {
 						})
 					}
 
-                },
+				},
 
-                destruction: function () {
-                	that.selectorFields.destructionEvents();
+				destruction: function () {
+					that.selectorFields.destructionEvents();
 					that.selectorFields.$selectedFieldContainer.removeClass('active');
 					that.selectorFields.destructScrollBar(that.selectorFields.$selectedFieldContainer.find('.container-scroll-fields'));
-                    that.selectorFields.$selectedFieldContainer = null;
+					that.selectorFields.$selectedFieldContainer = null;
 					that.selectorFields.$containerOptions = null;
 
-					that.selectorFields.$inputSearch.attr('type','button');
+					that.selectorFields.$inputSearch.attr('type', 'button');
 					that.selectorFields.$inputSearch.val(that.selectorFields.$inputSearch.attr('data-value')).blur();
 
 					that.selectorFields.is_many = false;
-                    that.selectorFields.$inputSearch = null;
-                    that.selectorFields.info = null;
-                    that.selectorFields.max_block = null;
+					that.selectorFields.$inputSearch = null;
+					that.selectorFields.info = null;
+					that.selectorFields.max_block = null;
 					that.selectorFields.id = null;
-                },
-                destructionEvents: function () {
-					$(document).off('keydown',that.selectorFields.$inputSearch.selector);
-					$(document).off('click','.option-select-field');
+				},
+				destructionEvents: function () {
+					$(document).off('keydown', that.selectorFields.$inputSearch.selector);
+					$(document).off('click', '.option-select-field');
 
-                },
+				},
 				initScrollBar: function ($container) {
-                	main.initCustomScrollBar($container,{scrollInertia: 50});
+					main.initCustomScrollBar($container, {scrollInertia: 50});
 				},
 				destructScrollBar: function ($container) {
 					$container.mCustomScrollbar('destroy');
@@ -339,30 +339,30 @@ var Post_add = (function (window, document, undefined, $) {
 				closeSelector: function () {
 					if (that.selectorFields.$selectedFieldContainer != null) {
 						that.selectorFields.$selectedFieldContainer
-							.find('.between-selected-field')
-							.data('open', false)
-							.attr('data-open', false);
+								.find('.between-selected-field')
+								.data('open', false)
+								.attr('data-open', false);
 						that.selectorFields.destruction({
 							$selectedFieldContainer: that.selectorFields.$selectedFieldContainer
 						})
 					}
 				},
 				updateInfo: function () {
-                	var new_info = [];
-                	var someIds = {};
+					var new_info = [];
+					var someIds = {};
 
-                	var $block_inputs = that.selectorFields.$selectedFieldContainer.find('.block-inputs');
+					var $block_inputs = that.selectorFields.$selectedFieldContainer.find('.block-inputs');
 					that.selectorFields.info = that.selectorFields.$selectedFieldContainer.data('info');
-                	$block_inputs.find('.btn-selected-option').each(function () {
+					$block_inputs.find('.btn-selected-option').each(function () {
 						someIds[$(this).find('input').val()] = false;
 					});
 
 					var number = that.selectorFields.info.length;
 
-					for(var i = 0; i< number; i++){
-						if(that.selectorFields.info[i].id in someIds){
+					for (var i = 0; i < number; i++) {
+						if (that.selectorFields.info[i].id in someIds) {
 
-						}else {
+						} else {
 							new_info.push(that.selectorFields.info[i]);
 						}
 					}
@@ -372,14 +372,14 @@ var Post_add = (function (window, document, undefined, $) {
 				},
 				hideSelected: function ($elem) {
 					$elem.hide();
-					$elem.parents('.selectorFields').find('.block-inputs').css({marginBottom:'20px'})
+					$elem.parents('.selectorFields').find('.block-inputs').css({marginBottom: '20px'})
 				},
 				showSelected: function (selector) {
 					$(selector).show();
-					$(selector).parents('.selectorFields').find('.block-inputs').css({marginBottom:'0'})
+					$(selector).parents('.selectorFields').find('.block-inputs').css({marginBottom: '0'})
 				},
 
-				moveToMapByCity:function(name){
+				moveToMapByCity: function (name) {
 					$.ajax({
 						url: '/site/get-coords-by-address',
 						type: "get",
@@ -388,8 +388,11 @@ var Post_add = (function (window, document, undefined, $) {
 							address: name
 						},
 						success: function (response) {
-							if(response.error == false){
-								map.moveToMap({lat:response.location.lat,lon:response.location.lng},response.zoom)
+							if (response.error == false) {
+								map.moveToMap({
+									lat: response.location.lat,
+									lon: response.location.lng
+								}, response.zoom)
 							}
 						}
 					});
@@ -397,21 +400,21 @@ var Post_add = (function (window, document, undefined, $) {
 
 				openBlockMetro: function () {
 					$('.block-field-setting.metro').show();
-                },
+				},
 
-                closeBlockMetro: function () {
-                    $('.block-field-setting.metro').hide();
-                    $('.block-field-setting.metro').find('.block-inputs').html();
+				closeBlockMetro: function () {
+					$('.block-field-setting.metro').hide();
+					$('.block-field-setting.metro').find('.block-inputs').html();
 
-                },
+				},
 
 
-            },
-            contacts: {
-				$blockInputContact : null,
-				$inputContact : null,
-				$btnClose : null,
-				$elemAfterInsert : null,
+			},
+			contacts: {
+				$blockInputContact: null,
+				$inputContact: null,
+				$btnClose: null,
+				$elemAfterInsert: null,
 
 				init: function ($elemAfterInsert) {
 					that.contacts.$elemAfterInsert = $elemAfterInsert;
@@ -427,60 +430,68 @@ var Post_add = (function (window, document, undefined, $) {
 				},
 
 				caseStart: function (caseField) {
-					function createBlock(img,placeholder,name,regix) {
-						that.contacts.$blockInputContact.find('img').attr('src',img);
-						that.contacts.$inputContact.attr('placeholder',placeholder);
-						that.contacts.$inputContact.attr('name',name);
-						that.contacts.$inputContact.attr('data-regex',regix);
+					function createBlock(img, placeholder, name, regix) {
+						that.contacts.$blockInputContact.find('img').attr('src', img);
+						that.contacts.$inputContact.attr('placeholder', placeholder);
+						that.contacts.$inputContact.attr('name', name);
+						that.contacts.$inputContact.attr('data-regex', regix);
 						that.contacts.batchInsert();
 					}
-					switch (caseField){
-						case 'Телефон':{
-							createBlock('/img/icon-phone-min.png','Номер телефона','contacts[phones][]','^[0-9 +-]{3,20}$')
-						}break;
-						case 'Веб-сайт':{
+
+					switch (caseField) {
+						case 'Телефон': {
+							createBlock('/img/icon-phone-min.png', 'Номер телефона', 'contacts[phones][]', '^[0-9 +-]{3,20}$')
+						}
+							break;
+						case 'Веб-сайт': {
 							createBlock('/img/icon-link-min.png',
-								'Ссылка на сайт', 'contacts[web_site]',
-								'^((https?:\\/\\/)?([\\da-z.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?)|((https?:\\/\\/)?([\\dа-я.-]+)\\.([а-я\\.]{2,6})([\\/а-я \\.-]*)*\\/?)$'
+									'Ссылка на сайт', 'contacts[web_site]',
+									'^((https?:\\/\\/)?([\\da-z.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?)|((https?:\\/\\/)?([\\dа-я.-]+)\\.([а-я\\.]{2,6})([\\/а-я \\.-]*)*\\/?)$'
 							);
-						}break;
-						case 'Вконтакте':{
-							createBlock('/img/icon-vk-min.png','https://vk.com/...','contacts[social_networks][][vk]','^https:\\/\\/vk.com\\/.+$','')
-						}break;
-						case 'Одноклассники':{
+						}
+							break;
+						case 'Вконтакте': {
+							createBlock('/img/icon-vk-min.png', 'https://vk.com/...', 'contacts[social_networks][][vk]', '^https:\\/\\/vk.com\\/.+$', '')
+						}
+							break;
+						case 'Одноклассники': {
 							createBlock('/img/icon-ok-min.png',
-								'https://www.ok.ru/...', 'contacts[social_networks][][ok]',
-								'^https:\\/\\/(www\\.)?ok\\.ru\\/.+$'
+									'https://www.ok.ru/...', 'contacts[social_networks][][ok]',
+									'^https:\\/\\/(www\\.)?ok\\.ru\\/.+$'
 							);
-						}break;
-						case 'Twitter':{
+						}
+							break;
+						case 'Twitter': {
 							createBlock('/img/icon-tw-min.png',
-								'https://twitter.com/...', 'contacts[social_networks][][tw]',
-								'^https:\\/\\/twitter.com\\/.+$'
+									'https://twitter.com/...', 'contacts[social_networks][][tw]',
+									'^https:\\/\\/twitter.com\\/.+$'
 							);
-						}break;
-						case 'Facebook':{
+						}
+							break;
+						case 'Facebook': {
 							createBlock('/img/icon-fb-min.png',
-								'https://www.facebook.com/...', 'contacts[social_networks][][fb]',
-								'^https:\\/\\/(www\\.)?facebook\\.com\\/.+$'
+									'https://www.facebook.com/...', 'contacts[social_networks][][fb]',
+									'^https:\\/\\/(www\\.)?facebook\\.com\\/.+$'
 							);
-						}break;
-						case 'Instagram':{
+						}
+							break;
+						case 'Instagram': {
 							createBlock('/img/icon-instagram-min.png',
-								'https://www.instagram.com/...', 'contacts[social_networks][][inst]',
-								'^https?:\\/\\/(www\\.)?instagram\\.com\\/.+$'
+									'https://www.instagram.com/...', 'contacts[social_networks][][inst]',
+									'^https?:\\/\\/(www\\.)?instagram\\.com\\/.+$'
 							);
-						}break;
+						}
+							break;
 
 					}
 
 				}
 			},
 			workTime: {
-            	is_btn_active: false,
+				is_btn_active: false,
 				selectedAll: function () {
 					var $btn_input = $('.input-time-work-btn input');
-					$btn_input.attr('value','select');
+					$btn_input.attr('value', 'select');
 					$btn_input.val('select');
 					$('.close-select-field').trigger('click');
 					that.workTime.is_btn_active = true;
@@ -488,38 +499,38 @@ var Post_add = (function (window, document, undefined, $) {
 				},
 				unSelectedAll: function () {
 					var $btn_input = $('.input-time-work-btn input');
-					$btn_input.attr('value','unselect');
+					$btn_input.attr('value', 'unselect');
 					$btn_input.val('unselect');
 					$('.close-select-field').trigger('click');
 					that.workTime.is_btn_active = true;
 					that.workTime.clearAllError();
 				},
 				clearBtns: function (all) {
-					if(all){
+					if (all) {
 						var $timeInputs = $('.container-time .time-period input');
 						$timeInputs.val('');
-						$timeInputs.attr('value','');
+						$timeInputs.attr('value', '');
 					}
 
 					$('.unselect-all').removeClass('active');
 					$('.select-all').removeClass('active');
-					$('.input-time-work-btn input').attr('value','');
+					$('.input-time-work-btn input').attr('value', '');
 					$('.input-time-work-btn input').val('');
 					that.workTime.is_btn_active = false;
 				},
-				initInputEvents:function () {
+				initInputEvents: function () {
 					$(document).off('keydown', '.container-time .time-period input')
-						.on('keydown', '.container-time .time-period input', function () {
-							var __this = this;
-							setTimeout(function () {
-								that.workTime.checkValid($(__this).parents('.container-row-time-work'));
+							.on('keydown', '.container-time .time-period input', function () {
+								var __this = this;
+								setTimeout(function () {
+									that.workTime.checkValid($(__this).parents('.container-row-time-work'));
 
-								if(that.workTime.is_btn_active){
-									that.workTime.clearBtns(false);
-								}
-							},10);
+									if (that.workTime.is_btn_active) {
+										that.workTime.clearBtns(false);
+									}
+								}, 10);
 
-						})
+							})
 				},
 				clearAllError: function () {
 					$('.container-row-time-work').each(function () {
@@ -529,36 +540,36 @@ var Post_add = (function (window, document, undefined, $) {
 				},
 				checkValid: function ($parent) {
 					var is_valid = true;
-					var $input1 =  $parent.find('.time-period input').eq(0);
-					var $input2 =  $parent.find('.time-period input').eq(1);
+					var $input1 = $parent.find('.time-period input').eq(0);
+					var $input2 = $parent.find('.time-period input').eq(1);
 
-					if($input1.val().length !== 0 || $input2.val().length !== 0){
-						if($input1.val().length !==5){
+					if ($input1.val().length !== 0 || $input2.val().length !== 0) {
+						if ($input1.val().length !== 5) {
 							$input1.parents('.time-period').addClass('error');
 							is_valid = false;
-						}else {
+						} else {
 							$input1.parents('.time-period').removeClass('error');
 						}
-						if($input2.val().length !==5){
+						if ($input2.val().length !== 5) {
 							$input2.parents('.time-period').addClass('error');
 							is_valid = false;
-						}else {
+						} else {
 							$input2.parents('.time-period').removeClass('error');
 						}
-					}else {
+					} else {
 						$input2.parents('.time-period').removeClass('error');
 						$input1.parents('.time-period').removeClass('error');
 					}
 
-					if(!is_valid){
-						that.validation.addError({$elem:$parent,message:'Введите коректное время работы'});
-					}else {
+					if (!is_valid) {
+						that.validation.addError({$elem: $parent, message: 'Введите коректное время работы'});
+					} else {
 						that.validation.removeError($parent);
 					}
 				}
 			},
-			features:{
-				$containerFeatures:null,
+			features: {
+				$containerFeatures: null,
 
 				getFeatures: function () {
 					setTimeout(function () {
@@ -589,87 +600,87 @@ var Post_add = (function (window, document, undefined, $) {
 					var $typeBlock2 = $('<div class="block-field-setting" id="">' +
 							'<label class="label-field-setting"> Текст</label> ' +
 							'<input  name="features[id]" class="input-field-setting validator" data-error-parents="block-field-setting" data-regex="^[0-9]*[.,]?[0-9]{0,}$" data-message="Некорректно введены данные" placeholder="Текст" value=""> ' +
-						'</div>');
+							'</div>');
 
 					var $typeBlock3 = $('<div class="block-field-setting" id="">' +
 							'<label class="label-field-setting">Текс</label>' +
 							'<div class="selectorFields"  data-is-many="true" data-id="" data-max="1000" data-info=""> ' +
-								'<div class="block-inputs"></div> ' +
-								'<div class="between-selected-field btn-open-field" data-open=false> ' +
-									'<input class="search-selected-field" type="button" data-value="Выберите категорию" value="Выберите категорию" placeholder="Выберите категорию">' +
-									'<div class="open-select-field2"></div> ' +
-								'</div>' +
-								'<div class="container-scroll-fields">' +
-									'<div class="container-options"></div> ' +
-								'</div> ' +
+							'<div class="block-inputs"></div> ' +
+							'<div class="between-selected-field btn-open-field" data-open=false> ' +
+							'<input class="search-selected-field" type="button" data-value="Выберите категорию" value="Выберите категорию" placeholder="Выберите категорию">' +
+							'<div class="open-select-field2"></div> ' +
+							'</div>' +
+							'<div class="container-scroll-fields">' +
+							'<div class="container-options"></div> ' +
 							'</div> ' +
-						'</div>');
+							'</div> ' +
+							'</div>');
 
 
-					for (var i = 0; i < number; i++){
+					for (var i = 0; i < number; i++) {
 						if (features.rubrics[i].type == 2) {
-							if($('#'+features.rubrics[i].id).length){
-								$typeBlock2 = $('#'+features.rubrics[i].id);
-								$typeBlock2.find('input').attr('value',$typeBlock2.find('input').val());
-							}else {
-								var text  = features.rubrics[i].name.charAt(0).toUpperCase() + features.rubrics[i].name.substr(1).toLowerCase();
-								$typeBlock2.attr('id',features.rubrics[i].id);
+							if ($('#' + features.rubrics[i].id).length) {
+								$typeBlock2 = $('#' + features.rubrics[i].id);
+								$typeBlock2.find('input').attr('value', $typeBlock2.find('input').val());
+							} else {
+								var text = features.rubrics[i].name.charAt(0).toUpperCase() + features.rubrics[i].name.substr(1).toLowerCase();
+								$typeBlock2.attr('id', features.rubrics[i].id);
 								$typeBlock2.find('.label-field-setting').text(text);
-								$typeBlock2.find('input').attr('name','features['+features.rubrics[i].id+']');
-								$typeBlock2.find('input').attr('placeholder','Введите '+features.rubrics[i].name);
+								$typeBlock2.find('input').attr('name', 'features[' + features.rubrics[i].id + ']');
+								$typeBlock2.find('input').attr('placeholder', 'Введите ' + features.rubrics[i].name);
 							}
 							that.features.$containerFeatures.append($typeBlock2.clone());
 						} else {
-							if($('#'+features.rubrics[i].id).length){
-								$typeBlock3 = $('#'+features.rubrics[i].id);
-							}else {
-								var text  = features.rubrics[i].name.charAt(0).toUpperCase() + features.rubrics[i].name.substr(1).toLowerCase();
-								$typeBlock3.attr('id',features.rubrics[i].id);
+							if ($('#' + features.rubrics[i].id).length) {
+								$typeBlock3 = $('#' + features.rubrics[i].id);
+							} else {
+								var text = features.rubrics[i].name.charAt(0).toUpperCase() + features.rubrics[i].name.substr(1).toLowerCase();
+								$typeBlock3.attr('id', features.rubrics[i].id);
 								$typeBlock3.find('.label-field-setting').text(text);
 								$typeBlock3.find('.selectorFields')
-									.attr('data-id','features['+features.rubrics[i].id+']')
-									.attr('data-info',JSON.stringify(features.rubrics[i].underFeatures));
+										.attr('data-id', 'features[' + features.rubrics[i].id + ']')
+										.attr('data-info', JSON.stringify(features.rubrics[i].underFeatures));
 								$typeBlock3.find('.search-selected-field')
-									.attr('data-value','Выберите')
-									.attr('value','Выберите ')
-									.attr('placeholder','Выберите');
+										.attr('data-value', 'Выберите')
+										.attr('value', 'Выберите ')
+										.attr('placeholder', 'Выберите');
 							}
 							that.features.$containerFeatures.append($typeBlock3.clone());
 						}
 					}
 
 					number = features.additionally.length;
-					if(number > 0){
-						if($('#additionally').length){
+					if (number > 0) {
+						if ($('#additionally').length) {
 							$typeBlock3 = $('#additionally');
 							$typeBlock3.find('.selectorFields')
-								.attr('data-info',JSON.stringify(features.additionally));
+									.attr('data-info', JSON.stringify(features.additionally));
 
 							$('#additionally .btn-selected-option input').each(function () {
 								var id = $(this).attr('value');
 								var bar = false;
-								for(var index = 0; index < number; index++){
-									if(features.additionally[index].id == id){
+								for (var index = 0; index < number; index++) {
+									if (features.additionally[index].id == id) {
 										bar = true;
 										break;
 									}
 								}
-								if(bar === false){
+								if (bar === false) {
 									$(this).parents('.btn-selected-option').remove();
 								}
 							})
 
-						}else {
-							var text  = 'Особенности';
-							$typeBlock3.attr('id','additionally');
+						} else {
+							var text = 'Особенности';
+							$typeBlock3.attr('id', 'additionally');
 							$typeBlock3.find('.label-field-setting').text(text);
 							$typeBlock3.find('.selectorFields')
-								.attr('data-id','features[additionally]')
-								.attr('data-info',JSON.stringify(features.additionally));
+									.attr('data-id', 'features[additionally]')
+									.attr('data-info', JSON.stringify(features.additionally));
 							$typeBlock3.find('.search-selected-field')
-								.attr('data-value','Выберите особенности')
-								.attr('value','Выберите особенности')
-								.attr('placeholder','Выберите особенности');
+									.attr('data-value', 'Выберите особенности')
+									.attr('value', 'Выберите особенности')
+									.attr('placeholder', 'Выберите особенности');
 						}
 						that.features.$containerFeatures.append($typeBlock3.clone());
 					}
@@ -683,7 +694,7 @@ var Post_add = (function (window, document, undefined, $) {
 					$('.block-features').html(that.features.$containerFeatures.html());
 				}
 			},
-			photos:{
+			photos: {
 				addPhotos: function (e, url) {
 					if (uploads.validatePhotos(e.target.files)) {
 						var form = new FormData();
@@ -693,12 +704,12 @@ var Post_add = (function (window, document, undefined, $) {
 						uploads.uploadFiles(url, form, that.photos.renderPhotos);
 						$(this).val('');
 
-					}else {
+					} else {
 						$().toastmessage('showToast', {
-							text     : 'Изображение должно быть в формате JPG, GIF или PNG.' +
+							text: 'Изображение должно быть в формате JPG, GIF или PNG.' +
 							' Макс. размер файла: 15 МБ. Не более 10 файлов',
-							stayTime:  5000,
-							type     : 'error'
+							stayTime: 5000,
+							type: 'error'
 						});
 					}
 				},
@@ -707,100 +718,103 @@ var Post_add = (function (window, document, undefined, $) {
 					var $tmp = $('<div id="" class="item-photo-from-gallery" style=""> <div class="container-blackout"> <div class="header-btns"> <span class="btn-item-photo btn-close-photo-gallery"></span> </div> <div class="footer-btns"> <span class="btn-item-photo btn-confirm-photo-gallery"></span> <span class="btn-item-photo btn-edit-photo-gallery"></span> </div> </div> </div>');
 					var $containerNewPhoto = $('<div></div>');
 					var $blockInput = $('<div id="">' +
-								'<input class="src" name="photos[link][src]" type="text">' +
-								'<input class="confirm" name="photos[link][confirm]" type="text">' +
-						'</div>');
+							'<input class="src" name="photos[link][src]" type="text">' +
+							'<input class="confirm" name="photos[link][confirm]" type="text">' +
+							'</div>');
 
 					var $containerBlockInputs = $('<div></div>');
 
-					if(response.success){
+					if (response.success) {
 
 						var number = response.data.length;
-                        var folder = response.folder;
+						var folder = response.folder;
 
 						for (var i = 0; i < number; i++) {
 							$tmp.css('background-image', 'url("/' + folder + '/tmp/' + response.data[i].link + '")');
 							$tmp.attr('id', that.photos.getHashCode(response.data[i].link));
 							$containerNewPhoto.append($tmp.clone());
 
-							$blockInput.attr('id', 'inputs_'+that.photos.getHashCode(response.data[i].link));
+							$blockInput.attr('id', 'inputs_' + that.photos.getHashCode(response.data[i].link));
 							$blockInput.find('.src')
-								.attr('name', 'photos[' + response.data[i].link + '][src]');
+									.attr('name', 'photos[' + response.data[i].link + '][src]');
 							$blockInput.find('.confirm')
-								.attr('name', 'photos[' + response.data[i].link + '][confirm]');
+									.attr('name', 'photos[' + response.data[i].link + '][confirm]');
 							$containerBlockInputs.append($blockInput.clone());
 						}
 
 						$('.block-gallery').append($containerNewPhoto.html());
 						$('.block-inputs-gallery').append($containerBlockInputs.html());
 
-					}else {
+					} else {
 						$().toastmessage('showToast', {
-							text     : response.message,
-							stayTime:  5000,
-							type     : 'error'
+							text: response.message,
+							stayTime: 5000,
+							type: 'error'
 						});
 					}
 				},
 				deletePhoto: function (id) {
-					$('#'+id).remove();
-					$('#inputs_'+id).remove();
+					$('#' + id).remove();
+					$('#inputs_' + id).remove();
 				},
-				getHashCode : function(s){
-					return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+				getHashCode: function (s) {
+					return s.split("").reduce(function (a, b) {
+						a = ((a << 5) - a) + b.charCodeAt(0);
+						return a & a
+					}, 0);
 				},
-				editPhoto:function (id) {
+				editPhoto: function (id) {
 					var __$containerForms = $('.container-blackout-popup-window');
-					var $inputSrc = $('#inputs_'+id).find('.src');
+					var $inputSrc = $('#inputs_' + id).find('.src');
 
 					__$containerForms.html(that.photos.getFormForEditPhoto(id, {
 						src: $inputSrc.val()
 					}))
-						.show();
+							.show();
 
 
-					$(__$containerForms.find('.src').selector).on('keydown',function () {
-						var $input =  $(this);
+					$(__$containerForms.find('.src').selector).on('keydown', function () {
+						var $input = $(this);
 						setTimeout(function () {
 							var value = $input.val();
-                            if(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(value) || value.length == 0){
-                                __$containerForms.find('.src').removeClass('error')
-                            }else {
-                                __$containerForms.find('.src').addClass('error')
-                            }
-                        },10);
+							if (/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(value) || value.length == 0) {
+								__$containerForms.find('.src').removeClass('error')
+							} else {
+								__$containerForms.find('.src').addClass('error')
+							}
+						}, 10);
 
-                    });
+					});
 					$('.save-info').click(function () {
 						var value = __$containerForms.find('.src').val();
 
-						if(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(value) || value.length == 0){
-                            $inputSrc.attr('value',value);
-                            $inputSrc.val(value);
-                            __$containerForms.hide();
-						}else {
-                            __$containerForms.find('.src').addClass('error')
+						if (/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(value) || value.length == 0) {
+							$inputSrc.attr('value', value);
+							$inputSrc.val(value);
+							__$containerForms.hide();
+						} else {
+							__$containerForms.find('.src').addClass('error')
 						}
 
 					})
 
 				},
-				confirmPhoto:function (id) {
+				confirmPhoto: function (id) {
 					$('.block-inputs-gallery .confirm').val(false);
-					$('.block-inputs-gallery .confirm').attr('value',false);
+					$('.block-inputs-gallery .confirm').attr('value', false);
 
 
-					var $inputConfirm = $('#inputs_'+id).find('.confirm');
+					var $inputConfirm = $('#inputs_' + id).find('.confirm');
 					$inputConfirm.val(true);
-					$inputConfirm.attr('value',true);
+					$inputConfirm.attr('value', true);
 
 				},
-				getFormForEditPhoto:function (id,info) {
+				getFormForEditPhoto: function (id, info) {
 					var form = null;
 					$.ajax({
 						url: '/post/get-photo-info',
 						type: "get",
-						async:false,
+						async: false,
 						data: {
 							src: info.src
 						},
@@ -815,22 +829,22 @@ var Post_add = (function (window, document, undefined, $) {
 				errors: [],
 				dopErrors: [],
 				is_valid: true,
-				is_change:false,
+				is_change: false,
 				hash_form: null,
 
-				check_change:function (start) {
-					var textInputs =  '';
+				check_change: function (start) {
+					var textInputs = '';
 
 					$('#post-form').find('input').each(function () {
 						textInputs += $(this).val();
 					});
 
-					if(start){
+					if (start) {
 
 						that.validation.hash_form = that.photos.getHashCode(textInputs);
 						that.validation.is_change = true;
 
-					}else {
+					} else {
 						var new_hash_form = that.photos.getHashCode(textInputs);
 						return new_hash_form !== that.validation.hash_form;
 					}
@@ -839,7 +853,7 @@ var Post_add = (function (window, document, undefined, $) {
 				addError: function (error) {
 					var id = +new Date();
 					var err = error;
-					if(!!!err.$elem.attr('data-error_id')){
+					if (!!!err.$elem.attr('data-error_id')) {
 						err.$elem.attr('data-error_id', id);
 						err.id = id;
 						that.validation.errors.push(err);
@@ -856,44 +870,44 @@ var Post_add = (function (window, document, undefined, $) {
 						}
 					}
 				},
-				validate:function () {
+				validate: function () {
 					var is_valid = true;
 					that.validation.checkValidate();
-					if(that.validation.errors.length !== 0) {
+					if (that.validation.errors.length !== 0) {
 						var number = that.validation.errors.length;
 						for (var i = 0; i < number; i++) {
-							if ($('[data-error_id='+that.validation.errors[i].id+']').length) {
+							if ($('[data-error_id=' + that.validation.errors[i].id + ']').length) {
 								is_valid = false;
-							}else {
+							} else {
 								that.validation.errors.splice(i, 1);
 							}
 						}
-						if(!is_valid){
+						if (!is_valid) {
 							return is_valid;
 						}
 					}
 
 					that.validation.dopErrors = [];
 
-					if(that.validation.is_change){
-						if(!that.validation.check_change(false)){
-							that.validation.dopErrors.push({message:'Нашли неточность или ошибку, исправьте или дополните информацию'});
+					if (that.validation.is_change) {
+						if (!that.validation.check_change(false)) {
+							that.validation.dopErrors.push({message: 'Нашли неточность или ошибку, исправьте или дополните информацию'});
 							is_valid = false;
 						}
 					}
 
-					if(!$('.input-time-work-btn input').val()){
+					if (!$('.input-time-work-btn input').val()) {
 						var is_valid_w = false;
 
 						$('.container-row-time-work input').each(function () {
-							if($(this).val()){
+							if ($(this).val()) {
 								is_valid_w = true;
 							}
 						});
 
-						if(!is_valid_w){
+						if (!is_valid_w) {
 							is_valid = false;
-							that.validation.dopErrors.push({message:'Режим работы, обязательно для заполнения'});
+							that.validation.dopErrors.push({message: 'Режим работы, обязательно для заполнения'});
 						}
 
 					}
@@ -902,7 +916,7 @@ var Post_add = (function (window, document, undefined, $) {
 						var value = $(this).val();
 						var message = $(this).attr('data-message');
 						var regexp = new RegExp($(this).attr('data-regex'));
-						if(!regexp.test(value)){
+						if (!regexp.test(value)) {
 							is_valid = false;
 							that.validation.dopErrors.push({message: message});
 						}
@@ -927,16 +941,16 @@ var Post_add = (function (window, document, undefined, $) {
 					return is_valid;
 
 				},
-				checkValidate:function () {
+				checkValidate: function () {
 					$('input.validator').each(function () {
 						var $input = $(this);
 						var regexp = new RegExp($input.attr('data-regex'));
-						if(!regexp.test($input.val())){
-							$input.parents('.'+$input.attr('data-error-parents')).addClass('error');
-							that.validation.addError({$elem:$input,message:$input.attr('data-message')});
-						}else {
-							if($input.parents('.'+$input.attr('data-error-parents')).hasClass('error')){
-								$input.parents('.'+$input.attr('data-error-parents')).removeClass('error');
+						if (!regexp.test($input.val())) {
+							$input.parents('.' + $input.attr('data-error-parents')).addClass('error');
+							that.validation.addError({$elem: $input, message: $input.attr('data-message')});
+						} else {
+							if ($input.parents('.' + $input.attr('data-error-parents')).hasClass('error')) {
+								$input.parents('.' + $input.attr('data-error-parents')).removeClass('error');
 								that.validation.removeError($input);
 							}
 						}
@@ -945,25 +959,25 @@ var Post_add = (function (window, document, undefined, $) {
 				getLastMessage: function () {
 					var number = that.validation.errors.length;
 					var dopNumber = that.validation.dopErrors.length;
-					if(number > 0){
+					if (number > 0) {
 						return that.validation.errors[0].message;
-					}else if(dopNumber > 0){
+					} else if (dopNumber > 0) {
 						return that.validation.dopErrors[dopNumber - 1].message;
 					}
 				}
 			},
-			showMessage: function (text,type) {
+			showMessage: function (text, type) {
 				$().toastmessage('showToast', {
 					text: text,
-					stayTime:5000,
-					type:type
+					stayTime: 5000,
+					type: type
 				});
 			}
 
-        };
+		};
 
-        return that;
-    }
+		return that;
+	}
 
 }(window, document, undefined, jQuery));
 

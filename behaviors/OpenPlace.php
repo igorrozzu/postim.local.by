@@ -16,7 +16,7 @@ class OpenPlace extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_FIND => 'getOpenPlace'
+            ActiveRecord::EVENT_AFTER_FIND => 'getOpenPlace',
         ];
     }
 
@@ -32,15 +32,18 @@ class OpenPlace extends Behavior
                     if (isset($workingHours[$currentDay])) {
                         $currentWorkingHours = $workingHours[$currentDay];
 
-                        $this->owner->current_working_hours = ['time_start' => $currentWorkingHours['time_start'],
+                        $this->owner->current_working_hours = [
+                            'time_start' => $currentWorkingHours['time_start'],
                             'time_finish' => $currentWorkingHours['time_finish'],
-                            'day_type' => $currentWorkingHours['day_type']
+                            'day_type' => $currentWorkingHours['day_type'],
                         ];
-                        $currentTimestamp = Yii::$app->formatter->asTimestamp(Yii::$app->formatter->asTime(time() + Yii::$app->user->getTimezoneInSeconds(), 'short'));
-                        $currentTime = idate('H', $currentTimestamp) * 3600 + idate('i', $currentTimestamp) * 60 + idate('s', $currentTimestamp);
-                        $currentTimePlus = $currentTime+ 24*3600;
+                        $currentTimestamp = Yii::$app->formatter->asTimestamp(Yii::$app->formatter->asTime(time() + Yii::$app->user->getTimezoneInSeconds(),
+                            'short'));
+                        $currentTime = idate('H', $currentTimestamp) * 3600 + idate('i',
+                                $currentTimestamp) * 60 + idate('s', $currentTimestamp);
+                        $currentTimePlus = $currentTime + 24 * 3600;
 
-                        if (($currentTime >= $currentWorkingHours['time_start'] && $currentTime <= $currentWorkingHours['time_finish']) ||($currentTimePlus >= $currentWorkingHours['time_start'] && $currentTimePlus <= $currentWorkingHours['time_finish'])) {
+                        if (($currentTime >= $currentWorkingHours['time_start'] && $currentTime <= $currentWorkingHours['time_finish']) || ($currentTimePlus >= $currentWorkingHours['time_start'] && $currentTimePlus <= $currentWorkingHours['time_finish'])) {
                             $this->owner->is_open = true;
 
                             if (!$this->only_is_open) {
@@ -50,14 +53,16 @@ class OpenPlace extends Behavior
                                 ) {
                                     $this->owner->timeOpenOrClosed = '';
                                 } else {
-                                    $this->owner->timeOpenOrClosed = 'до ' . Yii::$app->formatter->asTime(($currentWorkingHours['time_finish']), 'HH:mm');
+                                    $this->owner->timeOpenOrClosed = 'до ' . Yii::$app->formatter->asTime(($currentWorkingHours['time_finish']),
+                                            'HH:mm');
                                 }
                             }
 
                         } else {
                             if (!$this->only_is_open) {
                                 if ($currentTime < $currentWorkingHours['time_start']) {
-                                    $this->owner->timeOpenOrClosed = 'до ' . Yii::$app->formatter->asTime(($currentWorkingHours['time_start']), 'HH:mm');
+                                    $this->owner->timeOpenOrClosed = 'до ' . Yii::$app->formatter->asTime(($currentWorkingHours['time_start']),
+                                            'HH:mm');
                                 } else {
                                     if ($timeOpenOrClosed = $this->getNexWork($currentDay, $workingHours)) {
                                         $this->owner->timeOpenOrClosed = $timeOpenOrClosed;
@@ -101,7 +106,8 @@ class OpenPlace extends Behavior
         $i = isset($workingHours[$currentDay + 1]) ? $currentDay + 1 : 1;
         while ($max) {
             if (isset($workingHours[$i]) && $workingHours[$i]) {
-                return 'до ' . Yii::$app->formatter->asTime(($workingHours[$i]['time_start']), 'HH:mm') . ', ' . Helper::getShortNameDayById($i);
+                return 'до ' . Yii::$app->formatter->asTime(($workingHours[$i]['time_start']),
+                        'HH:mm') . ', ' . Helper::getShortNameDayById($i);
             }
             $i = $i == 7 ? 1 : $i + 1;
             $max--;

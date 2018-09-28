@@ -24,11 +24,13 @@ class m180213_000220_normalize_data_for_tbl_tasks extends Migration
                     'postTitle' => $order->discount->post->data,
                     'postUrl' =>
                         Yii::$app->urlManager->createAbsoluteUrl([
-                            'post/index', 'url' => $order->discount->post->url_name,
-                            'id' => $order->discount->post->id]),
+                            'post/index',
+                            'url' => $order->discount->post->url_name,
+                            'id' => $order->discount->post->id,
+                        ]),
                 ],
                 'toEmail' => $order->user->email,
-                'subject' => "{$order->user->name}, оставьте отзыв о {$order->discount->post->data} на Postim.by"
+                'subject' => "{$order->user->name}, оставьте отзыв о {$order->discount->post->data} на Postim.by",
             ], $order->date_finish);
         }
     }

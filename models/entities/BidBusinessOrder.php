@@ -23,8 +23,8 @@ class BidBusinessOrder extends \yii\db\ActiveRecord
     private $mapStatusText = [
         10 => 'Бизнес-аккаунт',
         20 => 'Бизнес-аккаунт премиум',
-        1  => 'Проверено',
-        0  => 'Не проверено',
+        1 => 'Проверено',
+        0 => 'Не проверено',
     ];
 
     public static $BIZ_ORDER = 10;
@@ -47,14 +47,14 @@ class BidBusinessOrder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [ [ 'status', 'type' ], 'required' ],
-            [ [ 'position' ], 'required', 'message' => 'Введите должность' ],
-            [ [ 'email' ], 'required', 'message' => 'Введите адрес электронной почты' ],
-            [ [ 'email' ], 'email', 'message' => 'Введите корректный адрес электронной почты' ],
-            [ [ 'full_name' ], 'required', 'message' => 'Введите имя и фамилию' ],
-            [ [ 'company_name' ], 'required', 'message' => 'Введите название компании' ],
-            [ [ 'phone' ], 'required', 'message' => 'Введите телефон' ],
-            [ [ 'position', 'phone' ], 'string', 'max' => 100 ],
+            [['status', 'type'], 'required'],
+            [['position'], 'required', 'message' => 'Введите должность'],
+            [['email'], 'required', 'message' => 'Введите адрес электронной почты'],
+            [['email'], 'email', 'message' => 'Введите корректный адрес электронной почты'],
+            [['full_name'], 'required', 'message' => 'Введите имя и фамилию'],
+            [['company_name'], 'required', 'message' => 'Введите название компании'],
+            [['phone'], 'required', 'message' => 'Введите телефон'],
+            [['position', 'phone'], 'string', 'max' => 100],
         ];
     }
 
@@ -64,32 +64,32 @@ class BidBusinessOrder extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'position'     => 'Должность',
-            'phone'        => 'Телефон',
-            'status'       => 'Статус',
-            'type'         => 'Тип заявки',
+            'position' => 'Должность',
+            'phone' => 'Телефон',
+            'status' => 'Статус',
+            'type' => 'Тип заявки',
             'company_name' => 'Название компании',
-            'full_name'    => 'Имя и фамилия',
+            'full_name' => 'Имя и фамилия',
         ];
     }
 
-    public function getStatusText( int $status )
+    public function getStatusText(int $status)
     {
 
-        return $this->mapStatusText[ $status ] ?? '';
+        return $this->mapStatusText[$status] ?? '';
     }
 
     public function beforeValidate()
     {
-        if ( !$this->date ) {
+        if (!$this->date) {
             $this->date = time();
         }
 
-        if ( !$this->type ) {
+        if (!$this->type) {
             $this->type = self::$BIZ_PREMIUM_ORDER;
         }
 
-        if ( !$this->status ) {
+        if (!$this->status) {
             $this->status = self::$NOT_VERIFIED;
         }
 
@@ -99,7 +99,7 @@ class BidBusinessOrder extends \yii\db\ActiveRecord
     public function getButtons()
     {
 
-        if ( $this->status === self::$NOT_VERIFIED ) {
+        if ($this->status === self::$NOT_VERIFIED) {
             return "<div class='data-grid-container-btn'>
                         <a title='Одобрить' href='/admin/biz/change-status-order?id={$this->id}&action=confirm' class='btn-moderation --confirm'></a>
                         <a title='Удалить' href='/admin/biz/change-status-order?id={$this->id}&action=delete' class='btn-moderation --delete'></a>

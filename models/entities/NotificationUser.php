@@ -37,8 +37,20 @@ class NotificationUser extends \yii\db\ActiveRecord
         return [
             [['notification_id', 'user_id'], 'required'],
             [['notification_id', 'user_id', 'is_showed'], 'integer'],
-            [['notification_id'], 'exist', 'skipOnError' => true, 'targetClass' => Notification::className(), 'targetAttribute' => ['notification_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['notification_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Notification::className(),
+                'targetAttribute' => ['notification_id' => 'id'],
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 
@@ -75,7 +87,7 @@ class NotificationUser extends \yii\db\ActiveRecord
         try {
             return NotificationUser::updateAll(['is_showed' => self::SHOWED['yes']], [
                 'user_id' => Yii::$app->user->id,
-                'is_showed' => self::SHOWED['no']
+                'is_showed' => self::SHOWED['no'],
             ]);
         } catch (Exception $e) {
             return -1;
@@ -87,12 +99,12 @@ class NotificationUser extends \yii\db\ActiveRecord
         return NotificationUser::find()
             ->where([
                 'user_id' => Yii::$app->user->id,
-                'is_showed' => self::SHOWED['no']
+                'is_showed' => self::SHOWED['no'],
             ])->count();
     }
 
     public function isShowed()
     {
-        return (bool) $this->is_showed;
+        return (bool)$this->is_showed;
     }
 }

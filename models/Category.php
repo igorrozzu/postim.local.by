@@ -45,18 +45,21 @@ class Category extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getUnderCategory(){
-        return $this->hasMany(UnderCategory::className(),['category_id'=>'id']);
+    public function getUnderCategory()
+    {
+        return $this->hasMany(UnderCategory::className(), ['category_id' => 'id']);
     }
 
-    public function getUnderCategorySort(){
-        return $this->hasMany(UnderCategory::className(),['category_id'=>'id'])
-            ->orderBy(['name'=>SORT_ASC]);
+    public function getUnderCategorySort()
+    {
+        return $this->hasMany(UnderCategory::className(), ['category_id' => 'id'])
+            ->orderBy(['name' => SORT_ASC]);
     }
 
-    public function getCountPlace(){
-        return $this->hasOne(PostCategoryCount::className(),['category_url_name'=>'url_name'])
-            ->where(['city_name'=>Yii::$app->city->getSelected_city()['name']]);
+    public function getCountPlace()
+    {
+        return $this->hasOne(PostCategoryCount::className(), ['category_url_name' => 'url_name'])
+            ->where(['city_name' => Yii::$app->city->getSelected_city()['name']]);
     }
 
 

@@ -35,7 +35,13 @@ class SocialAuth extends ActiveRecord
             [['user_id'], 'integer'],
             [['source', 'source_id'], 'string', 'max' => 30],
             ['screen_name', 'string', 'max' => 50],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 
@@ -64,7 +70,7 @@ class SocialAuth extends ActiveRecord
     public static function findBySource(array &$bindings, $source)
     {
         foreach ($bindings as &$binding) {
-            if($binding->source === $source) {
+            if ($binding->source === $source) {
                 return $binding;
             }
         }
@@ -74,11 +80,21 @@ class SocialAuth extends ActiveRecord
     public function createSocialUrl(): string
     {
         switch ($this->source) {
-            case 'twitter': return 'https://twitter.com/' . $this->screen_name; break;
-            case 'vkontakte': return 'https://vk.com/id' . $this->source_id; break;
-            case 'odnoklassniki': return 'https://www.ok.ru/profile/' . $this->source_id; break;
-            case 'facebook': return 'https://www.facebook.com/' . $this->source_id; break;
-            case 'google': return 'https://plus.google.com/' . $this->source_id; break;
+            case 'twitter':
+                return 'https://twitter.com/' . $this->screen_name;
+                break;
+            case 'vkontakte':
+                return 'https://vk.com/id' . $this->source_id;
+                break;
+            case 'odnoklassniki':
+                return 'https://www.ok.ru/profile/' . $this->source_id;
+                break;
+            case 'facebook':
+                return 'https://www.facebook.com/' . $this->source_id;
+                break;
+            case 'google':
+                return 'https://plus.google.com/' . $this->source_id;
+                break;
         }
     }
 }

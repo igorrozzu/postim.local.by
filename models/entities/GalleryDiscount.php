@@ -41,7 +41,13 @@ class GalleryDiscount extends \yii\db\ActiveRecord
             [['discount_id', 'status'], 'integer'],
             [['link'], 'string'],
             [['source'], 'string', 'max' => 400],
-            [['discount_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discounts::className(), 'targetAttribute' => ['discount_id' => 'id']],
+            [
+                ['discount_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Discounts::className(),
+                'targetAttribute' => ['discount_id' => 'id'],
+            ],
         ];
     }
 

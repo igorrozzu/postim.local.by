@@ -7,7 +7,6 @@ $currentUrl = yii\helpers\Url::current([], true);
 $this->title = 'Особенности';
 
 
-
 Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => false,
@@ -26,28 +25,28 @@ Pjax::begin([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions' => [
-            'class' => 'table --custom-tbl-p'
+            'class' => 'table --custom-tbl-p',
         ],
-        'layout'=>"{items}\n{pager}",
+        'layout' => "{items}\n{pager}",
         'columns' => [
             [
                 'attribute' => 'name',
                 'label' => 'Название',
-                'headerOptions' => ['width'=>'250px','class' => '--header-p'],
+                'headerOptions' => ['width' => '250px', 'class' => '--header-p'],
             ],
             [
                 'attribute' => 'type',
                 'label' => 'Тип',
-                'headerOptions' => ['width'=>'100px','class' => '--header-p'],
-                'value' => function($data){
+                'headerOptions' => ['width' => '100px', 'class' => '--header-p'],
+                'value' => function ($data) {
                     return $data->getLabelType();
                 },
             ],
             [
                 'attribute' => 'main_features',
                 'label' => 'Зависит от ...',
-                'headerOptions' => ['width'=>'250px','class' => '--header-p'],
-                'value' => function($data){
+                'headerOptions' => ['width' => '250px', 'class' => '--header-p'],
+                'value' => function ($data) {
                     return $data->getNameMainFeatures(1);
                 },
             ],
@@ -55,9 +54,9 @@ Pjax::begin([
                 'attribute' => 'filter_status',
                 'label' => 'Статус фильтра',
                 'format' => 'raw',
-                'headerOptions' => ['width'=>'100px','class' => '--header-p'],
-                'value' => function($data){
-                    return "<a class='data-link' href='/admin/features/change?status=".(abs($data->filter_status-1))."&id={$data->id}'>{$data->getLabelFilterStatus()}</a>";
+                'headerOptions' => ['width' => '100px', 'class' => '--header-p'],
+                'value' => function ($data) {
+                    return "<a class='data-link' href='/admin/features/change?status=" . (abs($data->filter_status - 1)) . "&id={$data->id}'>{$data->getLabelFilterStatus()}</a>";
                 },
             ],
 
@@ -65,13 +64,13 @@ Pjax::begin([
                 'attribute' => null,
                 'format' => 'raw',
                 'label' => 'Действие',
-                'headerOptions' => ['width'=>'100px','class' => '--header-p'],
-                'value' => function($data){
+                'headerOptions' => ['width' => '100px', 'class' => '--header-p'],
+                'value' => function ($data) {
                     return $data->getButtons();
                 },
             ],
         ],
-    ]);?>
+    ]); ?>
 
 
 </div>

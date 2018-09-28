@@ -15,40 +15,45 @@ use ReflectionClass;
 
 class MainMenuWidget extends Widget
 {
-    public $dataprovider=[];
+    public $dataprovider = [];
     public $typeMenu = null;
 
-    public static $leftMenu='leftMenu';
-    public static $catalogMenu='catalogMenu';
+    public static $leftMenu = 'leftMenu';
+    public static $catalogMenu = 'catalogMenu';
 
     public function init()
     {
         parent::init();
 
-        if($this->typeMenu === null){
+        if ($this->typeMenu === null) {
             $this->typeMenu = self::$leftMenu;
         }
-        if(!$this->dataprovider=\Yii::$app->cache->get(['list_category_place', \Yii::$app->city->getSelected_city()['name']])){
+        if (!$this->dataprovider = \Yii::$app->cache->get([
+            'list_category_place',
+            \Yii::$app->city->getSelected_city()['name'],
+        ])) {
             $this->dataprovider = Category::find()
                 ->with('underCategorySort.countPlace')
                 ->innerJoinWith('countPlace')
                 ->orderBy(['tbl_category.name' => 1])
                 ->all();
-            \Yii::$app->cache->add(['list_category_place', \Yii::$app->city->getSelected_city()['name']], $this->dataprovider, 600);
+            \Yii::$app->cache->add(['list_category_place', \Yii::$app->city->getSelected_city()['name']],
+                $this->dataprovider, 600);
         }
 
     }
 
     public function run()
     {
-        echo $this->render('index',[
-            'dataprovider'=>$this->dataprovider,
+        echo $this->render('index', [
+            'dataprovider' => $this->dataprovider,
         ]);
     }
+
     public function getViewPath()
     {
         $class = new ReflectionClass($this);
 
-        return dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'views'.'/'.$this->typeMenu;
+        return dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'views' . '/' . $this->typeMenu;
     }
 }

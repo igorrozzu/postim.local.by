@@ -1,4 +1,5 @@
 <?php
+
 namespace app\controllers;
 
 use app\components\ImageHelper;
@@ -32,11 +33,11 @@ class SocialAuthController extends MainController
     public function beforeAction($action)
     {
 
-        $baseUrl = Url::toRoute('/','https');
+        $baseUrl = Url::toRoute('/', 'https');
 
-        if($action->id === 'auth' && stripos(Yii::$app->request->referrer, $baseUrl) !== false){
+        if ($action->id === 'auth' && stripos(Yii::$app->request->referrer, $baseUrl) !== false) {
 
-            Yii::$app->session->setFlash('beforeAuthReferrer',Yii::$app->request->referrer);
+            Yii::$app->session->setFlash('beforeAuthReferrer', Yii::$app->request->referrer);
 
         }
 
@@ -65,9 +66,10 @@ class SocialAuthController extends MainController
                     Yii::$app->user->login($user, Yii::$app->params['user.loginDuration']);
                 } else {
                     $email = $attrClient->getEmail();
-                    if($email === null) {
-                        if($tempUser = $model->createTempSocialUser($attrClient)) {
-                            $key = Yii::$app->security->encryptByKey($tempUser->id, Yii::$app->params['security.encryptionKey']);
+                    if ($email === null) {
+                        if ($tempUser = $model->createTempSocialUser($attrClient)) {
+                            $key = Yii::$app->security->encryptByKey($tempUser->id,
+                                Yii::$app->params['security.encryptionKey']);
                             return $this->redirect(['social-auth/set-required-fields', 'key' => $key]);
                         }
                     } else {
@@ -82,7 +84,7 @@ class SocialAuthController extends MainController
                                 Yii::$app->user->login($user, Yii::$app->params['user.loginDuration']);
                             }
                         }
-                        return $this->redirect(Url::toRoute([$referrer,'NewUser'=> 'new'],'https'));
+                        return $this->redirect(Url::toRoute([$referrer, 'NewUser' => 'new'], 'https'));
                     }
                 }
             } else { // Пользователь уже зарегистрирован
@@ -91,12 +93,12 @@ class SocialAuthController extends MainController
                 } else {
                     Yii::$app->session->setFlash('toastMessage', $toastMessage = [
                         'type' => 'error',
-                        'message'=> 'Этот аккаунт уже привязан к другому профилю на Постим',
+                        'message' => 'Этот аккаунт уже привязан к другому профилю на Постим',
                     ]);
                 }
                 return $this->redirect(['user/settings']);
             }
-        } catch (Exception $e){
+        } catch (Exception $e) {
             return $this->redirect($referrer);
         }
 
@@ -106,7 +108,7 @@ class SocialAuthController extends MainController
     public function actionSetRequiredFields(string $key)
     {
         $id = Yii::$app->security->decryptByKey($key, Yii::$app->params['security.encryptionKey']);
-        if($id === false || !($tempUser = TempSocialUser::findOne((int)$id)) || $tempUser->isMailSent()){
+        if ($id === false || !($tempUser = TempSocialUser::findOne((int)$id)) || $tempUser->isMailSent()) {
             throw new NotFoundHttpException();
         }
         $model = new SocialRegister();
@@ -134,12 +136,12 @@ class SocialAuthController extends MainController
     public function actionConfirmAccount(string $token, string $hash)
     {
         $id = Yii::$app->security->decryptByKey($token, Yii::$app->params['security.encryptionKey']);
-        if($id === false || !($tempUser = TempSocialUser::findOne(['id' => $id, 'hash' => $hash]))){
+        if ($id === false || !($tempUser = TempSocialUser::findOne(['id' => $id, 'hash' => $hash]))) {
             Yii::$app->session->setFlash('render-form-view', 'failed-confirm-account');
             return $this->goHome();
         }
         $model = new SocialRegister();
-        if($model->createUser($tempUser)){
+        if ($model->createUser($tempUser)) {
             $tempUser->delete();
             Yii::$app->session->setFlash('render-form-view', 'success-confirmation');
         }

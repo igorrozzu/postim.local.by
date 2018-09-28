@@ -26,6 +26,7 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface
 {
     const CITY_NOT_DEFINED = -1;
+
     /**
      * @inheritdoc
      */
@@ -44,8 +45,18 @@ class User extends ActiveRecord implements IdentityInterface
             [['name', 'city_id'], 'required'],
             [['name', 'surname'], 'string', 'max' => 25],
             [['email', 'password'], 'string'],
-            [['role', 'city_id', 'has_social_creation', 'has_changing_password',
-                'photo_hash', 'timezone_offset_in_hour', 'last_visit'], 'integer'],
+            [
+                [
+                    'role',
+                    'city_id',
+                    'has_social_creation',
+                    'has_changing_password',
+                    'photo_hash',
+                    'timezone_offset_in_hour',
+                    'last_visit',
+                ],
+                'integer',
+            ],
             [['password_reset_token'], 'string', 'max' => 100],
         ];
     }
@@ -100,7 +111,7 @@ class User extends ActiveRecord implements IdentityInterface
             return false;
         }
 
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $timestamp = (int)substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
     }
@@ -154,6 +165,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password = Yii::$app->security->generatePasswordHash($password);
     }
+
     public function generatePassword($length = 10)
     {
         $password = Yii::$app->security->generateRandomString($length);
@@ -223,7 +235,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getCity()
     {
-        return $this->hasOne(City::className(), ['id' =>'city_id']);
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
 
     /**
@@ -255,7 +267,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getFavoritesNews()
     {
-        return $this->hasMany(FavoritesNews::className(),['user_id' => 'id']);
+        return $this->hasMany(FavoritesNews::className(), ['user_id' => 'id']);
     }
 
     /**
@@ -263,7 +275,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getFavoritesPost()
     {
-        return $this->hasMany(FavoritesPost::className(),['user_id' => 'id']);
+        return $this->hasMany(FavoritesPost::className(), ['user_id' => 'id']);
     }
 
     public function getRelatedPosts()
@@ -302,7 +314,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function setTimezoneOffset()
     {
         $cookie = Yii::$app->request->cookies->get('timezone_offset');
-        if(isset($cookie)) {
+        if (isset($cookie)) {
             $timezoneOffset = (int)$cookie->value;
             if ($this->timezone_offset_in_hour !== $timezoneOffset) {
                 $this->timezone_offset_in_hour = $timezoneOffset;
@@ -310,13 +322,15 @@ class User extends ActiveRecord implements IdentityInterface
             }
         }
     }
+
     public function getTimezoneInSeconds()
     {
         return $this->timezone_offset_in_hour * 3600;
     }
 
-    public function hasOwner(){
-        return (bool) OwnerPost::find()->where(['owner_id'=>$this->id])->one();
+    public function hasOwner()
+    {
+        return (bool)OwnerPost::find()->where(['owner_id' => $this->id])->one();
     }
 
     public function getIsOwner()

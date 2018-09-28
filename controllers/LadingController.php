@@ -44,7 +44,7 @@ class LadingController extends MainController
     public function actionGetFormForOrderBsa()
     {
         $businessOrder = new BidBusinessOrder();
-        $businessOrder->load(Yii::$app->request->get(),'');
+        $businessOrder->load(Yii::$app->request->get(), '');
         return $this->renderAjax('__form_add_business_account', ['businessOrder' => $businessOrder]);
 
     }
@@ -60,10 +60,10 @@ class LadingController extends MainController
         $businessOrder = new BidBusinessOrder();
         $businessOrder->load(Yii::$app->request->post());
 
-        if(!$businessOrder->save()){
+        if (!$businessOrder->save()) {
             $response->html = $this->renderAjax('__form_add_business_account', ['businessOrder' => $businessOrder]);
             $response->message = 'Заполните корректно информацию';
-        }else{
+        } else {
             $response->success = true;
             $response->message = 'Спасибо за вашу заявку. Она будет рассмотренав ближайшее время, после чего наш менеджер свяжется с вами';
         }

@@ -30,7 +30,7 @@ class MainSearchController extends MainController
     {
         $entities = $this->mainSearchService->getAutoCompleteData(5);
         return $this->renderAjax('__search_auto_complete', [
-            'entities' => $entities
+            'entities' => $entities,
         ]);
     }
 
@@ -47,7 +47,7 @@ class MainSearchController extends MainController
 
             return $this->render('__search_feeds.php', [
                 'widgets' => $widgets,
-                'type' => $request->get('type_feed','post'),
+                'type' => $request->get('type_feed', 'post'),
                 'url' => $request->getPathInfo(),
             ]);
         }

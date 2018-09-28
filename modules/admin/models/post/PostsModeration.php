@@ -15,10 +15,13 @@ class PostsModeration extends ParentsModel
 {
 
 
-    public function replacement($id){
+    public function replacement($id)
+    {
 
         $mainPost = Posts::find()->with([
-            'info','postCategory','postFeatures',
+            'info',
+            'postCategory',
+            'postFeatures',
             'workingHours' => function ($query) {
                 $query->orderBy(['day_type' => SORT_ASC]);
             },
@@ -29,7 +32,7 @@ class PostsModeration extends ParentsModel
         $transaction = \Yii::$app->db->beginTransaction();
         $error = false;
 
-        if($mainPost->info){
+        if ($mainPost->info) {
             $mainPost->info->delete();
         }
 
@@ -44,7 +47,7 @@ class PostsModeration extends ParentsModel
         $mainPost->metro = $this->metro;
         $mainPost->requisites = Html::encode(Html::decode($this->requisites));
 
-        if($mainPost->update()){
+        if ($mainPost->update()) {
 
             $postInfo = new PostInfo();
             $postInfo->phones = $this->info->phones;
@@ -54,62 +57,63 @@ class PostsModeration extends ParentsModel
             $postInfo->article = $this->info->article;
             $postInfo->post_id = $id;
 
-            if(!$postInfo->save()){
+            if (!$postInfo->save()) {
                 $error = true;
             }
 
-            foreach ($mainPost->postCategory as $item){
+            foreach ($mainPost->postCategory as $item) {
                 $item->delete();
             }
 
-            foreach ($this->postCategory as $item){
-                $post_under_category = new PostUnderCategory(['post_id' => $id,
+            foreach ($this->postCategory as $item) {
+                $post_under_category = new PostUnderCategory([
+                        'post_id' => $id,
                         'under_category_id' => $item->under_category_id,
-                        'priority' => $item->priority
+                        'priority' => $item->priority,
                     ]
                 );
 
-                if(!$post_under_category->save()){
+                if (!$post_under_category->save()) {
                     $error = true;
                 }
             }
 
 
-            PostFeatures::deleteAll(['post_id'=>$id]);
+            PostFeatures::deleteAll(['post_id' => $id]);
 
-            if($this->postFeatures){
-                foreach ($this->postFeatures as $feature){
+            if ($this->postFeatures) {
+                foreach ($this->postFeatures as $feature) {
                     $postFeatures = new PostFeatures([
                         'post_id' => $mainPost->id,
                         'features_id' => $feature->features_id,
                         'value' => $feature->value,
                         'features_main_id' => $feature->features_main_id,
                     ]);
-                    if(!$postFeatures->save()){
+                    if (!$postFeatures->save()) {
                         $error = true;
                     }
                 }
             }
 
-            WorkingHours::deleteAll(['post_id'=>$id]);
+            WorkingHours::deleteAll(['post_id' => $id]);
 
-            if($this->workingHours){
-                foreach ($this->workingHours as $workingHour){
+            if ($this->workingHours) {
+                foreach ($this->workingHours as $workingHour) {
                     $workingHours = new WorkingHours([
-                        'day_type'=>$workingHour->day_type,
-                        'time_start'=>$workingHour->time_start,
-                        'time_finish'=>$workingHour->time_finish,
-                        'post_id'=>$id,
+                        'day_type' => $workingHour->day_type,
+                        'time_start' => $workingHour->time_start,
+                        'time_finish' => $workingHour->time_finish,
+                        'post_id' => $id,
                     ]);
-                    if(!$workingHours->save()){
+                    if (!$workingHours->save()) {
                         $error = true;
                     }
                 }
             }
 
-            if($error){
+            if ($error) {
                 $transaction->rollBack();
-            }else{
+            } else {
                 $transaction->commit();
             }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\services\search;
 
 use app\components\cardsNewsWidget\CardsNewsWidget;
@@ -21,7 +22,6 @@ use yii\web\Request;
  * Date: 2/26/18
  * Time: 10:50 AM
  */
-
 class MainSearchService
 {
     /**
@@ -37,10 +37,11 @@ class MainSearchService
      * @param PostSearch $postModel
      * @param DiscountSearch $discountModel
      */
-    public function __construct(PostSearch $postModel,
-                                NewsSearch $newsModel,
-                                DiscountSearch $discountModel)
-    {
+    public function __construct(
+        PostSearch $postModel,
+        NewsSearch $newsModel,
+        DiscountSearch $discountModel
+    ) {
         $this->searchModels = [
             'post' => $postModel,
             'news' => $newsModel,
@@ -48,7 +49,7 @@ class MainSearchService
         ];
     }
 
-    public static function getWidgetsConfig(array $params, string $widgetName = 'all'): ? array
+    public static function getWidgetsConfig(array $params, string $widgetName = 'all'): ?array
     {
         $widgets = [
             'post' => [
@@ -60,7 +61,7 @@ class MainSearchService
                         'show-more-btn' => true,
                         'replace-container-id' => 'feed-posts',
                         'load-time' => $params['loadTime'],
-                    ]
+                    ],
                 ],
             ],
             'news' => [
@@ -70,8 +71,8 @@ class MainSearchService
                     'settings' => [
                         'is-it-sphinx-model' => true,
                         'replace-container-id' => 'feed-news',
-                        'load-time' => $params['loadTime']
-                    ]
+                        'load-time' => $params['loadTime'],
+                    ],
                 ],
             ],
             'discount' => [
@@ -84,7 +85,7 @@ class MainSearchService
                         'replace-container-id' => 'feed-discounts',
                         'load-time' => $params['loadTime'],
                         'show-distance' => true,
-                    ]
+                    ],
                 ],
             ],
         ];
@@ -166,9 +167,10 @@ class MainSearchService
     {
         $matchExp = (new MatchExpression());
         if ($modelType !== 'news' && $city = Yii::$app->city->getSelected_city()['url_name']) {
-            $matchExp->match(['or',
+            $matchExp->match([
+                'or',
                 ['city' => $city],
-                ['region' => $city]
+                ['region' => $city],
             ]);
         }
 
@@ -181,12 +183,12 @@ class MainSearchService
         $matchExp2 = clone $matchExp;
 
         $matchParams = ['or', ['header,data' => $this->text]];
-        $this->setMatchByWordsFromText($matchParams, $this->text,'header,data');
+        $this->setMatchByWordsFromText($matchParams, $this->text, 'header,data');
         $matchExp2->andMatch($matchParams);
 
         $provider = new ActiveDataProvider([
             'query' => $query->match($matchExp2),
-            'pagination' => $this->createPagination($request)
+            'pagination' => $this->createPagination($request),
         ]);
 
         if ($provider->getTotalCount() > 0) {
@@ -205,7 +207,7 @@ class MainSearchService
         return $provider;
     }
 
-    protected function getMatchParamsOfCorrectedText(): ? array
+    protected function getMatchParamsOfCorrectedText(): ?array
     {
         $translatedText = TransliteratorHelper::process($this->text);
         $correctedText = Yii::$app->formatter->correctWrongKeyword($this->text);
@@ -238,8 +240,12 @@ class MainSearchService
         return $data;
     }
 
-    protected function setMatchByWordsFromText(array &$matchParams, string $text, string $fields, int $minWordLength = 2): void
-    {
+    protected function setMatchByWordsFromText(
+        array &$matchParams,
+        string $text,
+        string $fields,
+        int $minWordLength = 2
+    ): void {
         $words = explode(' ', $text);
         if (count($words) > 1) {
             foreach ($words as &$word) {

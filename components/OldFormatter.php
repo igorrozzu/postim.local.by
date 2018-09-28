@@ -4,7 +4,9 @@
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
+
 namespace app\components;
+
 use Closure;
 use DateInterval;
 use DateTime;
@@ -19,6 +21,7 @@ use yii\base\InvalidParamException;
 use yii\helpers\FormatConverter;
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
+
 /**
  * Formatter provides a set of commonly used data formatting methods.
  *
@@ -363,6 +366,7 @@ class OldFormatter extends Component
      * @var array cached unit translation patterns
      */
     private $_unitMessages = [];
+
     /**
      * @inheritdoc
      */
@@ -390,6 +394,7 @@ class OldFormatter extends Component
             }
         }
     }
+
     /**
      * Formats the value based on the given format type.
      * This method will call one of the "as" methods available in this class to do the formatting.
@@ -433,6 +438,7 @@ class OldFormatter extends Component
         throw new InvalidParamException("Unknown format type: $format");
     }
     // simple formats
+
     /**
      * Formats the value as is without any formatting.
      * This method simply returns back the parameter without any format.
@@ -447,6 +453,7 @@ class OldFormatter extends Component
         }
         return $value;
     }
+
     /**
      * Formats the value as an HTML-encoded plain text.
      * @param string $value the value to be formatted.
@@ -459,6 +466,7 @@ class OldFormatter extends Component
         }
         return Html::encode($value);
     }
+
     /**
      * Formats the value as an HTML-encoded plain text with newlines converted into breaks.
      * @param string $value the value to be formatted.
@@ -471,6 +479,7 @@ class OldFormatter extends Component
         }
         return nl2br(Html::encode($value));
     }
+
     /**
      * Formats the value as HTML-encoded text paragraphs.
      * Each text paragraph is enclosed within a `<p>` tag.
@@ -483,8 +492,10 @@ class OldFormatter extends Component
         if ($value === null) {
             return $this->nullDisplay;
         }
-        return str_replace('<p></p>', '', '<p>' . preg_replace('/\R{2,}/u', "</p>\n<p>", Html::encode($value)) . '</p>');
+        return str_replace('<p></p>', '',
+            '<p>' . preg_replace('/\R{2,}/u', "</p>\n<p>", Html::encode($value)) . '</p>');
     }
+
     /**
      * Formats the value as HTML text.
      * The value will be purified using [[HtmlPurifier]] to avoid XSS attacks.
@@ -500,6 +511,7 @@ class OldFormatter extends Component
         }
         return HtmlPurifier::process($value, $config);
     }
+
     /**
      * Formats the value as a mailto link.
      * @param string $value the value to be formatted.
@@ -513,6 +525,7 @@ class OldFormatter extends Component
         }
         return Html::mailto(Html::encode($value), $value, $options);
     }
+
     /**
      * Formats the value as an image tag.
      * @param mixed $value the value to be formatted.
@@ -526,6 +539,7 @@ class OldFormatter extends Component
         }
         return Html::img($value, $options);
     }
+
     /**
      * Formats the value as a hyperlink.
      * @param mixed $value the value to be formatted.
@@ -543,6 +557,7 @@ class OldFormatter extends Component
         }
         return Html::a(Html::encode($value), $url, $options);
     }
+
     /**
      * Formats the value as a boolean.
      * @param mixed $value the value to be formatted.
@@ -557,6 +572,7 @@ class OldFormatter extends Component
         return $value ? $this->booleanFormat[1] : $this->booleanFormat[0];
     }
     // date and time formats
+
     /**
      * Formats the value as a date.
      * @param int|string|DateTime $value the value to be formatted. The following
@@ -593,6 +609,7 @@ class OldFormatter extends Component
         }
         return $this->formatDateTimeValue($value, $format, 'date');
     }
+
     /**
      * Formats the value as a time.
      * @param int|string|DateTime $value the value to be formatted. The following
@@ -628,6 +645,7 @@ class OldFormatter extends Component
         }
         return $this->formatDateTimeValue($value, $format, 'time');
     }
+
     /**
      * Formats the value as a datetime.
      * @param int|string|DateTime $value the value to be formatted. The following
@@ -663,6 +681,7 @@ class OldFormatter extends Component
         }
         return $this->formatDateTimeValue($value, $format, 'datetime');
     }
+
     /**
      * @var array map of short format names to IntlDateFormatter constant values.
      */
@@ -672,6 +691,7 @@ class OldFormatter extends Component
         'long' => 1, // IntlDateFormatter::LONG,
         'full' => 0, // IntlDateFormatter::FULL,
     ];
+
     /**
      * @param int|string|DateTime $value the value to be formatted. The following
      * types of value are supported:
@@ -709,14 +729,18 @@ class OldFormatter extends Component
             }
             if (isset($this->_dateFormats[$format])) {
                 if ($type === 'date') {
-                    $formatter = new IntlDateFormatter($this->locale, $this->_dateFormats[$format], IntlDateFormatter::NONE, $timeZone, $this->calendar);
+                    $formatter = new IntlDateFormatter($this->locale, $this->_dateFormats[$format],
+                        IntlDateFormatter::NONE, $timeZone, $this->calendar);
                 } elseif ($type === 'time') {
-                    $formatter = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->_dateFormats[$format], $timeZone, $this->calendar);
+                    $formatter = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE,
+                        $this->_dateFormats[$format], $timeZone, $this->calendar);
                 } else {
-                    $formatter = new IntlDateFormatter($this->locale, $this->_dateFormats[$format], $this->_dateFormats[$format], $timeZone, $this->calendar);
+                    $formatter = new IntlDateFormatter($this->locale, $this->_dateFormats[$format],
+                        $this->_dateFormats[$format], $timeZone, $this->calendar);
                 }
             } else {
-                $formatter = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, IntlDateFormatter::NONE, $timeZone, $this->calendar, $format);
+                $formatter = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, IntlDateFormatter::NONE,
+                    $timeZone, $this->calendar, $format);
             }
             if ($formatter === null) {
                 throw new InvalidConfigException(intl_get_error_message());
@@ -741,6 +765,7 @@ class OldFormatter extends Component
         }
         return $timestamp->format($format);
     }
+
     /**
      * Normalizes the given datetime value as a DateTime object that can be taken by various date/time formatting methods.
      *
@@ -777,11 +802,13 @@ class OldFormatter extends Component
         }
         try {
             if (is_numeric($value)) { // process as unix timestamp, which is always in UTC
-                $timestamp = new DateTime('@' . (int) $value, new DateTimeZone('UTC'));
+                $timestamp = new DateTime('@' . (int)$value, new DateTimeZone('UTC'));
                 return $checkDateTimeInfo ? [$timestamp, true, true] : $timestamp;
-            } elseif (($timestamp = DateTime::createFromFormat('Y-m-d|', $value, new DateTimeZone($this->defaultTimeZone))) !== false) { // try Y-m-d format (support invalid dates like 2012-13-01)
+            } elseif (($timestamp = DateTime::createFromFormat('Y-m-d|', $value,
+                    new DateTimeZone($this->defaultTimeZone))) !== false) { // try Y-m-d format (support invalid dates like 2012-13-01)
                 return $checkDateTimeInfo ? [$timestamp, false, true] : $timestamp;
-            } elseif (($timestamp = DateTime::createFromFormat('Y-m-d H:i:s', $value, new DateTimeZone($this->defaultTimeZone))) !== false) { // try Y-m-d H:i:s format (support invalid dates like 2012-13-01 12:63:12)
+            } elseif (($timestamp = DateTime::createFromFormat('Y-m-d H:i:s', $value,
+                    new DateTimeZone($this->defaultTimeZone))) !== false) { // try Y-m-d H:i:s format (support invalid dates like 2012-13-01 12:63:12)
                 return $checkDateTimeInfo ? [$timestamp, true, true] : $timestamp;
             }
             // finally try to create a DateTime object with the value
@@ -800,6 +827,7 @@ class OldFormatter extends Component
                 . "\n" . print_r(DateTime::getLastErrors(), true), $e->getCode(), $e);
         }
     }
+
     /**
      * Formats a date, time or datetime in a float number as UNIX timestamp (seconds since 01-01-1970).
      * @param int|string|DateTime $value the value to be formatted. The following
@@ -820,6 +848,7 @@ class OldFormatter extends Component
         $timestamp = $this->normalizeDatetimeValue($value);
         return number_format($timestamp->format('U'), 0, '.', '');
     }
+
     /**
      * Formats the value as the time interval between a date and now in human readable form.
      *
@@ -875,45 +904,58 @@ class OldFormatter extends Component
         }
         if ($interval->invert) {
             if ($interval->y >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a year} other{# years}}', ['delta' => $interval->y], $this->locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a year} other{# years}}', ['delta' => $interval->y],
+                    $this->locale);
             }
             if ($interval->m >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a month} other{# months}}', ['delta' => $interval->m], $this->locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a month} other{# months}}', ['delta' => $interval->m],
+                    $this->locale);
             }
             if ($interval->d >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a day} other{# days}}', ['delta' => $interval->d], $this->locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a day} other{# days}}', ['delta' => $interval->d],
+                    $this->locale);
             }
             if ($interval->h >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{an hour} other{# hours}}', ['delta' => $interval->h], $this->locale);
+                return Yii::t('yii', 'in {delta, plural, =1{an hour} other{# hours}}', ['delta' => $interval->h],
+                    $this->locale);
             }
             if ($interval->i >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a minute} other{# minutes}}', ['delta' => $interval->i], $this->locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a minute} other{# minutes}}', ['delta' => $interval->i],
+                    $this->locale);
             }
             if ($interval->s == 0) {
                 return Yii::t('yii', 'just now', [], $this->locale);
             }
-            return Yii::t('yii', 'in {delta, plural, =1{a second} other{# seconds}}', ['delta' => $interval->s], $this->locale);
+            return Yii::t('yii', 'in {delta, plural, =1{a second} other{# seconds}}', ['delta' => $interval->s],
+                $this->locale);
         }
         if ($interval->y >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a year} other{# years}} ago', ['delta' => $interval->y], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{a year} other{# years}} ago', ['delta' => $interval->y],
+                $this->locale);
         }
         if ($interval->m >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a month} other{# months}} ago', ['delta' => $interval->m], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{a month} other{# months}} ago', ['delta' => $interval->m],
+                $this->locale);
         }
         if ($interval->d >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a day} other{# days}} ago', ['delta' => $interval->d], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{a day} other{# days}} ago', ['delta' => $interval->d],
+                $this->locale);
         }
         if ($interval->h >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{an hour} other{# hours}} ago', ['delta' => $interval->h], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{an hour} other{# hours}} ago', ['delta' => $interval->h],
+                $this->locale);
         }
         if ($interval->i >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a minute} other{# minutes}} ago', ['delta' => $interval->i], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{a minute} other{# minutes}} ago', ['delta' => $interval->i],
+                $this->locale);
         }
         if ($interval->s == 0) {
             return Yii::t('yii', 'just now', [], $this->locale);
         }
-        return Yii::t('yii', '{delta, plural, =1{a second} other{# seconds}} ago', ['delta' => $interval->s], $this->locale);
+        return Yii::t('yii', '{delta, plural, =1{a second} other{# seconds}} ago', ['delta' => $interval->s],
+            $this->locale);
     }
+
     /**
      * Represents the value as duration in human readable format.
      *
@@ -953,30 +995,39 @@ class OldFormatter extends Component
             $isNegative = $interval->invert;
         }
         if ($interval->y > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 year} other{# years}}', ['delta' => $interval->y], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 year} other{# years}}', ['delta' => $interval->y],
+                $this->locale);
         }
         if ($interval->m > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 month} other{# months}}', ['delta' => $interval->m], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 month} other{# months}}', ['delta' => $interval->m],
+                $this->locale);
         }
         if ($interval->d > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 day} other{# days}}', ['delta' => $interval->d], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 day} other{# days}}', ['delta' => $interval->d],
+                $this->locale);
         }
         if ($interval->h > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 hour} other{# hours}}', ['delta' => $interval->h], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 hour} other{# hours}}', ['delta' => $interval->h],
+                $this->locale);
         }
         if ($interval->i > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i],
+                $this->locale);
         }
         if ($interval->s > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s],
+                $this->locale);
         }
         if ($interval->s === 0 && empty($parts)) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s],
+                $this->locale);
             $isNegative = false;
         }
-        return empty($parts) ? $this->nullDisplay : (($isNegative ? $negativeSign : '') . implode($implodeString, $parts));
+        return empty($parts) ? $this->nullDisplay : (($isNegative ? $negativeSign : '') . implode($implodeString,
+                $parts));
     }
     // number formats
+
     /**
      * Formats the value as an integer number by removing any decimal digits without rounding.
      *
@@ -1000,8 +1051,9 @@ class OldFormatter extends Component
             }
             return $result;
         }
-        return number_format((int) $value, 0, $this->decimalSeparator, $this->thousandSeparator);
+        return number_format((int)$value, 0, $this->decimalSeparator, $this->thousandSeparator);
     }
+
     /**
      * Formats the value as a decimal number.
      *
@@ -1041,6 +1093,7 @@ class OldFormatter extends Component
         }
         return number_format($value, $decimals, $this->decimalSeparator, $this->thousandSeparator);
     }
+
     /**
      * Formats the value as a percent number with "%" sign.
      *
@@ -1076,6 +1129,7 @@ class OldFormatter extends Component
         $value *= 100;
         return number_format($value, $decimals, $this->decimalSeparator, $this->thousandSeparator) . '%';
     }
+
     /**
      * Formats the value as a scientific number.
      *
@@ -1110,6 +1164,7 @@ class OldFormatter extends Component
         }
         return sprintf('%.E', $value);
     }
+
     /**
      * Formats the value as a currency number.
      *
@@ -1157,6 +1212,7 @@ class OldFormatter extends Component
         }
         return $currency . ' ' . $this->asDecimal($value, 2, $options, $textOptions);
     }
+
     /**
      * Formats the value as a number spellout.
      *
@@ -1182,6 +1238,7 @@ class OldFormatter extends Component
         }
         throw new InvalidConfigException('Format as Spellout is only supported when PHP intl extension is installed.');
     }
+
     /**
      * Formats the value as a ordinal value of a number.
      *
@@ -1207,6 +1264,7 @@ class OldFormatter extends Component
         }
         throw new InvalidConfigException('Format as Ordinal is only supported when PHP intl extension is installed.');
     }
+
     /**
      * Formats the value in bytes as a size in human readable form for example `12 KB`.
      *
@@ -1229,7 +1287,8 @@ class OldFormatter extends Component
         if ($value === null) {
             return $this->nullDisplay;
         }
-        list($params, $position) = $this->formatNumber($value, $decimals, 4, $this->sizeFormatBase, $options, $textOptions);
+        list($params, $position) = $this->formatNumber($value, $decimals, 4, $this->sizeFormatBase, $options,
+            $textOptions);
         if ($this->sizeFormatBase == 1024) {
             switch ($position) {
                 case 0:
@@ -1262,6 +1321,7 @@ class OldFormatter extends Component
             }
         }
     }
+
     /**
      * Formats the value in bytes as a size in human readable form, for example `12 kilobytes`.
      *
@@ -1282,39 +1342,51 @@ class OldFormatter extends Component
         if ($value === null) {
             return $this->nullDisplay;
         }
-        list($params, $position) = $this->formatNumber($value, $decimals, 4, $this->sizeFormatBase, $options, $textOptions);
+        list($params, $position) = $this->formatNumber($value, $decimals, 4, $this->sizeFormatBase, $options,
+            $textOptions);
         if ($this->sizeFormatBase == 1024) {
             switch ($position) {
                 case 0:
                     return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->locale);
                 case 1:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kibibyte} other{kibibytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kibibyte} other{kibibytes}}', $params,
+                        $this->locale);
                 case 2:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{mebibyte} other{mebibytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{mebibyte} other{mebibytes}}', $params,
+                        $this->locale);
                 case 3:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gibibyte} other{gibibytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gibibyte} other{gibibytes}}', $params,
+                        $this->locale);
                 case 4:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{tebibyte} other{tebibytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{tebibyte} other{tebibytes}}', $params,
+                        $this->locale);
                 default:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{pebibyte} other{pebibytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{pebibyte} other{pebibytes}}', $params,
+                        $this->locale);
             }
         } else {
             switch ($position) {
                 case 0:
                     return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->locale);
                 case 1:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kilobyte} other{kilobytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kilobyte} other{kilobytes}}', $params,
+                        $this->locale);
                 case 2:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{megabyte} other{megabytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{megabyte} other{megabytes}}', $params,
+                        $this->locale);
                 case 3:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gigabyte} other{gigabytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gigabyte} other{gigabytes}}', $params,
+                        $this->locale);
                 case 4:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{terabyte} other{terabytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{terabyte} other{terabytes}}', $params,
+                        $this->locale);
                 default:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{petabyte} other{petabytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{petabyte} other{petabytes}}', $params,
+                        $this->locale);
             }
         }
     }
+
     /**
      * Formats the value as a length in human readable form for example `12 meters`.
      * Check properties [[baseUnits]] if you need to change unit of value as the multiplier
@@ -1333,8 +1405,10 @@ class OldFormatter extends Component
      */
     public function asLength($value, $decimals = null, $numberOptions = [], $textOptions = [])
     {
-        return $this->formatUnit(self::UNIT_LENGTH, self::FORMAT_WIDTH_LONG, $value, null, null, $decimals, $numberOptions, $textOptions);
+        return $this->formatUnit(self::UNIT_LENGTH, self::FORMAT_WIDTH_LONG, $value, null, null, $decimals,
+            $numberOptions, $textOptions);
     }
+
     /**
      * Formats the value as a length in human readable form for example `12 m`.
      * This is the short form of [[asLength]].
@@ -1355,8 +1429,10 @@ class OldFormatter extends Component
      */
     public function asShortLength($value, $decimals = null, $options = [], $textOptions = [])
     {
-        return $this->formatUnit(self::UNIT_LENGTH, self::FORMAT_WIDTH_SHORT, $value, null, null, $decimals, $options, $textOptions);
+        return $this->formatUnit(self::UNIT_LENGTH, self::FORMAT_WIDTH_SHORT, $value, null, null, $decimals, $options,
+            $textOptions);
     }
+
     /**
      * Formats the value as a weight in human readable form for example `12 kilograms`.
      * Check properties [[baseUnits]] if you need to change unit of value as the multiplier
@@ -1374,8 +1450,10 @@ class OldFormatter extends Component
      */
     public function asWeight($value, $decimals = null, $options = [], $textOptions = [])
     {
-        return $this->formatUnit(self::UNIT_WEIGHT, self::FORMAT_WIDTH_LONG, $value, null, null, $decimals, $options, $textOptions);
+        return $this->formatUnit(self::UNIT_WEIGHT, self::FORMAT_WIDTH_LONG, $value, null, null, $decimals, $options,
+            $textOptions);
     }
+
     /**
      * Formats the value as a weight in human readable form for example `12 kg`.
      * This is the short form of [[asWeight]].
@@ -1395,8 +1473,10 @@ class OldFormatter extends Component
      */
     public function asShortWeight($value, $decimals = null, $options = [], $textOptions = [])
     {
-        return $this->formatUnit(self::UNIT_WEIGHT, self::FORMAT_WIDTH_SHORT, $value, null, null, $decimals, $options, $textOptions);
+        return $this->formatUnit(self::UNIT_WEIGHT, self::FORMAT_WIDTH_SHORT, $value, null, null, $decimals, $options,
+            $textOptions);
     }
+
     /**
      * @param string $unitType one of [[UNIT_WEIGHT]], [[UNIT_LENGTH]]
      * @param string $unitFormat one of [[FORMAT_WIDTH_SHORT]], [[FORMAT_WIDTH_LONG]]
@@ -1410,8 +1490,16 @@ class OldFormatter extends Component
      * @return string
      * @throws InvalidConfigException when INTL is not installed or does not contain required information
      */
-    private function formatUnit($unitType, $unitFormat, $value, $baseUnit, $unitSystem, $decimals, $options, $textOptions)
-    {
+    private function formatUnit(
+        $unitType,
+        $unitFormat,
+        $value,
+        $baseUnit,
+        $unitSystem,
+        $decimals,
+        $options,
+        $textOptions
+    ) {
         if ($value === null) {
             return $this->nullDisplay;
         }
@@ -1422,13 +1510,15 @@ class OldFormatter extends Component
             $baseUnit = $this->baseUnits[$unitType][$unitSystem];
         }
         $multipliers = array_values($this->measureUnits[$unitType][$unitSystem]);
-        list($params, $position) = $this->formatNumber($value * $baseUnit, $decimals, null, $multipliers, $options, $textOptions);
+        list($params, $position) = $this->formatNumber($value * $baseUnit, $decimals, null, $multipliers, $options,
+            $textOptions);
         $message = $this->getUnitMessage($unitType, $unitFormat, $unitSystem, $position);
         return (new \MessageFormatter($this->locale, $message))->format([
             '0' => $params['nFormatted'],
             'n' => $params['n'],
         ]);
     }
+
     /**
      * @param string $unitType one of [[UNIT_WEIGHT]], [[UNIT_LENGTH]]
      * @param string $unitFormat one of [[FORMAT_WIDTH_SHORT]], [[FORMAT_WIDTH_LONG]]
@@ -1467,6 +1557,7 @@ class OldFormatter extends Component
         }
         return $this->_unitMessages[$unitType][$system][$position] = '{n, plural, ' . implode(' ', $message) . '}';
     }
+
     /**
      * Given the value in bytes formats number part of the human readable form.
      *
@@ -1518,18 +1609,19 @@ class OldFormatter extends Component
             $options[NumberFormatter::GROUPING_USED] = false;
         }
         // format the size value
-        $value = number_format($value,1);
+        $value = number_format($value, 1);
         $params = [
             // this is the unformatted number used for the plural rule
             // abs() to make sure the plural rules work correctly on negative numbers, intl does not cover this
             // http://english.stackexchange.com/questions/9735/is-1-singular-or-plural
-            'n' => abs($value) ,
+            'n' => abs($value),
             // this is the formatted number used for display
             'nFormatted' => $this->asDecimal($value, $decimals, $options, $textOptions),
         ];
         $this->thousandSeparator = $oldThousandSeparator;
         return [$params, $position];
     }
+
     /**
      * Normalizes a numeric input value.
      *
@@ -1548,13 +1640,14 @@ class OldFormatter extends Component
             return 0;
         }
         if (is_string($value) && is_numeric($value)) {
-            $value = (float) $value;
+            $value = (float)$value;
         }
         if (!is_numeric($value)) {
             throw new InvalidParamException("'$value' is not a numeric value.");
         }
         return $value;
     }
+
     /**
      * Creates a number formatter based on the given type and format.
      *

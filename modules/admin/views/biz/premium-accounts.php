@@ -1,4 +1,5 @@
 <?php
+
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
@@ -12,27 +13,27 @@ $currentUrl = yii\helpers\Url::current([], true);
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions' => [
-            'class' => 'table --custom-tbl-p'
+            'class' => 'table --custom-tbl-p',
         ],
-        'layout'=>"{items}\n{pager}",
+        'layout' => "{items}\n{pager}",
         'columns' => [
             [
                 'attribute' => 'user_id',
                 'format' => 'text',
-                'headerOptions' => ['width'=>'70px','class' => '--header-p'],
+                'headerOptions' => ['width' => '70px', 'class' => '--header-p'],
 
             ],
             [
                 'attribute' => 'post_id',
                 'format' => 'text',
-                'headerOptions' => ['width'=>'70px','class' => '--header-p'],
+                'headerOptions' => ['width' => '70px', 'class' => '--header-p'],
             ],
             [
                 'attribute' => null,
                 'format' => 'text',
                 'label' => 'Имя и фамилия',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->full_name;
                 },
             ],
@@ -41,7 +42,7 @@ $currentUrl = yii\helpers\Url::current([], true);
                 'format' => 'text',
                 'label' => 'Email',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->user->email;
                 },
             ],
@@ -59,27 +60,27 @@ $currentUrl = yii\helpers\Url::current([], true);
                 'attribute' => 'premium_finish_date',
                 'format' => 'html',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data) {
+                'value' => function ($data) {
                     $className = $data->premium_finish_date <= time() ? 'close-txt' : 'open-txt';
 
-                    return '<span class="'.$className.'">' . Yii::$app->formatter->asDate(
-                        $data->premium_finish_date + Yii::$app->user->getTimezoneInSeconds(),
-                        'dd.MM.yyyy, HH:mm:ss') . '</span>';
+                    return '<span class="' . $className . '">' . Yii::$app->formatter->asDate(
+                            $data->premium_finish_date + Yii::$app->user->getTimezoneInSeconds(),
+                            'dd.MM.yyyy, HH:mm:ss') . '</span>';
                 },
             ],
             [
                 'attribute' => null,
                 'format' => 'raw',
                 'label' => 'Права',
-                'headerOptions' => ['width'=>'60px','class' => '--header-p'],
-                'value' => function($data,$key) use($currentUrl){
+                'headerOptions' => ['width' => '60px', 'class' => '--header-p'],
+                'value' => function ($data, $key) use ($currentUrl) {
                     return Html::activeDropDownList(
-                            $data,
-                            'status',
-                            ['confirm'=>'Да','remove'=>'Нет'],
-                            [
-                                'id'=>$key['user_id'].'-'.$key['post_id'],
-                                'onchange' => "
+                        $data,
+                        'status',
+                        ['confirm' => 'Да', 'remove' => 'Нет'],
+                        [
+                            'id' => $key['user_id'] . '-' . $key['post_id'],
+                            'onchange' => "
                                    $.ajax({
                                      url: '/admin/biz/change-status-business',
                                      type: 'post',
@@ -103,12 +104,12 @@ $currentUrl = yii\helpers\Url::current([], true);
                                      
                                         }
                                     });
-                                "
-                            ]
-                        );
+                                ",
+                        ]
+                    );
                 },
             ],
         ],
-    ]);?>
+    ]); ?>
 
 </div>

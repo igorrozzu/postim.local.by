@@ -2,11 +2,11 @@
 $this->title = 'Премиум-бизнес-аккаунт: инструмент для бизнеса в Беларуси';
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => 'Уникальная технология продвижения бизнеса. Рекламируйтесь на страницах конкурентов.Рассказывайте об акциях и скидках с помощью сервиса бесплатных промокодов. Анализируйте статистику клиентов с Postim.by.'
+    'content' => 'Уникальная технология продвижения бизнеса. Рекламируйтесь на страницах конкурентов.Рассказывайте об акциях и скидках с помощью сервиса бесплатных промокодов. Анализируйте статистику клиентов с Postim.by.',
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
-    'content' => 'Премиум-бизнес-аккаунт'
+    'content' => 'Премиум-бизнес-аккаунт',
 ]);
 
 ?>
@@ -30,7 +30,7 @@ $this->registerMetaTag([
             <h2 class="h2-regular" style="margin-top: 30px;">Postim.by — это лучшие места по отзывам посетителей</h2>
             <div class="block-p">
                 <p>Продвигайтесь в топ рейтинга бесплатно за счет отзывов о вашем месте, чтобы привлечь внимание
-                пользователей Postim.by, получить больше хороших отзывов и заинтересовать новых клиентов.
+                    пользователей Postim.by, получить больше хороших отзывов и заинтересовать новых клиентов.
                     Общайтесь от лица компании: потенциальные клиенты, выбирая места по отзывам, тоже оценят это.
                 </p>
             </div>
@@ -63,8 +63,8 @@ $this->registerMetaTag([
         <h2 class="h2-c">Инструменты для бизнеса</h2>
         <div class="block-p --color-black-grey">
             <p>Акции и спецпредложения, отзывы и качественные фотографии привлекают
-            больше внимания посетителей Postim.by. Премиум-бизнес-аккаунт позволяет
-            показать клиентам, что ваша компания — особенная.
+                больше внимания посетителей Postim.by. Премиум-бизнес-аккаунт позволяет
+                показать клиентам, что ваша компания — особенная.
             </p>
         </div>
     </div>
@@ -76,15 +76,17 @@ $this->registerMetaTag([
             <div class="column-content">
                 <h3 class="h3-regular">Сервис промокодов</h3>
                 <div class="block-p --color-black-blue">
-                    <p>Рассказывать клиентам о ваших акциях и предложениях эффективнее c помощью сервиса бесплатных промокодов.
+                    <p>Рассказывать клиентам о ваших акциях и предложениях эффективнее c помощью сервиса бесплатных
+                        промокодов.
                         Ваша акция получает гарантированное внимание
                         клиентов, потому что попадает во множество разделов сайта.
                     </p>
-                    <p style="margin-top: 10px"><a class="--promo-link js-btn-active-bsa"  data-type="20" href="javascript:void()">Подключить бизнес-аккаунт</a></p>
+                    <p style="margin-top: 10px"><a class="--promo-link js-btn-active-bsa" data-type="20"
+                                                   href="javascript:void()">Подключить бизнес-аккаунт</a></p>
                 </div>
             </div>
             <div class="column-content">
-                <img  class="computer-img" src="/img/lading/1.png">
+                <img class="computer-img" src="/img/lading/1.png">
             </div>
         </div>
     </div>
@@ -98,11 +100,12 @@ $this->registerMetaTag([
                     <p>Уберите рекламу конкурентов из вашей карточки. На вашей странице не будет рекламных блоков
                         с местами и скидками конкурентов. Пусть все внимание достанется вам.
                     </p>
-                    <p style="margin-top: 10px"><a class="--promo-link js-btn-active-bsa" data-type="20" href="javascript:void()">Подключить премиум-бизнес-аккаунт</a></p>
+                    <p style="margin-top: 10px"><a class="--promo-link js-btn-active-bsa" data-type="20"
+                                                   href="javascript:void()">Подключить премиум-бизнес-аккаунт</a></p>
                 </div>
             </div>
             <div class="column-content">
-                <img  class="computer-img" src="/img/lading/2.png">
+                <img class="computer-img" src="/img/lading/2.png">
             </div>
         </div>
     </div>
@@ -117,11 +120,12 @@ $this->registerMetaTag([
                         когда люди выбирают, куда сходить или к кому обратиться.
                         Обеспечьте себе максимум внимания с помощью акций, рекламы — и вас не смогут не заметить.
                     </p>
-                    <p style="margin-top: 10px"><a class="--promo-link js-btn-active-bsa" data-type="20" href="javascript:void()">Подключить премиум-бизнес-аккаунт</a></p>
+                    <p style="margin-top: 10px"><a class="--promo-link js-btn-active-bsa" data-type="20"
+                                                   href="javascript:void()">Подключить премиум-бизнес-аккаунт</a></p>
                 </div>
             </div>
             <div class="column-content">
-                <img  class="computer-img" src="/img/lading/3.png">
+                <img class="computer-img" src="/img/lading/3.png">
             </div>
         </div>
     </div>
@@ -160,7 +164,8 @@ $this->registerMetaTag([
                 <p>2. Устранение рекламы конкурентов из вашей карточки</p>
                 <p>3. Выделение компании в каталоге за счет плашки «Здесь акция!»</p>
                 <p>4. Размещение от 3 постов в месяц в социальных сетях проекта</p>
-                <p style="margin-top: 10px; font-family: PT_Sans bold; color: #6b778f;">+ Все возможности обычного бизнес-аккаунта </p>
+                <p style="margin-top: 10px; font-family: PT_Sans bold; color: #6b778f;">+ Все возможности обычного
+                    бизнес-аккаунта </p>
             </div>
             <div class="bottom-block-fill"></div>
             <div class="bottom-block">
@@ -177,104 +182,104 @@ $this->registerMetaTag([
     <div style="margin-top: 100px"></div>
 </div>
 <script>
-    $(document).ready(function () {
-        var $wraper =  $('.block-content-wrap'),
-            $mainWraper = $('.js-calc-height');
-       $(window).resize(function () {
-           $mainWraper.css({height:$wraper.height()});
-       });
+	$(document).ready(function () {
+		var $wraper = $('.block-content-wrap'),
+				$mainWraper = $('.js-calc-height');
+		$(window).resize(function () {
+			$mainWraper.css({height: $wraper.height()});
+		});
 
-       $(window).resize();
+		$(window).resize();
 
-       var $forBsn    = $('#for-bsn'),
-           $instument = $('#instument'),
-           $price     = $('#price');
+		var $forBsn = $('#for-bsn'),
+				$instument = $('#instument'),
+				$price = $('#price');
 
-       $(document).on('scroll',function () {
+		$(document).on('scroll', function () {
 
-           var docViewTop   = $(window).scrollTop();
-           var $elemActive  = $('.btn-forBsn');
+			var docViewTop = $(window).scrollTop();
+			var $elemActive = $('.btn-forBsn');
 
-           if(($instument.offset().top - 250) <  docViewTop){
-               $elemActive = $('.btn-instument');
-           }
-           
-           if(($price.offset().top - 250 ) <  docViewTop){
-               $elemActive = $('.btn-price');
-           }
+			if (($instument.offset().top - 250) < docViewTop) {
+				$elemActive = $('.btn-instument');
+			}
 
-           $('.nav-content-menu .active').removeClass('active');
-           $elemActive.addClass('active');
+			if (($price.offset().top - 250) < docViewTop) {
+				$elemActive = $('.btn-price');
+			}
 
-       });
+			$('.nav-content-menu .active').removeClass('active');
+			$elemActive.addClass('active');
 
-       $(document).on('click','.item-content-menu', function () {
+		});
 
-           $('html, body').animate({
-              scrollTop: $($(this).data('for-selector')).offset().top - 100
-           }, 100);
-       });
+		$(document).on('click', '.item-content-menu', function () {
 
-       $(document).on('click', '.js-btn-active-bsa', function () {
+			$('html, body').animate({
+				scrollTop: $($(this).data('for-selector')).offset().top - 100
+			}, 100);
+		});
 
-           var type = $(this).data('type');
+		$(document).on('click', '.js-btn-active-bsa', function () {
 
-           (function($){
+			var type = $(this).data('type');
 
-               var modal = ModalWindow({
-                   actionUrl : '/lading/get-form-for-order-bsa?type=' + type,
-                   closeBtn : '.close-business-account-btn',
+			(function ($) {
 
-                   renderBodyCallback: function ($form) {
-                       $form.find('.js-create-bsa').on('click', function () {
-                          var $form = $(this).parents('form');
-                          saveBsa($form);
-                       });
-                   }
-               });
+				var modal = ModalWindow({
+					actionUrl: '/lading/get-form-for-order-bsa?type=' + type,
+					closeBtn: '.close-business-account-btn',
 
-               modal.init();
+					renderBodyCallback: function ($form) {
+						$form.find('.js-create-bsa').on('click', function () {
+							var $form = $(this).parents('form');
+							saveBsa($form);
+						});
+					}
+				});
 
-               
-               function saveBsa($form) {
+				modal.init();
 
-                  var data = $form.serialize();
-                  $.post('/lading/save-order-bsa',data,function (response) {
 
-                      if(response.success){
+				function saveBsa($form) {
 
-                          $().toastmessage('showToast', {
-                              text: response.message,
-                              stayTime:10000,
-                              type: 'success'
-                          });
+					var data = $form.serialize();
+					$.post('/lading/save-order-bsa', data, function (response) {
 
-                          modal.closeForm();
+						if (response.success) {
 
-                      }else {
-                          if(response.html){
+							$().toastmessage('showToast', {
+								text: response.message,
+								stayTime: 10000,
+								type: 'success'
+							});
 
-                              if(response.message){
-                                  $().toastmessage('showToast', {
-                                      text: response.message,
-                                      stayTime:5000,
-                                      type: 'error'
-                                  });
-                              }
+							modal.closeForm();
 
-                              $('.container-blackout-popup-window').html(response.html).show();
-                              $('.container-blackout-popup-window').find('.js-create-bsa').on('click', function () {
-                                 var $form = $(this).parents('form');
-                                 saveBsa($form);
-                              });
-                          }
-                      }
+						} else {
+							if (response.html) {
 
-                  })
-               }
+								if (response.message) {
+									$().toastmessage('showToast', {
+										text: response.message,
+										stayTime: 5000,
+										type: 'error'
+									});
+								}
 
-           })(jQuery)
+								$('.container-blackout-popup-window').html(response.html).show();
+								$('.container-blackout-popup-window').find('.js-create-bsa').on('click', function () {
+									var $form = $(this).parents('form');
+									saveBsa($form);
+								});
+							}
+						}
 
-       })
-    });
+					})
+				}
+
+			})(jQuery)
+
+		})
+	});
 </script>

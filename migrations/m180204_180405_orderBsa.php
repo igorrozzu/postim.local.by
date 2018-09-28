@@ -6,7 +6,7 @@ class m180204_180405_orderBsa extends Migration
 {
     public function safeUp()
     {
-        $this->execute( 'CREATE TABLE tbl_bid_business_order
+        $this->execute('CREATE TABLE tbl_bid_business_order
 (
     id SERIAL PRIMARY KEY NOT NULL,
     status INT DEFAULT 0,
@@ -17,13 +17,13 @@ class m180204_180405_orderBsa extends Migration
     full_name VARCHAR(50),
     company_name VARCHAR(50),
     phone VARCHAR(30)
-)' );
-        $this->execute( 'CREATE UNIQUE INDEX tbl_bid_business_order_id_uindex ON tbl_bid_business_order (id)' );
+)');
+        $this->execute('CREATE UNIQUE INDEX tbl_bid_business_order_id_uindex ON tbl_bid_business_order (id)');
     }
 
     public function safeDown()
     {
-        $this->dropTable( 'tbl_bid_business_order' );
+        $this->dropTable('tbl_bid_business_order');
 
     }
 

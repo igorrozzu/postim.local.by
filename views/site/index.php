@@ -1,4 +1,5 @@
 <?php
+
 use app\components\cardsReviewsWidget\CardsReviewsWidget;
 use \app\components\mainMenu\MainMenuWidget;
 use \app\components\cardsPlaceWidget\CardsPlaceWidget;
@@ -9,19 +10,23 @@ use app\widgets\cardsDiscounts\CardsDiscounts;
 use app\widgets\photoSlider\PhotoSlider;
 
 
-$descriptionPage = DescriptionPage::initMetaTags(function ()use ($spotlight){
+$descriptionPage = DescriptionPage::initMetaTags(function () use ($spotlight) {
     $response = [
-        'title' => "Карта ".Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])." — лучшие места по отзывам посетителей - Postim.by",
+        'title' => "Карта " . Yii::t('app/parental_slope',
+                Yii::$app->city->getSelected_city()['name']) . " — лучшие места по отзывам посетителей - Postim.by",
 
-        'description' => 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']).
-        ', лучшие места по отзывам посетителей — удобный поиск на карте Postim.by!',
+        'description' => 'Подробная карта ' . Yii::t('app/parental_slope',
+                Yii::$app->city->getSelected_city()['name']) .
+            ', лучшие места по отзывам посетителей — удобный поиск на карте Postim.by!',
 
-        'keywords' => 'карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name']),
+        'keywords' => 'карта ' . Yii::t('app/parental_slope', Yii::$app->city->getSelected_city()['name']),
 
-        'descriptionText' => 'Подробная карта '.Yii::t('app/parental_slope',Yii::$app->city->getSelected_city()['name'])
-            .', лучшие места по отзывам посетителей — удобный поиск на карте Postim.by!</br> Время работы и прочую информацию смотрите у нас на сайте.',
+        'descriptionText' => 'Подробная карта ' . Yii::t('app/parental_slope',
+                Yii::$app->city->getSelected_city()['name'])
+            . ', лучшие места по отзывам посетителей — удобный поиск на карте Postim.by!</br> Время работы и прочую информацию смотрите у нас на сайте.',
 
-        'h1' => 'Лучшие места в '.Yii::t('app/locativus',Yii::$app->city->getSelected_city()['name']).' по отзывам посетителей',
+        'h1' => 'Лучшие места в ' . Yii::t('app/locativus',
+                Yii::$app->city->getSelected_city()['name']) . ' по отзывам посетителей',
     ];
 
     return $response;
@@ -31,11 +36,11 @@ $descriptionPage = DescriptionPage::initMetaTags(function ()use ($spotlight){
 $this->title = $descriptionPage['title'];
 $this->registerMetaTag([
     'name' => 'description',
-    'content' => $descriptionPage['description']
+    'content' => $descriptionPage['description'],
 ]);
 $this->registerMetaTag([
     'name' => 'keywords',
-    'content' => $descriptionPage['keywords']
+    'content' => $descriptionPage['keywords'],
 ]);
 
 MetaTagsSocialNetwork::registerOgTags($this, [
@@ -47,20 +52,20 @@ MetaTagsSocialNetwork::registerOgTags($this, [
 ?>
 
 <div class="margin-top60"></div>
-    <div id="map_block" class="block-map preload-map">
-        <div class="btns-map">
-            <div class="action-map" title="Открыть карту"></div>
-            <div class="find-me" title="Найти меня"></div>
-            <div class="zoom-plus"></div>
-            <div class="zoom-minus"></div>
-        </div>
-        <div id="map" style="display: none"></div>
+<div id="map_block" class="block-map preload-map">
+    <div class="btns-map">
+        <div class="action-map" title="Открыть карту"></div>
+        <div class="find-me" title="Найти меня"></div>
+        <div class="zoom-plus"></div>
+        <div class="zoom-minus"></div>
     </div>
+    <div id="map" style="display: none"></div>
+</div>
 
 <div class="block-content">
-    <h1 class="h1-c center-mx"><?=$descriptionPage['h1']?></h1>
+    <h1 class="h1-c center-mx"><?= $descriptionPage['h1'] ?></h1>
     <?= MainMenuWidget::widget(['typeMenu' => MainMenuWidget::$catalogMenu]) ?>
-        <?php if($spotlight->getModels()):?>
+    <?php if ($spotlight->getModels()): ?>
         <h2 class="h2-c">В центре внимания</h2>
         <div class="cards-block">
             <?= CardsPlaceWidget::widget(['dataprovider' => $spotlight, 'settings' => ['show-more-btn' => false]]) ?>
@@ -68,27 +73,27 @@ MetaTagsSocialNetwork::registerOgTags($this, [
         <div class="clear-fix"></div>
     <?php endif; ?>
 
-    <?php if($discountDataProvider->getTotalCount()):?>
+    <?php if ($discountDataProvider->getTotalCount()): ?>
         <h2 class="h2-c">Новые скидки</h2>
         <div class="cards-block-discount row-4 main-pjax" data-favorites-state-url="/discount/favorite-state">
             <?= CardsDiscounts::widget([
                 'dataprovider' => $discountDataProvider,
                 'settings' => [
                     'show-distance' => true,
-                    'view' => 'feed-main-page'
-                ]
+                    'view' => 'feed-main-page',
+                ],
             ]); ?>
         </div>
     <?php endif; ?>
 
-    <?php if($news->totalCount):?>
-    <h2 class="h2-c">Последние новости</h2>
-    <div class="container-news">
-        <div class="block-news">
-            <?= CardsNewsWidget::widget(['dataprovider' => $news, 'settings' => ['last-news' => true]]) ?>
+    <?php if ($news->totalCount): ?>
+        <h2 class="h2-c">Последние новости</h2>
+        <div class="container-news">
+            <div class="block-news">
+                <?= CardsNewsWidget::widget(['dataprovider' => $news, 'settings' => ['last-news' => true]]) ?>
+            </div>
         </div>
-    </div>
-    <?php endif;?>
+    <?php endif; ?>
 
 </div>
 <div class="block-content">
@@ -96,17 +101,17 @@ MetaTagsSocialNetwork::registerOgTags($this, [
     <div class="container-columns">
         <div class="__first-column">
 
-            <?php if($reviews->totalCount):?>
+            <?php if ($reviews->totalCount): ?>
                 <div class="clear-fix"></div>
                 <h2 class="h2-c">Новые отзывы</h2>
                 <div class="container-news">
                     <div class="block-news block-new-reviews">
                         <?= CardsReviewsWidget::widget([
                             'dataProvider' => $reviews,
-                            'settings'=>[
+                            'settings' => [
                                 'show-more-btn' => false,
-                                'noIndexData' => true
-                            ]
+                                'noIndexData' => true,
+                            ],
                         ]); ?>
                         <noindex>
                             <div class="review-show-more main-pjax">
@@ -117,12 +122,12 @@ MetaTagsSocialNetwork::registerOgTags($this, [
                         </noindex>
                     </div>
                 </div>
-            <?php endif;?>
+            <?php endif; ?>
 
         </div>
         <div class="__second-column">
             <div class="--100px-30px">
-                <?= \app\components\rightBlock\RightBlockWidget::widget()?>
+                <?= \app\components\rightBlock\RightBlockWidget::widget() ?>
             </div>
 
         </div>
@@ -133,25 +138,25 @@ MetaTagsSocialNetwork::registerOgTags($this, [
 
 <div class="block-content" style="margin-top: 30px;">
     <div class="description-text --description-width">
-        <?=$descriptionPage['descriptionText']?>
+        <?= $descriptionPage['descriptionText'] ?>
     </div>
 </div>
 
-<?= PhotoSlider::widget()?>
+<?= PhotoSlider::widget() ?>
 
 <script>
-    $(document).ready(function() {
-        post.photos.isChangeTitleInSlider(true);
+	$(document).ready(function () {
+		post.photos.isChangeTitleInSlider(true);
 
-        <?php if (isset($initPhotoSliderParams['photoId'])) :?>
-            post.photos.initPhotoSlider({
-                photoId: '<?=$initPhotoSliderParams['photoId']?>',
-                reviewId: <?=$initPhotoSliderParams['reviewId']?>,
-                type: 'review'
-            });
-        <?php endif;?>
+      <?php if (isset($initPhotoSliderParams['photoId'])) :?>
+		post.photos.initPhotoSlider({
+			photoId: '<?=$initPhotoSliderParams['photoId']?>',
+			reviewId: <?=$initPhotoSliderParams['reviewId']?>,
+			type: 'review'
+		});
+      <?php endif;?>
 
-        menu_control.fireMethodClose();
-        map.setIdPlacesOnMap("<?=$keyForMap?>");
-    });
+		menu_control.fireMethodClose();
+		map.setIdPlacesOnMap("<?=$keyForMap?>");
+	});
 </script>

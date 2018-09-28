@@ -1,7 +1,9 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+
 ?>
 
 <div class="container-popup-window form-password-recovery">
@@ -13,13 +15,13 @@ use yii\widgets\ActiveForm;
         <div class="text-label">Для изменения эл. почты необходимо подтверждение</div>
         <?php $form = ActiveForm::begin([
             'id' => 'change-email-form',
-            'enableClientScript' => false
+            'enableClientScript' => false,
         ]) ?>
-            <div class="field-input">
-                <?= $form->field($model, 'email')
-                    ->textInput(['placeholder' => 'Электронная почта'])
-                    ->label(false) ?>
-            </div>
+        <div class="field-input">
+            <?= $form->field($model, 'email')
+                ->textInput(['placeholder' => 'Электронная почта'])
+                ->label(false) ?>
+        </div>
 
         <div class="field-btn">
             <div class="btn-red" id="change-email-btn">Подтвердить</div>

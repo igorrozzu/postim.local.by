@@ -15,7 +15,7 @@ class NewCommentToReview extends BaseCronNotificationHandler
             ->where([Reviews::tableName() . '.id' => $this->params->entity_id])
             ->one();
 
-        if ($review->user_id === (int) $this->params->user_id) {
+        if ($review->user_id === (int)$this->params->user_id) {
             return false;
         }
 
@@ -26,7 +26,7 @@ class NewCommentToReview extends BaseCronNotificationHandler
             'data' => sprintf(
                 Yii::$app->params['notificationTemplates']['common.newCommentToReview'],
                 $redirectLink
-            )
+            ),
         ], $this->params->user_id);
 
         if (!$review->user->userInfo->hasAnswersToReviewsSub()) {

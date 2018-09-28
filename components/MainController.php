@@ -86,9 +86,9 @@ class MainController extends Controller
             'keyForMap' => $searchModel->getKeyForPlacesOnMap(),
             'initPhotoSliderParams' => [
                 'photoId' => isset($request->queryParams['photo_id']) ?
-                    (int) $request->queryParams['photo_id'] : null,
-                'reviewId' => (int) $request->get('review_id'),
-            ]
+                    (int)$request->queryParams['photo_id'] : null,
+                'reviewId' => (int)$request->get('review_id'),
+            ],
         ];
     }
 
@@ -97,7 +97,7 @@ class MainController extends Controller
         return Yii::$app->getResponse()->redirect(Url::to($url), $statusCode);
     }
 
-    public function beforeAction( $action )
+    public function beforeAction($action)
     {
         $absoluteUrl = Yii::$app->request->absoluteUrl;
         if ((strpos($absoluteUrl, 'index.php') !== false)) {
@@ -106,6 +106,6 @@ class MainController extends Controller
             $this->redirect($new_url, 301);
         }
 
-        return parent::beforeAction( $action );
+        return parent::beforeAction($action);
     }
 }

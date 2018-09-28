@@ -12,13 +12,13 @@ $currentUrl = $dataProvider->pagination->createUrl($currentPage);
 $dataProvider->pagination->selfParams['order_time'] = true;
 
 $current_month = (int)date('n');
-$time_prev_month = mktime(0,0,0, $current_month !== 1 ? $current_month - 1 : 12, 1);
+$time_prev_month = mktime(0, 0, 0, $current_month !== 1 ? $current_month - 1 : 12, 1);
 
 $this->title = 'Заказы промокодов на Postim.by';
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
-    <?= BreadCrumb::widget(['breadcrumbParams'=>$breadcrumbParams])?>
+    <?= BreadCrumb::widget(['breadcrumbParams' => $breadcrumbParams]) ?>
     <h1 class="h1-v">Заказы промокодов</h1>
 </div>
 <?php
@@ -35,32 +35,32 @@ Pjax::begin([
     <div class="container-promo-statistic">
         <div class="search-promo-statistic">
             <input class="search-by-promo-code" placeholder="Поиск по названию и промокоду"
-                   data-href="<?=$searchUrl?>">
+                   data-href="<?= $searchUrl ?>">
         </div>
         <div class="horizontal-scroll12">
             <div class="block-sort-menu feeds-btn-bar">
-                <a href="<?=$currentUrl?>" <?=$order_time === null ? 'class="active"' : ''?>>За все время</a>
-                <a href="<?=$currentUrl?>&order_time=today" <?=$order_time === 'today' ? 'class="active"' : ''?>>
+                <a href="<?= $currentUrl ?>" <?= $order_time === null ? 'class="active"' : '' ?>>За все время</a>
+                <a href="<?= $currentUrl ?>&order_time=today" <?= $order_time === 'today' ? 'class="active"' : '' ?>>
                     За сегодня</a>
-                <a href="<?=$currentUrl?>&order_time=yesterday" <?=$order_time === 'yesterday' ? 'class="active"' : ''?>>
+                <a href="<?= $currentUrl ?>&order_time=yesterday" <?= $order_time === 'yesterday' ? 'class="active"' : '' ?>>
                     За вчера</a>
-                <a href="<?=$currentUrl?>&order_time=current-month" <?=$order_time === 'current-month' ? 'class="active"' : ''?>>
-                    За <?=Yii::$app->formatter->asDate(time(), 'LLLL')?></a>
-                <a href="<?=$currentUrl?>&order_time=prev-month" <?=$order_time === 'prev-month' ? 'class="active"' : ''?>>
-                    За <?=Yii::$app->formatter->asDate($time_prev_month , 'LLLL')?></a>
+                <a href="<?= $currentUrl ?>&order_time=current-month" <?= $order_time === 'current-month' ? 'class="active"' : '' ?>>
+                    За <?= Yii::$app->formatter->asDate(time(), 'LLLL') ?></a>
+                <a href="<?= $currentUrl ?>&order_time=prev-month" <?= $order_time === 'prev-month' ? 'class="active"' : '' ?>>
+                    За <?= Yii::$app->formatter->asDate($time_prev_month, 'LLLL') ?></a>
             </div>
             <div class="table-container">
-            <?= OrderStatisticsWidget::widget([
-                'dataProvider' => $dataProvider,
-                'settings' => [
-                    'show-more-btn' => true,
-                    'replace-container-id' => 'feed-promo',
-                    'load-time' => $loadTime,
-                    'view-name' => 'index',
-                    'column-status-view' => 'promocode',
-                    'time-range' => $timeRange,
-                ]
-            ]);?>
+                <?= OrderStatisticsWidget::widget([
+                    'dataProvider' => $dataProvider,
+                    'settings' => [
+                        'show-more-btn' => true,
+                        'replace-container-id' => 'feed-promo',
+                        'load-time' => $loadTime,
+                        'view-name' => 'index',
+                        'column-status-view' => 'promocode',
+                        'time-range' => $timeRange,
+                    ],
+                ]); ?>
             </div>
         </div>
     </div>

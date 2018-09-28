@@ -51,14 +51,14 @@ class AccountController extends AuthController
             $loadTime
         );
 
-        if ($request->isAjax && !$request->get('_pjax',false)) {
+        if ($request->isAjax && !$request->get('_pjax', false)) {
             return AccountStatistic::widget([
                 'dataProvider' => $dataProvider,
                 'settings' => [
                     'show-more-btn' => true,
                     'replace-container-id' => 'item-table-statistic',
                     'load-time' => $loadTime,
-                ]
+                ],
             ]);
         }
 
@@ -66,7 +66,7 @@ class AccountController extends AuthController
         $breadcrumbParams[] = [
             'name' => 'История вашего счета',
             'url_name' => Url::to(['user/history']),
-            'pjax' => 'class="main-pjax a"'
+            'pjax' => 'class="main-pjax a"',
         ];
 
         return $this->render('account-history', [
@@ -83,7 +83,7 @@ class AccountController extends AuthController
         $breadcrumbParams[] = [
             'name' => 'Премиум аккаунт',
             'url_name' => Url::to(['account/premium']),
-            'pjax' => 'class="main-pjax a"'
+            'pjax' => 'class="main-pjax a"',
         ];
 
         $errors = [];
@@ -137,8 +137,11 @@ class AccountController extends AuthController
                         'text' => 'Премиум бизнес-аккаунт подключен на ' . $rateInfo['duration'] . ' дней',
                     ]);
 
-                    return $this->redirect(Url::to(['post/index',
-                        'url' => $account->post->url_name, 'id' => $account->post->id]));
+                    return $this->redirect(Url::to([
+                        'post/index',
+                        'url' => $account->post->url_name,
+                        'id' => $account->post->id,
+                    ]));
                 } else {
                     $transaction->rollBack();
                 }
@@ -149,9 +152,11 @@ class AccountController extends AuthController
         }
 
         $posts = Posts::find()
-            ->innerJoinWith(['ownersPost' => function (ActiveQuery $q) {
-                $q->onCondition([OwnerPost::tableName() . '.owner_id' => Yii::$app->user->id]);
-            }])
+            ->innerJoinWith([
+                'ownersPost' => function (ActiveQuery $q) {
+                    $q->onCondition([OwnerPost::tableName() . '.owner_id' => Yii::$app->user->id]);
+                },
+            ])
             ->orderBy(['data' => SORT_ASC])
             ->all();
 
@@ -170,19 +175,19 @@ class AccountController extends AuthController
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post(), 'payment');
-            $model->load(['user_id' =>Yii::$app->user->identity->getId()], '');
+            $model->load(['user_id' => Yii::$app->user->identity->getId()], '');
 
             if ($model->validate() && $model->save()) {
 
                 $breadcrumbParams[] = [
                     'name' => 'Оплата через систему "Расчет" (ЕРИП)',
                     'url_name' => Url::to(['user/account']),
-                    'pjax' => 'class="main-pjax a"'
+                    'pjax' => 'class="main-pjax a"',
                 ];
 
                 return $this->render('erip-payment', [
                     'model' => $model,
-                    'breadcrumbParams' => $breadcrumbParams
+                    'breadcrumbParams' => $breadcrumbParams,
                 ]);
             }
         }
@@ -192,7 +197,7 @@ class AccountController extends AuthController
         $breadcrumbParams[] = [
             'name' => 'Пополнение счета',
             'url_name' => Url::to(['user/account']),
-            'pjax' => 'class="main-pjax a"'
+            'pjax' => 'class="main-pjax a"',
         ];
 
         return $this->render('account', [
@@ -219,7 +224,7 @@ class AccountController extends AuthController
         $pagination = new Pagination([
             'pageSize' => $request->get('per-page', 8),
             'page' => $request->get('page', 1) - 1,
-            'selfParams'=> [
+            'selfParams' => [
                 'type' => true,
                 'order_time' => true,
                 'promo_code' => true,
@@ -233,7 +238,7 @@ class AccountController extends AuthController
             $loadTime
         );
 
-        if($request->isAjax && !$request->get('_pjax',false)) {
+        if ($request->isAjax && !$request->get('_pjax', false)) {
             return OrderStatisticsWidget::widget([
                 'dataProvider' => $dataProvider,
                 'settings' => [
@@ -243,14 +248,14 @@ class AccountController extends AuthController
                     'view-name' => $request->get('only_rows', false) ? 'rows' : 'index',
                     'column-status-view' => 'promocode',
                     'time-range' => $searchModel->getTimeRange(),
-                ]
+                ],
             ]);
         } else {
             $breadcrumbParams = $this->getParamsForBreadcrumb();
             $breadcrumbParams[] = [
                 'name' => 'Заказы промокодов',
                 'url_name' => Url::to(['user/order-promocodes']),
-                'pjax' => 'class="main-pjax a"'
+                'pjax' => 'class="main-pjax a"',
             ];
 
             return $this->render('statistics-promo', [
@@ -289,22 +294,22 @@ class AccountController extends AuthController
 
     private function getParamsForBreadcrumb()
     {
-        $breadcrumbParams=[];
+        $breadcrumbParams = [];
 
         $currentUrl = Yii::$app->getRequest()->getHostInfo();
         $breadcrumbParams[] = [
             'name' => ucfirst(Yii::$app->getRequest()->serverName),
             'url_name' => $currentUrl,
-            'pjax' => 'class="main-header-pjax a"'
+            'pjax' => 'class="main-header-pjax a"',
         ];
 
-        if($city = Yii::$app->city->getSelected_city()){
-            if($city['url_name']){
-                $currentUrl=$currentUrl.'/'.$city['url_name'];
-                $breadcrumbParams[]=[
-                    'name'=>$city['name'],
-                    'url_name'=>$currentUrl,
-                    'pjax'=>'class="main-pjax a"'
+        if ($city = Yii::$app->city->getSelected_city()) {
+            if ($city['url_name']) {
+                $currentUrl = $currentUrl . '/' . $city['url_name'];
+                $breadcrumbParams[] = [
+                    'name' => $city['name'],
+                    'url_name' => $currentUrl,
+                    'pjax' => 'class="main-pjax a"',
                 ];
             }
         }

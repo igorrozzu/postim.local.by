@@ -70,7 +70,6 @@ class Posts extends \yii\db\ActiveRecord
     }
 
 
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -79,15 +78,16 @@ class Posts extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    public function getButtons(){
+    public function getButtons()
+    {
 
         $beginHtml = "<div class='data-grid-container-btn'>";
         $bodyHtml = "";
         $endHtml = "</div>";
 
-        $bodyHtml.="<a title='Удалить' href='/admin/post/delete-post?id={$this->id}&act=delete' class='btn-moderation --delete'></a>";
+        $bodyHtml .= "<a title='Удалить' href='/admin/post/delete-post?id={$this->id}&act=delete' class='btn-moderation --delete'></a>";
 
-        return $beginHtml.$bodyHtml.$endHtml;
+        return $beginHtml . $bodyHtml . $endHtml;
     }
 
     public function getCity()
@@ -121,12 +121,13 @@ class Posts extends \yii\db\ActiveRecord
         $this->countCategorySave();
     }
 
-    private function countCategorySave(){
+    private function countCategorySave()
+    {
 
         $post = $this->post;
 
-        if($post->status == 1){
-            foreach ($post->categories as $under_category){
+        if ($post->status == 1) {
+            foreach ($post->categories as $under_category) {
 
                 $this->savePostCategoryCount($under_category->url_name,
                     $post->city->name,
@@ -160,35 +161,40 @@ class Posts extends \yii\db\ActiveRecord
 
     }
 
-    private function savePostCategoryCount($category_name,$city_name,$city_url_name){
+    private function savePostCategoryCount($category_name, $city_name, $city_url_name)
+    {
 
         $model = PostCategoryCount::find()
-            ->where(['category_url_name'=>$category_name])
-            ->andWhere(['city_name'=>$city_name])->one();
-        if($model != null){
+            ->where(['category_url_name' => $category_name])
+            ->andWhere(['city_name' => $city_name])->one();
+        if ($model != null) {
 
             $query = Posts::find()
                 ->joinWith('categories.category')
                 ->joinWith('city.region')
-                ->where(['status'=>1]);
-            if(\Yii::$app->category->getCategoryByName($category_name)){
-                $query->andWhere(['tbl_category.url_name'=>$category_name]);
-            }else{
-                $query->andWhere(['tbl_under_category.url_name'=> $category_name]);
+                ->where(['status' => 1]);
+            if (\Yii::$app->category->getCategoryByName($category_name)) {
+                $query->andWhere(['tbl_category.url_name' => $category_name]);
+            } else {
+                $query->andWhere(['tbl_under_category.url_name' => $category_name]);
             }
-            if($city_name !='Беларусь'){
-                $query->andWhere(['or',
-                    ['tbl_region.url_name'=>$city_url_name],
-                    ['tbl_city.url_name'=>$city_url_name]
+            if ($city_name != 'Беларусь') {
+                $query->andWhere([
+                    'or',
+                    ['tbl_region.url_name' => $city_url_name],
+                    ['tbl_city.url_name' => $city_url_name],
                 ]);
             }
             $query->groupBy('tbl_posts.id');
             $count = $query->count();
-            $model->count=$count;
+            $model->count = $count;
             $model->update();
-        }else{
-            $model = new PostCategoryCount(['category_url_name' => $category_name,
-                'city_name'=>$city_name,'count'=>-1]);
+        } else {
+            $model = new PostCategoryCount([
+                'category_url_name' => $category_name,
+                'city_name' => $city_name,
+                'count' => -1,
+            ]);
             $model->save();
         }
     }

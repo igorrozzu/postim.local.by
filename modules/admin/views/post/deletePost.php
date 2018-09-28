@@ -7,7 +7,6 @@ $currentUrl = yii\helpers\Url::current([], true);
 $this->title = 'Удаление места';
 
 
-
 Pjax::begin([
     'timeout' => 60000,
     'enablePushState' => false,
@@ -26,19 +25,19 @@ Pjax::begin([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions' => [
-            'class' => 'table --custom-tbl-p'
+            'class' => 'table --custom-tbl-p',
         ],
-        'layout'=>"{items}\n{pager}",
+        'layout' => "{items}\n{pager}",
         'columns' => [
             [
                 'attribute' => 'id',
                 'label' => 'Id',
-                'headerOptions' => ['width'=>'70px','class' => '--header-p'],
+                'headerOptions' => ['width' => '70px', 'class' => '--header-p'],
             ],
             [
                 'attribute' => 'data',
                 'label' => 'H1',
-                'headerOptions' => ['width'=>'500px','class' => '--header-p'],
+                'headerOptions' => ['width' => '500px', 'class' => '--header-p'],
             ],
 
             [
@@ -46,12 +45,12 @@ Pjax::begin([
                 'format' => 'raw',
                 'label' => 'Действие',
                 'headerOptions' => ['class' => '--header-p'],
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->getButtons();
                 },
             ],
         ],
-    ]);?>
+    ]); ?>
 
 
 </div>

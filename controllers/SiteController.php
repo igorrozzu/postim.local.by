@@ -40,7 +40,7 @@ class SiteController extends MainController
     public function actionIndex()
     {
         $viewName = Yii::$app->session->getFlash('render-form-view');
-        if(isset($viewName)) {
+        if (isset($viewName)) {
             $this->view->params['form-message'] = $this->renderPartial($viewName);
         }
 
@@ -63,9 +63,9 @@ class SiteController extends MainController
                 'redirect' => Yii::$app->request->referrer,
             ]);
         }
-        if(Yii::$app->request->get('with-message',false)){
-            return $this->renderPartial('login_whith_message',['model'=>$model]);
-        }else{
+        if (Yii::$app->request->get('with-message', false)) {
+            return $this->renderPartial('login_whith_message', ['model' => $model]);
+        } else {
             return $this->renderPartial('login', [
                 'model' => $model,
             ]);
@@ -141,13 +141,13 @@ class SiteController extends MainController
     {
         $user = User::findByPasswordResetToken($token);
         if (!\Yii::$app->user->isGuest) {
-            if(isset($user)) {
+            if (isset($user)) {
                 $user->resetPasswordToken();
             }
             Yii::$app->session->setFlash('render-form-view', 'failed-auth-password-recovery');
             return $this->goHome();
         } else {
-            if(!isset($user)) {
+            if (!isset($user)) {
                 Yii::$app->session->setFlash('render-form-view', 'failed-password-recovery');
                 return $this->goHome();
             }
@@ -162,7 +162,7 @@ class SiteController extends MainController
 
             $params = $this->getParamsForMainPage();
             $this->view->params['form-message'] = $this->renderPartial('password-reset-form', [
-                'model' => $model
+                'model' => $model,
             ]);
             return $this->render('index', $params);
         }
@@ -171,12 +171,12 @@ class SiteController extends MainController
     public function actionConfirmAccount(string $token, string $hash)
     {
         $id = Yii::$app->security->decryptByKey($token, Yii::$app->params['security.encryptionKey']);
-        if($id === false || !($tempUser = TempUser::findOne(['id' => $id, 'hash' => $hash]))){
+        if ($id === false || !($tempUser = TempUser::findOne(['id' => $id, 'hash' => $hash]))) {
             Yii::$app->session->setFlash('render-form-view', 'failed-confirm-account');
             return $this->goHome();
         }
         $model = new LoginModel();
-        if($model->createUser($tempUser)){
+        if ($model->createUser($tempUser)) {
             $tempUser->delete();
             Yii::$app->session->setFlash('render-form-view', 'success-confirmation');
             return $this->redirect('/?NewUser');
@@ -184,35 +184,36 @@ class SiteController extends MainController
         return $this->goHome();
     }
 
-    public function actionSetCity(){
+    public function actionSetCity()
+    {
 
-        try{
+        try {
 
 
             $request = Yii::$app->request;
-            $dataCity = Yii::$app->request->get('dataCity',['{"name": "Беларусь","url_name": "\'\'"}']);
+            $dataCity = Yii::$app->request->get('dataCity', ['{"name": "Беларусь","url_name": "\'\'"}']);
             $dataCity = Json::decode($dataCity);
 
             Yii::$app->city->setCity($dataCity);
 
             $preUrl = $request->getReferrer();
-            $prevPathInfo = preg_replace('/https:?\/\/[^\/]+\//','', $preUrl);
+            $prevPathInfo = preg_replace('/https:?\/\/[^\/]+\//', '', $preUrl);
 
             $preRequest = new Request();
             $preRequest->setUrl($preUrl);
             $preRequest->setPathInfo($prevPathInfo);
-            $newUrl = Yii::$app->request->hostInfo.'/'.Yii::$app->city->Selected_city['url_name'];
+            $newUrl = Yii::$app->request->hostInfo . '/' . Yii::$app->city->Selected_city['url_name'];
 
             $categoryUrlRuler = new CityAndCategoryUrlRule();
             $newsUrlRule = new NewsUrlRule();
             $reviewsUrlRule = new ReviewsUrlRule();
             $discountsUrlRule = new DiscountsUrlRule();
 
-            $isCategory = $categoryUrlRuler->parseRequest(Yii::$app->getUrlManager(),$preRequest);
-            if($isCategory && $isCategory[0] != '/site/index'){
+            $isCategory = $categoryUrlRuler->parseRequest(Yii::$app->getUrlManager(), $preRequest);
+            if ($isCategory && $isCategory[0] != '/site/index') {
 
                 $nameCategory = $isCategory[1]['under_category']['url_name'] ?? $isCategory[1]['category']['url_name'];
-                $newUrl = ($dataCity['url_name']?'/'.$dataCity['url_name']:'').'/'.$nameCategory;
+                $newUrl = ($dataCity['url_name'] ? '/' . $dataCity['url_name'] : '') . '/' . $nameCategory;
 
                 if ($isCategory[0] === '/category/get-discounts') {
                     $newUrl .= '/skidki';
@@ -221,59 +222,62 @@ class SiteController extends MainController
                 return $this->redirect($newUrl);
             }
 
-            if($newsUrlRule->parseRequest(Yii::$app->getUrlManager(),$preRequest)){
-                $newUrl = ($dataCity['url_name']?'/'.$dataCity['url_name']:'').'/'.'novosti';
+            if ($newsUrlRule->parseRequest(Yii::$app->getUrlManager(), $preRequest)) {
+                $newUrl = ($dataCity['url_name'] ? '/' . $dataCity['url_name'] : '') . '/' . 'novosti';
                 return $this->redirect($newUrl);
             }
 
-            if($reviewsUrlRule->parseRequest(Yii::$app->getUrlManager(),$preRequest)){
-                $newUrl = ($dataCity['url_name']?'/'.$dataCity['url_name']:'').'/'.'otzyvy';
+            if ($reviewsUrlRule->parseRequest(Yii::$app->getUrlManager(), $preRequest)) {
+                $newUrl = ($dataCity['url_name'] ? '/' . $dataCity['url_name'] : '') . '/' . 'otzyvy';
                 return $this->redirect($newUrl);
             }
 
-            if($discountsUrlRule->parseRequest(Yii::$app->getUrlManager(), $preRequest)){
-                $newUrl = ($dataCity['url_name'] ? '/'.$dataCity['url_name'] : '') . '/skidki';
+            if ($discountsUrlRule->parseRequest(Yii::$app->getUrlManager(), $preRequest)) {
+                $newUrl = ($dataCity['url_name'] ? '/' . $dataCity['url_name'] : '') . '/skidki';
                 return $this->redirect($newUrl);
             }
 
             return $this->redirect($newUrl);
-        }catch (\yii\base\InvalidParamException $exception){
+        } catch (\yii\base\InvalidParamException $exception) {
             $this->goHome();
         }
 
     }
 
-    public function actionGetFormComplaint(){
+    public function actionGetFormComplaint()
+    {
         return $this->renderPartial('form_complaint');
     }
 
-    public function actionGetCoordsByAddress(){
+    public function actionGetCoordsByAddress()
+    {
 
-    	$address = Yii::$app->request->get('address');
+        $address = Yii::$app->request->get('address');
 
-		Yii::$app->response->format = Response::FORMAT_JSON;
-		$response = new \stdClass();
-		$response->error = true;
-		$response->zoom = 12;
-		if(mb_stripos($address,'область')){
-			$response->zoom = 7;
-		}
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $response = new \stdClass();
+        $response->error = true;
+        $response->zoom = 12;
+        if (mb_stripos($address, 'область')) {
+            $response->zoom = 7;
+        }
 
-		$query = Geocoding::buildQuery($address);
-		$geo = Geocoding::find()->where(['query'=>$query])->one();
+        $query = Geocoding::buildQuery($address);
+        $geo = Geocoding::find()->where(['query' => $query])->one();
 
-		if($geo){
-		    $response->data = Json::decode($geo->data);
+        if ($geo) {
+            $response->data = Json::decode($geo->data);
             $response->error = false;
             $response->location = $response->data['results'][0]['geometry']['location'];
         }
 
 
-		return $response;
+        return $response;
 
-	}
+    }
 
-	public function actionSearchCoordsByAddress(string $address){
+    public function actionSearchCoordsByAddress(string $address)
+    {
 
         $curl = new Curl();
         $responseJson = $curl->setGetParams([
@@ -285,211 +289,214 @@ class SiteController extends MainController
             ->get('https://geocode-maps.yandex.ru/1.x/');
         $response = Json::decode($responseJson);
 
-        $pointsText = $response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos']??'';
+        $pointsText = $response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos'] ?? '';
 
-        $points = explode(' ',$pointsText);
+        $points = explode(' ', $pointsText);
 
-        if(is_array($points) && isset($points[1])){
+        if (is_array($points) && isset($points[1])) {
 
-            return $this->asJson(['error'=>false,'response'=>['lat'=>$points[1],'lng'=>$points[0]]]);
-        }else{
-            return $this->asJson(['error'=>true]);
+            return $this->asJson(['error' => false, 'response' => ['lat' => $points[1], 'lng' => $points[0]]]);
+        } else {
+            return $this->asJson(['error' => true]);
         }
 
     }
 
-	public function actionSaveReviews(){
+    public function actionSaveReviews()
+    {
 
-		$response = new \stdClass();
-		$response->success = false;
-		$response->message = '';
-		Yii::$app->response->format = Response::FORMAT_JSON;
+        $response = new \stdClass();
+        $response->success = false;
+        $response->message = '';
+        Yii::$app->response->format = Response::FORMAT_JSON;
 
-		if(!Yii::$app->user->isGuest){
+        if (!Yii::$app->user->isGuest) {
 
 
-			if(Yii::$app->request->post('id',false)){
-				$reviews = Reviews::find()
-					->where(['id'=>Yii::$app->request->post('id',false)])
-					->one();
-				$reviews->setScenario(Reviews::$SCENARIO_EDIT);
-			}else{
-				$reviews = new Reviews();
-				$reviews->setScenario(Reviews::$SCENARIO_ADD);
-			}
+            if (Yii::$app->request->post('id', false)) {
+                $reviews = Reviews::find()
+                    ->where(['id' => Yii::$app->request->post('id', false)])
+                    ->one();
+                $reviews->setScenario(Reviews::$SCENARIO_EDIT);
+            } else {
+                $reviews = new Reviews();
+                $reviews->setScenario(Reviews::$SCENARIO_ADD);
+            }
 
-			if($reviews->load( Yii::$app->request->post(),'reviews')){
+            if ($reviews->load(Yii::$app->request->post(), 'reviews')) {
                 $reviews->isLimit = true;
-				if($reviews->save()){
-					$response->success = true;
-					$response->message = 'Ваш отзыв успешно добавлен';
+                if ($reviews->save()) {
+                    $response->success = true;
+                    $response->message = 'Ваш отзыв успешно добавлен';
 
-					if($reviews->getScenario()==Reviews::$SCENARIO_EDIT){
+                    if ($reviews->getScenario() == Reviews::$SCENARIO_EDIT) {
 
-						$query = Reviews::find()
-							->joinWith(['user.userInfo'])
-							->innerJoinWith(['post'])
-							->with('officialAnswer')
-							->where([Reviews::tableName().'.id'=>$reviews->id]);
+                        $query = Reviews::find()
+                            ->joinWith(['user.userInfo'])
+                            ->innerJoinWith(['post'])
+                            ->with('officialAnswer')
+                            ->where([Reviews::tableName() . '.id' => $reviews->id]);
 
-						$dataProvider =  new ActiveDataProvider(['query'=>$query]);
-						$response->html =  \app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
-							'dataProvider' => $dataProvider,
-							'settings'=>[
-								'show-more-btn' => false,
-								'without_header'=>true
-							]
-						]);
-						$response->message = 'Ваш отзыв успешно обновлен';
-					}
+                        $dataProvider = new ActiveDataProvider(['query' => $query]);
+                        $response->html = \app\components\cardsReviewsWidget\CardsReviewsWidget::widget([
+                            'dataProvider' => $dataProvider,
+                            'settings' => [
+                                'show-more-btn' => false,
+                                'without_header' => true,
+                            ],
+                        ]);
+                        $response->message = 'Ваш отзыв успешно обновлен';
+                    }
 
-				}else{
-					$name_attribute = key($reviews->getErrors());
-					$response->message = $reviews->getFirstError($name_attribute);
-				}
-			}
-		}else{
-			$response->message = 'Незарегистрированные пользователи не могут оставлять отзовы';
-		}
+                } else {
+                    $name_attribute = key($reviews->getErrors());
+                    $response->message = $reviews->getFirstError($name_attribute);
+                }
+            }
+        } else {
+            $response->message = 'Незарегистрированные пользователи не могут оставлять отзовы';
+        }
 
-		return $response;
-	}
+        return $response;
+    }
 
-	public function actionAddRemoveLikeReviews(int $id){
+    public function actionAddRemoveLikeReviews(int $id)
+    {
 
-		$response = new \stdClass();
-		$response->status='OK';
-		Yii::$app->response->format = Response::FORMAT_JSON;
+        $response = new \stdClass();
+        $response->status = 'OK';
+        Yii::$app->response->format = Response::FORMAT_JSON;
 
-		if(!Yii::$app->user->isGuest){
-			$reviews = Reviews::find()->with('hasLike')->where(['id'=>$id])->one();
-			if($reviews && !$reviews->is_like){
-				if($reviews->updateCounters(['like' => 1])){
-					$reviewsLike = new ReviewsLike(['reviews_id'=>$id,'user_id'=>Yii::$app->user->getId()]);
-					$reviewsLike->save();
-					$response->status='add';
-				}
-			}else{
-				if($reviews->updateCounters(['like' => -1])){
-					$reviews->hasLike->delete();
-					$response->status='remove';
-				}
-			}
+        if (!Yii::$app->user->isGuest) {
+            $reviews = Reviews::find()->with('hasLike')->where(['id' => $id])->one();
+            if ($reviews && !$reviews->is_like) {
+                if ($reviews->updateCounters(['like' => 1])) {
+                    $reviewsLike = new ReviewsLike(['reviews_id' => $id, 'user_id' => Yii::$app->user->getId()]);
+                    $reviewsLike->save();
+                    $response->status = 'add';
+                }
+            } else {
+                if ($reviews->updateCounters(['like' => -1])) {
+                    $reviews->hasLike->delete();
+                    $response->status = 'remove';
+                }
+            }
 
-			$response->count=$reviews->like;
-		}else{
-			$response->status='error';
-			$response->message = 'Незарегистрированные пользователи не могут оценивать отзовы';
-		}
+            $response->count = $reviews->like;
+        } else {
+            $response->status = 'error';
+            $response->message = 'Незарегистрированные пользователи не могут оценивать отзовы';
+        }
 
-		return $response;
-	}
+        return $response;
+    }
 
-	public function actionVseOtzyvy(int $review_id = null, int $photo_id = null)
-	{
-		$request = Yii::$app->request;
-		$_GET['type'] = $request->get('type', 'all');
-		$searchModel = new ReviewsSearch();
-		$pagination = new Pagination([
-			'pageSize' => $request->get('per-page', 8),
-			'page' => $request->get('page', 1) - 1,
-			'route'=>Yii::$app->request->getPathInfo(),
-			'selfParams'=> [
-				'region' => true,
-				'type' => true,
-			],
-		]);
-		$loadTime = $request->get('loadTime', time());
+    public function actionVseOtzyvy(int $review_id = null, int $photo_id = null)
+    {
+        $request = Yii::$app->request;
+        $_GET['type'] = $request->get('type', 'all');
+        $searchModel = new ReviewsSearch();
+        $pagination = new Pagination([
+            'pageSize' => $request->get('per-page', 8),
+            'page' => $request->get('page', 1) - 1,
+            'route' => Yii::$app->request->getPathInfo(),
+            'selfParams' => [
+                'region' => true,
+                'type' => true,
+            ],
+        ]);
+        $loadTime = $request->get('loadTime', time());
 
-		$dataProvider = $searchModel->search(
-			$request->queryParams,
-			$pagination,
-			$loadTime
-		);
+        $dataProvider = $searchModel->search(
+            $request->queryParams,
+            $pagination,
+            $loadTime
+        );
 
-		$h1 = '';
-		$breadcrumbParams = $this->getParamsForBreadcrumbReviews($h1);
+        $h1 = '';
+        $breadcrumbParams = $this->getParamsForBreadcrumbReviews($h1);
 
-		if($request->isAjax && !$request->get('_pjax',false)) {
-			return CardsReviewsWidget::widget([
-				'dataProvider' => $dataProvider,
-				'settings' => [
-					'show-more-btn' => true,
-					'replace-container-id' => 'feed-all-reviews',
-					'load-time' => $loadTime,
-				]
-			]);
-		} else {
-			return $this->render('feed-all-reviews', [
-				'dataProvider' => $dataProvider,
-				'loadTime' => $loadTime,
-				'h1'=>$h1,
-				'breadcrumbParams'=>$breadcrumbParams,
-				'type' => $request->queryParams['type'],
+        if ($request->isAjax && !$request->get('_pjax', false)) {
+            return CardsReviewsWidget::widget([
+                'dataProvider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-all-reviews',
+                    'load-time' => $loadTime,
+                ],
+            ]);
+        } else {
+            return $this->render('feed-all-reviews', [
+                'dataProvider' => $dataProvider,
+                'loadTime' => $loadTime,
+                'h1' => $h1,
+                'breadcrumbParams' => $breadcrumbParams,
+                'type' => $request->queryParams['type'],
                 'initPhotoSliderParams' => [
                     'photoId' => $photo_id,
                     'reviewId' => $review_id,
-                ]
-			]);
-		}
-	}
+                ],
+            ]);
+        }
+    }
 
-	private function getParamsForBreadcrumbReviews(&$h1){
-		$breadcrumbParams=[];
+    private function getParamsForBreadcrumbReviews(&$h1)
+    {
+        $breadcrumbParams = [];
 
-		$currentUrl = Yii::$app->getRequest()->getHostInfo();
-		$breadcrumbParams[] = [
-			'name' => ucfirst(Yii::$app->getRequest()->serverName),
-			'url_name' => $currentUrl,
-			'pjax' => 'class="main-header-pjax a"'
-		];
+        $currentUrl = Yii::$app->getRequest()->getHostInfo();
+        $breadcrumbParams[] = [
+            'name' => ucfirst(Yii::$app->getRequest()->serverName),
+            'url_name' => $currentUrl,
+            'pjax' => 'class="main-header-pjax a"',
+        ];
 
-		if($city = Yii::$app->request->get('city')){
-			$currentUrl=$currentUrl.'/'.$city['url_name'];
-			$breadcrumbParams[]=[
-				'name'=>$city['name'],
-				'url_name'=>$currentUrl,
-				'pjax'=>'class="main-pjax a"'
-			];
-		}
+        if ($city = Yii::$app->request->get('city')) {
+            $currentUrl = $currentUrl . '/' . $city['url_name'];
+            $breadcrumbParams[] = [
+                'name' => $city['name'],
+                'url_name' => $currentUrl,
+                'pjax' => 'class="main-pjax a"',
+            ];
+        }
 
-		$currentUrl=$currentUrl.'/'.'otzyvy';
-		$name='Все отзывы';
-		$h1 = 'Все отзывы в '.Yii::t('app/locativus','Беларусь');
-		if($city = Yii::$app->request->get('city')){
-			$name ='Все отзывы';
-			$h1 = 'Все отзывы в '.Yii::t('app/locativus',$city['name']);
-		}
+        $currentUrl = $currentUrl . '/' . 'otzyvy';
+        $name = 'Все отзывы';
+        $h1 = 'Все отзывы в ' . Yii::t('app/locativus', 'Беларусь');
+        if ($city = Yii::$app->request->get('city')) {
+            $name = 'Все отзывы';
+            $h1 = 'Все отзывы в ' . Yii::t('app/locativus', $city['name']);
+        }
 
-		$breadcrumbParams[]=[
-			'name'=>$name,
-			'url_name'=>$currentUrl,
-			'pjax'=>'class="main-pjax a"'
-		];
+        $breadcrumbParams[] = [
+            'name' => $name,
+            'url_name' => $currentUrl,
+            'pjax' => 'class="main-pjax a"',
+        ];
 
-		return $breadcrumbParams;
-	}
+        return $breadcrumbParams;
+    }
 
-    public function actionFeedback(){
+    public function actionFeedback()
+    {
 
         $this->enableCsrfValidation = true;
         Yii::$app->getRequest()->enableCsrfValidation = true;
         if ($this->enableCsrfValidation && Yii::$app->getErrorHandler()->exception === null &&
-            !Yii::$app->getRequest()->validateCsrfToken())
-        {
+            !Yii::$app->getRequest()->validateCsrfToken()) {
             throw new BadRequestHttpException(Yii::t('yii', 'Unable to verify your data submission.'));
         }
 
         $feedBack = new Feedback();
         $toastMessage = null;
 
-        if(Yii::$app->request->isPost){
-            if($feedBack->load(Yii::$app->request->post()) && $feedBack->sendSubject()) {
+        if (Yii::$app->request->isPost) {
+            if ($feedBack->load(Yii::$app->request->post()) && $feedBack->sendSubject()) {
                 $toastMessage = [
                     'type' => 'success',
                     'message' => 'Сообщение отправлено',
                 ];
-            }else{
+            } else {
                 $toastMessage = [
                     'type' => 'error',
                     'message' => 'Произошла ошибка при отправке',
@@ -497,22 +504,24 @@ class SiteController extends MainController
             }
         }
 
-        return $this->render('feedBack',['feedBack'=>$feedBack,'toastMessage'=>$toastMessage]);
+        return $this->render('feedBack', ['feedBack' => $feedBack, 'toastMessage' => $toastMessage]);
     }
 
-    public function actionError(){
+    public function actionError()
+    {
 
         $currentUrl = Url::to();
 
-        if($currentUrl === '/post/4392'){
+        if ($currentUrl === '/post/4392') {
             $this->redirect('/21vekby-besplatnaa-dostavka-po-belarusi-n24');
-        }else{
+        } else {
             return $this->render('404');
         }
 
     }
 
-    public function actionAddComplain(){
+    public function actionAddComplain()
+    {
 
         $response = new \stdClass();
         $response->success = true;
@@ -529,7 +538,7 @@ class SiteController extends MainController
                 'data' => $message,
                 'user_id' => Yii::$app->user->id,
                 'type' => $type,
-                'status' => Complaints::$MODERATION_STATUS
+                'status' => Complaints::$MODERATION_STATUS,
             ]);
 
             if ($complaint->validate() && $complaint->save()) {
@@ -544,23 +553,25 @@ class SiteController extends MainController
 
     }
 
-    public function actionOtherPage(string $url_name){
+    public function actionOtherPage(string $url_name)
+    {
 
         $page = OtherPage::find()
-            ->where(['url_name'=>$url_name])
+            ->where(['url_name' => $url_name])
             ->one();
 
 
-        if(!$page){
+        if (!$page) {
 
             throw new NotFoundHttpException('Cтраница не найдена');
         }
 
-        return $this->render('otherPage',['page'=>$page]);
+        return $this->render('otherPage', ['page' => $page]);
 
     }
 
-    public function actionGetModalWindow(){
+    public function actionGetModalWindow()
+    {
 
         return $this->renderPartial('modal_window.php');
 

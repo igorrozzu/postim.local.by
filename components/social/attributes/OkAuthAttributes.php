@@ -29,6 +29,6 @@ class OkAuthAttributes extends SocialAuthAttributes
     public function getUserPhoto()
     {
         return $this->attributes['pic_3'] ?? $this->attributes['pic_2'] ??
-               $this->attributes['pic_1'] ?? null;
+            $this->attributes['pic_1'] ?? null;
     }
 }

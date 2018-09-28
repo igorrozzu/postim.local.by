@@ -12,7 +12,7 @@ class MetaTagsSocialNetwork
         foreach ($params as $property => $content) {
             $view->registerMetaTag([
                 'property' => $property,
-                'content' => $content
+                'content' => $content,
             ]);
         }
     }

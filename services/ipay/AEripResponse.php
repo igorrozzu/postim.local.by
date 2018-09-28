@@ -1,7 +1,9 @@
 <?php
+
 namespace app\services\ipay;
 
-abstract class AEripResponse{
+abstract class AEripResponse
+{
 
     public static $status = [
         'info' => 'info',

@@ -33,6 +33,7 @@ class Odnoklassniki extends OAuth2
      * @inheritdoc
      */
     public $scope = 'VALUABLE_ACCESS';
+
     /**
      * @inheritdoc
      */
@@ -44,6 +45,7 @@ class Odnoklassniki extends OAuth2
         $params['sig'] = $this->sig($params, $params['access_token'], $this->clientSecret);
         return $this->api('api/users/getCurrentUser', 'GET', $params);
     }
+
     /**
      * @inheritdoc
      */
@@ -55,6 +57,7 @@ class Odnoklassniki extends OAuth2
         $params['sig'] = $this->sig($params, $params['access_token'], $this->clientSecret);
         return $this->sendRequest($method, $url, $params, $headers);
     }
+
     /**
      * Generates a signature
      * @param $vars array
@@ -74,6 +77,7 @@ class Odnoklassniki extends OAuth2
         }
         return md5($params . md5($accessToken . $secret));
     }
+
     /**
      * @inheritdoc
      */
@@ -81,6 +85,7 @@ class Odnoklassniki extends OAuth2
     {
         return 'odnoklassniki';
     }
+
     /**
      * @inheritdoc
      */
@@ -95,7 +100,7 @@ class Odnoklassniki extends OAuth2
     protected function defaultNormalizeUserAttributeMap()
     {
         return [
-            'id' => 'uid'
+            'id' => 'uid',
         ];
     }
 }

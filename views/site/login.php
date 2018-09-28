@@ -1,7 +1,9 @@
 <?php
+
 use yii\authclient\widgets\AuthChoice;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+
 ?>
 
 <div class="container-popup-window form-login">
@@ -18,7 +20,7 @@ use yii\widgets\ActiveForm;
         <div class="block-social-authentication">
             <?php foreach ($authAuthChoice->getClients() as $client): ?>
                 <a href="<?= $authAuthChoice->createClientUrl($client) ?>"
-                   class="social-btn-<?=$client->getName()?>"></a>
+                   class="social-btn-<?= $client->getName() ?>"></a>
             <?php endforeach; ?>
         </div>
         <?php AuthChoice::end() ?>

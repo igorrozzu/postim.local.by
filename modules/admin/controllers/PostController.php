@@ -32,76 +32,80 @@ class PostController extends AdminDefaultController
 
     }
 
-    public function actionCategories(){
+    public function actionCategories()
+    {
 
         $model = new UnderCategory();
-        $categories =  Category::find()
-            ->select(['id','name'])
-            ->orderBy(['name'=>SORT_ASC])
+        $categories = Category::find()
+            ->select(['id', 'name'])
+            ->orderBy(['name' => SORT_ASC])
             ->asArray(true)->all();
 
         $modelCategory = new Category();
 
 
-        return $this->render('categories',[
-            'model'=>$model,
-            'categories'=>$categories,
-            'modelCategory'=>$modelCategory
+        return $this->render('categories', [
+            'model' => $model,
+            'categories' => $categories,
+            'modelCategory' => $modelCategory,
         ]);
 
     }
 
-    public function actionDeleteCategories(){
+    public function actionDeleteCategories()
+    {
 
         $searchModel = new CategorySearch();
 
         $pagination = new Pagination([
             'pageSize' => \Yii::$app->request->get('per-page', 8),
-            'page' => \Yii::$app->request->get('page', 1)-1,
-            'route'=>'/admin/post/delete-categories',
+            'page' => \Yii::$app->request->get('page', 1) - 1,
+            'route' => '/admin/post/delete-categories',
         ]);
 
-        $dataProvider = $searchModel->search(\Yii::$app->request->get(),$pagination);
+        $dataProvider = $searchModel->search(\Yii::$app->request->get(), $pagination);
 
 
         $searchModelUnder = new UnderCategorySearch();
         $paginationUnder = new Pagination([
             'pageSize' => \Yii::$app->request->get('per-page', 8),
-            'page' => \Yii::$app->request->get('page', 1)-1,
-            'route'=>'/admin/post/delete-categories',
+            'page' => \Yii::$app->request->get('page', 1) - 1,
+            'route' => '/admin/post/delete-categories',
         ]);
 
-        $dataProviderUnder = $searchModelUnder->search(\Yii::$app->request->get(),$paginationUnder);
+        $dataProviderUnder = $searchModelUnder->search(\Yii::$app->request->get(), $paginationUnder);
 
 
-        return  $this->render('deleteCategory',['dataProvider'=>$dataProvider,
-            'searchModel'=>$searchModel,
-            'dataProviderUnder'=>$dataProviderUnder,
-            'searchModelUnder'=>$searchModelUnder,
+        return $this->render('deleteCategory', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProviderUnder' => $dataProviderUnder,
+            'searchModelUnder' => $searchModelUnder,
         ]);
 
     }
 
-    public function actionActDeleteCategories(){
+    public function actionActDeleteCategories()
+    {
 
-        $act = \Yii::$app->request->get('act',false);
+        $act = \Yii::$app->request->get('act', false);
         $id = \Yii::$app->request->get('id');
 
-        try{
-            if($act && $id){
-                if($act == 'category'){
-                    $category = Category::find()->where(['id'=>$id])->one();
-                    if($category){
+        try {
+            if ($act && $id) {
+                if ($act == 'category') {
+                    $category = Category::find()->where(['id' => $id])->one();
+                    if ($category) {
                         $category->delete();
                     }
-                }elseif($act == 'under_category'){
-                    $underCategory = UnderCategory::find()->where(['id'=>$id])->one();
-                    if($underCategory){
+                } elseif ($act == 'under_category') {
+                    $underCategory = UnderCategory::find()->where(['id' => $id])->one();
+                    if ($underCategory) {
                         $underCategory->delete();
                     }
                 }
             }
-        }catch (Exception $e){
+        } catch (Exception $e) {
 
         }
 
@@ -110,35 +114,37 @@ class PostController extends AdminDefaultController
 
         $pagination = new Pagination([
             'pageSize' => \Yii::$app->request->get('per-page', 8),
-            'page' => \Yii::$app->request->get('page', 1)-1,
-            'route'=>'/admin/post/delete-categories',
+            'page' => \Yii::$app->request->get('page', 1) - 1,
+            'route' => '/admin/post/delete-categories',
         ]);
 
-        $dataProvider = $searchModel->search(\Yii::$app->request->get(),$pagination);
+        $dataProvider = $searchModel->search(\Yii::$app->request->get(), $pagination);
 
         $searchModelUnder = new UnderCategorySearch();
         $paginationUnder = new Pagination([
             'pageSize' => \Yii::$app->request->get('per-page', 8),
-            'page' => \Yii::$app->request->get('page', 1)-1,
-            'route'=>'/admin/post/delete-categories',
+            'page' => \Yii::$app->request->get('page', 1) - 1,
+            'route' => '/admin/post/delete-categories',
         ]);
 
-        $dataProviderUnder = $searchModelUnder->search(\Yii::$app->request->get(),$paginationUnder);
+        $dataProviderUnder = $searchModelUnder->search(\Yii::$app->request->get(), $paginationUnder);
 
 
-        return  $this->render('deleteCategory',['dataProvider'=>$dataProvider,
-            'searchModel'=>$searchModel,
-            'dataProviderUnder'=>$dataProviderUnder,
-            'searchModelUnder'=>$searchModelUnder,
+        return $this->render('deleteCategory', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProviderUnder' => $dataProviderUnder,
+            'searchModelUnder' => $searchModelUnder,
         ]);
 
     }
 
-    public function actionUnderCategorySave(){
+    public function actionUnderCategorySave()
+    {
         $model = new UnderCategory();
-        $categories =  Category::find()
-            ->select(['id','name'])
-            ->orderBy(['name'=>SORT_ASC])
+        $categories = Category::find()
+            ->select(['id', 'name'])
+            ->orderBy(['name' => SORT_ASC])
             ->asArray(true)->all();
 
         $modelCategory = new Category();
@@ -148,9 +154,9 @@ class PostController extends AdminDefaultController
             'message' => 'Произошла ошибка',
         ];
 
-        if(\Yii::$app->request->isPost){
-            if($model->load(\Yii::$app->request->post())){
-                if($model->save()){
+        if (\Yii::$app->request->isPost) {
+            if ($model->load(\Yii::$app->request->post())) {
+                if ($model->save()) {
                     $model = new UnderCategory();
                     $toastMessage = [
                         'type' => 'success',
@@ -161,16 +167,17 @@ class PostController extends AdminDefaultController
         }
 
 
-        return $this->render('categories',[
-            'model'=>$model,
-            'categories'=>$categories,
-            'modelCategory'=>$modelCategory,
-            'toastMessage' => $toastMessage
+        return $this->render('categories', [
+            'model' => $model,
+            'categories' => $categories,
+            'modelCategory' => $modelCategory,
+            'toastMessage' => $toastMessage,
         ]);
 
     }
 
-    public function actionCategorySave(){
+    public function actionCategorySave()
+    {
 
         $modelCategory = new Category();
 
@@ -179,9 +186,9 @@ class PostController extends AdminDefaultController
             'message' => 'Произошла ошибка',
         ];
 
-        if(\Yii::$app->request->isPost){
-            if($modelCategory->load(\Yii::$app->request->post())){
-                if($modelCategory->save()){
+        if (\Yii::$app->request->isPost) {
+            if ($modelCategory->load(\Yii::$app->request->post())) {
+                if ($modelCategory->save()) {
                     $modelCategory = new UnderCategory();
 
                     $toastMessage = [
@@ -193,60 +200,62 @@ class PostController extends AdminDefaultController
         }
 
         $model = new UnderCategory();
-        $categories =  Category::find()
-            ->select(['id','name'])
-            ->orderBy(['name'=>SORT_ASC])
+        $categories = Category::find()
+            ->select(['id', 'name'])
+            ->orderBy(['name' => SORT_ASC])
             ->asArray(true)->all();
 
 
-        return $this->render('categories',[
-            'model'=>$model,
-            'categories'=>$categories,
-            'modelCategory'=>$modelCategory,
-            'toastMessage' => $toastMessage
+        return $this->render('categories', [
+            'model' => $model,
+            'categories' => $categories,
+            'modelCategory' => $modelCategory,
+            'toastMessage' => $toastMessage,
         ]);
 
     }
 
-    public function actionOtherPage(){
+    public function actionOtherPage()
+    {
 
         $editPage = new OtherPage();
         $editPage->setScenario(OtherPage::$FIND_PAGE);
-        if(\Yii::$app->request->isPost){
-            if($editPage->load(\Yii::$app->request->post()) && $editPage->validate()){
+        if (\Yii::$app->request->isPost) {
+            if ($editPage->load(\Yii::$app->request->post()) && $editPage->validate()) {
 
-                if($findPage = $editPage->getData()){
+                if ($findPage = $editPage->getData()) {
                     $findPage->find_url = $editPage->find_url;
                     $editPage = $findPage;
                 }
 
-                return $this->render('otherPageSave',['editPage'=>$editPage]);
-            }else{
+                return $this->render('otherPageSave', ['editPage' => $editPage]);
+            } else {
 
                 $toastMessage = [
                     'type' => 'error',
                     'message' => 'Произошла ошибка',
                 ];
 
-                return $this->render('otherPage',['editPage'=>$editPage,'toastMessage'=>$toastMessage]);
+                return $this->render('otherPage', ['editPage' => $editPage, 'toastMessage' => $toastMessage]);
             }
 
-        }else{
-            return $this->render('otherPage',['editPage'=>$editPage]);
+        } else {
+            return $this->render('otherPage', ['editPage' => $editPage]);
         }
     }
 
-    public function actionOtherPageSave(){
+    public function actionOtherPageSave()
+    {
         $editPage = new OtherPage();
         $editPage->setScenario(OtherPage::$ADD_PAGE);
 
-        if(\Yii::$app->request->isPost){
+        if (\Yii::$app->request->isPost) {
 
-            if($editPage->load(\Yii::$app->request->post())){
+            if ($editPage->load(\Yii::$app->request->post())) {
 
-                if($editPage->validate()){
+                if ($editPage->validate()) {
                     $editPage->save();
-                }else{
+                } else {
                     $editPage = $editPage->getData();
                     $editPage->setScenario(OtherPage::$EDIT_PAGE);
                     $editPage->load(\Yii::$app->request->post());
@@ -260,16 +269,17 @@ class PostController extends AdminDefaultController
                     'message' => 'Страница сохранена',
                 ];
 
-                return $this->render('otherPage',['editPage'=>$editPage,'toastMessage'=>$toastMessage]);
+                return $this->render('otherPage', ['editPage' => $editPage, 'toastMessage' => $toastMessage]);
             }
 
 
-        }else{
-            return $this->render('otherPage',['editPage'=>$editPage]);
+        } else {
+            return $this->render('otherPage', ['editPage' => $editPage]);
         }
     }
 
-    public function actionOtherPageDelete(){
+    public function actionOtherPageDelete()
+    {
 
         $act = \Yii::$app->request->get('act', false);
         $url_name = \Yii::$app->request->get('url_name', false);
@@ -293,19 +303,20 @@ class PostController extends AdminDefaultController
 
         return $this->render('otherPageDelete', [
             'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
+            'searchModel' => $searchModel,
         ]);
 
     }
 
 
-    public function actionDeletePost(){
+    public function actionDeletePost()
+    {
 
         $act = \Yii::$app->request->get('act', false);
         $id = \Yii::$app->request->get('id', false);
 
         if ($act && $id) {
-            $page = Posts::find()->where(['id'=>$id])->one();
+            $page = Posts::find()->where(['id' => $id])->one();
             if ($page) {
                 $page->delete();
             }
@@ -323,29 +334,30 @@ class PostController extends AdminDefaultController
 
         return $this->render('deletePost', [
             'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
+            'searchModel' => $searchModel,
         ]);
 
     }
 
-    public function actionAddBaner(){
+    public function actionAddBaner()
+    {
 
         $params = [];
 
-        if(\Yii::$app->request->isPost){
+        if (\Yii::$app->request->isPost) {
             $baner = new RightBaner();
 
-            if($baner->load(\Yii::$app->request->post()) && $baner->save()){
+            if ($baner->load(\Yii::$app->request->post()) && $baner->save()) {
                 $params['toastMessage'] = [
                     'type' => 'success',
                     'message' => 'Банер изменен',
                 ];
             }
 
-        }else{
-            $baner = RightBaner::find()->orderBy(['id'=>SORT_DESC])->one();
+        } else {
+            $baner = RightBaner::find()->orderBy(['id' => SORT_DESC])->one();
 
-            if(!$baner){
+            if (!$baner) {
                 $baner = new RightBaner();
             }
         }
@@ -353,7 +365,7 @@ class PostController extends AdminDefaultController
         $params['baner'] = $baner;
 
 
-        return $this->render('addBaner',$params);
+        return $this->render('addBaner', $params);
 
     }
 

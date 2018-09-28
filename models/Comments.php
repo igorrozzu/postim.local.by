@@ -27,7 +27,7 @@ class Comments extends \yii\db\ActiveRecord
 {
     public $add_scenarios = [
         'add_main_comment',
-        'add_under_comment'
+        'add_under_comment',
     ];
 
     public static $ADD_MAIN_COMMENT = 'add_main_comment';
@@ -36,7 +36,7 @@ class Comments extends \yii\db\ActiveRecord
     public static $STATUS_COMMENT_WAS_DELETED_BY = 1;
 
     public static $status_map = [
-        1 => 'Комментарий был удален пользователем'
+        1 => 'Комментарий был удален пользователем',
     ];
 
     public $comment_id = null;
@@ -47,20 +47,20 @@ class Comments extends \yii\db\ActiveRecord
     public $official_answer = null;
 
     const TYPE = [
-        'news'          => 1,
-        'reviews'       => 2,
-        'posts'         => 3,
-        'discount'      => 4,
+        'news' => 1,
+        'reviews' => 2,
+        'posts' => 3,
+        'discount' => 4,
     ];
 
     public function isRelatedWithNews(): bool
     {
-        return (int) $this->type_entity === self::TYPE['news'];
+        return (int)$this->type_entity === self::TYPE['news'];
     }
 
     public function isRelatedWithReviews(): bool
     {
-        return (int) $this->type_entity === self::TYPE['reviews'];
+        return (int)$this->type_entity === self::TYPE['reviews'];
     }
 
     /**
@@ -78,13 +78,23 @@ class Comments extends \yii\db\ActiveRecord
     {
         return [
             [['entity_id', 'type_entity', 'user_id', 'date', 'like'], 'required', 'on' => self::$ADD_MAIN_COMMENT],
-            [['entity_id', 'type_entity', 'user_id', 'date', 'data', 'like', 'main_comment_id'], 'required', 'on' => self::$ADD_UNDER_COMMENT],
+            [
+                ['entity_id', 'type_entity', 'user_id', 'date', 'data', 'like', 'main_comment_id'],
+                'required',
+                'on' => self::$ADD_UNDER_COMMENT,
+            ],
             [['comment_id'], 'safe', 'on' => self::$ADD_UNDER_COMMENT],
             [['data'], 'required', 'message' => 'Введите текст комментария'],
             [['entity_id', 'user_id', 'main_comment_id', 'like'], 'integer'],
             [['date', 'entity_id', 'official_answer'], 'safe'],
             [['data'], 'string'],
-            [['main_comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comments::className(), 'targetAttribute' => ['main_comment_id' => 'id']],
+            [
+                ['main_comment_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Comments::className(),
+                'targetAttribute' => ['main_comment_id' => 'id'],
+            ],
         ];
     }
 
@@ -186,11 +196,14 @@ class Comments extends \yii\db\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
 
         if ($this->getScenario() == self::$ADD_MAIN_COMMENT && $this->official_answer) {
-            OfficialAnswer::deleteAll(['entity_id' => $this->entity_id
+            OfficialAnswer::deleteAll([
+                'entity_id' => $this->entity_id,
             ]);
-            $newOfficialAnswer = new OfficialAnswer(['comment_id' => $this->id,
+            $newOfficialAnswer = new OfficialAnswer([
+                'comment_id' => $this->id,
                 'user_id' => Yii::$app->user->getId(),
-                'entity_id' => $this->entity_id]);
+                'entity_id' => $this->entity_id,
+            ]);
             $newOfficialAnswer->save();
         }
     }
@@ -256,25 +269,26 @@ class Comments extends \yii\db\ActiveRecord
         return $this->hasOne(Complaints::className(), ['entities_id' => 'id'])
             ->onCondition([
                 Complaints::tableName() . '.user_id' => Yii::$app->user->getId(),
-                Complaints::tableName() . '.type' => Complaints::$TYPE['comments']
+                Complaints::tableName() . '.type' => Complaints::$TYPE['comments'],
             ]);
 
     }
 
-    public function getLink(){
+    public function getLink()
+    {
         $link = '';
 
-        if($this->isRelatedWithNews()){
-            if($this->news){
+        if ($this->isRelatedWithNews()) {
+            if ($this->news) {
                 $link = "/{$this->news->url_name}-n{$this->news->id}?comments_id={$this->id}";
-            }else{
+            } else {
                 return false;
             }
 
-        }elseif ($this->isRelatedWithReviews()){
-            if($this->review){
+        } elseif ($this->isRelatedWithReviews()) {
+            if ($this->review) {
                 $link = "/{$this->review->post->url_name}-p{$this->review->post->id}?review_id={$this->review->id}";
-            }else{
+            } else {
                 return false;
             }
 

@@ -76,7 +76,8 @@ class DiscountController extends MainController
                     }
                 }
 
-            } catch (Exception $e){}
+            } catch (Exception $e) {
+            }
 
             if ($result) {
                 $transaction->commit();
@@ -101,7 +102,7 @@ class DiscountController extends MainController
 
         return $this->render('add', [
             'model' => $model,
-            'post' => $post
+            'post' => $post,
         ]);
     }
 
@@ -145,15 +146,19 @@ class DiscountController extends MainController
                         $result = true;
                     }
                 }
-            } catch (Exception $e){}
+            } catch (Exception $e) {
+            }
 
             if ($result) {
                 $transaction->commit();
 
-                $message =  'Редактирование скидки произведено успешно.';
+                $message = 'Редактирование скидки произведено успешно.';
                 Yii::$app->session->setFlash('success', $message);
-                $redirectUrl = Url::to(['/discount/read', 'url' => $discount->url_name,
-                    'discountId' => $discount->id]);
+                $redirectUrl = Url::to([
+                    '/discount/read',
+                    'url' => $discount->url_name,
+                    'discountId' => $discount->id,
+                ]);
 
                 return $this->redirect($redirectUrl);
             } else {
@@ -188,7 +193,7 @@ class DiscountController extends MainController
             } else {
                 return $this->asJson([
                     'success' => false,
-                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов',
                 ]);
             }
         }
@@ -210,7 +215,7 @@ class DiscountController extends MainController
             } else {
                 return $this->asJson([
                     'success' => false,
-                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов',
                 ]);
             }
         }
@@ -232,7 +237,7 @@ class DiscountController extends MainController
             } else {
                 return $this->asJson([
                     'success' => false,
-                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов'
+                    'message' => 'Изображение должно быть в формате JPG, GIF или PNG. Макс. размер файла: 15 МБ. Не более 10 файлов',
                 ]);
             }
         }
@@ -266,7 +271,7 @@ class DiscountController extends MainController
                     'load-time' => $loadTime,
                     'postId' => $postId,
                     'show-distance' => false,
-                ]
+                ],
             ]);
         }
     }
@@ -274,7 +279,7 @@ class DiscountController extends MainController
     public function actionLoadInterestingDiscounts(int $postId)
     {
         $post = Posts::find()
-            ->innerJoinWith(['city','categories'])
+            ->innerJoinWith(['city', 'categories'])
             ->where([Posts::tableName() . '.id' => $postId])
             ->one();
 
@@ -302,7 +307,7 @@ class DiscountController extends MainController
                     'load-time' => $loadTime,
                     'postId' => $postId,
                     'show-distance' => true,
-                ]
+                ],
             ]);
         }
     }
@@ -317,7 +322,7 @@ class DiscountController extends MainController
             'selfParams' => [
                 'exclude_discount_id' => true,
                 'city_url_name' => true,
-            ]
+            ],
         ]);
         $loadTime = $request->get('loadTime', time());
 
@@ -335,7 +340,7 @@ class DiscountController extends MainController
                     'replace-container-id' => 'feed-discount',
                     'load-time' => $loadTime,
                     'show-distance' => true,
-                ]
+                ],
             ]);
         }
     }
@@ -346,10 +351,12 @@ class DiscountController extends MainController
         $discount = $searchModel->readDiscount($discountId);
 
         $post = Posts::find()
-            ->innerJoinWith(['city.region.coutries',
+            ->innerJoinWith([
+                'city.region.coutries',
                 'discount' => function (ActiveQuery $query) use ($discountId) {
-                $query->onCondition([Discounts::tableName() . '.id' => $discountId]);
-            }])
+                    $query->onCondition([Discounts::tableName() . '.id' => $discountId]);
+                },
+            ])
             ->with(['lastPhoto'])
             ->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']])
             ->one();
@@ -373,24 +380,24 @@ class DiscountController extends MainController
         $breadcrumbParams[] = [
             'name' => $discount->header,
             'url_name' => Yii::$app->request->getUrl(),
-            'pjax' => 'class="main-pjax a"'
+            'pjax' => 'class="main-pjax a"',
         ];
 
         $commentsSearch = new CommentsSearch();
 
         $defaultLimit = isset($comment_id) ? 1000 : 16;
         $_GET['type_entity'] = Comments::TYPE['discount'];
-        $paginationComments= new Pagination([
+        $paginationComments = new Pagination([
             'pageSize' => Yii::$app->request->get('per-page', $defaultLimit),
             'page' => Yii::$app->request->get('page', 1) - 1,
             'route' => '/comments/get-comments',
-            'selfParams'=>[
-                'id'=>true,
-                'type_entity'=>true
-            ]
+            'selfParams' => [
+                'id' => true,
+                'type_entity' => true,
+            ],
         ]);
 
-        $dataProviderComments = $commentsSearch->search( Yii::$app->request->queryParams,
+        $dataProviderComments = $commentsSearch->search(Yii::$app->request->queryParams,
             $paginationComments,
             $discount['id'],
             CommentsSearch::getSortArray('old')
@@ -407,7 +414,7 @@ class DiscountController extends MainController
             'selfParams' => [
                 'exclude_discount_id' => true,
                 'city_url_name' => true,
-            ]
+            ],
         ]);
 
         $loadTime = time();
@@ -428,7 +435,7 @@ class DiscountController extends MainController
             'isCurrentUserOwner' => $isCurrentUserOwner,
             'duration' => Yii::$app->formatter->asCustomDuration($discount->date_finish - time()),
             'dataProviderComments' => $dataProviderComments,
-            'dataProviderDiscounts' => $dataProviderDiscounts
+            'dataProviderDiscounts' => $dataProviderDiscounts,
         ]);
     }
 
@@ -459,13 +466,13 @@ class DiscountController extends MainController
         if (Yii::$app->request->isAjax &&
             !Yii::$app->request->get('_pjax', false)) {
             return CardsDiscounts::widget([
-                    'dataprovider' => $dataProvider,
-                    'settings' => [
-                        'show-more-btn' => true,
-                        'replace-container-id' => 'feed-discounts',
-                        'load-time' => $loadTime,
-                        'show-distance' => true,
-                    ]
+                'dataprovider' => $dataProvider,
+                'settings' => [
+                    'show-more-btn' => true,
+                    'replace-container-id' => 'feed-discounts',
+                    'load-time' => $loadTime,
+                    'show-distance' => true,
+                ],
             ]);
         } else {
             $breadcrumbParams = $this->getParamsForBreadcrumbFeedDiscounts();
@@ -487,7 +494,7 @@ class DiscountController extends MainController
         $breadcrumbParams[] = [
             'name' => ucfirst(Yii::$app->getRequest()->serverName),
             'url_name' => $currentUrl,
-            'pjax' => 'class="main-header-pjax a"'
+            'pjax' => 'class="main-header-pjax a"',
         ];
 
         if ($post->city) {
@@ -495,7 +502,7 @@ class DiscountController extends MainController
             $breadcrumbParams[] = [
                 'name' => $post->city['name'],
                 'url_name' => $currentUrl,
-                'pjax' => 'class="main-header-pjax a"'
+                'pjax' => 'class="main-header-pjax a"',
             ];
         }
 
@@ -503,7 +510,7 @@ class DiscountController extends MainController
             $breadcrumbParams[] = [
                 'name' => $post->onlyOnceCategories[0]['category']['name'],
                 'url_name' => $currentUrl . '/' . $post->onlyOnceCategories[0]['category']['url_name'],
-                'pjax' => 'class="main-header-pjax a"'
+                'pjax' => 'class="main-header-pjax a"',
             ];
         }
 
@@ -512,14 +519,14 @@ class DiscountController extends MainController
             $breadcrumbParams[] = [
                 'name' => $post->onlyOnceCategories[0]['name'],
                 'url_name' => $currentUrl,
-                'pjax' => 'class="main-header-pjax a"'
+                'pjax' => 'class="main-header-pjax a"',
             ];
         }
 
         $breadcrumbParams[] = [
             'name' => $post['data'],
             'url_name' => $post['url_name'] . '-p' . $post['id'],
-            'pjax' => 'class="main-pjax a"'
+            'pjax' => 'class="main-pjax a"',
         ];
 
         return $breadcrumbParams;
@@ -533,7 +540,7 @@ class DiscountController extends MainController
         $breadcrumbParams[] = [
             'name' => ucfirst(Yii::$app->getRequest()->serverName),
             'url_name' => $currentUrl,
-            'pjax' => 'class="main-header-pjax a"'
+            'pjax' => 'class="main-header-pjax a"',
         ];
 
         if ($city = Yii::$app->request->get('city')) {
@@ -541,14 +548,14 @@ class DiscountController extends MainController
             $breadcrumbParams[] = [
                 'name' => $city['name'],
                 'url_name' => $currentUrl,
-                'pjax' => 'class="main-pjax a"'
+                'pjax' => 'class="main-pjax a"',
             ];
         }
 
         $breadcrumbParams[] = [
             'name' => 'Скидки',
             'url_name' => Yii::$app->getRequest()->getUrl(),
-            'pjax' => 'class="main-pjax a"'
+            'pjax' => 'class="main-pjax a"',
         ];
 
         return $breadcrumbParams;
@@ -582,7 +589,7 @@ class DiscountController extends MainController
             $lastOrderForDay = DiscountOrder::find()
                 ->where([
                     'discount_id' => $discountId,
-                    'user_id' => Yii::$app->user->getId()
+                    'user_id' => Yii::$app->user->getId(),
                 ])
                 ->andWhere(['>', 'date_buy', time() - 24 * 3600])
                 ->one();
@@ -598,7 +605,7 @@ class DiscountController extends MainController
                 'date_buy' => time(),
                 'date_finish' => $discount->date_finish,
                 'promo_code' => isset($discount->promocode) && $discount->promocode !== '' ?
-                    $discount->promocode : (string) mt_rand(1000, 9999),
+                    $discount->promocode : (string)mt_rand(1000, 9999),
                 'pin_code' => null,
                 'status_promo' => DiscountOrder::STATUS['active'],
                 'price' => $discount->price_with_discount ?? $discount->price ?? null,
@@ -629,11 +636,14 @@ class DiscountController extends MainController
                     'userName' => $user->name,
                     'discountTitle' => $discount->header,
                     'postTitle' => $discount->post->data,
-                    'postUrl' => Url::to(['post/index', 'url' => $discount->post->url_name,
-                        'id' => $discount->post->id], true),
+                    'postUrl' => Url::to([
+                        'post/index',
+                        'url' => $discount->post->url_name,
+                        'id' => $discount->post->id,
+                    ], true),
                 ],
                 'toEmail' => $user->email,
-                'subject' => "{$user->name}, оставьте отзыв о {$discount->post->data} на Postim.by"
+                'subject' => "{$user->name}, оставьте отзыв о {$discount->post->data} на Postim.by",
             ], $order->date_finish);
 
             return $this->asJson($response);
@@ -694,7 +704,7 @@ class DiscountController extends MainController
                 if ($discount->updateCounters(['count_favorites' => 1])) {
                     $model = new FavoritesDiscount([
                         'user_id' => Yii::$app->user->id,
-                        'discount_id' => $discount->id
+                        'discount_id' => $discount->id,
                     ]);
                     if ($model->save()) {
                         $response->status = 'add';

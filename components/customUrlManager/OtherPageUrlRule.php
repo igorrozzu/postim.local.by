@@ -7,7 +7,8 @@ use app\models\OtherPage;
 use yii\helpers\ArrayHelper;
 
 
-class OtherPageUrlRule extends CityUrlRule {
+class OtherPageUrlRule extends CityUrlRule
+{
 
     public function createUrl($manager, $route, $params)
     {
@@ -19,18 +20,18 @@ class OtherPageUrlRule extends CityUrlRule {
     {
         $pathInfo = $request->getPathInfo();
 
-        $queryParams= explode('/',$pathInfo);
+        $queryParams = explode('/', $pathInfo);
 
-        $route='/site/other-page';
+        $route = '/site/other-page';
 
-        if(isset($queryParams[0])){
+        if (isset($queryParams[0])) {
 
             $arrIndex = $this->getIndexArray();
 
-            if(isset($arrIndex['indexOtherPage']['/'.$queryParams[0]])){
-                $params['url_name'] = $arrIndex['indexOtherPage']['/'.$queryParams[0]]->url_name;
+            if (isset($arrIndex['indexOtherPage']['/' . $queryParams[0]])) {
+                $params['url_name'] = $arrIndex['indexOtherPage']['/' . $queryParams[0]]->url_name;
 
-                return [$route,$params];
+                return [$route, $params];
             }
 
         }
@@ -40,12 +41,12 @@ class OtherPageUrlRule extends CityUrlRule {
 
     protected function getIndexArray()
     {
-        $array= parent::getIndexArray();
+        $array = parent::getIndexArray();
 
         /*if(!$indexOtherPage = \Yii::$app->cache->get('listOtherPage')){*/
-            $indexOtherPage = ArrayHelper::index(OtherPage::find()
-                ->select(['url_name'])
-                ->all(),'url_name');
+        $indexOtherPage = ArrayHelper::index(OtherPage::find()
+            ->select(['url_name'])
+            ->all(), 'url_name');
 
         /*    \Yii::$app->cache->add('listOtherPage',$indexOtherPage,600);
         }*/

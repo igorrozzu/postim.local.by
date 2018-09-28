@@ -26,6 +26,6 @@ class MainMenuWidget extends Widget
 
     public function run()
     {
-        echo $this->render('index',['data'=>$this->memuData]);
+        echo $this->render('index', ['data' => $this->memuData]);
     }
 }

@@ -26,8 +26,13 @@ class PremiumAccount extends Model
             [['postId', 'rate'], 'required'],
             [['postId', 'rate'], 'integer'],
             ['rate', 'in', 'range' => array_keys(Yii::$app->params['premiumAccount']['rates'])],
-            [['postId'], 'exist', 'skipOnError' => true,
-                'targetClass' => Posts::className(), 'targetAttribute' => ['postId' => 'id']],
+            [
+                ['postId'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Posts::className(),
+                'targetAttribute' => ['postId' => 'id'],
+            ],
         ];
     }
 

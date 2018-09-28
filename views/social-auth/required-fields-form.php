@@ -1,7 +1,9 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+
 ?>
 
 <div class="container-popup-window form-password-recovery">
@@ -13,22 +15,22 @@ use yii\widgets\ActiveForm;
         <div class="text-label">Подтвердите ваши данные (имя, email)</div>
         <?php $form = ActiveForm::begin([
             'id' => 'required-fields-form',
-            'enableClientScript' => false
+            'enableClientScript' => false,
         ]) ?>
-            <div class="field-input">
-                <?= $form->field($model, 'name')
-                    ->textInput(['placeholder' => 'Имя', 'value' => $name ?? ''])
-                    ->label(false) ?>
-            </div>
-            <div class="field-input">
-                <?= $form->field($model, 'email')
-                    ->textInput(['placeholder' => 'Электронная почта'])
-                    ->label(false) ?>
-            </div>
+        <div class="field-input">
+            <?= $form->field($model, 'name')
+                ->textInput(['placeholder' => 'Имя', 'value' => $name ?? ''])
+                ->label(false) ?>
+        </div>
+        <div class="field-input">
+            <?= $form->field($model, 'email')
+                ->textInput(['placeholder' => 'Электронная почта'])
+                ->label(false) ?>
+        </div>
 
-            <div class="field-btn">
-                <input class="btn-red" type="submit" value="Подтвердить" style="border: none;">
-            </div>
+        <div class="field-btn">
+            <input class="btn-red" type="submit" value="Подтвердить" style="border: none;">
+        </div>
         <?php ActiveForm::end() ?>
     </div>
 </div>

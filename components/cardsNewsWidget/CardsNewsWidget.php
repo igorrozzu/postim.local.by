@@ -18,15 +18,15 @@ class CardsNewsWidget extends Widget
 
     public function run()
     {
-        if($this->settings['last-news']??false){
-            echo $this->render('index',[
-                'dataprovider'=>$this->dataprovider,
-                'settings'=>$this->settings
+        if ($this->settings['last-news'] ?? false) {
+            echo $this->render('index', [
+                'dataprovider' => $this->dataprovider,
+                'settings' => $this->settings,
             ]);
-        }else{
-            echo $this->render('feed_index',[
-                'dataprovider'=>$this->dataprovider,
-                'settings'=>$this->settings
+        } else {
+            echo $this->render('feed_index', [
+                'dataprovider' => $this->dataprovider,
+                'settings' => $this->settings,
             ]);
         }
 

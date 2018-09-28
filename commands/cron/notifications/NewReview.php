@@ -86,10 +86,14 @@ class NewReview extends BaseCronNotificationHandler
                 User::tableName() . '.id',
                 User::tableName() . '.email',
             ])
-            ->innerJoinWith(['userInfo' => function(ActiveQuery $query) {
-                $query->where([UserInfo::tableName() .
-                '.reviews_to_my_places_sub' => UserInfo::ALLOW_USER_CHOICE['yes']]);
-            }], false)
+            ->innerJoinWith([
+                'userInfo' => function (ActiveQuery $query) {
+                    $query->where([
+                        UserInfo::tableName() .
+                        '.reviews_to_my_places_sub' => UserInfo::ALLOW_USER_CHOICE['yes'],
+                    ]);
+                },
+            ], false)
             ->where(['id' => $userIds->owners]);
 
         if (count($userIds->favorites) > 0) {
@@ -99,10 +103,14 @@ class NewReview extends BaseCronNotificationHandler
                     User::tableName() . '.id',
                     User::tableName() . '.email',
                 ])
-                ->innerJoinWith(['userInfo' => function(ActiveQuery $query) {
-                    $query->where([UserInfo::tableName() .
-                    '.reviews_to_favorite_places_sub' => UserInfo::ALLOW_USER_CHOICE['yes']]);
-                }], false)
+                ->innerJoinWith([
+                    'userInfo' => function (ActiveQuery $query) {
+                        $query->where([
+                            UserInfo::tableName() .
+                            '.reviews_to_favorite_places_sub' => UserInfo::ALLOW_USER_CHOICE['yes'],
+                        ]);
+                    },
+                ], false)
                 ->where(['id' => $userIds->favorites]);
 
             $userForMailSending->union($favoriteUsers);

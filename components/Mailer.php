@@ -10,27 +10,32 @@ class Mailer extends \yii\swiftmailer\Mailer
     private $sender;
     private $transports = [];
 
-    public function __construct( array $config = [] )
+    public function __construct(array $config = [])
     {
-        parent::__construct( $config );
+        parent::__construct($config);
         $this->useTransport('info');
     }
 
-    public function setTransports($transports) {
-        if(!is_array($transports))
+    public function setTransports($transports)
+    {
+        if (!is_array($transports)) {
             throw new InvalidConfigException('"' . get_class($this) . '::transport" should be array, "' . gettype($transport) . '" given.');
+        }
         $this->transports = $transports;
     }
 
-    public function useTransport($name) {
-        if(!array_key_exists($name, $this->transports))
-            throw new InvalidConfigException('"' . get_class($this) . '::useTransport" The requested transport '.$name.' could not be found');
+    public function useTransport($name)
+    {
+        if (!array_key_exists($name, $this->transports)) {
+            throw new InvalidConfigException('"' . get_class($this) . '::useTransport" The requested transport ' . $name . ' could not be found');
+        }
         $this->setTransport($this->transports[$name]);
         $this->sender = $this->transports[$name]['username'];
         return $this;
     }
 
-    public function compose($view = null, array $params = []) {
+    public function compose($view = null, array $params = [])
+    {
         $message = parent::compose($view, $params);
         $message->setFrom($this->sender); // By default SMTP Username will be used for sender
         return $message;

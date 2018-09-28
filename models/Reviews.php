@@ -25,17 +25,17 @@ use yii\helpers\FileHelper;
 class Reviews extends \yii\db\ActiveRecord
 {
 
-	public $photos = [];
-	public $is_like = false;
-	public $is_complaint = false;
+    public $photos = [];
+    public $is_like = false;
+    public $is_complaint = false;
 
-	public static $SCENARIO_ADD = 'add';
-	public static $SCENARIO_EDIT = 'edit';
+    public static $SCENARIO_ADD = 'add';
+    public static $SCENARIO_EDIT = 'edit';
 
-	public static $STATUS = [
-	    'confirm' => 2,
-	    'moderation' => 0,
-	    'private' => 1,
+    public static $STATUS = [
+        'confirm' => 2,
+        'moderation' => 0,
+        'private' => 1,
     ];
 
     /**
@@ -68,22 +68,31 @@ class Reviews extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id','post_id', 'like', 'user_id', 'date'], 'required'],
-            [['rating'], 'required','message'=>'Поставьте вашу оценку'],
-            [['data'], 'required','message'=>'Пожалуйста, аргументируйте свою оценку. Напишите не менее 100 символов.'],
+            [['id', 'post_id', 'like', 'user_id', 'date'], 'required'],
+            [['rating'], 'required', 'message' => 'Поставьте вашу оценку'],
+            [
+                ['data'],
+                'required',
+                'message' => 'Пожалуйста, аргументируйте свою оценку. Напишите не менее 100 символов.',
+            ],
             [['post_id', 'rating', 'like', 'user_id'], 'integer'],
-            [['date','photos','city'], 'safe'],
-            [['data'], 'string','min'=>100,'tooShort'=>'Пожалуйста, аргументируйте свою оценку. Напишите не менее 100 символов.'],
+            [['date', 'photos', 'city'], 'safe'],
+            [
+                ['data'],
+                'string',
+                'min' => 100,
+                'tooShort' => 'Пожалуйста, аргументируйте свою оценку. Напишите не менее 100 символов.',
+            ],
         ];
     }
 
-	public function scenarios()
-	{
-		return [
-			self::$SCENARIO_ADD => ['post_id', 'like', 'user_id', 'date','rating','data','photos'],
-			self::$SCENARIO_EDIT => ['id','post_id', 'like', 'user_id', 'date','rating','data','photos'],
-		];
-	}
+    public function scenarios()
+    {
+        return [
+            self::$SCENARIO_ADD => ['post_id', 'like', 'user_id', 'date', 'rating', 'data', 'photos'],
+            self::$SCENARIO_EDIT => ['id', 'post_id', 'like', 'user_id', 'date', 'rating', 'data', 'photos'],
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -133,23 +142,25 @@ class Reviews extends \yii\db\ActiveRecord
         return $this->hasOne(UserInfo::className(), ['user_id' => 'user_id']);
     }
 
-	public function getReviewsGallery(){
-		return $this->hasMany(ReviewsGallery::className(), ['review_id' => 'id']);
-	}
+    public function getReviewsGallery()
+    {
+        return $this->hasMany(ReviewsGallery::className(), ['review_id' => 'id']);
+    }
 
-	public function getGallery()
-	{
-		return $this->hasMany(Gallery::className(), ['id' => 'gallery_id'])
-			->via('reviewsGallery');
-	}
+    public function getGallery()
+    {
+        return $this->hasMany(Gallery::className(), ['id' => 'gallery_id'])
+            ->via('reviewsGallery');
+    }
 
-	public function getLastPhoto(){
-		return  Gallery::find()
-			->innerJoin('tbl_reviews_gallery','tbl_reviews_gallery.review_id = '.$this->id.
+    public function getLastPhoto()
+    {
+        return Gallery::find()
+            ->innerJoin('tbl_reviews_gallery', 'tbl_reviews_gallery.review_id = ' . $this->id .
                 ' AND tbl_reviews_gallery.gallery_id = tbl_gallery.id')
-			->orderBy(['id' => SORT_DESC])
-			->one();
-	}
+            ->orderBy(['id' => SORT_DESC])
+            ->one();
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -159,60 +170,66 @@ class Reviews extends \yii\db\ActiveRecord
         return $this->hasOne(Posts::className(), ['id' => 'post_id']);
     }
 
-    public function getHasLike(){
-		return $this->hasOne(ReviewsLike::className(), ['reviews_id' => 'id'])
-			->onCondition([ReviewsLike::tableName() . '.user_id' => Yii::$app->user->getId()]);
-	}
+    public function getHasLike()
+    {
+        return $this->hasOne(ReviewsLike::className(), ['reviews_id' => 'id'])
+            ->onCondition([ReviewsLike::tableName() . '.user_id' => Yii::$app->user->getId()]);
+    }
 
-	public function getReviewsOfficial(){
-    	return $this->hasOne(OfficialAnswer::className(),['entity_id'=>'id']);
-	}
+    public function getReviewsOfficial()
+    {
+        return $this->hasOne(OfficialAnswer::className(), ['entity_id' => 'id']);
+    }
 
-	public function getOfficialAnswer(){
-    	return $this->hasOne(Comments::className(),['id'=>'comment_id'])
-			->via('reviewsOfficial');
-	}
+    public function getOfficialAnswer()
+    {
+        return $this->hasOne(Comments::className(), ['id' => 'comment_id'])
+            ->via('reviewsOfficial');
+    }
 
-	public function getHasComplaint(){
-		return $this->hasOne(Complaints::className(), ['entities_id' => 'id'])
-			->onCondition([
-			    Complaints::tableName() . '.user_id' => Yii::$app->user->getId(),
-                Complaints::tableName() . '.type' => Complaints::$TYPE['reviews']
+    public function getHasComplaint()
+    {
+        return $this->hasOne(Complaints::className(), ['entities_id' => 'id'])
+            ->onCondition([
+                Complaints::tableName() . '.user_id' => Yii::$app->user->getId(),
+                Complaints::tableName() . '.type' => Complaints::$TYPE['reviews'],
             ]);
-	}
+    }
 
-	public function getTotalComments(){
-		return $this->hasMany(Comments::className(), ['entity_id' => 'id'])
-			->onCondition(['type_entity'=>2])->count();
-	}
+    public function getTotalComments()
+    {
+        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])
+            ->onCondition(['type_entity' => 2])->count();
+    }
 
-	public function getLink(){
+    public function getLink()
+    {
         $link = "/{$this->post->url_name}-p{$this->post->id}?review_id={$this->id}";
         return $link;
     }
 
 
     public function load($data, $formName = null)
-	{
-		$result = parent::load($data, $formName);
-		$this->calcPhoto();
-		return $result;
-	}
+    {
+        $result = parent::load($data, $formName);
+        $this->calcPhoto();
+        return $result;
+    }
 
-	public function afterSave($insert, $changedAttributes)
-	{
-		parent::afterSave($insert, $changedAttributes);
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
 
-		$this->savePhotos();
-		if($this->getScenario() == self::$SCENARIO_EDIT){
+        $this->savePhotos();
+        if ($this->getScenario() == self::$SCENARIO_EDIT) {
             $this->removeSomePhoto();
         }
-		$this->reCalcRatingPlace();
-		$this->reCalcCountReviews();
+        $this->reCalcRatingPlace();
+        $this->reCalcCountReviews();
 
-	}
+    }
 
-	public function afterDelete()
+    public function afterDelete()
     {
         parent::afterDelete();
 
@@ -222,149 +239,156 @@ class Reviews extends \yii\db\ActiveRecord
 
 
     public function afterFind()
-	{
-		parent::afterFind();
+    {
+        parent::afterFind();
 
-		if($this->isRelationPopulated('hasLike') && !empty($this->hasLike)){
-			$this->is_like = true;
-		}
-
-		if($this->isRelationPopulated('hasComplaint') && !empty($this->hasComplaint)){
-			$this->is_complaint = true;
-		}
-	}
-
-	public function beforeValidate()
-	{
-		if($this->getScenario()==self::$SCENARIO_ADD){
-			$this->like = 0;
-			$this->date = time();
-			$this->user_id = Yii::$app->user->getId();
-		}
-		if($this->getScenario() == self::$SCENARIO_EDIT){
-		    $this->status = self::$STATUS['moderation'];
+        if ($this->isRelationPopulated('hasLike') && !empty($this->hasLike)) {
+            $this->is_like = true;
         }
 
-		return parent::beforeValidate();
-	}
-
-	private function reCalcCountReviews(){
-
-		$countReviewsUser = Reviews::find()
-			->where(['user_id'=>Yii::$app->user->getId()])
-            ->andWhere(['<>','status',self::$STATUS['private']])
-			->count();
-
-		$countReviewsPost = Reviews::find()
-			->where(['post_id'=>$this->post_id])
-            ->andWhere(['<>','status',self::$STATUS['private']])
-			->count();
-
-		Posts::updateAll(['count_reviews'=>$countReviewsPost],['id'=>$this->post_id]);
-		UserInfo::updateAll(['count_reviews'=>$countReviewsUser],['user_id'=>Yii::$app->user->getId()]);
-
-	}
-
-	public function reCalcCountPhotos(){
-        $countReviewsPhoto = ReviewsGallery::find()->where(['review_id'=>$this->id])->count();
-        Reviews::updateAll(['count_photos'=>$countReviewsPhoto],['id'=>$this->id]);
+        if ($this->isRelationPopulated('hasComplaint') && !empty($this->hasComplaint)) {
+            $this->is_complaint = true;
+        }
     }
 
-	private function reCalcRatingPlace(){
-
-    	$arrayRatings =  static::find()
-			->select('rating')
-			->where(['post_id'=>$this->post_id])
-			->andWhere(['<>','status',self::$STATUS['private']])
-			->asArray()
-			->all();
-    	$arrayRatings = ArrayHelper::getColumn($arrayRatings,'rating');
-
-		$sum = 0;
-		$number = count($arrayRatings);
-		for($i=0; $i < $number; $i++){
-			$sum+=$arrayRatings[$i];
-		}
-
-		if($number === 0){
-		    $newRating = 0;
-        }else{
-            $newRating = (float) number_format($sum/$number, 1);
+    public function beforeValidate()
+    {
+        if ($this->getScenario() == self::$SCENARIO_ADD) {
+            $this->like = 0;
+            $this->date = time();
+            $this->user_id = Yii::$app->user->getId();
+        }
+        if ($this->getScenario() == self::$SCENARIO_EDIT) {
+            $this->status = self::$STATUS['moderation'];
         }
 
-		Posts::updateAll(['rating'=>$newRating],'id='.$this->post_id);
+        return parent::beforeValidate();
+    }
 
-	}
+    private function reCalcCountReviews()
+    {
 
-	private function calcPhoto(){
-		if ($this->photos && is_array($this->photos)) {
-			$this->count_photos = count($this->photos);
-		}
-	}
+        $countReviewsUser = Reviews::find()
+            ->where(['user_id' => Yii::$app->user->getId()])
+            ->andWhere(['<>', 'status', self::$STATUS['private']])
+            ->count();
 
-	private function removeSomePhoto(){
+        $countReviewsPost = Reviews::find()
+            ->where(['post_id' => $this->post_id])
+            ->andWhere(['<>', 'status', self::$STATUS['private']])
+            ->count();
 
-		$galleries = $this->gallery;
+        Posts::updateAll(['count_reviews' => $countReviewsPost], ['id' => $this->post_id]);
+        UserInfo::updateAll(['count_reviews' => $countReviewsUser], ['user_id' => Yii::$app->user->getId()]);
 
-		if($galleries && is_array($galleries)){
-			foreach ($galleries as $gallery){
-				$is_isset = false;
-				if($this->photos && is_array($this->photos)){
-					foreach ($this->photos as $photo){
-						if($photo == $gallery['link']){
-							$is_isset = true;
-						}
-					}
-				}
+    }
 
-				if(!$is_isset){
-					$tmpLink = Yii::getAlias('@webroot/post_photo/'.$this->post_id.'/' . $gallery['link']);
-					if(file_exists($tmpLink)){
-						unlink($tmpLink);
-					}
-					$gallery->delete();
-				}
+    public function reCalcCountPhotos()
+    {
+        $countReviewsPhoto = ReviewsGallery::find()->where(['review_id' => $this->id])->count();
+        Reviews::updateAll(['count_photos' => $countReviewsPhoto], ['id' => $this->id]);
+    }
 
-			}
-		}
-	}
+    private function reCalcRatingPlace()
+    {
 
-	private function savePhotos(){
+        $arrayRatings = static::find()
+            ->select('rating')
+            ->where(['post_id' => $this->post_id])
+            ->andWhere(['<>', 'status', self::$STATUS['private']])
+            ->asArray()
+            ->all();
+        $arrayRatings = ArrayHelper::getColumn($arrayRatings, 'rating');
 
-		if ($this->photos && is_array($this->photos)) {
+        $sum = 0;
+        $number = count($arrayRatings);
+        for ($i = 0; $i < $number; $i++) {
+            $sum += $arrayRatings[$i];
+        }
 
-			$dir = Yii::getAlias('@webroot/post_photo/' . $this->post_id . '/');
+        if ($number === 0) {
+            $newRating = 0;
+        } else {
+            $newRating = (float)number_format($sum / $number, 1);
+        }
+
+        Posts::updateAll(['rating' => $newRating], 'id=' . $this->post_id);
+
+    }
+
+    private function calcPhoto()
+    {
+        if ($this->photos && is_array($this->photos)) {
+            $this->count_photos = count($this->photos);
+        }
+    }
+
+    private function removeSomePhoto()
+    {
+
+        $galleries = $this->gallery;
+
+        if ($galleries && is_array($galleries)) {
+            foreach ($galleries as $gallery) {
+                $is_isset = false;
+                if ($this->photos && is_array($this->photos)) {
+                    foreach ($this->photos as $photo) {
+                        if ($photo == $gallery['link']) {
+                            $is_isset = true;
+                        }
+                    }
+                }
+
+                if (!$is_isset) {
+                    $tmpLink = Yii::getAlias('@webroot/post_photo/' . $this->post_id . '/' . $gallery['link']);
+                    if (file_exists($tmpLink)) {
+                        unlink($tmpLink);
+                    }
+                    $gallery->delete();
+                }
+
+            }
+        }
+    }
+
+    private function savePhotos()
+    {
+
+        if ($this->photos && is_array($this->photos)) {
+
+            $dir = Yii::getAlias('@webroot/post_photo/' . $this->post_id . '/');
             if (!is_dir($dir)) {
                 FileHelper::createDirectory($dir);
             }
 
-			foreach ($this->photos as $photoLink) {
+            foreach ($this->photos as $photoLink) {
 
-				$photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $photoLink);
+                $photoPath = Yii::getAlias('@webroot/post_photo/tmp/' . $photoLink);
 
-				if (file_exists($photoPath)) {
-					if(copy($photoPath,$dir.$photoLink)){
-						$gallery = new Gallery(['post_id' => $this->post_id,
-							'user_id' => Yii::$app->user->getId(),
-							'link' => $photoLink,
-							'user_status' => 0,
-							'status' => Gallery::$STATUS['moderation'],
-							'date' => time(),
-							'source' => '',
-						]);
-						if($gallery->save()){
+                if (file_exists($photoPath)) {
+                    if (copy($photoPath, $dir . $photoLink)) {
+                        $gallery = new Gallery([
+                            'post_id' => $this->post_id,
+                            'user_id' => Yii::$app->user->getId(),
+                            'link' => $photoLink,
+                            'user_status' => 0,
+                            'status' => Gallery::$STATUS['moderation'],
+                            'date' => time(),
+                            'source' => '',
+                        ]);
+                        if ($gallery->save()) {
 
-							$reviewsGallery = new ReviewsGallery();
-							$reviewsGallery->review_id = $this->id;
-							$reviewsGallery->gallery_id = $gallery->id;
-							$reviewsGallery->save();
-						}
-						unlink($photoPath);
-					}
-				}
-			}
+                            $reviewsGallery = new ReviewsGallery();
+                            $reviewsGallery->review_id = $this->id;
+                            $reviewsGallery->gallery_id = $gallery->id;
+                            $reviewsGallery->save();
+                        }
+                        unlink($photoPath);
+                    }
+                }
+            }
 
-		}
+        }
 
-	}
+    }
 }

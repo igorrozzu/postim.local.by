@@ -18,8 +18,37 @@ class PostsSearch extends Posts
     public function rules()
     {
         return [
-            [['id', 'city_id', 'count_favorites', 'count_reviews', 'date', 'status', 'user_id', 'total_view_id', 'priority', 'main_id'], 'integer'],
-            [['url_name', 'cover', 'data', 'address', 'additional_address', 'coordinates', 'title', 'description', 'key_word', 'requisites', 'metro'], 'safe'],
+            [
+                [
+                    'id',
+                    'city_id',
+                    'count_favorites',
+                    'count_reviews',
+                    'date',
+                    'status',
+                    'user_id',
+                    'total_view_id',
+                    'priority',
+                    'main_id',
+                ],
+                'integer',
+            ],
+            [
+                [
+                    'url_name',
+                    'cover',
+                    'data',
+                    'address',
+                    'additional_address',
+                    'coordinates',
+                    'title',
+                    'description',
+                    'key_word',
+                    'requisites',
+                    'metro',
+                ],
+                'safe',
+            ],
             [['rating'], 'number'],
         ];
     }
@@ -40,7 +69,7 @@ class PostsSearch extends Posts
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$pagination)
+    public function search($params, $pagination)
     {
         $query = Posts::find();
 
@@ -48,7 +77,7 @@ class PostsSearch extends Posts
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);

@@ -32,8 +32,22 @@ class PostsSearch extends Posts
     {
         return [
             [['id', 'city_id', 'rating', 'count_favorites', 'count_reviews'], 'integer'],
-            [['url_name', 'cover', 'data', 'address', 'city',
-                'category', 'under_category', 'city', 'favorite_id', 'open', 'filters'], 'safe'],
+            [
+                [
+                    'url_name',
+                    'cover',
+                    'data',
+                    'address',
+                    'city',
+                    'category',
+                    'under_category',
+                    'city',
+                    'favorite_id',
+                    'open',
+                    'filters',
+                ],
+                'safe',
+            ],
         ];
     }
 
@@ -53,8 +67,14 @@ class PostsSearch extends Posts
      *
      * @return ActiveDataProvider
      */
-    public function search($params, Pagination $pagination, Array $sort, $loadTime = null, array $self_filters = [], $loadGeolocation = [])
-    {
+    public function search(
+        $params,
+        Pagination $pagination,
+        Array $sort,
+        $loadTime = null,
+        array $self_filters = [],
+        $loadGeolocation = []
+    ) {
         $query = Posts::find()
             ->joinWith(['actualDiscounts']);
 
@@ -76,7 +96,7 @@ class PostsSearch extends Posts
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->queryForPlaceOnMap = Posts::find()->select('tbl_posts.id,tbl_posts.coordinates');
@@ -101,9 +121,11 @@ class PostsSearch extends Posts
 
         if (isset($params['id'])) {
 
-            $query->joinWith(['info' => function ($query) {
-                $query->select('editors');
-            }]);
+            $query->joinWith([
+                'info' => function ($query) {
+                    $query->select('editors');
+                },
+            ]);
             $query->andWhere("editors @> '[" . $params['id'] . "]'");
 
         }
@@ -117,14 +139,16 @@ class PostsSearch extends Posts
         }
 
         if (!empty($this->city)) {
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 ['tbl_region.url_name' => $this->city['url_name']],
                 ['tbl_city.url_name' => $this->city['url_name']],
                 ['tbl_countries.url_name' => $this->city['url_name']],
             ]);
 
             $this->queryForPlaceOnMap->innerJoinWith('city.region.coutries');
-            $this->queryForPlaceOnMap->andWhere(['or',
+            $this->queryForPlaceOnMap->andWhere([
+                'or',
                 ['tbl_region.url_name' => $this->city['url_name']],
                 ['tbl_city.url_name' => $this->city['url_name']],
                 ['tbl_countries.url_name' => $this->city['url_name']],
@@ -134,44 +158,58 @@ class PostsSearch extends Posts
 
 
         if ($this->open) {
-            $query->innerJoinWith(['workingHours' => function ($query) {
-                $query->andWhere(['day_type' => date('w') == 0 ? 7 : date('w')]);
-            }]);
-            $currentTimestamp = Yii::$app->formatter->asTimestamp(Yii::$app->formatter->asTime($loadTime + Yii::$app->user->getTimezoneInSeconds(), 'short'));
-            $currentTime = idate('H', $currentTimestamp) * 3600 + idate('i', $currentTimestamp) * 60 + idate('s', $currentTimestamp);
-            $query->andWhere(['or',
-                ['and',
+            $query->innerJoinWith([
+                'workingHours' => function ($query) {
+                    $query->andWhere(['day_type' => date('w') == 0 ? 7 : date('w')]);
+                },
+            ]);
+            $currentTimestamp = Yii::$app->formatter->asTimestamp(Yii::$app->formatter->asTime($loadTime + Yii::$app->user->getTimezoneInSeconds(),
+                'short'));
+            $currentTime = idate('H', $currentTimestamp) * 3600 + idate('i', $currentTimestamp) * 60 + idate('s',
+                    $currentTimestamp);
+            $query->andWhere([
+                'or',
+                [
+                    'and',
                     ['<=', 'tbl_working_hours.time_start', $currentTime],
-                    ['>=', 'tbl_working_hours.time_finish', $currentTime]
+                    ['>=', 'tbl_working_hours.time_finish', $currentTime],
                 ],
-                ['and',
+                [
+                    'and',
                     ['>=', 'tbl_working_hours.time_finish', $currentTime + 24 * 3600],
-                    ['<=', 'tbl_working_hours.time_start', $currentTime + 24 * 3600]
-                ]
+                    ['<=', 'tbl_working_hours.time_start', $currentTime + 24 * 3600],
+                ],
             ]);
 
             $this->filters--;
 
 
-            $this->queryForPlaceOnMap->innerJoinWith(['workingHours' => function ($query) {
-                $query->andWhere(['day_type' => date('w') == 0 ? 7 : date('w')]);
-            }]);
-            $this->queryForPlaceOnMap->andWhere(['or',
-                ['and',
+            $this->queryForPlaceOnMap->innerJoinWith([
+                'workingHours' => function ($query) {
+                    $query->andWhere(['day_type' => date('w') == 0 ? 7 : date('w')]);
+                },
+            ]);
+            $this->queryForPlaceOnMap->andWhere([
+                'or',
+                [
+                    'and',
                     ['<=', 'tbl_working_hours.time_start', $currentTime],
-                    ['>=', 'tbl_working_hours.time_finish', $currentTime]
+                    ['>=', 'tbl_working_hours.time_finish', $currentTime],
                 ],
-                ['and',
+                [
+                    'and',
                     ['>=', 'tbl_working_hours.time_finish', $currentTime + 24 * 3600],
-                    ['<=', 'tbl_working_hours.time_start', $currentTime + 24 * 3600]
-                ]
+                    ['<=', 'tbl_working_hours.time_start', $currentTime + 24 * 3600],
+                ],
             ]);
 
 
         } else {
-            $query->with(['workingHours' => function ($query) {
-                $query->orderBy(['day_type' => SORT_ASC]);
-            }]);
+            $query->with([
+                'workingHours' => function ($query) {
+                    $query->orderBy(['day_type' => SORT_ASC]);
+                },
+            ]);
         }
 
         if ($self_filters) {
@@ -180,19 +218,21 @@ class PostsSearch extends Posts
             foreach ($params as $nameFilter => $value) {
                 if (isset($self_filters[$nameFilter])) {
                     if ($value == 'true') {
-                        $queryFiltersBool[] = ['and',
+                        $queryFiltersBool[] = [
+                            'and',
                             ['tbl_post_features.features_id' => $nameFilter],
-                            ['tbl_post_features.value' => 1]
+                            ['tbl_post_features.value' => 1],
                         ];
                     } else {
                         $minMax = explode(',', $value, 2);
                         if (isset($minMax[1])) {
                             $min = (int)$minMax[0];
                             $max = (int)$minMax[1];
-                            $queryFiltersBool[] = ['and',
+                            $queryFiltersBool[] = [
+                                'and',
                                 ['tbl_post_features.features_id' => $nameFilter],
                                 ['>=', 'tbl_post_features.value', $min],
-                                ['<=', 'tbl_post_features.value', $max]
+                                ['<=', 'tbl_post_features.value', $max],
                             ];
                         }
                     }
@@ -270,14 +310,16 @@ class PostsSearch extends Posts
         $this->queryForPlaceOnMap->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']]);
 
         if (!empty($this->city)) {
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 ['tbl_region.url_name' => $this->city['url_name']],
                 ['tbl_city.url_name' => $this->city['url_name']],
                 ['tbl_countries.url_name' => $this->city['url_name']],
             ]);
 
             $this->queryForPlaceOnMap->innerJoinWith('city.region.coutries');
-            $this->queryForPlaceOnMap->andWhere(['or',
+            $this->queryForPlaceOnMap->andWhere([
+                'or',
                 ['tbl_region.url_name' => $this->city['url_name']],
                 ['tbl_city.url_name' => $this->city['url_name']],
                 ['tbl_countries.url_name' => $this->city['url_name']],
@@ -293,9 +335,11 @@ class PostsSearch extends Posts
         $query->limit(4);
         $this->queryForPlaceOnMap->groupBy(['tbl_posts.id']);
 
-        $query->with(['workingHours' => function ($query) {
-            $query->orderBy(['day_type' => SORT_ASC]);
-        }]);
+        $query->with([
+            'workingHours' => function ($query) {
+                $query->orderBy(['day_type' => SORT_ASC]);
+            },
+        ]);
 
         $this->key = Helper::saveQueryForMap($this->queryForPlaceOnMap
             ->prepare(Yii::$app->db->queryBuilder)
@@ -332,7 +376,8 @@ class PostsSearch extends Posts
             ->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']]);
 
         if (isset($this->city)) {
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 [Region::tableName() . '.url_name' => $this->city['url_name']],
                 [City::tableName() . '.url_name' => $this->city['url_name']],
                 [Countries::tableName() . '.url_name' => $this->city['url_name']],
@@ -342,8 +387,10 @@ class PostsSearch extends Posts
         if (isset($this->under_category)) {
             $query->andWhere([UnderCategory::tableName() . '.url_name' => $this->under_category['url_name']]);
 
-        } else if (isset($this->category)) {
-            $query->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
+        } else {
+            if (isset($this->category)) {
+                $query->andWhere([Category::tableName() . '.url_name' => $this->category['url_name']]);
+            }
         }
 
         $query->groupBy([Posts::tableName() . '.id']);
@@ -357,9 +404,12 @@ class PostsSearch extends Posts
 
         $query = Posts::find()
             ->innerJoinWith(['city.region.coutries', 'favoritePosts'])
-            ->with(['workingHours' => function ($query) {
-                $query->orderBy(['day_type' => SORT_ASC]);
-            }, 'lastPhoto'])
+            ->with([
+                'workingHours' => function ($query) {
+                    $query->orderBy(['day_type' => SORT_ASC]);
+                },
+                'lastPhoto',
+            ])
             ->joinWith('categories.category')
             ->andWhere(['<=', Posts::tableName() . '.date', $loadTime])
             ->andWhere([Posts::tableName() . '.status' => Posts::$STATUS['confirm']])
@@ -372,7 +422,7 @@ class PostsSearch extends Posts
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         return $dataProvider;
@@ -384,7 +434,7 @@ class PostsSearch extends Posts
             ->innerJoinWith(['categories.category'])
             ->where([
                 Posts::tableName() . '.status' => Posts::$STATUS['confirm'],
-                Posts::tableName() . '.id' => $ids
+                Posts::tableName() . '.id' => $ids,
             ]);
 
         $dataProvider = new ActiveDataProvider([

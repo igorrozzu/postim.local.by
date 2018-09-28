@@ -30,7 +30,7 @@ class CommentsController extends MainController
             'selfParams' => [
                 'id' => true,
                 'type_entity' => true,
-            ]
+            ],
         ]);
         $dataProviderComments = $commentsSearch->search(Yii::$app->request->queryParams,
             $paginationComments,
@@ -47,7 +47,7 @@ class CommentsController extends MainController
         if (Yii::$app->request->isAjax && !Yii::$app->request->get('_pjax', false)) {
             echo $widget::widget([
                 'dataprovider' => $dataProviderComments,
-                'is_only_comments' => true
+                'is_only_comments' => true,
             ]);
         }
     }
@@ -68,7 +68,7 @@ class CommentsController extends MainController
             'selfParams' => [
                 'id' => true,
                 'type_entity' => true,
-            ]
+            ],
         ]);
         $dataProviderComments = $commentsNewsSearch->search(Yii::$app->request->queryParams,
             $paginationComments,
@@ -82,24 +82,30 @@ class CommentsController extends MainController
         $is_official_user = false;
 
         switch (Yii::$app->request->get('type_entity', 1)) {
-            case Comments::TYPE['reviews']: {
-                $is_official_user = OwnerPost::find()
-                    ->innerJoin(Posts::tableName(), Posts::tableName() . '.id = ' . OwnerPost::tableName() . '.post_id')
-                    ->innerJoin(Reviews::tableName(), Reviews::tableName() . '.post_id = ' . Posts::tableName() . '.id')
-                    ->where(['owner_id' => Yii::$app->user->getId(),
-                        Reviews::tableName() . '.id' => $id
-                    ])->one();
+            case Comments::TYPE['reviews']:
+                {
+                    $is_official_user = OwnerPost::find()
+                        ->innerJoin(Posts::tableName(),
+                            Posts::tableName() . '.id = ' . OwnerPost::tableName() . '.post_id')
+                        ->innerJoin(Reviews::tableName(),
+                            Reviews::tableName() . '.post_id = ' . Posts::tableName() . '.id')
+                        ->where([
+                            'owner_id' => Yii::$app->user->getId(),
+                            Reviews::tableName() . '.id' => $id,
+                        ])->one();
 
-                $view = 'reviews_comments';
-            }
+                    $view = 'reviews_comments';
+                }
                 break;
-            case Comments::TYPE['posts']: {
-                $view = 'post_comments';
-            }
+            case Comments::TYPE['posts']:
+                {
+                    $view = 'post_comments';
+                }
                 break;
-            case Comments::TYPE['discount']: {
-                $view = 'discount_comments';
-            }
+            case Comments::TYPE['discount']:
+                {
+                    $view = 'discount_comments';
+                }
                 break;
         }
 
@@ -108,7 +114,7 @@ class CommentsController extends MainController
                     'dataProviderComments' => $dataProviderComments,
                     'totalComments' => $totalComments,
                     'id' => $id,
-                    'is_official_user' => $is_official_user
+                    'is_official_user' => $is_official_user,
                 ]
             );
         }
@@ -165,7 +171,10 @@ class CommentsController extends MainController
         if (!Yii::$app->user->isGuest) {
             $id = Yii::$app->request->post('id', 0);
             $entity_id = Yii::$app->request->post('entity_id', 0);
-            $comment = Comments::find()->with(['underComments', 'receiverComment'])->where(['entity_id' => $entity_id, 'id' => $id])->one();
+            $comment = Comments::find()->with(['underComments', 'receiverComment'])->where([
+                'entity_id' => $entity_id,
+                'id' => $id,
+            ])->one();
             if (!$comment->underComments) {
                 if (!$comment->receiverComment) {
                     if ($comment && $comment->user_id == Yii::$app->user->id) {
@@ -176,7 +185,8 @@ class CommentsController extends MainController
                     }
                 } else {
                     if ($comment && $comment->user_id == Yii::$app->user->id) {
-                        Comments::updateAll(['status' => Comments::$STATUS_COMMENT_WAS_DELETED_BY], ['id' => $comment->id]);
+                        Comments::updateAll(['status' => Comments::$STATUS_COMMENT_WAS_DELETED_BY],
+                            ['id' => $comment->id]);
                     } else {
                         $response->status = 'error';
                         $response->message = 'У вас нет прав на удаление комментария';
@@ -206,8 +216,10 @@ class CommentsController extends MainController
             $comment = Comments::find()->with('likeUser')->where(['id' => $id])->one();
             if ($comment && $comment->likeUser == null) {
                 if ($comment->updateCounters(['like' => 1])) {
-                    $commentsLike = new CommentsLike(['comment_id' => $comment->id,
-                        'user_id' => Yii::$app->user->id]);
+                    $commentsLike = new CommentsLike([
+                        'comment_id' => $comment->id,
+                        'user_id' => Yii::$app->user->id,
+                    ]);
                     if ($commentsLike->validate() && $commentsLike->save()) {
                         $response->status = 'add';
                     }

@@ -21,6 +21,7 @@ abstract class NotificationHandler extends Behavior
 
         parent::__construct();
     }
+
     public static function sendNotification(int $userId, array $data, int $senderId = null)
     {
         $notification = new Notification([

@@ -1,13 +1,11 @@
-@media (max-width:949px) {
+@media (max-width: 949px) {
 
     .notif-menu .header-menu-title,
-    .left-menu .header-menu-title{
+    .left-menu .header-menu-title {
         display: block;
     }
 
-
-
-    .search_block{
+    .search_block {
         display: flex;
         float: right;
         background-color: transparent;
@@ -16,52 +14,56 @@
         width: auto;
         height: 60px;
     }
-    .search{
+
+    .search {
         display: none;
     }
 
-    .btn-search:after{
+    .btn-search:after {
         width: 18px;
         height: 18px;
         background-position: 482px 830px;
     }
-    .btn-search:hover:after{
+
+    .btn-search:hover:after {
         background-position: 464px 830px;
     }
-    .btn-search{
+
+    .btn-search {
         height: auto;
         display: flex;
         align-items: center;
         padding: 22px 15px;
     }
 
-
     .open-search .logo,
     .open-search .sign_in_btn,
     .open-search .btn_br,
     .open-search .btn-notice,
     .open-search .profile-icon-menu,
-    .open-search .select-city{
+    .open-search .select-city {
         display: none;
     }
 
-    .open-search .btn-search{
+    .open-search .btn-search {
         float: right;
         padding: 3px 3px 3px 3px;
         cursor: pointer;
     }
-    .open-search .btn-search:after{
+
+    .open-search .btn-search:after {
         width: 36px;
         height: 36px;
         background-position: 644px 767px;
     }
-    .open-search .btn-search:hover:after{
+
+    .open-search .btn-search:hover:after {
         background-position: 608px 767px;
     }
 
-    .open-search .search_block{
+    .open-search .search_block {
         display: flex;
-        padding-left:10px;
+        padding-left: 10px;
         float: right;
         margin: 10px 15px 0 0;
         background-color: white;
@@ -69,16 +71,17 @@
         border-radius: 40px;
         width: calc(100% - 33px);
     }
-    .open-search .search{
+
+    .open-search .search {
         display: inherit;
         width: calc(100% - 77px);
     }
 
-    .authorized .search_block{
+    .authorized .search_block {
         width: auto;
     }
 
-    .open-search .authorized .search_block{
+    .open-search .authorized .search_block {
         width: calc(100% - 40px);
     }
 
@@ -98,17 +101,19 @@
     .container-cards-promo,
     .container-promo-statistic,
     .block-flex-white.inside,
-    .std-container{
+    .std-container {
         width: 100%
     }
-    .block-info-for-owner{
+
+    .block-info-for-owner {
         width: calc(100% - 30px);
     }
+
     .block-description-card,
     .container-message,
     .container-post,
     .container-settings,
-    .container-add-place{
+    .container-add-place {
         width: calc(100% - 40px);
     }
 
@@ -116,137 +121,157 @@
     .__first-column .container-message,
     .__first-column .container-post,
     .__first-column .container-settings,
-    .__first-column .container-add-place{
+    .__first-column .container-add-place {
         width: calc(100% - 40px);
     }
 
-    .container-columns{
+    .container-columns {
         justify-content: flex-start;
         flex-direction: column;
     }
 
-    .nav-right-menu{
+    .nav-right-menu {
         width: calc(100% - 40px);
         margin-top: -30px;
     }
 
-    .right-block{
+    .right-block {
         display: none;
     }
-    .block-time-work{
+
+    .block-time-work {
         margin-top: 8px;
     }
 
-    .info-row .block-social-info{
+    .info-row .block-social-info {
         margin-top: 12px;
     }
-    .block-inside.social-info{
+
+    .block-inside.social-info {
         height: 40px;
     }
-    .block-inside.user-editor{
+
+    .block-inside.user-editor {
         margin-top: 5px;
     }
-    .autocomplete-result-search ul li{
+
+    .autocomplete-result-search ul li {
         width: 33.3333333%;
     }
-    .catalog-title{
+
+    .catalog-title {
         height: 60px;
     }
-    .catalog-title-name{
+
+    .catalog-title-name {
         margin-left: 22px;
     }
-    .catalog-list{
-        margin-left:0px;
+
+    .catalog-list {
+        margin-left: 0px;
         padding-left: 22px;
     }
-    .menu-info-cards{
+
+    .menu-info-cards {
         justify-content: space-between;
     }
-    .block-content-between .text{
+
+    .block-content-between .text {
         width: 100%;
         flex-wrap: wrap;
     }
 
-    .left-block-f{
+    .left-block-f {
         flex-direction: column;
     }
-    .block-btns-textarea-review{
+
+    .block-btns-textarea-review {
         justify-content: flex-start;
         flex-direction: column;
     }
-    .btn-rule{
+
+    .btn-rule {
         margin-left: 0px;
         margin-top: 20px;
     }
-    .container-discount-photos{
+
+    .container-discount-photos {
         width: calc(100% - 40px);
         margin-right: 0px;
     }
-    .container-discount{
+
+    .container-discount {
         flex-direction: column;
     }
-    .container-discount-info{
+
+    .container-discount-info {
         margin-top: 30px;
         width: calc(100% - 40px);
         padding-bottom: 20px;
     }
-    .container-bottom-btn{
+
+    .container-bottom-btn {
         margin-top: 20px;
     }
+
     .container-discount-info .container-bottom-btn {
         margin-top: 0;
     }
+
     .discount-btns-container {
         width: auto;
         position: static;
     }
+
     .discount-post-block {
         width: auto;
     }
-
 
     /*Cтили toastMessage*/
     .toast-container {
         width: 100%;
     }
+
     .toast-item p {
         margin: 0 15px;
     }
+
     .toast-position-top-right {
         position: fixed;
         top: 60px;
         left: 0;
     }
+
     /*end Cтили toastMessage*/
-
-    .__first-column{
-        width: 100%;
-    }
-    .__second-column{
+    .__first-column {
         width: 100%;
     }
 
-    .--top-50px{
+    .__second-column {
+        width: 100%;
+    }
+
+    .--top-50px {
         margin-top: -30px;
     }
 
-    .--top-30px{
+    .--top-30px {
         margin-top: 0px;
     }
 
-    .--top-20px{
+    .--top-20px {
         margin-top: 0px;
     }
 
-    .--top-30px-30px{
+    .--top-30px-30px {
         margin-top: 30px;
     }
 
-    .--100px-30px{
+    .--100px-30px {
         margin-top: 30px;
     }
 
-    .baner{
+    .baner {
         display: flex;
         justify-content: center;
     }
@@ -256,11 +281,14 @@
         width: auto;
         margin-top: 0;
     }
+
     .recommended-block .card-block {
-        width: calc((100% - 20px)/2 );
+        width: calc((100% - 20px) / 2);
     }
+
     .recommended-block .card-block:first-child {
         margin-right: 20px;
     }
+
     /*end recommended-block*/
 }

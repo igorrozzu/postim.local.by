@@ -11,7 +11,7 @@ class NewReview extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_INSERT => 'run'
+            ActiveRecord::EVENT_AFTER_INSERT => 'run',
         ];
     }
 

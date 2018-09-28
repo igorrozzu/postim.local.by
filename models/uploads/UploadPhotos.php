@@ -45,7 +45,7 @@ class UploadPhotos extends Model
                 }
                 $rows = [];
                 foreach ($this->files as $file) {
-                    $photoName = Yii::$app->security->generateRandomString(8).time().'.png';
+                    $photoName = Yii::$app->security->generateRandomString(8) . time() . '.png';
 
                     if ($file->saveAs($full_path . $photoName)) {
                         $rows[] = [
@@ -64,8 +64,9 @@ class UploadPhotos extends Model
         }
     }
 
-    public function getSavedFiles(){
-    	return $this->savedFiles;
-	}
+    public function getSavedFiles()
+    {
+        return $this->savedFiles;
+    }
 
 }

@@ -11,7 +11,7 @@ $params = [
     'mail.askEmail' => 'ask@postim.by',
     'site.hostName' => 'https://postim.local.by',
 
-    'user.loginDuration' => 3600*24*30,
+    'user.loginDuration' => 3600 * 24 * 30,
     'user.passwordResetTokenExpire' => 3600,
     'user.photoName' => 'photo.jpg',
     'user.lastVisitUpdatePeriod' => 1800,
@@ -28,11 +28,11 @@ $params = [
     'mainPage.newsCount' => 4,
 ];
 
-if(YII_ENV == 'prod'){
+if (YII_ENV == 'prod') {
     $params['site.hostName'] = 'https://postim.by';
 }
 
-if(YII_ENV == 'testing'){
+if (YII_ENV == 'testing') {
     $params['site.hostName'] = 'https://postim.testing.by';
 }
 

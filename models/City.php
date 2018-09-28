@@ -48,8 +48,9 @@ class City extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getRegion(){
-        return $this->hasOne(Region::className(),['id'=>'region_id']);
+    public function getRegion()
+    {
+        return $this->hasOne(Region::className(), ['id' => 'region_id']);
     }
 
 
@@ -58,13 +59,13 @@ class City extends \yii\db\ActiveRecord
      */
     public function getUsers()
     {
-        return $this->hasMany(User::className(), ['city_id' =>'id']);
+        return $this->hasMany(User::className(), ['city_id' => 'id']);
     }
 
     public static function removeCityById(array &$cities, int $id)
     {
         foreach ($cities as $key => &$city) {
-            if($city['id'] === $id) {
+            if ($city['id'] === $id) {
                 $name = $city['name'];
                 unset($cities[$key]);
                 return $name;

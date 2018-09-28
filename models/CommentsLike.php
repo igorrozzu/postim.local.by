@@ -10,7 +10,6 @@ use Yii;
  * @property integer $id
  * @property integer $user_id
  * @property integer $comment_id
-
  */
 class CommentsLike extends \yii\db\ActiveRecord
 {
@@ -30,8 +29,20 @@ class CommentsLike extends \yii\db\ActiveRecord
         return [
             [['user_id', 'comment_id'], 'required'],
             [['user_id', 'comment_id'], 'integer'],
-            [['comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comments::className(), 'targetAttribute' => ['comment_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['comment_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Comments::className(),
+                'targetAttribute' => ['comment_id' => 'id'],
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 

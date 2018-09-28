@@ -1,5 +1,7 @@
 <?php
-namespace  app\models\sphinx;
+
+namespace app\models\sphinx;
+
 use app\models\Posts;
 use yii\sphinx\ActiveRecord;
 

@@ -48,8 +48,20 @@ class Gallery extends \yii\db\ActiveRecord
             [['post_id', 'user_id', 'link', 'user_status'], 'required'],
             [['post_id', 'user_id', 'user_status', 'status'], 'integer'],
             [['link'], 'string'],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['post_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Posts::className(),
+                'targetAttribute' => ['post_id' => 'id'],
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 
@@ -97,7 +109,8 @@ class Gallery extends \yii\db\ActiveRecord
         return self::PHOTO_FOLDER . $this->post_id . DIRECTORY_SEPARATOR . $this->link;
     }
 
-    public function getLink(){
+    public function getLink()
+    {
         $link = "/{$this->post->url_name}-p{$this->post->id}?photo_id={$this->id}-{$this->status}";
         return $link;
     }
@@ -110,10 +123,12 @@ class Gallery extends \yii\db\ActiveRecord
     public static function getProfilePhotoCount(int $userId): int
     {
         return static::find()
-			->joinWith(['post'=>function($query){
-				$query->select('status, id, ');
-			}])
-			->where(['tbl_gallery.user_id' => $userId,'tbl_posts.status'=>1])
+            ->joinWith([
+                'post' => function ($query) {
+                    $query->select('status, id, ');
+                },
+            ])
+            ->where(['tbl_gallery.user_id' => $userId, 'tbl_posts.status' => 1])
             ->count();
     }
 
@@ -145,10 +160,12 @@ class Gallery extends \yii\db\ActiveRecord
     public static function getProfilePreviewPhoto(int $userId, int $limit): array
     {
         return static::find()
-			->joinWith(['post'=>function($query){
-				$query->select('status, id, ');
-			}])
-            ->where(['tbl_gallery.user_id' => $userId,'tbl_posts.status'=>1])
+            ->joinWith([
+                'post' => function ($query) {
+                    $query->select('status, id, ');
+                },
+            ])
+            ->where(['tbl_gallery.user_id' => $userId, 'tbl_posts.status' => 1])
             ->orderBy(['id' => SORT_DESC])
             ->limit($limit)
             ->all();
@@ -158,22 +175,23 @@ class Gallery extends \yii\db\ActiveRecord
     public function delete()
     {
         $review_id = null;
-        if($reviewsGallery = ReviewsGallery::find()->where(['gallery_id'=>$this->id])->one()){
+        if ($reviewsGallery = ReviewsGallery::find()->where(['gallery_id' => $this->id])->one()) {
             $review_id = $reviewsGallery->review_id;
         }
 
         $result = parent::delete();
 
-        if($result && $review_id){
+        if ($result && $review_id) {
             $this->reCalcPhotoForReviews($review_id);
         }
 
         return $result;
     }
 
-    public function reCalcPhotoForReviews($id){
-        $reviews = Reviews::find()->where(['id'=>$id])->one();
-        if($reviews){
+    public function reCalcPhotoForReviews($id)
+    {
+        $reviews = Reviews::find()->where(['id' => $id])->one();
+        if ($reviews) {
             $reviews->reCalcCountPhotos();
         }
     }

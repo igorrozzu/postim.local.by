@@ -1,7 +1,8 @@
 var Keyboard;
 
-Keyboard = (function() {
-	var OPEN_KEYBOARD_CLASS, blurAction, blurTimeout, focusAction, getRandomId, getUniqueId, hasFocusedInput, initWindowSize, keyboardClose, keyboardOpen, setUniqueId;
+Keyboard = (function () {
+	var OPEN_KEYBOARD_CLASS, blurAction, blurTimeout, focusAction, getRandomId, getUniqueId,
+			hasFocusedInput, initWindowSize, keyboardClose, keyboardOpen, setUniqueId;
 
 	OPEN_KEYBOARD_CLASS = 'keyboard-open';
 
@@ -31,7 +32,7 @@ Keyboard = (function() {
 		 * I'm using timeout case if page is loaded and keyboard is still open it will capture the size of small window
 		 * Keyboard will be opened if page was reloaded while input element was focused
 		 */
-		setTimeout(function() {
+		setTimeout(function () {
 			initWindowSize.height = window.innerHeight;
 			initWindowSize.width = window.innerWidth;
 			return true;
@@ -39,7 +40,7 @@ Keyboard = (function() {
 		this.bindListeners();
 	}
 
-	Keyboard.prototype.bindListeners = function() {
+	Keyboard.prototype.bindListeners = function () {
 		this.windowResizeListener();
 		return this.focusListeners();
 	};
@@ -49,8 +50,8 @@ Keyboard = (function() {
 	 * Bind listener to window resizing
 	 */
 
-	Keyboard.prototype.windowResizeListener = function() {
-		return window.addEventListener('resize', function() {
+	Keyboard.prototype.windowResizeListener = function () {
+		return window.addEventListener('resize', function () {
 			var bodyTag;
 			bodyTag = document.getElementsByTagName('body')[0];
 			if (initWindowSize.height > window.innerHeight) {
@@ -69,27 +70,27 @@ Keyboard = (function() {
 	 * Binding focus and blur listeners to input and textarea elements
 	 */
 
-	Keyboard.prototype.focusListeners = function() {
+	Keyboard.prototype.focusListeners = function () {
 		var input, inputs, textarea, textareas, _i, _j, _len, _len1;
 		inputs = document.getElementsByTagName('input');
 		textareas = document.getElementsByTagName('textarea');
 		for (_i = 0, _len = inputs.length; _i < _len; _i++) {
 			input = inputs[_i];
 			setUniqueId(input);
-			input.addEventListener('focus', function() {
+			input.addEventListener('focus', function () {
 				return focusAction.apply(this);
 			});
-			input.addEventListener('blur', function() {
+			input.addEventListener('blur', function () {
 				return blurAction.apply(this);
 			});
 		}
 		for (_j = 0, _len1 = textareas.length; _j < _len1; _j++) {
 			textarea = textareas[_j];
 			setUniqueId(textarea);
-			textarea.addEventListener('focus', function() {
+			textarea.addEventListener('focus', function () {
 				return focusAction.apply(this);
 			});
-			textarea.addEventListener('blur', function() {
+			textarea.addEventListener('blur', function () {
 				return blurAction.apply(this);
 			});
 		}
@@ -101,7 +102,7 @@ Keyboard = (function() {
 	 * This function will fired when input or textarea will get focus
 	 */
 
-	focusAction = function() {
+	focusAction = function () {
 		var bodyTag;
 		bodyTag = document.getElementsByTagName('body')[0];
 		if (bodyTag.className.indexOf(OPEN_KEYBOARD_CLASS) === -1) {
@@ -126,10 +127,10 @@ Keyboard = (function() {
 	 * This function will fired when input or textarea will lose it focus
 	 */
 
-	blurAction = function() {
+	blurAction = function () {
 		var thisInput;
 		thisInput = this;
-		return blurTimeout = setTimeout(function() {
+		return blurTimeout = setTimeout(function () {
 			if (hasFocusedInput === getUniqueId(thisInput)) {
 				keyboardClose();
 				hasFocusedInput = false;
@@ -143,7 +144,7 @@ Keyboard = (function() {
 	 * This function will fire when keyboard is opening
 	 */
 
-	keyboardOpen = function() {
+	keyboardOpen = function () {
 		return true;
 	};
 
@@ -152,7 +153,7 @@ Keyboard = (function() {
 	 * This function will fire when keyboard is closing
 	 */
 
-	keyboardClose = function() {
+	keyboardClose = function () {
 
 		var bodyTag;
 		bodyTag = document.getElementsByTagName('body')[0];
@@ -164,7 +165,7 @@ Keyboard = (function() {
 	 * Adding unique id to the given element
 	 */
 
-	setUniqueId = function(elm) {
+	setUniqueId = function (elm) {
 		return elm.setAttribute('data-unique-id', getRandomId());
 	};
 
@@ -173,7 +174,7 @@ Keyboard = (function() {
 	 * Return unique id of the given element
 	 */
 
-	getUniqueId = function(elm) {
+	getUniqueId = function (elm) {
 		return elm.getAttribute('data-unique-id');
 	};
 
@@ -184,7 +185,7 @@ Keyboard = (function() {
 	 * (delay I need, case keyboard is opening and closing with animation)
 	 */
 
-	getRandomId = function() {
+	getRandomId = function () {
 		return Math.floor((Math.random() * 9999999) + 1);
 	};
 
@@ -192,6 +193,6 @@ Keyboard = (function() {
 
 })();
 
-window.onload = function() {
+window.onload = function () {
 	return new Keyboard;
 };

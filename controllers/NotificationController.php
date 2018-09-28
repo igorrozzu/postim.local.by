@@ -23,7 +23,7 @@ class NotificationController extends AuthController
         );
         $json = new \stdClass();
         $json->rendering = $this->renderPartial('index', [
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
         ]);
         return $this->asJson($json);
     }

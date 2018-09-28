@@ -47,7 +47,7 @@ class Discounts extends \yii\db\ActiveRecord
 {
     const TYPE = [
         'promoCode' => 1,
-        'certificate' => 2
+        'certificate' => 2,
     ];
     const STATUS = [
         'inactive' => 1,
@@ -76,25 +76,79 @@ class Discounts extends \yii\db\ActiveRecord
     {
         return [
             [['description', 'key_word', 'title', 'promocode'], 'trim'],
-            [['post_id', 'header', 'number_purchases', 'total_view_id', 'status', 'date_start',
-                'date_finish', 'type', 'conditions', 'count_favorites', 'url_name', 'user_id', 'count_orders',
-                'requisites'], 'required'],
-            ['cover', 'required',
-                'message' => 'Необходимо добавить хотя бы одну фотографию в галерею.'],
-            [['post_id', 'total_view_id', 'status', 'date_start',
-                'date_finish', 'type', 'count_favorites', 'user_id', 'count_orders'], 'integer'],
-            [['data', 'header', 'cover', 'conditions', 'title', 'description', 'key_word',
-                'url_name', 'promocode', 'requisites'], 'string'],
+            [
+                [
+                    'post_id',
+                    'header',
+                    'number_purchases',
+                    'total_view_id',
+                    'status',
+                    'date_start',
+                    'date_finish',
+                    'type',
+                    'conditions',
+                    'count_favorites',
+                    'url_name',
+                    'user_id',
+                    'count_orders',
+                    'requisites',
+                ],
+                'required',
+            ],
+            [
+                'cover',
+                'required',
+                'message' => 'Необходимо добавить хотя бы одну фотографию в галерею.',
+            ],
+            [
+                [
+                    'post_id',
+                    'total_view_id',
+                    'status',
+                    'date_start',
+                    'date_finish',
+                    'type',
+                    'count_favorites',
+                    'user_id',
+                    'count_orders',
+                ],
+                'integer',
+            ],
+            [
+                [
+                    'data',
+                    'header',
+                    'cover',
+                    'conditions',
+                    'title',
+                    'description',
+                    'key_word',
+                    'url_name',
+                    'promocode',
+                    'requisites',
+                ],
+                'string',
+            ],
             [['price', 'price_with_discount'], 'number', 'min' => 0],
             ['discount', 'number', 'min' => 0, 'max' => 100],
             ['number_purchases', 'integer', 'min' => 1],
             ['date_finish', 'validateDateFinish'],
             ['type', 'in', 'range' => array_values(self::TYPE)],
             ['status', 'in', 'range' => array_values(self::STATUS)],
-            [['post_id'], 'exist', 'skipOnError' => true,
-                'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
-            [['total_view_id'], 'exist', 'skipOnError' => true,
-                'targetClass' => TotalView::className(), 'targetAttribute' => ['total_view_id' => 'id']],
+            [
+                ['post_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Posts::className(),
+                'targetAttribute' => ['post_id' => 'id'],
+            ],
+            [
+                ['total_view_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => TotalView::className(),
+                'targetAttribute' => ['total_view_id' => 'id'],
+            ],
             ['number_purchases', 'validateNumberPurchases'],
             [['requisites'], 'safe'],
         ];
@@ -224,8 +278,10 @@ class Discounts extends \yii\db\ActiveRecord
             ->onCondition([FavoritesDiscount::tableName() . '.user_id' => Yii::$app->user->id]);
     }
 
-    public function getTotalComments(){
-        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['discount']])->count();
+    public function getTotalComments()
+    {
+        return $this->hasMany(Comments::className(),
+            ['entity_id' => 'id'])->where(['type_entity' => Comments::TYPE['discount']])->count();
     }
 
 
@@ -248,11 +304,13 @@ class Discounts extends \yii\db\ActiveRecord
 
     public function getNameType(): string
     {
-        switch ($this->type)
-        {
-            case self::TYPE['promoCode']: return 'Промокод';
-            case self::TYPE['certificate']: return 'Сертификат';
-            default: return '';
+        switch ($this->type) {
+            case self::TYPE['promoCode']:
+                return 'Промокод';
+            case self::TYPE['certificate']:
+                return 'Сертификат';
+            default:
+                return '';
         }
     }
 
@@ -267,7 +325,8 @@ class Discounts extends \yii\db\ActiveRecord
                 $result = true;
             }
 
-        } catch (Exception $e){}
+        } catch (Exception $e) {
+        }
 
         if ($result) {
             $transaction->commit();
@@ -294,7 +353,7 @@ class Discounts extends \yii\db\ActiveRecord
                     $this->cover = $link;
                     $hasCover = true;
                 }
-               $photos[] = $arr;
+                $photos[] = $arr;
             }
             $this->photos = $photos;
 
@@ -366,7 +425,7 @@ class Discounts extends \yii\db\ActiveRecord
                             'discount_id',
                             'link',
                             'status',
-                            'source'
+                            'source',
                         ], $rows)
                         ->execute();
 
@@ -388,7 +447,7 @@ class Discounts extends \yii\db\ActiveRecord
                 ->where(['discount_id' => $this->id])
                 ->all();
 
-            foreach ($discountPhotos as $discountPhoto){
+            foreach ($discountPhotos as $discountPhoto) {
                 $isset = false;
 
                 if ($this->photos && is_array($this->photos)) {
@@ -422,7 +481,7 @@ class Discounts extends \yii\db\ActiveRecord
 
     public function calculateEconomy()
     {
-        if (isset($this->price) && isset($this->price_with_discount) ) {
+        if (isset($this->price) && isset($this->price_with_discount)) {
             $economy = $this->price - $this->price_with_discount;
 
             if ($economy > 0) {

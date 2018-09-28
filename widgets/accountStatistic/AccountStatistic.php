@@ -14,7 +14,7 @@ class AccountStatistic extends Widget
     {
         return $this->render('index', [
             'dataProvider' => $this->dataProvider,
-            'settings' => $this->settings
+            'settings' => $this->settings,
         ]);
     }
 }

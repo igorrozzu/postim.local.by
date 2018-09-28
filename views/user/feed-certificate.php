@@ -1,7 +1,9 @@
 <?php
+
 use app\components\cardsPromoWidget\CardsPromoWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+
 ?>
 <div class="margin-top60"></div>
 <div class="block-content">
@@ -24,18 +26,18 @@ Pjax::begin([
 <div class="block-flex-white">
     <div class="block-content">
         <div class="menu-btns-card feeds-btn-bar">
-            <a href="<?=Url::to(['user/sertifikaty'])?>">
-                <div class="btn2-menu <?=($status === 'active') ? 'active' : ''?>">
+            <a href="<?= Url::to(['user/sertifikaty']) ?>">
+                <div class="btn2-menu <?= ($status === 'active') ? 'active' : '' ?>">
                     Действующие
                 </div>
             </a>
-            <a href="<?=Url::to(['user/sertifikaty', 'status' => 'unactive', 'type' => 'certificate'])?>">
-                <div class="btn2-menu <?=($status === 'unactive') ? 'active' : ''?>">
+            <a href="<?= Url::to(['user/sertifikaty', 'status' => 'unactive', 'type' => 'certificate']) ?>">
+                <div class="btn2-menu <?= ($status === 'unactive') ? 'active' : '' ?>">
                     Использованые
                 </div>
             </a>
-            <a href="<?=Url::to(['user/sertifikaty', 'status' => 'all', 'type' => 'certificate'])?>" >
-                <div class="btn2-menu <?=($status === 'all') ? 'active' : ''?>">
+            <a href="<?= Url::to(['user/sertifikaty', 'status' => 'all', 'type' => 'certificate']) ?>">
+                <div class="btn2-menu <?= ($status === 'all') ? 'active' : '' ?>">
                     Все
                 </div>
             </a>
@@ -45,16 +47,16 @@ Pjax::begin([
 
 <div class="block-content">
     <div class="container-cards-promo">
-    <?= CardsPromoWidget::widget([
-        'dataProvider' => $dataProvider,
-        'settings' => [
-            'show-more-btn' => true,
-            'replace-container-id' => 'feed-certificate',
-            'load-time' => $loadTime,
-            'show-more-btn-text' => 'Показать больше сертификатов',
-            'not-found-text' => 'Вы пока не купили ни одного сертификата.',
-        ]
-    ]);?>
+        <?= CardsPromoWidget::widget([
+            'dataProvider' => $dataProvider,
+            'settings' => [
+                'show-more-btn' => true,
+                'replace-container-id' => 'feed-certificate',
+                'load-time' => $loadTime,
+                'show-more-btn-text' => 'Показать больше сертификатов',
+                'not-found-text' => 'Вы пока не купили ни одного сертификата.',
+            ],
+        ]); ?>
     </div>
 </div>
 <?php

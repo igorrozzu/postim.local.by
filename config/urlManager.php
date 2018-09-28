@@ -17,8 +17,8 @@ $manager = [
         'print-order' => 'discount/print-order',
         'promocody' => 'user/get-promocodes',
 
-        '<url:.+>-p<id:\d+>/moderation'=>'post/post-moderation',//модерируемая информация о месте
-        '<url:.+>-p<id:\d+>'=>'post/index',//информация о месте
+        '<url:.+>-p<id:\d+>/moderation' => 'post/post-moderation',//модерируемая информация о месте
+        '<url:.+>-p<id:\d+>' => 'post/index',//информация о месте
         'id<id:\d+>' => 'user/index',
         [
             'class' => 'app\components\customUrlManager\CityAndCategoryUrlRule',//лента категории
@@ -32,16 +32,16 @@ $manager = [
         [
             'class' => 'app\components\customUrlManager\DiscountsUrlRule', //лента скидок
         ],
-        '<url:.+>-n<id:\d+>'=>'news/news',//статья новости
-        '<url:^add$>'=>'post/add',
-        '<url:^edit>/<id:\d+>'=>'post/edit',
+        '<url:.+>-n<id:\d+>' => 'news/news',//статья новости
+        '<url:^add$>' => 'post/add',
+        '<url:^edit>/<id:\d+>' => 'post/edit',
         'search/<text:.+>' => 'main-search/index',
-        'feedback'=>'site/feedback',
-        'away'=>'site/away',
+        'feedback' => 'site/feedback',
+        'away' => 'site/away',
         [
             'class' => 'app\components\customUrlManager\OtherPageUrlRule', //лента отзывов
         ],
-        'business-account' => 'lading/sale-of-a-business-account'
+        'business-account' => 'lading/sale-of-a-business-account',
     ],
 ];
 

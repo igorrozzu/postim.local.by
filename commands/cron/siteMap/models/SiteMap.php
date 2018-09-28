@@ -4,7 +4,8 @@ namespace app\commands\cron\siteMap\models;
 
 use Yii;
 
-class SiteMap {
+class SiteMap
+{
 
 
     const ALWAYS = 'always';
@@ -19,54 +20,54 @@ class SiteMap {
     protected $sections = [];
 
 
-
     /**
      * @param $url
      * @param string $changeFreq
      * @param float $priority
      * @param int $lastmod
      */
-    public function addUrl($url, $changeFreq=self::DAILY, $priority=0.5, $lastMod=0)
+    public function addUrl($url, $changeFreq = self::DAILY, $priority = 0.5, $lastMod = 0)
     {
-        $host =  Yii::$app->params['site.hostName'];
-        $item = array(
+        $host = Yii::$app->params['site.hostName'];
+        $item = [
             'loc' => $host . $url,
             'changefreq' => $changeFreq,
-            'priority' => $priority
-        );
-        if ($lastMod)
+            'priority' => $priority,
+        ];
+        if ($lastMod) {
             $item['lastmod'] = $this->dateToW3C($lastMod);
+        }
 
         $this->items[] = $item;
     }
 
 
-    public function addModels($models, $changeFreq=self::DAILY, $priority=0.5)
+    public function addModels($models, $changeFreq = self::DAILY, $priority = 0.5)
     {
-        $host =  Yii::$app->params['site.hostName'];
-        foreach ($models as $model)
-        {
-            $item = array(
+        $host = Yii::$app->params['site.hostName'];
+        foreach ($models as $model) {
+            $item = [
                 'loc' => $host . $model->getUrl(),
                 'changefreq' => $changeFreq,
-                'priority' => $priority
-            );
+                'priority' => $priority,
+            ];
 
-            if ($model->hasAttribute('date'))
+            if ($model->hasAttribute('date')) {
                 $item['lastmod'] = $this->dateToW3C($model->date);
+            }
 
 
             $this->items[] = $item;
 
-            if($model->hasMethod('getUrls')){
+            if ($model->hasMethod('getUrls')) {
                 $urls = $model->getUrls();
-                foreach ($urls as $url){
+                foreach ($urls as $url) {
 
-                    $item = array(
+                    $item = [
                         'loc' => $host . $url,
                         'changefreq' => $changeFreq,
-                        'priority' => $priority
-                    );
+                        'priority' => $priority,
+                    ];
 
                     $this->items[] = $item;
                 }
@@ -74,11 +75,12 @@ class SiteMap {
         }
     }
 
-    public function addSections ($items){
-        foreach ($items as $item)
-        {
-            if (isset($item['lastmod']))
+    public function addSections($items)
+    {
+        foreach ($items as $item) {
+            if (isset($item['lastmod'])) {
                 $item['lastmod'] = $this->dateToW3C($item['lastmod']);
+            }
 
             $this->sections[] = $item;
         }
@@ -92,16 +94,15 @@ class SiteMap {
     {
         $dom = new \DOMDocument('1.0', 'utf-8');
         $urlset = $dom->createElement('sitemapindex');
-        $urlset->setAttribute('xmlns','http://www.sitemaps.org/schemas/sitemap/0.9');
-        $urlset->setAttribute('xmlns:xsi','http://www.w3.org/2001/XMLSchema-instance');
-        $urlset->setAttribute('xsi:schemaLocation','http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd');
+        $urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        $urlset->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+        $urlset->setAttribute('xsi:schemaLocation',
+            'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd');
 
-        foreach($this->sections as $item)
-        {
+        foreach ($this->sections as $item) {
             $url = $dom->createElement('sitemap');
 
-            foreach ($item as $key=>$value)
-            {
+            foreach ($item as $key => $value) {
                 $elem = $dom->createElement($key);
                 $elem->appendChild($dom->createTextNode($value));
                 $url->appendChild($elem);
@@ -115,7 +116,6 @@ class SiteMap {
     }
 
 
-
     /**
      * @return string XML code
      */
@@ -123,18 +123,17 @@ class SiteMap {
     {
         $dom = new \DOMDocument('1.0', 'utf-8');
         $urlset = $dom->createElement('urlset');
-        $urlset->setAttribute('xmlns','http://www.sitemaps.org/schemas/sitemap/0.9');
-        $urlset->setAttribute('xmlns:xsi','http://www.w3.org/2001/XMLSchema-instance');
-        $urlset->setAttribute('xmlns:xhtml','http://www.w3.org/1999/xhtml');
-        $urlset->setAttribute('xmlns:image','http://www.google.com/schemas/sitemap-image/1.1');
-        $urlset->setAttribute('xsi:schemaLocation','http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
+        $urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+        $urlset->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+        $urlset->setAttribute('xmlns:xhtml', 'http://www.w3.org/1999/xhtml');
+        $urlset->setAttribute('xmlns:image', 'http://www.google.com/schemas/sitemap-image/1.1');
+        $urlset->setAttribute('xsi:schemaLocation',
+            'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
 
-        foreach($this->items as $item)
-        {
+        foreach ($this->items as $item) {
             $url = $dom->createElement('url');
 
-            foreach ($item as $key=>$value)
-            {
+            foreach ($item as $key => $value) {
                 $this->renderBlock($key, $value, $url, $dom);
             }
 
@@ -145,18 +144,19 @@ class SiteMap {
         return $dom->saveXML();
     }
 
-    private function renderBlock($key, $value, \DOMElement $parent, \DOMDocument $dom){
+    private function renderBlock($key, $value, \DOMElement $parent, \DOMDocument $dom)
+    {
 
-        if(!is_array($value)){
+        if (!is_array($value)) {
             $elem = $dom->createElement($key);
             $elem->appendChild($dom->createTextNode($value));
             $parent->appendChild($elem);
-        }else{
+        } else {
 
-            foreach ($value as $item){
+            foreach ($value as $item) {
                 $block = $dom->createElement($key);
 
-                foreach ($item as $keyItem => $valueItem){
+                foreach ($item as $keyItem => $valueItem) {
                     $this->renderBlock($keyItem, $valueItem, $block, $dom);
                 }
 
@@ -169,13 +169,13 @@ class SiteMap {
     }
 
 
-
     protected function dateToW3C($date)
     {
-        if (is_int($date))
+        if (is_int($date)) {
             return date(DATE_W3C, $date);
-        else
+        } else {
             return date(DATE_W3C, strtotime($date));
+        }
     }
 
 

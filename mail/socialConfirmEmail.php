@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 
 $confirmLink = Yii::$app->urlManager->createAbsoluteUrl([
@@ -19,7 +20,7 @@ $confirmLink = Yii::$app->urlManager->createAbsoluteUrl([
         <span style="display: block; margin: 0px 20px 19px 20px;">
             Нажмите на кнопку, чтобы подтвердить ваш email и завершить регистрацию:
         </span>
-        <a href="<?=$confirmLink?>" style="text-decoration: none; display: block;margin:0px 0px 2px 20px; height: 42px;
+        <a href="<?= $confirmLink ?>" style="text-decoration: none; display: block;margin:0px 0px 2px 20px; height: 42px;
 width: 270px;" target="_blank">
             <span style="background-color: #CF4D43;
 -webkit-text-size-adjust:none;

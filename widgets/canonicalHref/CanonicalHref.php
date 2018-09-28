@@ -11,12 +11,11 @@ class CanonicalHref extends Widget
 
     public function run()
     {
-        $currentUrl = Url::to('',true);
+        $currentUrl = Url::to('', true);
         $parseUrl = parse_url($currentUrl);
         $canonicalUrl = false;
 
-        if($parseUrl['query'] ?? false)
-        {
+        if ($parseUrl['query'] ?? false) {
             $canonicalUrl = "{$parseUrl['scheme']}://{$parseUrl['host']}{$parseUrl['path']}";
         }
 

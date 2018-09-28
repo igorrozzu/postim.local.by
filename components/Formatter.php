@@ -12,9 +12,9 @@ class Formatter extends \yii\i18n\Formatter
     public function printDate($date)
     {
         $now = mktime(0, 0, 0);
-        if($date >= $now) {
+        if ($date >= $now) {
             return 'Сегодня в ' . $this->asDate($date, 'HH:mm');
-        } elseif($date >= $now - 3600 * 12 && $date < $now) {
+        } elseif ($date >= $now - 3600 * 12 && $date < $now) {
             return 'Вчера в ' . $this->asDate($date, 'HH:mm');
         } else {
             return $this->asDate($date, 'dd MMMM в HH:mm');
@@ -36,7 +36,7 @@ class Formatter extends \yii\i18n\Formatter
             $valueDateTime = (new DateTime())->setTimestamp(abs($value));
             $interval = $valueDateTime->diff($zeroDateTime);
         } elseif (strpos($value, 'P-') === 0) {
-            $interval = new DateInterval('P'.substr($value, 2));
+            $interval = new DateInterval('P' . substr($value, 2));
             $isNegative = true;
         } else {
             $interval = new DateInterval($value);
@@ -48,19 +48,23 @@ class Formatter extends \yii\i18n\Formatter
         }
 
         if ($interval->y > 0) {
-            return Yii::t('yii', '{delta, plural, =1{1 year} other{# years}}', ['delta' => $interval->y], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{1 year} other{# years}}', ['delta' => $interval->y],
+                $this->locale);
         }
         if ($interval->m > 0) {
-            return Yii::t('yii', '{delta, plural, =1{1 month} other{# months}}', ['delta' => $interval->m], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{1 month} other{# months}}', ['delta' => $interval->m],
+                $this->locale);
         }
         if ($interval->d > 0) {
             return Yii::t('yii', '{delta, plural, =1{1 day} other{# days}}', ['delta' => $interval->d], $this->locale);
         }
         if ($interval->h > 0) {
-            return Yii::t('yii', '{delta, plural, =1{1 hour} other{# hours}}', ['delta' => $interval->h], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{1 hour} other{# hours}}', ['delta' => $interval->h],
+                $this->locale);
         }
         if ($interval->i > 0) {
-            return Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i],
+                $this->locale);
         }
 
         return null;
@@ -69,7 +73,7 @@ class Formatter extends \yii\i18n\Formatter
     public function asHostName(string $url)
     {
         $text = Helper::getDomainNameByUrl($url);
-        $position = strpos($text, '/' );
+        $position = strpos($text, '/');
 
         if ($position !== false) {
             return substr($text, 0, $position);
@@ -87,14 +91,72 @@ class Formatter extends \yii\i18n\Formatter
     public function correctWrongKeyword(string $text, bool $en2ru = true)
     {
         $ruKeyword = [
-            'й','ц','у','к','е','н','г','ш','щ','з','х','ъ',
-            'ф','ы','в','а','п','р','о','л','д','ж','э',
-            'я','ч','с','м','и','т','ь','б','ю'
+            'й',
+            'ц',
+            'у',
+            'к',
+            'е',
+            'н',
+            'г',
+            'ш',
+            'щ',
+            'з',
+            'х',
+            'ъ',
+            'ф',
+            'ы',
+            'в',
+            'а',
+            'п',
+            'р',
+            'о',
+            'л',
+            'д',
+            'ж',
+            'э',
+            'я',
+            'ч',
+            'с',
+            'м',
+            'и',
+            'т',
+            'ь',
+            'б',
+            'ю',
         ];
         $enKeyword = [
-            'q','w','e','r','t','y','u','i','o','p','[',']',
-            'a','s','d','f','g','h','j','k','l',';','\'',
-            'z','x','c','v','b','n','m',',','.'
+            'q',
+            'w',
+            'e',
+            'r',
+            't',
+            'y',
+            'u',
+            'i',
+            'o',
+            'p',
+            '[',
+            ']',
+            'a',
+            's',
+            'd',
+            'f',
+            'g',
+            'h',
+            'j',
+            'k',
+            'l',
+            ';',
+            '\'',
+            'z',
+            'x',
+            'c',
+            'v',
+            'b',
+            'n',
+            'm',
+            ',',
+            '.',
         ];
 
         $result = $en2ru ? str_replace($enKeyword, $ruKeyword, $text) :
@@ -118,13 +180,16 @@ class Formatter extends \yii\i18n\Formatter
         } else {
             $i = $number % 10;
             switch ($i) {
-                case (1): $ending = $ending_arr[0];
+                case (1):
+                    $ending = $ending_arr[0];
                     break;
                 case (2):
                 case (3):
-                case (4): $ending = $ending_arr[1];
+                case (4):
+                    $ending = $ending_arr[1];
                     break;
-                default: $ending = $ending_arr[2];
+                default:
+                    $ending = $ending_arr[2];
             }
         }
         return $ending;

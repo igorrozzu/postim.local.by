@@ -21,7 +21,7 @@ $config = [
                 ],
             ],
         ],
-        'category'=>[
+        'category' => [
             'class' => 'app\components\Category',
         ],
         'formatter' => [
@@ -33,10 +33,10 @@ $config = [
                 'app*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'fileMap' => [
-                        'app'       => 'app.php',
-                        'app/locativus' =>'locativus.php',
-                        'app/parental_slope' =>'parental_slope.php',
-                        'app/singular' =>'singular.php',
+                        'app' => 'app.php',
+                        'app/locativus' => 'locativus.php',
+                        'app/parental_slope' => 'parental_slope.php',
+                        'app/singular' => 'singular.php',
                     ],
                 ],
             ],
@@ -44,7 +44,7 @@ $config = [
         'db' => $db,
         'mailer' => require(__DIR__ . '/mailer.php'),
         'urlManager' => require(__DIR__ . '/urlManager.php'),
-        'sphinx' => require ('sphinxSearch/config.php'),
+        'sphinx' => require('sphinxSearch/config.php'),
     ],
     'params' => $params,
     /*

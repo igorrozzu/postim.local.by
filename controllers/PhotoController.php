@@ -13,9 +13,12 @@ class PhotoController extends MainController
     {
         $response = new \stdClass();
         $response->data = Gallery::find()
-            ->innerJoinWith(['reviewsGallery' => function(Query $query) use ($review_id) {
-                $query->where([ReviewsGallery::tableName() . '.review_id' => $review_id]);
-            }, 'post'])
+            ->innerJoinWith([
+                'reviewsGallery' => function (Query $query) use ($review_id) {
+                    $query->where([ReviewsGallery::tableName() . '.review_id' => $review_id]);
+                },
+                'post',
+            ])
             ->orderBy(['id' => SORT_DESC])
             ->all();
         $response->url = null;

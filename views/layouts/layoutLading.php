@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use app\assets\LoginFormsAsset;
@@ -23,23 +24,33 @@ LoginFormsAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/lading/sale-of-business.css">
     <?= Html::csrfMetaTags() ?>
-    <title><?=$this->title?></title>
-    <?php $this->registerAssetBundle('yii\web\JqueryAsset',yii\web\View::POS_HEAD); ?>
+    <title><?= $this->title ?></title>
+    <?php $this->registerAssetBundle('yii\web\JqueryAsset', yii\web\View::POS_HEAD); ?>
 
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-NJT875T');</script>
+    <script>(function (w, d, s, l, i) {
+				w[l] = w[l] || [];
+				w[l].push({
+					'gtm.start':
+							new Date().getTime(), event: 'gtm.js'
+				});
+				var f = d.getElementsByTagName(s)[0],
+						j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+				j.async = true;
+				j.src =
+						'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+				f.parentNode.insertBefore(j, f);
+			})(window, document, 'script', 'dataLayer', 'GTM-NJT875T');</script>
     <!-- End Google Tag Manager -->
 
     <!--push start-->
-    <script charset="UTF-8" src="//cdn.sendpulse.com/28edd3380a1c17cf65b137fe96516659/js/push/8112939af3b63172ed5cc9252b64b0d9_1.js" async></script>
+    <script charset="UTF-8"
+            src="//cdn.sendpulse.com/28edd3380a1c17cf65b137fe96516659/js/push/8112939af3b63172ed5cc9252b64b0d9_1.js"
+            async></script>
     <!--push end-->
 
     <?php $this->head() ?>
@@ -48,18 +59,23 @@ LoginFormsAsset::register($this);
 <?php $this->beginBody() ?>
 
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJT875T"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJT875T"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 
 <!--верхнее меню-->
 <div class="container-header">
     <div class="header">
-        <a href="<?=Yii::$app->city->Selected_city['url_name']?'/'.Yii::$app->city->Selected_city['url_name']:'/'?>" class="logo-lading"></a>
+        <a href="<?= Yii::$app->city->Selected_city['url_name'] ? '/' . Yii::$app->city->Selected_city['url_name'] : '/' ?>"
+           class="logo-lading"></a>
         <div class="nav-content-menu">
-            <div class="item-content-menu" data-for-selector="#for-bsn"><span class="active btn-forBsn">для Бизнеса</span></div>
-            <div class="item-content-menu" data-for-selector="#instument"><span class="btn-instument">Инструменты</span></div>
+            <div class="item-content-menu" data-for-selector="#for-bsn"><span
+                        class="active btn-forBsn">для Бизнеса</span></div>
+            <div class="item-content-menu" data-for-selector="#instument"><span class="btn-instument">Инструменты</span>
+            </div>
             <div class="item-content-menu" data-for-selector="#price"><span class="btn-price">Стоимость</span></div>
         </div>
         <div class="block-main-right-btn">
@@ -75,12 +91,12 @@ Pjax::begin([
     'id' => 'main-view-container',
     'linkSelector' => '.main-pjax a',
     'formSelector' => false,
-    'scrollTo'=>1
+    'scrollTo' => 1,
 ]);
 echo $content;
 Pjax::end();
 ?>
-<?= $this->render('footer')?>
+<?= $this->render('footer') ?>
 
 <div class="container-blackout-popup-window" style="display: none"></div>
 <?php $this->endBody() ?>

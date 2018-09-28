@@ -21,32 +21,32 @@ Pjax::begin([
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'tableOptions' => [
-            'class' => 'table --custom-tbl-p'
+            'class' => 'table --custom-tbl-p',
         ],
-        'layout'=>"{items}\n{pager}",
-        'rowOptions'=> function($data){
-            return ['style'=>'height:200px'];
+        'layout' => "{items}\n{pager}",
+        'rowOptions' => function ($data) {
+            return ['style' => 'height:200px'];
         },
         'columns' => [
             [
                 'attribute' => null,
                 'format' => 'raw',
                 'label' => 'Ссылка на пост',
-                'headerOptions' => ['width'=>'150px','class' => '--header-p'],
-                'value'=>function($data){
-                    $alink ="<a data-pjax=false target=\"_blank\" class='data-link' href='{$data->getLink()}'>{$data->post->data}</a>";
+                'headerOptions' => ['width' => '150px', 'class' => '--header-p'],
+                'value' => function ($data) {
+                    $alink = "<a data-pjax=false target=\"_blank\" class='data-link' href='{$data->getLink()}'>{$data->post->data}</a>";
                     return $alink;
-                }
+                },
 
             ],
             [
                 'attribute' => 'source',
                 'format' => 'raw',
                 'label' => 'Фото поста',
-                'headerOptions' => ['width'=>'400px','class' => '--header-p'],
-                'value'=>function($data){
+                'headerOptions' => ['width' => '400px', 'class' => '--header-p'],
+                'value' => function ($data) {
                     return "<img href='{$data->getPhotoPath()}' class='image-link' style='height: 200px;width: auto;max-width: 400px; margin: 10px 0;' src='{$data->getPhotoPath()}'>";
-                }
+                },
 
             ],
 
@@ -54,10 +54,10 @@ Pjax::begin([
                 'attribute' => null,
                 'format' => 'raw',
                 'label' => 'Автор',
-                'headerOptions' => ['width'=>'100px','class' => '--header-p'],
-                'value'=>function($data){
+                'headerOptions' => ['width' => '100px', 'class' => '--header-p'],
+                'value' => function ($data) {
                     return "{$data->user->name} {$data->user->surname}";
-                }
+                },
 
             ],
 
@@ -65,31 +65,31 @@ Pjax::begin([
                 'attribute' => 'status',
                 'format' => 'raw',
                 'label' => 'Статус',
-                'headerOptions' => ['width'=>'100px','class' => '--header-p'],
-                'value'=>function($data){
+                'headerOptions' => ['width' => '100px', 'class' => '--header-p'],
+                'value' => function ($data) {
                     return $data->getTextStatus();
-                }
+                },
 
             ],
             [
                 'attribute' => null,
                 'format' => 'raw',
                 'label' => 'Действие',
-                'headerOptions' => ['width'=>'100px','class' => '--header-p'],
-                'value'=>function($data){
+                'headerOptions' => ['width' => '100px', 'class' => '--header-p'],
+                'value' => function ($data) {
                     return $data->getButtons();
-                }
+                },
 
             ],
 
         ],
-    ]);?>
+    ]); ?>
 
 </div>
 <script>
-    $(document).ready(function() {
-        $('.image-link').magnificPopup({type:'image'});
-    });
+	$(document).ready(function () {
+		$('.image-link').magnificPopup({type: 'image'});
+	});
 </script>
 <?php
 

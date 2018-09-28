@@ -10,17 +10,17 @@
                 3 => 'bg-purple',
                 4 => 'bg-red',
             ];
-            $i=0;
+            $i = 0;
 
-            foreach ($dataprovider as $item){
-                echo  $this->render('list_category',['category'=>$item,'color'=>$colorMap[$i]]);
-                $i = isset($colorMap[++$i])?$i:0;
+            foreach ($dataprovider as $item) {
+                echo $this->render('list_category', ['category' => $item, 'color' => $colorMap[$i]]);
+                $i = isset($colorMap[++$i]) ? $i : 0;
             }
             ?>
         </ul>
     </div>
     <div class="right-block">
-        <?= \app\components\rightBlock\RightBlockWidget::widget()?>
+        <?= \app\components\rightBlock\RightBlockWidget::widget() ?>
     </div>
 </div>
 <div class="clear-fix"></div>

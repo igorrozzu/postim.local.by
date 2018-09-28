@@ -20,7 +20,7 @@ class CategoryFeaturesSearch extends CategoryFeatures
     public function rules()
     {
         return [
-            [['features_id','category_id'], 'safe'],
+            [['features_id', 'category_id'], 'safe'],
         ];
     }
 
@@ -43,13 +43,13 @@ class CategoryFeaturesSearch extends CategoryFeatures
     public function search($params, $pagination)
     {
         $query = CategoryFeatures::find();
-        $query->joinWith(['features','category']);
+        $query->joinWith(['features', 'category']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
 
         $this->load($params);

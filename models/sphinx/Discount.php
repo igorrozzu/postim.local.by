@@ -1,5 +1,7 @@
 <?php
-namespace  app\models\sphinx;
+
+namespace app\models\sphinx;
+
 use app\models\Discounts;
 use yii\sphinx\ActiveRecord;
 

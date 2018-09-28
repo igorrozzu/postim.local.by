@@ -44,8 +44,20 @@ class DiscountOrder extends \yii\db\ActiveRecord
             [['user_id', 'discount_id', 'date_buy', 'date_finish', 'pin_code', 'status_promo'], 'integer'],
             [['promo_code'], 'string', 'max' => 200],
             [['price'], 'number', 'min' => 0],
-            [['discount_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discounts::className(), 'targetAttribute' => ['discount_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['discount_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Discounts::className(),
+                'targetAttribute' => ['discount_id' => 'id'],
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id'],
+            ],
         ];
     }
 
@@ -90,6 +102,7 @@ class DiscountOrder extends \yii\db\ActiveRecord
             ->andWhere([Discounts::tableName() . '.type' => $type])
             ->count();
     }
+
     public static function getActiveCount($type, $status)
     {
         return self::find()

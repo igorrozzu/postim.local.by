@@ -26,5 +26,4 @@ class BusinessOrder extends ParentBusinessOrder
     }
 
 
-
 }

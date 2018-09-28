@@ -1,9 +1,11 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use yii\helpers\Html;
+
 $hostName = Yii::$app->params['site.hostName'];
 ?>
 <?php $this->beginPage() ?>
@@ -13,7 +15,7 @@ $hostName = Yii::$app->params['site.hostName'];
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
     <?= Html::csrfMetaTags() ?>
     <title></title>
     <?php $this->head() ?>
@@ -23,7 +25,7 @@ $hostName = Yii::$app->params['site.hostName'];
 margin: 0; padding: 0; background-color: #f1f2f4;">
 <?php $this->beginBody() ?>
 <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto; padding-top: 20px; max-width: 600px;
-        font-family: Tahoma, Verdana, Helvetica, sans-serif; color: #444444; font-size: 15px;" >
+        font-family: Tahoma, Verdana, Helvetica, sans-serif; color: #444444; font-size: 15px;">
     <tr>
         <td style="background-color: #3c5994; height: 60px;">
             <img style="display:block; margin-left: 20px; color: #FFFFFF;margin-top: 10px" alt="Postim.by" border="0"
@@ -31,7 +33,7 @@ margin: 0; padding: 0; background-color: #f1f2f4;">
         </td>
     </tr>
 
-    <?=$content;?>
+    <?= $content; ?>
 </table>
 <?php $this->endBody() ?>
 </body>

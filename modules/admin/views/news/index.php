@@ -1,6 +1,9 @@
 <?php
+
 use \yii\widgets\ActiveForm;
+
 $this->title = 'Добавить новость на Postim.by';
+
 use yii\widgets\Pjax;
 
 Pjax::begin([
@@ -15,15 +18,24 @@ Pjax::begin([
 <div class="margin-top60"></div>
 <div class="block-content">
     <h1 class="h1-c" style="margin-top: 35px">Добавить новость</h1>
-    <?php $form = ActiveForm::begin(['id' => 'form-add-news', 'enableClientScript' => false,'action'=>'/admin/news/save','options'=>['pjax-container-add-news'=>'true']]) ?>
+    <?php $form = ActiveForm::begin([
+        'id' => 'form-add-news',
+        'enableClientScript' => false,
+        'action' => '/admin/news/save',
+        'options' => ['pjax-container-add-news' => 'true'],
+    ]) ?>
 
     <div class="container-add-place container-feedback" style="margin-top: 30px">
 
         <div class="block-field-setting">
             <label class="label-field-setting">Заголовок страницы</label>
             <?= $form->field($news, 'header')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите текст', 'value' => $news['header']])
+                ->textInput([
+                    'style' => 'margin-bottom: 15px;',
+                    'class' => 'input-field-setting',
+                    'placeholder' => 'Введите текст',
+                    'value' => $news['header'],
+                ])
                 ->label(false) ?>
         </div>
 
@@ -53,30 +65,44 @@ Pjax::begin([
             <div class="block-write-editors">
 
                 <?= $form->field($news, 'data')
-                    ->textInput(['id' => 'article','style' => 'display:none', 'class' => 'input-field-setting',
-                        'placeholder' => 'Введите текст', 'value' => \yii\helpers\Html::encode($news['data']),
+                    ->textInput([
+                        'id' => 'article',
+                        'style' => 'display:none',
+                        'class' => 'input-field-setting',
+                        'placeholder' => 'Введите текст',
+                        'value' => \yii\helpers\Html::encode($news['data']),
                         'data-upload-by-url' => '/post/upload-new-photo-by-url',
                         'data-upload-by-file' => '/post/upload-new-photo',
                     ])->label(false) ?>
 
-                <?php if($news['data']):?>
-                    <?=\app\components\Helper::parserForEditor($news['data'],false);?>
-                <?php else:?>
-                    <div class="item-editor item container-editor"><div class="container-toolbar"> <div class="title-toolbar">Текст</div> <div class="btns-toolbar-container"><div class="btn-toolbar-top"></div> <div class="btn-toolbar-down"></div> <div class="btn-toolbar-close"></div></div></div><div class="editable"></div></div>
-                <?php endif;?>
+                <?php if ($news['data']): ?>
+                    <?= \app\components\Helper::parserForEditor($news['data'], false); ?>
+                <?php else: ?>
+                    <div class="item-editor item container-editor">
+                        <div class="container-toolbar">
+                            <div class="title-toolbar">Текст</div>
+                            <div class="btns-toolbar-container">
+                                <div class="btn-toolbar-top"></div>
+                                <div class="btn-toolbar-down"></div>
+                                <div class="btn-toolbar-close"></div>
+                            </div>
+                        </div>
+                        <div class="editable"></div>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 
         <script>
-            $(document).ready(function () {
-                editable.init('.editable', {
-                    toolbar: {
-                        photo: true,
-                        video: true,
-                        text: true
-                    }
-                })
-            });
+					$(document).ready(function () {
+						editable.init('.editable', {
+							toolbar: {
+								photo: true,
+								video: true,
+								text: true
+							}
+						})
+					});
         </script>
 
     </div>
@@ -90,8 +116,13 @@ Pjax::begin([
             <div class="btn-add-photo-preview">Добавить фотографии</div>
             <div class="block-input-preview">
                 <?= $form->field($news, 'cover')
-                    ->textInput(['id' => 'cover','style' => 'display:none', 'class' => 'input-field-setting',
-                        'placeholder' => 'Введите текст', 'value' => $news['cover']])
+                    ->textInput([
+                        'id' => 'cover',
+                        'style' => 'display:none',
+                        'class' => 'input-field-setting',
+                        'placeholder' => 'Введите текст',
+                        'value' => $news['cover'],
+                    ])
                     ->label(false) ?>
             </div>
         </div>
@@ -103,8 +134,12 @@ Pjax::begin([
         <div class="block-field-setting">
             <label class="label-field-setting">Название для превью</label>
             <?= $form->field($news, 'description')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите текст', 'value' => $news['description']])
+                ->textInput([
+                    'style' => 'margin-bottom: 15px;',
+                    'class' => 'input-field-setting',
+                    'placeholder' => 'Введите текст',
+                    'value' => $news['description'],
+                ])
                 ->label(false) ?>
         </div>
     </div>
@@ -114,24 +149,36 @@ Pjax::begin([
         <div class="block-field-setting">
             <label class="label-field-setting">Заголов для поисковиков</label>
             <?= $form->field($news, 'title_s')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите текст', 'value' => $news['title_s']])
+                ->textInput([
+                    'style' => 'margin-bottom: 15px;',
+                    'class' => 'input-field-setting',
+                    'placeholder' => 'Введите текст',
+                    'value' => $news['title_s'],
+                ])
                 ->label(false) ?>
         </div>
 
         <div class="block-field-setting">
             <label class="label-field-setting">Описание для поисковиков</label>
             <?= $form->field($news, 'description_s')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите текст', 'value' => $news['description_s']])
+                ->textInput([
+                    'style' => 'margin-bottom: 15px;',
+                    'class' => 'input-field-setting',
+                    'placeholder' => 'Введите текст',
+                    'value' => $news['description_s'],
+                ])
                 ->label(false) ?>
         </div>
 
         <div class="block-field-setting">
             <label class="label-field-setting">Ключевые слова</label>
             <?= $form->field($news, 'key_word_s')
-                ->textInput(['style' => 'margin-bottom: 15px;', 'class' => 'input-field-setting',
-                    'placeholder' => 'Введите текст', 'value' => $news['key_word_s']])
+                ->textInput([
+                    'style' => 'margin-bottom: 15px;',
+                    'class' => 'input-field-setting',
+                    'placeholder' => 'Введите текст',
+                    'value' => $news['key_word_s'],
+                ])
                 ->label(false) ?>
         </div>
 
@@ -140,21 +187,21 @@ Pjax::begin([
         </div>
         <input id="btn-form-save" type="submit" style="display: none;">
         <script>
-            $(document).ready(function () {
-                $('.js-btn-save').click(function () {
-                    if(editable.parserEditable()){
-                        $('#btn-form-save').trigger('click');
-                    }
-                })
-            });
+					$(document).ready(function () {
+						$('.js-btn-save').click(function () {
+							if (editable.parserEditable()) {
+								$('#btn-form-save').trigger('click');
+							}
+						})
+					});
         </script>
 
     </div>
 
-    <?php ActiveForm::end()?>
+    <?php ActiveForm::end() ?>
 
 </div>
 <div style="margin-bottom:30px;"></div>
 <?php
-    Pjax::end();
+Pjax::end();
 ?>
