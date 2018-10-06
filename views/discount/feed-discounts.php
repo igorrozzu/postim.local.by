@@ -115,7 +115,7 @@ Pjax::begin([
 <div style="margin-top: 30px"></div>
 <div class="block-content">
     <div class="description-text --description-width">
-        <?=$descriptionPage['description']?>
+        <?=$descriptionPage['descriptionText']?>
     </div>
 </div>
 

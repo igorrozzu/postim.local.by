@@ -557,33 +557,6 @@ class PostController extends MainController
         }
     }
 
-    public function actionLoadMorePhotos()
-    {
-        if (Yii::$app->request->isAjax) {
-            $request = Yii::$app->request;
-            $searchModel = new GallerySearch();
-            $pagination = new Pagination([
-                'pageSize' => $request->get('per-page', 16),
-                'page' => $request->get('page', 1) - 1,
-                'selfParams' => [
-                    'type' => true,
-                    'postId' => true,
-                ],
-            ]);
-            $loadTime = $request->get('loadTime', time());
-            $dataProvider = $searchModel->search(
-                $request->queryParams,
-                $pagination,
-                $loadTime
-            );
-            return $this->renderPartial('photo-list', [
-                'dataProvider' => $dataProvider,
-                'loadTime' => $loadTime,
-                'sequence' => (int)$request->get('sequence', 0)
-            ]);
-        }
-    }
-
     public function actionGetReviewsEdit(int $id)
     {
 
@@ -648,111 +621,15 @@ class PostController extends MainController
     }
 
 
-    public function actionGallery(int $postId, string $photo_id = null)
+    public function actionGallery(string $name, int $postId, string $photo_id = null)
     {
-        $request = Yii::$app->request;
-        $searchModel = new GallerySearch();
-        $_GET['type'] = $request->get('type', 'user');
-        $pagination = new Pagination([
-            'pageSize' => $request->get('per-page', 16),
-            'page' => $request->get('page', 1) - 1,
-            'route' => Url::to(['post/load-more-photos']),
-            'selfParams' => [
-                'type' => true,
-                'postId' => true,
-                'photo_id' => true,
-            ],
-        ]);
-        $loadTime = $request->get('loadTime', time());
-        $dataProvider = $searchModel->search(
-            $request->queryParams,
-            $pagination,
-            $loadTime
-        );
-
-        $post = Posts::find()->with([
-            'info', 'workingHours',
-            'city', 'totalView',
-            'hasLike', 'categories.category', 'isCurrentUserOwner'
-        ])->where(['id' => $postId])
-            ->one();
-
-        if(!$post)
-        {
-            throw new NotFoundHttpException('Cтраница не найдена');
-        }
-
-        Helper::checkValidUrl('/' . Yii::$app->request->pathInfo,
-            Url::to(['post/gallery', 'name' => $post['url_name'], 'postId' => $post['id']])
-        );
-
-        Helper::addViews($post->totalView);
-
-        $photoCount = Gallery::find()
-            ->where(['post_id' => $postId])
-            ->count();
-
-        $breadcrumbParams = $this->getParamsForBreadcrumb($post);
-        $breadcrumbParams[] = [
-            'name' => 'Фотографии',
-            'url_name' => $request->getUrl(),
-            'pjax' => 'class="main-pjax a"'
-        ];
-
-        $queryPost = Posts::find()->where(['tbl_posts.id' => $postId])
-            ->prepare(Yii::$app->db->queryBuilder)
-            ->createCommand()->rawSql;
-        $keyForMap = Helper::saveQueryForMap($queryPost);
-
-        //$discountCount = DiscountRepository::getVisibleCountByPostId($postId);
-
-        return $this->render('feed-photos.php', [
-            'dataProvider' => $dataProvider,
-            'ownerPhotos' => $searchModel->getAllOnwerPhotos(),
-            'post' => $post,
-            'breadcrumbParams' => $breadcrumbParams,
-            'photoCount' => $photoCount,
-            'loadTime' => $loadTime,
-            'keyForMap' => $keyForMap,
-            //'discountCount' => $discountCount,
-            'initPhotoSliderParams' => [
-                'photoId' => $photo_id
-            ],
-            //'isShowDiscounts' => $discountCount > 0 || Yii::$app->user->isModerator() || isset($post->isCurrentUserOwner)
-        ]);
+        $this->redirect(Url::to(['post/index','url' => $name, 'id' => $postId]));
     }
 
     public function actionPhoto(string $postName = null, int $idPhoto)
     {
-        $request = Yii::$app->request;
-
         $photo = Gallery::find()->where(['id' => $idPhoto])->one();
-        $post = Posts::find()->with([
-            'info', 'workingHours',
-            'city', 'totalView',
-            'hasLike', 'categories.category'
-        ])->where(['id' => $photo->post_id])
-            ->one();
-
-
-        $photoCount = Gallery::find()
-            ->where(['post_id' => $post->id])
-            ->count();
-
-        $breadcrumbParams = $this->getParamsForBreadcrumb($post);
-        $breadcrumbParams[] = [
-            'name' => 'Фото',
-            'url_name' => $request->getUrl(),
-            'pjax' => 'class="main-pjax a"'
-        ];
-
-
-        return $this->render('feed-photo', [
-            'post' => $post,
-            'breadcrumbParams' => $breadcrumbParams,
-            'photoCount' => $photoCount,
-            'photo' => $photo
-        ]);
+        $this->redirect(Url::to(['post/index','url' => $postName, 'id' => $photo->post_id]));
     }
 
     public function actionGetPlaceForMap(string $id)
