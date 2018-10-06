@@ -11,6 +11,8 @@ $params = [
     'mail.askEmail' => 'ask@postim.by',
     'site.hostName' => 'https://postim.local.by',
 
+    'auth.google.returnUrl' => 'https://postim.local.by/social-auth/auth?authclient=google',
+
     'user.loginDuration' => 3600*24*30,
     'user.passwordResetTokenExpire' => 3600,
     'user.photoName' => 'photo.jpg',
@@ -30,10 +32,12 @@ $params = [
 
 if(YII_ENV == 'prod'){
     $params['site.hostName'] = 'https://postim.by';
+    $params['auth.google.returnUrl'] = 'https://postim.by/social-auth/auth?authclient=google';
 }
 
 if(YII_ENV == 'testing'){
     $params['site.hostName'] = 'https://postim.testing.by';
+    $params['auth.google.returnUrl'] = 'https://postim.testing.by/social-auth/auth?authclient=google';
 }
 
 return $params;
