@@ -1,4 +1,6 @@
 <?php
+$params = require(__DIR__ . '/params.php');
+
 return [
     'class' => 'yii\authclient\Collection',
     'clients' => [
@@ -29,6 +31,7 @@ return [
             'class' => 'yii\authclient\clients\Google',
             'clientId' => '97736700830-fp66r4om3gqcovoqfnkbjahdp34m155i.apps.googleusercontent.com',
             'clientSecret' => 'LO86E3tYzLNsEPnjf8gAJhUt',
+            'returnUrl' => $params['auth.google.returnUrl']
         ],
         'facebook' => [
             'class' => 'yii\authclient\clients\Facebook',
