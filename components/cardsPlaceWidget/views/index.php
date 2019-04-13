@@ -80,7 +80,9 @@ if (isset($settings['is-it-sphinx-model'])) {
     <?php if ($hrefNext = $dataprovider->pagination->getLinks()['next'] ?? false): ?>
         <div class="replace-block mg-btm-30" id="<?= $settings['replace-container-id'] ?>">
             <div class="btn-show-more" data-selector_replace="#<?= $settings['replace-container-id'] ?>"
-                 data-href="<?= $hrefNext ?>&loadTime=<?= $settings['load-time'] ?? '' ?><?= isset($settings['load-geolocation']) && is_array($settings['load-geolocation']) ? '&' . http_build_query(['load-geolocation' => $settings['load-geolocation']]) : '' ?>">
+                 data-href="<?= $hrefNext ?>&loadTime=<?= $settings['load-time'] ?? '' ?>
+
+<?= isset($settings['load-geolocation']) && is_array($settings['load-geolocation']) ? '&' . http_build_query(['load-geolocation' => $settings['load-geolocation']]) : '' ?>">
                 <noindex>Показать больше мест</noindex>
             </div>
         </div>

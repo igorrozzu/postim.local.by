@@ -18,12 +18,24 @@ use yii\helpers\Html;
 
 class AddPost extends Model
 {
-    public $name,
-        $article, $address_text,
-        $comments_to_address, $coords_address, $requisites, $metro, $id;
+    public
+        $name,
+        $article,
+        $address_text,
+        $comments_to_address,
+        $coords_address,
+        $requisites,
+        $metro,
+        $id;
 
-    public $categories, $city, $contacts,
-        $time_work, $features, $photos, $engine, $editors;
+    public $categories,
+        $city,
+        $contacts,
+        $time_work,
+        $features,
+        $photos,
+        $engine,
+        $editors;
 
     private $cover = null;
 

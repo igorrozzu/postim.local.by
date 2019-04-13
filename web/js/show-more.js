@@ -1,12 +1,10 @@
 /**
- * Created by jrborisov on 8.7.17.
+ * @type {function(): {render: render}}
  */
 var ShowMore = (function (window, document, undefined, $) {
 
 	return function () {
-
 		var that = {
-
 			render: function (p) {
 				var selectorContainerReplace = p['selector'];
 				var href = p['href'];
@@ -20,10 +18,8 @@ var ShowMore = (function (window, document, undefined, $) {
 						$(document).trigger('lazyLoad:check');
 					}
 				});
-
 			}
-
-		}
+		};
 
 		return that;
 	}
