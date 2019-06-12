@@ -17,12 +17,11 @@ class Feedback extends Model
     /**
      * @return array the validation rules.
      */
-
     public function rules()
     {
         return [
-            [['subject'], 'required', 'message' => 'Ввидите тему письма'],
-            [['message'], 'required', 'message' => 'Ввидите текст сообщения'],
+            [['subject'], 'required', 'message' => 'Введите тему письма'],
+            [['message'], 'required', 'message' => 'Введите текст сообщения'],
             [['email'], 'required', 'message' => 'Введите корректный e-mail'],
             [['email'], 'email', 'message' => 'Введите корректный e-mail'],
             [['additional'], 'safe'],
@@ -31,9 +30,11 @@ class Feedback extends Model
 
     }
 
+    /**
+     * @return bool
+     */
     public function sendSubject()
     {
-
         if ($this->validate()) {
 
             if (!$this->additional) {
@@ -47,17 +48,16 @@ class Feedback extends Model
 
             $this->clearAttr();
             return true;
-
         }
-
     }
 
+    /**
+     *
+     */
     private function clearAttr()
     {
         $this->message = '';
         $this->email = '';
         $this->subject = '';
     }
-
-
 }

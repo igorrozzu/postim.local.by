@@ -1,11 +1,8 @@
 <?php
-
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-
 ?>
-
 <div class="container-popup-window form-password-recovery">
     <div class="header-popup-authentication">
         <div class="logo"></div>

@@ -207,12 +207,12 @@ class Helper
     {
         $arrayResult = [
             1 => ['day_type' => 1, 'time_start' => null, 'time_finish' => null],
-            ['day_type' => 2, 'time_start' => null, 'time_finish' => null],
-            ['day_type' => 3, 'time_start' => null, 'time_finish' => null],
-            ['day_type' => 4, 'time_start' => null, 'time_finish' => null],
-            ['day_type' => 5, 'time_start' => null, 'time_finish' => null],
-            ['day_type' => 6, 'time_start' => null, 'time_finish' => null],
-            ['day_type' => 7, 'time_start' => null, 'time_finish' => null],
+                    ['day_type' => 2, 'time_start' => null, 'time_finish' => null],
+                    ['day_type' => 3, 'time_start' => null, 'time_finish' => null],
+                    ['day_type' => 4, 'time_start' => null, 'time_finish' => null],
+                    ['day_type' => 5, 'time_start' => null, 'time_finish' => null],
+                    ['day_type' => 6, 'time_start' => null, 'time_finish' => null],
+                    ['day_type' => 7, 'time_start' => null, 'time_finish' => null],
         ];
 
         foreach ($workingHours as $workingHour) {

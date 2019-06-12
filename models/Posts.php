@@ -326,7 +326,8 @@ class Posts extends \yii\db\ActiveRecord
             $this->lon = str_replace(')', '', $latLng[1]);
         }
         if (isset(Yii::$app->request->cookies)) {
-            if ($this->distance == null && $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation') ? \yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')) : false) {
+            if ($this->distance == null && $CurrentMePosition = Yii::$app->request->cookies->getValue('geolocation') ?
+                    \yii\helpers\Json::decode(Yii::$app->request->cookies->getValue('geolocation')) : false) {
                 if ($this->lat && $this->lon) {
                     $this->distanceText = Yii::$app->oldFormatter->asShortLength(Helper::getDistanceBP($this->lat,
                         $this->lon,

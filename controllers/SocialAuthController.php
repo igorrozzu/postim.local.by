@@ -147,5 +147,4 @@ class SocialAuthController extends MainController
         }
         return $this->goHome();
     }
-
 }

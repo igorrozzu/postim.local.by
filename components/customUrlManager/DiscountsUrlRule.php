@@ -4,10 +4,8 @@ namespace app\components\customUrlManager;
 
 class DiscountsUrlRule extends CityUrlRule
 {
-
     public function createUrl($manager, $route, $params)
     {
-
         return false;  // данное правило не применимо
     }
 
@@ -39,7 +37,6 @@ class DiscountsUrlRule extends CityUrlRule
             return [$route, $params];
         }
 
-
         return false;
     }
 
@@ -47,6 +44,5 @@ class DiscountsUrlRule extends CityUrlRule
     {
         $array = parent::getIndexArray();
         return $array;
-
     }
 }

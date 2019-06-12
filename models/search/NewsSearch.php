@@ -42,19 +42,18 @@ class NewsSearch extends News
     }
 
     /**
-     * @inheritdoc
+     * @return mixed
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
+     * @param $params
+     * @param Pagination $pagination
+     * @param array $sort
+     * @param null $loadTime
      * @return ActiveDataProvider
      */
     public function search($params, Pagination $pagination, Array $sort, $loadTime = null)
@@ -95,6 +94,12 @@ class NewsSearch extends News
         return $dataProvider;
     }
 
+    /**
+     * @param $params
+     * @param Pagination $pagination
+     * @param $loadTime
+     * @return ActiveDataProvider
+     */
     public function searchFavorites($params, Pagination $pagination, $loadTime)
     {
         $query = News::find()

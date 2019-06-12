@@ -11,11 +11,13 @@ use yii\helpers\Inflector;
 
 class Slug extends Behavior
 {
-
     public $in_attribute = 'name';
     public $out_attribute = 'slug';
     public $translit = true;
 
+    /**
+     * @return array
+     */
     public function events()
     {
         return [
@@ -23,7 +25,9 @@ class Slug extends Behavior
         ];
     }
 
-
+    /**
+     * @param $event
+     */
     public function getSlug($event)
     {
         if (empty($this->owner->{$this->out_attribute})) {
@@ -32,12 +36,20 @@ class Slug extends Behavior
         }
     }
 
+    /**
+     * @param $slug
+     * @return string
+     */
     private function generateSlug($slug)
     {
         $slug = $this->slugify($slug);
         return $slug;
     }
 
+    /**
+     * @param $slug
+     * @return string
+     */
     private function slugify($slug)
     {
         if ($this->translit) {
@@ -47,12 +59,16 @@ class Slug extends Behavior
         }
     }
 
+    /**
+     * @param $string
+     * @param string $replacement
+     * @param bool $lowercase
+     * @return string
+     */
     private function slug($string, $replacement = '-', $lowercase = true)
     {
         $string = preg_replace('/[^\p{L}\p{Nd}]+/u', $replacement, $string);
         $string = trim($string, $replacement);
         return $lowercase ? strtolower($string) : $string;
     }
-
-
 }
