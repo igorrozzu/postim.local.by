@@ -38,7 +38,7 @@ use yii\helpers\Url;
                 </div>
             </div>
             <div class="text-footer">
-                ИП&nbsp;Борисов&nbsp;Владислав&nbsp;Александрович, УНП&nbsp;591251086. Режим&nbsp;работы: &nbsp;9:00&nbsp;до&nbsp;18:00. <!--Эл.&nbsp;почта:&nbsp;<span class="email-address">ask@postim.by.</span>--> ©&nbsp;2016–<?=date('Y')?>&nbsp;Postim.by
+                ИП Каплан Валерия Аркадьевна, УНП 791174548. Режим работы:  9:00 до 18:00. <!--Эл.&nbsp;почта:&nbsp;<span class="email-address">ask@postim.by.</span>--> ©&nbsp;2016–<?=date('Y')?>&nbsp;Postim.by
             </div>
         </div>
     </div>
