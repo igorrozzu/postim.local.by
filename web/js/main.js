@@ -60,8 +60,6 @@ var Main = (function (window, document, undefined,$) {
                 });
                 that.shareSocialButtonsInit();
 
-                that.showWindowsPush();
-
             },
             getDomainName:function () {
               return window.location.host;
