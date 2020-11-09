@@ -18,6 +18,12 @@ use yii\helpers\Url;
                     </li>
                     <li class="main-pjax"><a href="/feedback" rel="nofollow">Обратная связь</a></li>
                 </ul>
+                <div class="block-social-icons">
+                    <div class="block-social">
+                    </div>
+                    <div class="block-social">
+                    </div>
+                </div>
             </div>
             <div class="text-footer">
                 ИП Каплан Валерия Аркадьевна, УНП 791174548. Режим работы:  9:00 до 18:00. <!--Эл.&nbsp;почта:&nbsp;<span class="email-address">ask@postim.by.</span>--> ©&nbsp;2016–<?=date('Y')?>&nbsp;Postim.by
