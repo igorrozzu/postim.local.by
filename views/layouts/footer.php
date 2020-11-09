@@ -20,8 +20,20 @@ use yii\helpers\Url;
                 </ul>
                 <div class="block-social-icons">
                     <div class="block-social">
+                        <a href="https://vk.com/postimby"
+                           class="social-btn-vk" rel="nofollow" target="_blank"></a>
+                        <a href="https://www.facebook.com/postimby"
+                           class="social-btn-fb" rel="nofollow" target="_blank"></a>
+                        <a href="https://twitter.com/postimby"
+                           class="social-btn-tw" rel="nofollow" target="_blank"></a>
                     </div>
                     <div class="block-social">
+                        <a href="https://www.ok.ru/postimby"
+                           class="social-btn-ok" rel="nofollow" target="_blank"></a>
+                        <a href="https://www.instagram.com/postimby"
+                           class="social-btn-inst" rel="nofollow" target="_blank"></a>
+                        <a href="https://chats.viber.com/postimby/ru"
+                           class="social-btn-viber" rel="nofollow" target="_blank"></a>
                     </div>
                 </div>
             </div>
